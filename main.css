@@ -189,8 +189,9 @@ article {
     font-family: "Montserrat", "Gill Sans", sans-serif;
     font-weight: 400;
     margin: 1em 0; }
-  article p {
-    margin-bottom: 1em; }
+
+article p, section p {
+  margin-bottom: 1em; }
 
 p > code, .codehilite {
   border-radius: 3px;

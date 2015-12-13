@@ -1,4 +1,40 @@
-<!DOCTYPE html><html lang="en"><head><title>Distributing Python in 2015 - tobywf</title><meta charset="utf-8"/><meta content="Toby Fleming" name="author"/><meta content="width=device-width,initial-scale=1" name="viewport"/><link href="//fonts.googleapis.com/css?family=Merriweather:300,300italic,700|Source+Code+Pro:400,700|Montserrat:400" rel="stylesheet" type="text/css"/><link href="/images/favicon.png" rel="icon"/><link href="/main.css" rel="stylesheet"/></head><body><div class="wrapper"><nav><ul><li><a class="cap" href="/">tobywf</a></li><li class="breadcrumb"><a href="/2015/">'15</a></li><li class="breadcrumb"><a href="/2015/11/">Nov</a></li><li class="portfolio"><a class="cap" href="/portfolio/">portfolio</a></li></ul></nav><header class="post-head"><h1>Distributing Python in 2015</h1><h2>aka. oh setuptools, how I've underestimated you</h2><div class="infoline"><span class="date">18 Nov '15</span></div></header><article><p>When I got into Python, there were too many packaging tools: <a href="https://pypi.python.org/pypi/setuptools">setuptools</a>, <a href="https://pypi.python.org/pypi/Distutils/1.0">distutils</a>, <a href="https://pypi.python.org/pypi/distribute/0.6.49">distribute</a>, <a href="https://pypi.python.org/pypi/Distutils2/1.0a4">distutils2</a>, and <a href="https://pypi.python.org/pypi/bento">bento</a>. I’m sure I missed some. Luckily, only two survive: <em>distutils</em> and <em>setuptools</em>.</p><p>How to choose? Basically, if you follow best practice and use <em>virtualenv</em>, <em>pip</em>, or <em>wheels</em>, you want to <a href="https://python-packaging-user-guide.readthedocs.org/en/latest/current/">use <em>setuptools</em></a>. This clarity is what Python needs. Also a big help: <a href="https://pythonhosted.org/setuptools/setuptools.html">the setuptools documentation</a> has also got substantially better.</p><hr/><p>But why use a packaging tool in the first place? An example is always good. Say you develop a tool, which you might want to give some colleagues eventually. You could just get everybody to clone the git repo. But <em>setuptools</em> helps solve several problems, so even if you never plan to upload the package to PyPI you definitely want to use <em>setuptools</em>.</p><p>I’ve chosen a sensible directory structure with a virtual environment:</p><div class="codehilite"><pre>project/
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Distributing Python in 2015 - tobywf</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Toby Fleming" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,300italic,700|Source+Code+Pro:400,700|Montserrat:400" type="text/css">
+    <link rel="icon" href="/images/favicon.png" />
+    <link rel="stylesheet" href="/main.css">
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <ul>
+<li><a href="/" class="cap">tobywf</a></li>
+<li class="breadcrumb"><a href="/2015/">&#x27;15</a></li>
+<li class="breadcrumb"><a href="/2015/11/">Nov</a></li>
+<li class="portfolio"><a href="/portfolio/" class="cap">portfolio</a></li>
+      </ul>
+    </nav>
+<!-- content start -->
+  <header class="post-head">
+    <h1>Distributing Python in 2015</h1>
+    <h2>aka. oh setuptools, how I&#39;ve underestimated you</h2>
+    <div class="infoline">
+      <span class="date">18 Nov &#x27;15</span>
+    </div>
+  </header>
+  <article>
+    <p>When I got into Python, there were too many packaging tools: <a href="https://pypi.python.org/pypi/setuptools">setuptools</a>, <a href="https://pypi.python.org/pypi/Distutils/1.0">distutils</a>, <a href="https://pypi.python.org/pypi/distribute/0.6.49">distribute</a>, <a href="https://pypi.python.org/pypi/Distutils2/1.0a4">distutils2</a>, and <a href="https://pypi.python.org/pypi/bento">bento</a>. I&#8217;m sure I missed some. Luckily, only two survive: <em>distutils</em> and <em>setuptools</em>.</p>
+<p>How to choose? Basically, if you follow best practice and use <em>virtualenv</em>, <em>pip</em>, or <em>wheels</em>, you want to <a href="https://python-packaging-user-guide.readthedocs.org/en/latest/current/">use <em>setuptools</em></a>. This clarity is what Python needs. Also a big help: <a href="https://pythonhosted.org/setuptools/setuptools.html">the setuptools documentation</a> has also got substantially&nbsp;better.</p>
+<hr>
+<p>But why use a packaging tool in the first place? An example is always good. Say you develop a tool, which you might want to give some colleagues eventually. You could just get everybody to clone the git repo. But <em>setuptools</em> helps solve several problems, so even if you never plan to upload the package to PyPI you definitely want to use <em>setuptools</em>.</p>
+<p>I&#8217;ve chosen a sensible directory structure with a virtual&nbsp;environment:</p>
+<div class="codehilite"><pre>project/
 ├── env
 [...]
 ├── package
@@ -7,30 +43,68 @@
 │   └── templates
 │       └── default.jinja
 └── setup.py
-</pre></div><p>For this package, <code>setup.py</code> looks like this:</p><div class="codehilite"><pre><span class="c">#!/usr/bin/env python</span>
+</pre></div>
+
+
+<p>For this package, <code>setup.py</code> looks like&nbsp;this:</p>
+<div class="codehilite"><pre><span class="c">#!/usr/bin/env python</span>
 
 <span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span>
 
 <span class="n">setup</span><span class="p">(</span>
     <span class="c"># [...] usual metadata: author, etc.</span>
-    <span class="n">packages</span><span class="o">=</span><span class="p">[</span><span class="s">'package'</span><span class="p">],</span>
-    <span class="n">install_requires</span><span class="o">=</span><span class="p">[</span><span class="s">'jinja'</span><span class="p">],</span>
+    <span class="n">packages</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;package&#39;</span><span class="p">],</span>
+    <span class="n">install_requires</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;jinja&#39;</span><span class="p">],</span>
     <span class="n">package_data</span><span class="o">=</span><span class="p">{</span>
-        <span class="s">'package'</span><span class="p">:</span> <span class="p">[</span><span class="s">'templates/*'</span><span class="p">]</span>
+        <span class="s">&#39;package&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;templates/*&#39;</span><span class="p">]</span>
     <span class="p">},</span>
     <span class="n">zip_safe</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
     <span class="n">entry_points</span><span class="o">=</span><span class="p">{</span>
-        <span class="s">'console_scripts'</span><span class="p">:</span> <span class="p">[</span><span class="s">'bin_name = package.main:main'</span><span class="p">]</span>
+        <span class="s">&#39;console_scripts&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;bin_name = package.main:main&#39;</span><span class="p">]</span>
     <span class="p">}</span>
 <span class="p">)</span>
-</pre></div><p><code>package_data</code> is interesting. In this case, I have some Jinja templates that I want my package to use. Usually, I’d get the path from <code>__file__</code> and simply read the file. This doesn’t work so well in an <code>egg</code> or a <code>wheel</code>, because it’s zipped. I could set <code>zip_safe</code> to <code>False</code>, or I simply use <a href="https://pythonhosted.org/setuptools/pkg_resources.html">pkg_resources</a> which provides easy methods to get the contents. Much less of a hack!</p><p><code>entry_points</code> solves a huge problem: How do you deploy a script that uses your package? <em>setuptools</em> makes this simple, just define an entry point (aka. a method) in the package, and <a href="https://pythonhosted.org/setuptools/setuptools.html#automatic-script-creation">the rest is taken care of</a> - even on Windows. I can’t stress how useful this is.</p><p>Now, with the virtual environment activated, I just run</p><div class="codehilite"><pre><span class="nv">$ </span>python setup.py develop
-</pre></div><p>This gets you an executable in <code>env/bin</code> which calls the entry point. Once I’ve finished developing, to deploy the application, I simply make sure <code>wheel</code> is installed, create a wheel and distribute that:</p><div class="codehilite"><pre><span class="nv">$ </span>pip install wheel
+</pre></div>
+
+
+<p><code>package_data</code> is interesting. In this case, I have some Jinja templates that I want my package to use. Usually, I&#8217;d get the path from <code>__file__</code> and simply read the file. This doesn&#8217;t work so well in an <code>egg</code> or a <code>wheel</code>, because it&#8217;s zipped. I could set <code>zip_safe</code> to <code>False</code>, or I simply use <a href="https://pythonhosted.org/setuptools/pkg_resources.html">pkg_resources</a> which provides easy methods to get the contents. Much less of a&nbsp;hack!</p>
+<p><code>entry_points</code> solves a huge problem: How do you deploy a script that uses your package? <em>setuptools</em> makes this simple, just define an entry point (aka. a method) in the package, and <a href="https://pythonhosted.org/setuptools/setuptools.html#automatic-script-creation">the rest is taken care of</a> - even on Windows. I can&#8217;t stress how useful this&nbsp;is.</p>
+<p>Now, with the virtual environment activated, I just&nbsp;run</p>
+<div class="codehilite"><pre><span class="nv">$ </span>python setup.py develop
+</pre></div>
+
+
+<p>This gets you an executable in <code>env/bin</code> which calls the entry point. Once I&#8217;ve finished developing, to deploy the application, I simply make sure <code>wheel</code> is installed, create a wheel and distribute&nbsp;that:</p>
+<div class="codehilite"><pre><span class="nv">$ </span>pip install wheel
 <span class="nv">$ </span>python setup.py bdist_wheel
 <span class="nv">$ </span><span class="nb">cd </span>dist/
 <span class="nv">$ </span>python3 -m http.server
-<span class="c"># python -m SimpleHTTPServer if you're using legacy Python</span>
-</pre></div><p>It’s really that simple. Yes, I know I’m late to the party. Thanks <em>setuptools</em>.</p></article><section><a class="newer" href="/2015/11/virtualenv-for-sys-tools/">Newer</a> <a class="older" href="/2015/10/dhparams/">Older</a></section><footer><p>—</p><p>Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a code craftsman, tinkerer, and musician. Toby currently lives in England.</p><p class="cap"><span class="date">mmxii–mmxv</span> <span class="name">Toby Fleming</span></p></footer></div><script>
+<span class="c"># python -m SimpleHTTPServer if you&#39;re using legacy Python</span>
+</pre></div>
+
+
+<p>It&#8217;s really that simple. Yes, I know I&#8217;m late to the party. Thanks <em>setuptools</em>.</p>
+  </article>
+  <section>
+    <p>Tagged under <a href="/tag/Python/">Python</a></p>
+    <a href="/2015/11/virtualenv-for-sys-tools/" class="newer">Newer</a>
+    <a href="/2015/10/dhparams/" class="older">Older</a>
+  </section>
+<!-- content end -->
+    <footer>
+      <p>&mdash;</p>
+      <p>
+        Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a code craftsman, tinkerer, and musician. Toby currently lives in England.
+      </p>
+      <p class="cap">
+        <span class="date">mmxii&ndash;mmxv</span> <span class="name">Toby Fleming</span>
+      </p>
+    </footer>
+  </div>
+<script>
 window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 ga('create', 'UA-69823817-1', 'auto');
 ga('send', 'pageview');
-</script><script async="" src="//www.google-analytics.com/analytics.js"></script></body></html>
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+</body>
+</html>
