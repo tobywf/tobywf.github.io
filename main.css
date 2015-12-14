@@ -22,7 +22,8 @@ body {
   pnum = Proportional number spacing
   kern = Kerning (seems to be triggered by other options also)
   liga = Common ligatures
-  */ }
+  */
+  padding: 1em; }
 
 pre, code, .monospace {
   font-family: "Source Code Pro", monospace !important;
@@ -53,6 +54,9 @@ a:link:hover, a:visited:hover {
   margin: 0 auto;
   padding: 10em 0; }
 
+@media screen and (max-width: 576px) {
+  .wrapper {
+    padding: 0; } }
 nav, footer {
   font-family: "Montserrat", "Gill Sans", sans-serif;
   font-weight: 400; }
@@ -73,7 +77,10 @@ nav ul {
     padding: 0;
     margin: 0; }
   nav ul li.breadcrumb:before {
-    content: "\2022";
+    color: #2980B9;
+    font-family: FontAwesome;
+    font-size: 0.75em;
+    content: "\f054";
     margin: 0 0.3em 0 0.2em; }
   nav ul li.portfolio {
     float: right; }
@@ -131,19 +138,13 @@ section {
   display: block;
   text-align: left;
   float: left;
-  width: 10%; }
-
-.older:before {
-  content: "«\a0"; }
+  width: auto; }
 
 .newer {
   display: block;
   text-align: right;
   float: right;
-  width: 10%; }
-
-.newer:after {
-  content: "\a0»"; }
+  width: auto; }
 
 hr {
   width: 30%;
@@ -168,7 +169,8 @@ hr:before {
   background-image: -ms-linear-gradient(left, #FEFEFE, transparent 20%, transparent 80%, #FEFEFE); }
 
 hr:after {
-  content: "§";
+  font-family: FontAwesome;
+  content: "\f25b";
   display: inline-block;
   position: relative;
   top: -1em;
@@ -391,7 +393,8 @@ blockquote > :last-child:before {
     color: #1C01CE; }
 
 body.portfolio {
-  background: #eff0f2; }
+  background: #eff0f2;
+  padding: 0; }
   body.portfolio header > *, body.portfolio section > *, body.portfolio footer > * {
     max-width: 42em;
     margin: 0 auto;
