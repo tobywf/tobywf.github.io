@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>The quest for plural formatting in Python - tobywf</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Toby Fleming" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,300italic,700|Source+Code+Pro:400,700|Montserrat:400" type="text/css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="icon" href="/images/favicon.png" />
+    <link rel="stylesheet" href="/main.css">
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <ul>
+<li><a href="/" class="cap">tobywf</a></li>
+<li class="breadcrumb"><a href="/2015/">&#x27;15</a></li>
+<li class="breadcrumb"><a href="/2015/12/">Dec</a></li>
+<li class="portfolio"><a href="/portfolio/" class="cap">portfolio</a></li>
+      </ul>
+    </nav>
+<!-- content start -->
+  <header class="post-head">
+    <h1>The quest for plural formatting in Python</h1>
+    <div class="infoline">
+      <span class="fa fa-calendar"></span> <span class="date">15 Dec &#x27;15</span>
+    </div>
+  </header>
+  <article>
+    <p>The more technical post <a href="/2015/12/custom_formatters/">Custom formatter for Python strings</a> was inspired by this problem and dives deeper into string formatting internals. This post sticks to localisation (l10n)&nbsp;issues.</p>
+<hr>
+<p>I was looking for a sane way to <del>pluralize</del> pluralise nouns inside strings. Initially, we were passing the correct noun directly to <code>format</code>, but this is messy (extra if) and doesn&#8217;t translate. Plurals can be tricky to get right, you can&#8217;t always just add an&nbsp;&#8216;s&#8217;:</p>
+<ul>
+<li>apple &gt;&nbsp;apples</li>
+<li>city &gt;&nbsp;cities</li>
+<li>cactus &gt;&nbsp;cacti</li>
+</ul>
+<p>Also, people kept getting the logic wrong. It&#8217;s <code>count == 1</code>, not <code>count &gt; 1</code> as it&#8217;s &#8216;zero apples&#8217;, not &#8216;zero apple&#8217; *. (* Not a guarantee. This issue will be back later with a&nbsp;vengeance.)</p>
+<p><em>Voilà, la première tentative</em>:</p>
+<div class="codehilite"><pre><span class="kn">import</span> <span class="nn">string</span>
+
+<span class="k">class</span> <span class="nc">PluralFormatter</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">Formatter</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">format_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">format_spec</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">format_spec</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;plural,&#39;</span><span class="p">):</span>
+            <span class="n">words</span> <span class="o">=</span> <span class="n">format_spec</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">words</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">words</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">format_field</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">format_spec</span><span class="p">)</span>
+</pre></div>
+
+
+<p>This implementation is okay. It does handle as many plural nouns as you want in a string, not just one. And you could use a lazy version where you just specify the plural &#8216;s&#8217;, but (<em>spoiler alert</em>) you&nbsp;shouldn&#8217;t:</p>
+<div class="codehilite"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">fmt</span> <span class="o">=</span> <span class="n">PluralFormatter</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0} {0:plural,bottle,bottles} on the wall&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">bottle_count</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">99</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">bottle_count</span><span class="p">))</span>
+<span class="go">99 bottles on the wall</span>
+<span class="go">3 bottles on the wall</span>
+<span class="go">2 bottles on the wall</span>
+<span class="go">1 bottle on the wall</span>
+<span class="go">0 bottles on the wall</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s">&#39;apple{0:plural,,s} and pear{1:plural,,s}&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="go">&#39;apples and pears&#39;</span>
+</pre></div>
+
+
+<p>What else is there? Easily translatable, right? Just translate the whole format string!&nbsp;Genius&#8230;</p>
+<div class="codehilite"><pre>EN: &#39;{0} {0:plural,bottle,bottles} on the wall&#39;
+DE: &#39;{0} {0:plural,Flasche,Flaschen} auf der Wand&#39;
+</pre></div>
+
+
+<p>&#8230; until you get to <a href="https://localization-guide.readthedocs.org/en/latest/l10n/pluralforms.html">non-Germanic languages</a>, where the rule <em>isn&#8217;t</em> <code>count == 1</code>. How about Russian: <code>(n%10==1 &amp;&amp; n%100!=11 ? 0 : n%10&gt;=2 &amp;&amp; n%10&lt;=4 &amp;&amp; (n%100&lt;10 || n%100&gt;=20) ? 1 : 2)</code>.</p>
+<p>Language is hard,&nbsp;man.</p>
+<hr>
+<p>There are, of course, existing solutions. But the ones I&#8217;ve seen feel lacking. Even gettext <a href="https://www.gnu.org/software/gettext/manual/gettext.html#Plural-forms">doesn&#8217;t get this quite right</a> in my opinion. But then again, I can barely understand that&nbsp;documentation.</p>
+<p>I think the formatter solution still has the advantage. It&#8217;s inherently cleaner than any gettext hack with two messages, and as it has more granular information to work with than most other solutions, it should be able to do better. The current downfall is the pluralisation logic. And while nouns can depend on context, the next thing I&#8217;d try is to simply translate the noun separately and on it&#8217;s&nbsp;own.</p>
+<div class="codehilite"><pre><span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">from</span> <span class="nn">gettext</span> <span class="k">import</span> <span class="n">ngettext</span>
+
+<span class="k">class</span> <span class="nc">PluralFormatter</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">Formatter</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">format_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">format_spec</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">format_spec</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;plural,&#39;</span><span class="p">):</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">singular</span><span class="p">,</span> <span class="n">plural</span> <span class="o">=</span> <span class="n">format_spec</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">ngettext</span><span class="p">(</span><span class="n">singular</span><span class="p">,</span> <span class="n">plural</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">format_field</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">format_spec</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Note that this version doesn&#8217;t work with the lazy &#8216;s&#8217;, but otherwise we have a&nbsp;winner.</p>
+<p>In practice, I bet we&#8217;ll find a case where it doesn&#8217;t work. But this way. we&#8217;ve thought of the documentation/publication/translation team and international users. All in all, a good&nbsp;solution.</p>
+  </article>
+  <section>
+    <p><span class="fa fa-tags"></span> <a href="/tag/Python/">Python</a>, <a href="/tag/language/">language</a></p>
+    <a href="/2015/12/custom_formatters/" class="older"><span class="fa fa-chevron-circle-left"></span> Older</a>
+  </section>
+<!-- content end -->
+    <footer>
+      <p>&mdash;</p>
+      <p>
+        <span class="fa fa-child fa-fw"></span>Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a code craftsman, tinkerer, and musician. Toby currently lives in England.
+      </p>
+      <p class="cap">
+        <span class="fa fa-copyright fa-fw"></span><span class="date">mmxii&ndash;mmxv</span> <span class="name">Toby Fleming</span>
+      </p>
+    </footer>
+  </div>
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-69823817-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+</body>
+</html>
