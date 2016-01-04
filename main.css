@@ -25,7 +25,7 @@ body {
   */
   padding: 1em; }
 
-pre, code, .monospace {
+pre, code, .monospace, .pre-tables table td {
   font-family: "Source Code Pro", monospace !important;
   font-weight: 400 !important; }
 
@@ -35,6 +35,9 @@ b {
 .cap {
   text-transform: uppercase;
   letter-spacing: 0.1em; }
+
+.blue {
+  color: blue; }
 
 a {
   text-decoration: none; }
@@ -192,7 +195,7 @@ article {
     font-weight: 400;
     margin: 1em 0; }
 
-article p, section p {
+article p, section p, article table {
   margin-bottom: 1em; }
 
 p > code, .codehilite {
@@ -200,6 +203,23 @@ p > code, .codehilite {
   border: 1px solid #BDC3C7;
   background-color: #ECF0F1;
   padding: 0 0.2em; }
+
+table {
+  overflow: auto;
+  word-break: normal;
+  word-break: keep-all;
+  border-spacing: 0;
+  border: 1px solid #BDC3C7;
+  border-radius: 3px; }
+
+table th {
+  font-weight: bold; }
+
+table th, table td {
+  padding: 6px 13px; }
+
+table th, table tr:nth-child(2n) {
+  background-color: #ECF0F1; }
 
 blockquote {
   margin: 1em 0;

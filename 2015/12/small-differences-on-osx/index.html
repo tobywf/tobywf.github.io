@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Small differences on OS X - tobywf</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Toby Fleming" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,300italic,700|Source+Code+Pro:400,700|Montserrat:400" type="text/css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="icon" href="/images/favicon.png" />
+    <link rel="stylesheet" href="/main.css">
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <ul>
+<li><a href="/" class="cap">tobywf</a></li>
+<li class="breadcrumb"><a href="/2015/">&#x27;15</a></li>
+<li class="breadcrumb"><a href="/2015/12/">Dec</a></li>
+<li class="portfolio"><a href="/portfolio/" class="cap">portfolio</a></li>
+      </ul>
+    </nav>
+<!-- content start -->
+  <header class="post-head">
+    <h1>Small differences on OS X</h1>
+    <div class="infoline">
+      <span class="fa fa-calendar"></span> <span class="date">20 Dec &#x27;15</span>
+    </div>
+  </header>
+  <article>
+    <p>After getting used to the keyboard, I find the second biggest stumbling block when moving between Linux and Mac (and <span class="caps">BSD</span>) is all the small differences in command line utilities. For me, the most noticeable omission since Mac <span class="caps">OS</span> X Mountain Lion is that the <code>grep</code> shipped with <span class="caps">OS</span> X doesn&#8217;t support regular expression searches via <code>grep -P</code>. Come on&nbsp;Apple!</p>
+<p>Luckily, if you&#8217;re a developer using a Mac, then you&#8217;ll already have <a href="http://brew.sh/"><code>homebrew</code></a> installed as the first step of bringing up a new machine. Then you can simply install <span class="caps">GNU</span> <a href="https://www.gnu.org/software/coreutils/">coreutils</a> and <a href="https://www.gnu.org/software/binutils/">binutils</a> with the flag <code>--with-default-names</code>, which I strongly recommend. This will let you instantly start using the <span class="caps">GNU</span>&nbsp;utilities.</p>
+<p>(This does rely on the fact that you&#8217;ve set up your <code>$PATH</code> variable correctly, with the default homebrew location <code>/usr/local/bin</code> being listed in front of <code>/usr/bin</code>, but I think this is default/recommended behaviour&nbsp;anyway.)</p>
+  </article>
+  <section>
+    <p><span class="fa fa-tags"></span> <a href="/tag/Mac/">Mac</a>, <a href="/tag/OSX/">OSX</a>, <a href="/tag/GNU/">GNU</a></p>
+    <a href="/2016/01/fisherman/" class="newer">Newer <span class="fa fa-chevron-circle-right"></span></a>
+    <a href="/2015/12/sane_pluralisation/" class="older"><span class="fa fa-chevron-circle-left"></span> Older</a>
+  </section>
+<!-- content end -->
+    <footer>
+      <p>&mdash;</p>
+      <p>
+        <span class="fa fa-child fa-fw"></span>Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a code craftsman, tinkerer, and musician. Toby currently lives in England.
+      </p>
+      <p class="cap">
+        <span class="fa fa-copyright fa-fw"></span><span class="date">mmxii&ndash;mmxv</span> <span class="name">Toby Fleming</span>
+      </p>
+    </footer>
+  </div>
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-69823817-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+</body>
+</html>
