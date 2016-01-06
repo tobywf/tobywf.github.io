@@ -2,33 +2,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>The quest for plural formatting in Python - tobywf</title>
-    <meta charset="utf-8" />
-    <meta name="author" content="Toby Fleming" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,300italic,700|Source+Code+Pro:400,700|Montserrat:400" type="text/css">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <link rel="icon" href="/images/favicon.png" />
-    <link rel="stylesheet" href="/main.css">
+  <title>The quest for plural formatting in Python - tobywf</title>
+  <meta charset="utf-8" />
+  <meta name="author" content="Toby Fleming" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,300italic,700|Source+Code+Pro:400,700|Montserrat:400" type="text/css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="icon" href="/images/favicon.png" />
+  <link rel="stylesheet" href="/main.css">
 </head>
 <body>
   <div class="wrapper">
     <nav>
       <ul>
+<!-- breadcrumbs start -->
 <li><a href="/" class="cap">tobywf</a></li>
 <li class="breadcrumb"><a href="/2015/">&#x27;15</a></li>
 <li class="breadcrumb"><a href="/2015/12/">Dec</a></li>
 <li class="portfolio"><a href="/portfolio/" class="cap">portfolio</a></li>
+<!-- breadcrumbs end -->
       </ul>
     </nav>
 <!-- content start -->
-  <header class="post-head">
-    <h1>The quest for plural formatting in Python</h1>
-    <div class="infoline">
-      <span class="fa fa-calendar"></span> <span class="date">15 Dec &#x27;15</span>
-    </div>
-  </header>
-  <article>
+<header class="post-head">
+  <h1>The quest for plural formatting in Python</h1>
+  <div class="infoline">
+    <span class="fa fa-calendar"></span> <span class="date">15 Dec &#x27;15</span>
+  </div>
+</header>
+<article>
 <p>The more technical post <a href="/2015/12/custom_formatters/">Custom formatter for Python strings</a> was inspired by this problem and dives deeper into string formatting internals. This post sticks to localisation (l10n)&nbsp;issues.</p>
 <hr>
 <p>I was looking for a sane way to <del>pluralize</del> pluralise nouns inside strings. Initially, we were passing the correct noun directly to <code>format</code>, but this is messy (extra if) and doesn&#8217;t translate. Plurals can be tricky to get right, you can&#8217;t always just add an&nbsp;&#8216;s&#8217;:</p>
@@ -95,28 +97,22 @@ DE: &#39;{0} {0:plural,Flasche,Flaschen} auf der Wand&#39;
 
 <p>Note that this version doesn&#8217;t work with the lazy &#8216;s&#8217;, but otherwise we have a&nbsp;winner.</p>
 <p>In practice, I bet we&#8217;ll find a case where it doesn&#8217;t work. But this way. we&#8217;ve thought of the documentation/publication/translation team and international users. All in all, a good&nbsp;solution.</p>
-  </article>
-  <section>
-    <p><span class="fa fa-tags"></span> <a href="/tag/Python/">Python</a>, <a href="/tag/language/">language</a></p>
-    <a href="/2015/12/small-differences-on-osx/" class="newer">Newer <span class="fa fa-chevron-circle-right"></span></a>
-    <a href="/2015/12/custom_formatters/" class="older"><span class="fa fa-chevron-circle-left"></span> Older</a>
-  </section>
+</article>
+<section>
+  <p><span class="fa fa-tags"></span> <a href="/tag/Python/">Python</a>, <a href="/tag/language/">language</a></p>
+  <a href="/2015/12/small-differences-on-osx/" class="newer">Newer <span class="fa fa-chevron-circle-right"></span></a>
+  <a href="/2015/12/custom_formatters/" class="older"><span class="fa fa-chevron-circle-left"></span> Older</a>
+</section>
 <!-- content end -->
     <footer>
-      <p>&mdash;</p>
+      <hr />
       <p>
-        <span class="fa fa-child fa-fw"></span>Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a code craftsman, tinkerer, and musician. Toby currently lives in England.
+        <span class="fa fa-child fa-fw"></span>Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a code craftsman, tinkerer, and musician. He posts his ramblings here. Toby currently lives in England.
       </p>
       <p class="cap">
         <span class="fa fa-copyright fa-fw"></span><span class="date">mmxii&ndash;mmxv</span> <span class="name">Toby Fleming</span>
       </p>
     </footer>
   </div>
-<script>
-window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-ga('create', 'UA-69823817-1', 'auto');
-ga('send', 'pageview');
-</script>
-<script async src='//www.google-analytics.com/analytics.js'></script>
 </body>
 </html>
