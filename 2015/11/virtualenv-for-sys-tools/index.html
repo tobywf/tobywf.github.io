@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,300italic,700|Source+Code+Pro:400,700|Montserrat:400" type="text/css">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
   <link rel="icon" href="/images/favicon.png" />
-  <link rel="stylesheet" href="/main.css">
+  <link rel="stylesheet" href="/asset/main.css">
 </head>
 <body>
   <div class="wrapper">
@@ -27,10 +27,11 @@
 <header class="post-head">
   <h1>Using a virtual environment for system tools</h1>
   <div class="infoline">
-    <span class="fa fa-calendar"></span> <span class="date">19 Nov &#x27;15</span>
+    <span class="fa fa-calendar"></span> <span class="date">19 Nov &#x27;15</span> &mdash; last updated&nbsp;<span class="date">11 Jan &#x27;16</span>
   </div>
 </header>
 <article>
+<p>Update: You&#8217;ll probably want to use the <a href="https://github.com/mitsuhiko/pipsi">pip script installer aka. pipsi</a> instead of this method, although pipsi does have some&nbsp;drawbacks.</p>
 <p>In line with <a href="/2015/11/distributing-python/">the post from yesterday</a>, I thought I&#8217;d share a nifty trick that I&#8217;ve been using for a while. I set up a virtual environment in my home directory, and symlink the applications to <code>/usr/local/bin/</code>.</p>
 <p>Actually, that&#8217;s a lie. I&#8217;m lazy, so I add the <code>bin/</code> directory to <code>$PATH</code>. <strong>Warning</strong>: If you do this, you need to make absolutely sure that you set the order to match the behaviour you want. &#8220;Unexpected&#8221; things happen if you add it to the front of <code>$PATH</code> and you then forget that <code>pip</code> and <code>python</code> now constantly point to the virtualenv. But maybe, that&#8217;s what you want? It actually works fine (not a guarantee&nbsp;:P).</p>
 <p>There is a drawback: If installed via a package manager, tools will get updated via that method also. With a virtualenv, you have to remember to update it&nbsp;yourself.</p>
@@ -49,7 +50,7 @@
         <span class="fa fa-child fa-fw"></span>Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a code craftsman, tinkerer, and musician. He posts his ramblings here. Toby currently lives in England.
       </p>
       <p class="cap">
-        <span class="fa fa-copyright fa-fw"></span><span class="date">mmxii&ndash;mmxv</span> <span class="name">Toby Fleming</span>
+        <span class="fa fa-copyright fa-fw"></span><span class="date">mmxii&ndash;mmxvi</span> <span class="name">Toby Fleming</span>
       </p>
     </footer>
   </div>
