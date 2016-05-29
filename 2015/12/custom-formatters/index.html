@@ -1,15 +1,14 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Custom formatter for Python strings - tobywf</title>
+  <title>Custom formatter for Python strings - tobywf</title>
   <meta charset="utf-8" />
   <meta name="author" content="Toby Fleming" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,300italic,700|Source+Code+Pro:400,700|Montserrat:400" type="text/css">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-  <link rel="icon" href="/images/favicon.png" />
-  <link rel="stylesheet" href="/asset/main.css">
+  <link rel="stylesheet" href="/theme/main.css" />
+  <link rel="icon" href="/theme/favicon.png" />
 </head>
 <body>
   <div class="wrapper">
@@ -25,7 +24,7 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Custom formatter for Python strings</h1>
+  <h1>Custom formatter for Python&nbsp;strings</h1>
   <div class="infoline">
     <span class="fa fa-calendar"></span> <span class="date">15 Dec &#x27;15</span>
   </div>
@@ -35,7 +34,7 @@
 <p>The <code>string.format</code> method in Python is probably my favourite string formatting mechanism in any language. C# is a close&nbsp;second.</p>
 <p>As most people now know, <a href="https://www.python.org/dev/peps/pep-3101/"><code>format</code> officially replaced <code>%</code>-based formatting</a> almost 10 years ago now. Do not use <code>%</code> for new projects, ever. If you see <code>%</code>-based formats, either the code base is ancient or the programmer is bad at Python. While it&#8217;s unfortunately true that some libraries e.g. logging never caught up, <code>format</code> fixes several issues that <code>%</code> had, and in my opinion is easier and more consistent&nbsp;throughout.</p>
 <p>For basic usage, <a href="https://pyformat.info/">pyformat.info</a> has outstanding documentation. Today, we&#8217;re attempting something more advanced: custom&nbsp;formatters.</p>
-<hr>
+<hr />
 <p>The documentations don&#8217;t make this abundantly clear, but <a href="https://docs.python.org/3/library/string.html#string-formatting">you can extend <code>format</code></a>. This turns out to be very useful and extremely easy. Two options in particular stand out: <code>format_field</code> and <code>convert_field</code>.</p>
 <h2 id="convert_field"><code>convert_field</code></h2>
 <p>This is responsible for e.g. <code>{0!r}</code>. From experimentation, I think conversion type must be a single&nbsp;letter.</p>
@@ -47,7 +46,7 @@ Three conversion flags are currently supported: <code>'!s'</code> which calls <c
 <p><a href="https://docs.python.org/3/library/string.html#format-string-syntax">Format String&nbsp;Syntax</a></p>
 </blockquote>
 <p>So there you have it. The main use case that I see is if you have an object where you want some custom output associated with it, but you don&#8217;t want to (ab)use <code>__str__</code>, <code>__repr__</code>, or <code>__format__</code> or those are all already in&nbsp;use.</p>
-<div class="codehilite"><pre><span class="kn">import</span> <span class="nn">string</span>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">string</span>
 
 <span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__meaning_of_life__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -55,7 +54,7 @@ Three conversion flags are currently supported: <code>'!s'</code> which calls <c
 
 <span class="k">class</span> <span class="nc">ProfoundFormatter</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">Formatter</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">convert_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">conversion</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">conversion</span> <span class="o">==</span> <span class="s">&#39;m&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">conversion</span> <span class="o">==</span> <span class="s1">&#39;m&#39;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">__meaning_of_life__</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">convert_field</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">conversion</span><span class="p">)</span>
@@ -63,13 +62,13 @@ Three conversion flags are currently supported: <code>'!s'</code> which calls <c
 
 
 <p>The neat thing is that the coerced value is used for further&nbsp;formatting:</p>
-<div class="codehilite"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">fmt</span> <span class="o">=</span> <span class="n">ProfoundFormatter</span><span class="p">()</span>
+<div class="codehilite"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fmt</span> <span class="o">=</span> <span class="n">ProfoundFormatter</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">foo</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s">&#39;{0!m}&#39;</span><span class="p">,</span> <span class="n">foo</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;{0!m}&#39;</span><span class="p">,</span> <span class="n">foo</span><span class="p">)</span>
 <span class="go">&#39;42&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s">&#39;{0!m:x}&#39;</span><span class="p">,</span> <span class="n">foo</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;{0!m:x}&#39;</span><span class="p">,</span> <span class="n">foo</span><span class="p">)</span>
 <span class="go">&#39;2a&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s">&#39;{0!m:4X}&#39;</span><span class="p">,</span> <span class="n">foo</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;{0!m:4X}&#39;</span><span class="p">,</span> <span class="n">foo</span><span class="p">)</span>
 <span class="go">&#39;  2A&#39;</span>
 </pre></div>
 
@@ -77,12 +76,12 @@ Three conversion flags are currently supported: <code>'!s'</code> which calls <c
 <h2 id="format_field"><code>format_field</code></h2>
 <p>This one is more straight forward. The format specification is totally arbitrary and can be as long or complex as&nbsp;desired.</p>
 <p>A good example might be for pluralisation. What a&nbsp;coincidence!</p>
-<div class="codehilite"><pre><span class="kn">import</span> <span class="nn">string</span>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">string</span>
 
 <span class="k">class</span> <span class="nc">PluralFormatter</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">Formatter</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">format_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">format_spec</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">format_spec</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;plural,&#39;</span><span class="p">):</span>
-            <span class="n">words</span> <span class="o">=</span> <span class="n">format_spec</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">format_spec</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;plural,&#39;</span><span class="p">):</span>
+            <span class="n">words</span> <span class="o">=</span> <span class="n">format_spec</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">words</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
@@ -92,8 +91,8 @@ Three conversion flags are currently supported: <code>'!s'</code> which calls <c
 </pre></div>
 
 
-<div class="codehilite"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">fmt</span> <span class="o">=</span> <span class="n">PluralFormatter</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0} {0:plural,bottle,bottles} on the wall&#39;</span>
+<div class="codehilite"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fmt</span> <span class="o">=</span> <span class="n">PluralFormatter</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;{0} {0:plural,bottle,bottles} on the wall&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">bottle_count</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">99</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">bottle_count</span><span class="p">))</span>
 <span class="go">99 bottles on the wall</span>
@@ -104,9 +103,9 @@ Three conversion flags are currently supported: <code>'!s'</code> which calls <c
 </pre></div>
 </article>
 <section>
-  <p><span class="fa fa-tags"></span> <a href="/tag/Python/">Python</a></p>
-  <a href="/2015/12/sane-pluralisation/" class="newer">Newer <span class="fa fa-chevron-circle-right"></span></a>
-  <a href="/2015/12/lack-of-thinking/" class="older"><span class="fa fa-chevron-circle-left"></span> Older</a>
+  <p><span class="fa fa-tags"></span> <a href="/tag/python/">Python</a></p>
+  <a href="/2015/12/small-differences-on-osx/" class="newer">Newer <span class="fa fa-chevron-circle-right"></span></a>
+  <a href="/2015/12/sane-pluralisation/" class="older"><span class="fa fa-chevron-circle-left"></span> Older</a>
 </section>
 <!-- content end -->
     <footer>

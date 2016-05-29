@@ -1,15 +1,14 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Gerrit as a systemd service unit... - tobywf</title>
+  <title>Gerrit as a systemd service unit… - tobywf</title>
   <meta charset="utf-8" />
   <meta name="author" content="Toby Fleming" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,300italic,700|Source+Code+Pro:400,700|Montserrat:400" type="text/css">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-  <link rel="icon" href="/images/favicon.png" />
-  <link rel="stylesheet" href="/asset/main.css">
+  <link rel="stylesheet" href="/theme/main.css" />
+  <link rel="icon" href="/theme/favicon.png" />
 </head>
 <body>
   <div class="wrapper">
@@ -25,7 +24,7 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Gerrit as a systemd service unit...</h1>
+  <h1>Gerrit as a systemd service&nbsp;unit&#8230;</h1>
   <h2>... and other install gotchas</h2>
   <div class="infoline">
     <span class="fa fa-calendar"></span> <span class="date">6 Apr &#x27;16</span>
@@ -33,7 +32,7 @@
 </header>
 <article>
 <p><span class="caps">TL</span>;<span class="caps">DR</span>: <a href="#systemd">Click for the example service unit configuration file</a>.</p>
-<hr>
+<hr />
 <p>I love <a href="https://www.gerritcodereview.com/">Gerrit</a> for code review at $work (Not my current work mind - personal opinion and all).
 <a href="https://github.com/">GitHub</a> and <a href="https://about.gitlab.com/">GitLab</a>
 are great tools (I&#8217;m sure I&#8217;ve missed others). The pull request (<span class="caps">PR</span>) workflow
@@ -46,7 +45,7 @@ the diff of both patchsets also. I&#8217;m not saying other tools don&#8217;t do
 Gerrit worked for our&nbsp;team.</p>
 <p>Deployment however is a bit of a hassle. Oh, and the interface is&nbsp;ugly.</p>
 <p>Note: This is for Gerrit v1, not v2 which was recently&nbsp;released.</p>
-<hr>
+<hr />
 <h2 id="short-intro">Short&nbsp;intro</h2>
 <p>Gerrit is a Java program. I&#8217;ll be comparing it to <a href="https://www.go.cd/">Go <span class="caps">CD</span></a>,
 because I&#8217;m <del>messing about</del> deploying that at the moment, but  a fairer comparison would
@@ -62,7 +61,7 @@ isn&#8217;t great, and whatever you do, don&#8217;t click the <a href="https://g
 link. Very&nbsp;confusing.</p>
 <h3 id="deploying-gerrit">Deploying&nbsp;Gerrit</h3>
 <p>Turns out you have to &#8220;initialise a site&#8221;&nbsp;via:</p>
-<div class="codehilite"><pre>java -jar gerrit.war init -d &lt;site&gt;
+<div class="codehilite"><pre><span></span>java -jar gerrit.war init -d &lt;site&gt;
 </pre></div>
 
 
@@ -118,14 +117,14 @@ thing to happen automatically. But again, systemd makes it easy to set the
 instead of 565 for a hack-y script. Granted, the service file is less&#8230;
 general? But well worth it for&nbsp;consistency.</p>
 <p><a name="systemd">The service unit configuration, in all its&nbsp;glory:</a></p>
-<div class="codehilite"><pre><span class="k">[Unit]</span>
+<div class="codehilite"><pre><span></span><span class="k">[Unit]</span>
 <span class="na">Description</span><span class="o">=</span><span class="s">Web based code review and project management for Git based projects</span>
 <span class="na">After</span><span class="o">=</span><span class="s">syslog.target network.target remote-fs.target</span>
 
 <span class="k">[Service]</span>
 <span class="na">Type</span><span class="o">=</span><span class="s">simple</span>
-<span class="na">User</span><span class="o">=</span>
-<span class="na">ExecStart</span><span class="o">=</span><span class="s">/usr/bin/java -DGerritCodeReview=1 -jar /bin/gerrit.war daemon -d </span>
+<span class="na">User</span><span class="o">=</span><span class="s">{{ gerrit_user }}</span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/usr/bin/java -DGerritCodeReview=1 -jar {{ gerrit_home }}/bin/gerrit.war daemon -d {{ gerrit_home }}</span>
 <span class="na">ExecStop</span><span class="o">=</span><span class="s">/bin/kill -s SIGINT $MAINPID</span>
 <span class="c1"># stupid java exit codes</span>
 <span class="na">SuccessExitStatus</span><span class="o">=</span><span class="s">130 SIGINT</span>
@@ -147,7 +146,7 @@ general? But well worth it for&nbsp;consistency.</p>
 </pre></div>
 </article>
 <section>
-  <p><span class="fa fa-tags"></span> <a href="/tag/sysadmin/">sysadmin</a>, <a href="/tag/ansible/">ansible</a>, <a href="/tag/Linux/">Linux</a></p>
+  <p><span class="fa fa-tags"></span> <a href="/tag/sysadmin/">sysadmin</a>, <a href="/tag/ansible/">ansible</a>, <a href="/tag/linux/">Linux</a></p>
   <a href="/2016/04/offline-debian-packages/" class="newer">Newer <span class="fa fa-chevron-circle-right"></span></a>
   <a href="/2016/04/sonos-vs-chromecast/" class="older"><span class="fa fa-chevron-circle-left"></span> Older</a>
 </section>

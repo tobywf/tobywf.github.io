@@ -1,15 +1,14 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Installing packages on air-gapped/caged Debian machines - tobywf</title>
+  <title>Installing packages on air-gapped/caged Debian machines - tobywf</title>
   <meta charset="utf-8" />
   <meta name="author" content="Toby Fleming" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,300italic,700|Source+Code+Pro:400,700|Montserrat:400" type="text/css">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-  <link rel="icon" href="/images/favicon.png" />
-  <link rel="stylesheet" href="/asset/main.css">
+  <link rel="stylesheet" href="/theme/main.css" />
+  <link rel="icon" href="/theme/favicon.png" />
 </head>
 <body>
   <div class="wrapper">
@@ -25,7 +24,7 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Installing packages on air-gapped/caged Debian machines</h1>
+  <h1>Installing packages on air-gapped/caged Debian&nbsp;machines</h1>
   <div class="infoline">
     <span class="fa fa-calendar"></span> <span class="date">28 Apr &#x27;16</span>
   </div>
@@ -34,8 +33,8 @@
 <p>Air-gapped systems are great for security, but a huge pain to manage. I recently set up a server that - while not strictly air-gapped - was on a subnet without internet access. The initial server was installed using a Debian network install image, because who wants to download 3 DVDs to get outdated packages? Besides, I like servers with minimal&nbsp;bloat.</p>
 <p>The <a href="https://www.debian.org/CD/netinst/">netinst page</a> isn&#8217;t joking when it says that the <span class="caps">ISO</span> &#8220;contains just the minimal amount of software to start the installation and fetch the remaining packages over the Internet.&#8221;. Not even an <span class="caps">SSH</span> server is installed. So let&#8217;s get some packages on this&nbsp;machine.</p>
 <p>Various sites will tell you to use dynamic port forwarding with <span class="caps">SSH</span>:</p>
-<div class="codehilite"><pre><span class="nv">$ </span>ssh -ND <span class="m">1080</span> &lt;user&gt;@&lt;remote&gt;
-<span class="nv">$ http_proxy</span><span class="o">=</span>socks://localhost:1080/ apt-get update
+<div class="codehilite"><pre><span></span>$ ssh -ND <span class="m">1080</span> &lt;user&gt;@&lt;remote&gt;
+$ <span class="nv">http_proxy</span><span class="o">=</span>socks://localhost:1080/ apt-get update
 </pre></div>
 
 
@@ -43,7 +42,7 @@
 <p>N.B.: If you&#8217;re doing this often, you probably want to set up some kind of <a href="https://apt-mirror.github.io/">internal <code>apt</code> mirror</a>, but downloading several GiB is a bit heavy-weight for once or twice. There&#8217;s probably also a way to bake packages into an install <span class="caps">CD</span>.</p>
 <p>The simplest solution I can come up with is to bootstrap the air-gapped machine with packages downloaded from a <span class="caps">VM</span> running the same Debian&nbsp;version.</p>
 <p>I wrote a script that given some package names will determine the dependencies iteratively, download all packages, and create a tarball that can be transferred to <a href="https://www.schneier.com/blog/archives/2013/10/air_gaps.html">the air-gapped system securely</a>.</p>
-<div class="codehilite"><pre><span class="c">#!/bin/bash</span>
+<div class="codehilite"><pre><span></span><span class="ch">#!/bin/bash</span>
 <span class="nb">set</span> -euo pipefail
 <span class="nv">IFS</span><span class="o">=</span><span class="s1">$&#39;\n\t&#39;</span>
 
@@ -62,17 +61,17 @@
   <span class="k">done</span>
   <span class="nv">deps</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$deps</span><span class="s2">&quot;</span> <span class="p">|</span> sort <span class="p">|</span> uniq<span class="k">)</span>
   <span class="nv">new_count</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$deps</span><span class="s2">&quot;</span> <span class="p">|</span> wc -l<span class="k">)</span>
-  <span class="c"># have we found any more dependencies since last time?</span>
+  <span class="c1"># have we found any more dependencies since last time?</span>
   <span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$new_count</span><span class="s2">&quot;</span> -le <span class="s2">&quot;</span><span class="nv">$count</span><span class="s2">&quot;</span> <span class="o">]</span>
   <span class="k">then</span>
     <span class="nb">break</span>
-<span class="nb">  </span><span class="k">fi</span>
+  <span class="k">fi</span>
   <span class="nv">count</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$new_count</span><span class="s2">&quot;</span>
 <span class="k">done</span>
 
 <span class="nb">echo</span> <span class="s2">&quot;-&gt; Downloading packages&quot;</span>
 mkdir packages
-<span class="nb">pushd </span>packages &gt;/dev/null
+<span class="nb">pushd</span> packages &gt;/dev/null
 <span class="k">for</span> pkg in <span class="s2">&quot;</span><span class="nv">$deps</span><span class="s2">&quot;</span>
 <span class="k">do</span>
   apt-get download <span class="nv">$pkg</span>

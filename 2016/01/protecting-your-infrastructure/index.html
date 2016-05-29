@@ -1,15 +1,14 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Using containers to protect your infrastructure against a basic attacker - tobywf</title>
+  <title>Using containers to protect your infrastructure against a basic attacker - tobywf</title>
   <meta charset="utf-8" />
   <meta name="author" content="Toby Fleming" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,300italic,700|Source+Code+Pro:400,700|Montserrat:400" type="text/css">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-  <link rel="icon" href="/images/favicon.png" />
-  <link rel="stylesheet" href="/asset/main.css">
+  <link rel="stylesheet" href="/theme/main.css" />
+  <link rel="icon" href="/theme/favicon.png" />
 </head>
 <body>
   <div class="wrapper">
@@ -25,7 +24,7 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Using containers to protect your infrastructure against a basic attacker</h1>
+  <h1>Using containers to protect your infrastructure against a basic&nbsp;attacker</h1>
   <h2>docker docker docker</h2>
   <div class="infoline">
     <span class="fa fa-calendar"></span> <span class="date">11 Jan &#x27;16</span>
@@ -33,7 +32,7 @@
 </header>
 <article>
 <p><span class="caps">TL</span>;<span class="caps">DR</span>: Ihis post isn&#8217;t very in-depth, because I don&#8217;t want to get on any hype train. But it took me ages to get the point of containers, and how using them is different from nothing or VMs. <span class="caps">IMO</span>, they&#8217;re just another tool to enforce the environment/separation you want. In an age where security is more important than ever but software seems to be getting more complicated, these tools can save you a <em>lot</em> of time and maybe even&nbsp;damage.</p>
-<hr>
+<hr />
 <p>This guide on <a href="http://blog.mailgun.com/security-guide-basic-infrastructure-security/">How to Protect Your Infrastructure Against the Basic Attacker</a> is excellent, and even includes many, many howtos. But there&#8217;s more than one way to skin a&nbsp;cat.</p>
 <p>For those of you (non-sysadmins?) that read that post and said &#8220;sounds complicated&#8221;, fear not! Many of these points can be easily put into practice with containers. For example, the whole section of &#8220;Application/<span class="caps">OS</span> Hardening&#8221; is basically privilege separation - containers do this well. They also make enforcing the &#8220;Firewalls and Networking&#8221; easy, get the port wrong and nothing&nbsp;works.</p>
 <p>I think most Docker articles I&#8217;ve ever read gloss over why and for what to use containers massively. Articles about <span class="caps">BSD</span> Jails are slightly better at explaining this. <strong>Containers are not VMs</strong>. Ideally you&#8217;ll have one process/application per container. The best applications to containerize are ones that use <span class="caps">TCP</span>/<span class="caps">IP</span> to connect to other applications, because getting data in and out of a container can be a bit tricky. Thanks to the rise of <a href="https://www.nginx.com/">nginx</a> as a reverse proxy, containerization of web-applications is simpler than&nbsp;ever.</p>

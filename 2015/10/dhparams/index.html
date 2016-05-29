@@ -1,15 +1,14 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>How to choose Diffie-Hellman (DH) parameters - tobywf</title>
+  <title>How to choose Diffie-Hellman (DH) parameters - tobywf</title>
   <meta charset="utf-8" />
   <meta name="author" content="Toby Fleming" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,300italic,700|Source+Code+Pro:400,700|Montserrat:400" type="text/css">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-  <link rel="icon" href="/images/favicon.png" />
-  <link rel="stylesheet" href="/asset/main.css">
+  <link rel="stylesheet" href="/theme/main.css" />
+  <link rel="icon" href="/theme/favicon.png" />
 </head>
 <body>
   <div class="wrapper">
@@ -25,16 +24,16 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>How to choose Diffie-Hellman (DH) parameters</h1>
+  <h1>How to choose Diffie-Hellman (<span class="caps">DH</span>)&nbsp;parameters</h1>
   <div class="infoline">
     <span class="fa fa-calendar"></span> <span class="date">24 Oct &#x27;15</span>
   </div>
 </header>
 <article>
 <p>The title of this post was originally &#8220;the problem with cryptography&#8221;, but that&#8217;s neither original nor&nbsp;helpful.</p>
-<hr>
+<hr />
 <p>Recently, I was reviewing server provisioning scripts for best practices. One step, for a webserver, was to set up Diffie-Hellman (<span class="caps">DH</span>) parameters. Here&#8217;s the&nbsp;command:</p>
-<div class="codehilite"><pre><span class="nv">$ </span>openssl dhparam -out dhparams.pem 2048
+<div class="codehilite"><pre><span></span>$ openssl dhparam -out dhparams.pem 2048
 </pre></div>
 
 
@@ -52,7 +51,7 @@
 </ul>
 </article>
 <section>
-  <p><span class="fa fa-tags"></span> <a href="/tag/cryptography/">cryptography</a>, <a href="/tag/SSL/">SSL</a>, <a href="/tag/sysadmin/">sysadmin</a>, <a href="/tag/infosec/">infosec</a></p>
+  <p><span class="fa fa-tags"></span> <a href="/tag/cryptography/">cryptography</a>, <a href="/tag/ssl/">SSL</a>, <a href="/tag/sysadmin/">sysadmin</a>, <a href="/tag/infosec/">infosec</a></p>
   <a href="/2015/11/distributing-python/" class="newer">Newer <span class="fa fa-chevron-circle-right"></span></a>
   <a href="/2015/10/blog_migration/" class="older"><span class="fa fa-chevron-circle-left"></span> Older</a>
 </section>

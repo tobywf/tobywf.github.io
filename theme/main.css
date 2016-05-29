@@ -78,7 +78,7 @@ html,body,p,div,section,article,nav,footer,header,h1,h2,h3,blockquote{background
 .tech-icon-jenkins,
 .tech-icon-numpy,
  .tech-icon {
-  background-image: url('/asset/tech-icons.png');
+  background-image: url('/theme/tech-icons.png');
   background-repeat: no-repeat;
   content: " ";
   width: 52px;

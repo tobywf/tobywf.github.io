@@ -1,15 +1,14 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Ansible 2.0 launched - tobywf</title>
+  <title>Ansible 2.0 launched - tobywf</title>
   <meta charset="utf-8" />
   <meta name="author" content="Toby Fleming" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,300italic,700|Source+Code+Pro:400,700|Montserrat:400" type="text/css">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-  <link rel="icon" href="/images/favicon.png" />
-  <link rel="stylesheet" href="/asset/main.css">
+  <link rel="stylesheet" href="/theme/main.css" />
+  <link rel="icon" href="/theme/favicon.png" />
 </head>
 <body>
   <div class="wrapper">
@@ -25,24 +24,24 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Ansible 2.0 launched</h1>
+  <h1>Ansible 2.0&nbsp;launched</h1>
   <div class="infoline">
     <span class="fa fa-calendar"></span> <span class="date">14 Jan &#x27;16</span>
   </div>
 </header>
 <article>
 <p>As a frequent Ansible user and (less frequent) contributor, I&#8217;m very excited that <a href="http://www.ansible.com/blog/ansible-2.0-launch">Ansible 2.0 has been launched</a>. It&#8217;s definitely a huge milestone, and must have been stressful with the recent acquisition, so congratulations to the&nbsp;team.</p>
-<p>While <a href="https://docs.ansible.com/ansible/playbooks_blocks.html">blocks in playbooks</a> aren&#8217;t exactly a game-changer in the automation world, they do simplify writing playbooks while keeping them clean as ever. One of the reasons<sup id="fnref-1"><a class="footnote-ref" href="#fn-1">1</a></sup> I converted to Ansible is that other tools, especially the Ruby based ones, simply devolve into Ruby scripts with a few extras and un-debuggable&nbsp;logic.</p>
+<p>While <a href="https://docs.ansible.com/ansible/playbooks_blocks.html">blocks in playbooks</a> aren&#8217;t exactly a game-changer in the automation world, they do simplify writing playbooks while keeping them clean as ever. One of the reasons<sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup> I converted to Ansible is that other tools, especially the Ruby based ones, simply devolve into Ruby scripts with a few extras and un-debuggable&nbsp;logic.</p>
 <p>Of course, there&#8217;s still some work to be done. Recently, I&#8217;ve needed to deploy secrets (e.g. <span class="caps">SSH</span> keys), which lead me to look into <a href="https://docs.ansible.com/ansible/playbooks_vault.html">Ansible Vault</a>. The glaring weakness is that <a href="https://github.com/ansible/ansible/issues/7298">you can&#8217;t upload an encrypted file easily</a>. Basically, only variables from encrypted <span class="caps">YAML</span> files are really supported. This could be solved with a method <a href="https://docs.ansible.com/ansible/playbooks_lookups.html"><em>à la</em> lookups</a>, but alas none of the pull requests made it for 2.0. Luckily, <a href="https://github.com/ansible/ansible/pull/13849">it&#8217;s still been worked on</a>.</p>
-<p>There&#8217;s also the matter of using symmetric encryption, which means a single, and ideally secret key needs to be shared. This is a huge problem in (Dev)Ops: Say one guy leaves and you&#8217;ll have to rotate all keys. <span class="caps">PGP</span>/<span class="caps">GPG</span> keys solve this a bit more elegantly, and to be honest I trust asymmetric encryption more than symmetric <span class="caps">AES</span> <sup id="fnref-2"><a class="footnote-ref" href="#fn-2">2</a></sup>. So <span class="caps">GPG</span> support would be nice. Of course, there&#8217;s no magic bullet and bootstrapping secrets securely remains as hard as&nbsp;ever.</p>
+<p>There&#8217;s also the matter of using symmetric encryption, which means a single, and ideally secret key needs to be shared. This is a huge problem in (Dev)Ops: Say one guy leaves and you&#8217;ll have to rotate all keys. <span class="caps">PGP</span>/<span class="caps">GPG</span> keys solve this a bit more elegantly, and to be honest I trust asymmetric encryption more than symmetric <span class="caps">AES</span> <sup id="fnref:2"><a class="footnote-ref" href="#fn:2" rel="footnote">2</a></sup>. So <span class="caps">GPG</span> support would be nice. Of course, there&#8217;s no magic bullet and bootstrapping secrets securely remains as hard as&nbsp;ever.</p>
 <div class="footnote">
-<hr>
+<hr />
 <ol>
-<li id="fn-1">
-<p>The second being that the agent-less architecture is <em>so</em> good for containers.&#160;<a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<li id="fn:1">
+<p>The second being that the agent-less architecture is <em>so</em> good for containers.&#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
-<li id="fn-2">
-<p>Although I&#8217;m no crypto expert, so that&#8217;s pretty much superstition. There&#8217;s a hint of truth to this, as in practice symmetric encryption &#8220;encourages&#8221; short keys that can be remembered (i.e. a password and password-based thinking). It takes ages to unlearn this and to use proper keys which are treated with paranoia and respect. It also doesn&#8217;t help that <span class="caps">GPG</span> is almost unusably complicated.&#160;<a class="footnote-backref" href="#fnref-2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+<li id="fn:2">
+<p>Although I&#8217;m no crypto expert, so that&#8217;s pretty much superstition. There&#8217;s a hint of truth to this, as in practice symmetric encryption &#8220;encourages&#8221; short keys that can be remembered (i.e. a password and password-based thinking). It takes ages to unlearn this and to use proper keys which are treated with paranoia and respect. It also doesn&#8217;t help that <span class="caps">GPG</span> is almost unusably complicated.&#160;<a class="footnote-backref" href="#fnref:2" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>

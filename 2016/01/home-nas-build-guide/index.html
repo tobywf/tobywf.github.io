@@ -1,15 +1,14 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Entry-level home NAS build guide - tobywf</title>
+  <title>Entry-level home NAS build guide - tobywf</title>
   <meta charset="utf-8" />
   <meta name="author" content="Toby Fleming" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,300italic,700|Source+Code+Pro:400,700|Montserrat:400" type="text/css">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-  <link rel="icon" href="/images/favicon.png" />
-  <link rel="stylesheet" href="/asset/main.css">
+  <link rel="stylesheet" href="/theme/main.css" />
+  <link rel="icon" href="/theme/favicon.png" />
 </head>
 <body>
   <div class="wrapper">
@@ -25,7 +24,7 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Entry-level home NAS build guide</h1>
+  <h1>Entry-level home <span class="caps">NAS</span> build&nbsp;guide</h1>
   <h2>How I stopped worrying and learned to love ZFS and mirrors</h2>
   <div class="infoline">
     <span class="fa fa-calendar"></span> <span class="date">15 Jan &#x27;16</span> &mdash; last updated&nbsp;<span class="date">17 Jan &#x27;16</span>
@@ -36,39 +35,39 @@
 <p>So I was surprised when I read <a href="http://louwrentius.com/the-hidden-cost-of-using-zfs-for-your-home-nas.html">The &#8216;Hidden&#8217; Cost of Using <span class="caps">ZFS</span> for Your Home <span class="caps">NAS</span></a>, it&#8217;s well written, without the usual storage snake oil. But most people won&#8217;t need large storage arrays at&nbsp;home.</p>
 <p>Having helped my fifth friend configure as <span class="caps">NAS</span> (who&#8217;ve all also worked in storage), I realised there&#8217;s a bit of a need for a simple guide, which just outlines some of the considerations, without too much hand-holding. That way, it won&#8217;t go out of date and you don&#8217;t have to find exactly the same&nbsp;hardware.</p>
 <p>This one is&nbsp;long.</p>
-<hr>
+<hr />
 <p>The challenge: You have less than 4 TiB of data you want to store on a <span class="caps">NAS</span> for home entertainment purposes (entry-level, home). You decide to use <a href="http://www.freenas.org/">FreeNAS</a>, because it has a great web interface which is easy to use, and the tech behind it (<span class="caps">ZFS</span>) is excellent. It&#8217;s a professional product, so it has all the bells and whistles. It runs FreeBSD (close enough to Linux, right?) and you can put a Minecraft server on it.&nbsp;Awesome.</p>
 <p>You don&#8217;t fancy paying for a ready-made <span class="caps">NAS</span> box like Synology, because they&#8217;re usually anaemic and a bit locked down. You could go <span class="caps">DIY</span> and build a small server, but last-generation <span class="caps">HP</span> microservers have steep discounts, enterprise hardware and usually support <span class="caps">ECC</span> memory. The last-gen ones are still very good, don&#8217;t be fooled. So a <span class="caps">HP</span> microserver makes sense from a time, money and quality perspective, a rare combo. Those often don&#8217;t come with disks or much&nbsp;memory.</p>
 <p>More <span class="caps">RAM</span> is always better, and you don&#8217;t need to buy the <span class="caps">HP</span> <span class="caps">RAM</span>, so stick <a href="http://www.freenas.org/hardware-requirements/">at least 8 GiB</a> in there. <span class="caps">ECC</span> <span class="caps">RAM</span> if you can, it&#8217;s usually as expensive as normal <span class="caps">RAM</span>, but normal will do. FreeNAS apparently works well with <span class="caps">ECC</span> <span class="caps">RAM</span> in protecting data integrity, but from what I read nobody can figure out if there&#8217;s any real danger of undetected data corruption with normal <span class="caps">RAM</span> (real means more probable than e.g. winning the lottery in my opinion - again, for a business that might not be good&nbsp;enough).</p>
-<hr>
+<hr />
 <p>Erm, but how many disks do you put in? I&#8217;ve seen so many people put off by the complexity of this. It&#8217;s a hard topic, and forums can be really misleading on this&nbsp;one.</p>
 <p>First, <a href="http://www.hanselman.com/blog/TheComputerBackupRuleOfThree.aspx">read about the 3-2-1 rule for backup</a>. Remember this, it&#8217;s important. Now, think about your backup solution first. <a href="http://www.rsync.net/index.html">rsync.net</a> is great and <span class="caps">ZFS</span>-compatible, but not cheap. You might just say &#8220;fuck it&#8221; and ignore off-site backups, because you&#8217;re just that&nbsp;cool.</p>
 <p>You can also go for a hybrid approach: Really important things (e.g. photos or tax returns) go into Dropbox/Google Drive/&lt;cloud provider&gt;, and the laptop with &lt;cloud provider&gt; is also backed up on the <span class="caps">NAS</span>. Less important data (e.g. copies of music CDs or film DVDs) goes on the <span class="caps">NAS</span>. Such an approach is fine in my opinion. It&#8217;s safer than most people&#8217;s data, low cost, and doesn&#8217;t really have a weak point except the less important stuff. If &lt;cloud provider&gt; shuts down, find a new one. If the house burns down or floods, buy a Netflix and Spotify account. But again, we&#8217;re talking probabilities here. How much &#8220;certainty&#8221; do you&nbsp;want?</p>
-<hr>
+<hr />
 <p>Where were we? How many disks? Do you care about redundancy of the data on the <span class="caps">NAS</span>? If not, just put as many disks as you need in there. Remember, redundancy just means &#8220;can I access my data uninterrupted once a disk dies?&#8221; and is <em>not</em> to be confused with backup. So having no redundancy is completely viable for home use, don&#8217;t let anybody tell you otherwise. You need good backup solution anyway and backing up is more important than&nbsp;redundancy.</p>
 <p>That said, disks are kind of cheap, and redundancy is an easy way to have an extra copy of the data. If you remember the 3-2-1 rule, redundancy can add 1 to the first part (three copies), but but never to the second (different format) or third part (off-site backup). Or maybe, you&#8217;re going down the hybrid approach and need a bit of&nbsp;reassurance.</p>
 <p>So redundancy is nice. How much data have you got? If you have more data than will fit on a large hard-drive (as of 2016, ~3 or 4 TiB), then you don&#8217;t have much choice. Just go for <span class="caps">RAIDZ2</span> with 4 or more disks, which is out of scope for this post. Less data than 3 TiB for the foreseeable future means three options: a mirror (2 disks), a <span class="caps">RAIDZ1</span> array (3 disks) or a <span class="caps">RAIDZ2</span> array (4&nbsp;disks).</p>
 <p><strong>My advice is just use a 2 disk mirror</strong>, unless you don&#8217;t mind buying 4 drives at once ($$$). I hear some people shouting at the screen&nbsp;already.</p>
-<hr>
+<hr />
 <p><em><span class="dquo">&#8220;</span>But Toby, a mirror doesn&#8217;t provide the same level of protection as four drives in <span class="caps">RAIDZ2</span>!&#8221;</em> That is correct, but it&#8217;s also usually irrelevant. First, <span class="caps">ZFS</span> provides many benefits over an external hard-drive, and a mirror is a <em>huge</em> step up in terms of reliability [<span class="blue">citation needed</span>]. So fault tolerance isn&#8217;t the only consideration here. Second, off-site backups. Yes I know I&#8217;m repeating myself but if your house and <span class="caps">NAS</span> burns down, all <span class="caps">RAID</span> levels are equal. Remember, the &#8216;R&#8217; in <span class="caps">RAID</span> is redundancy, not &#8220;protection&#8221;, that&#8217;d be <span class="caps">PAID</span>. Third, two mirrors are more flexible that one <span class="caps">RAIDZ2</span> array. Two&nbsp;mirrors?</p>
-<p>If you&#8217;re short on cash, or if you don&#8217;t need that much space yet, just get one mirror. You can always add another mirror later. The later part is the interesting part. If you have to buy two more drives a short amount of time later, you&#8217;ve not lost much. Two mirrors have a similar fault tolerance to <span class="caps">RAIDZ2</span><sup id="fnref-1"><a class="footnote-ref" href="#fn-1">1</a></sup>, and you&#8217;ve maybe gotten another paycheck to spread the cost. But 2 or 3 years later, and chances are drives have gotten bigger/cheaper. So now, your second mirror can be bigger/cheaper that mirror&nbsp;#1.</p>
+<p>If you&#8217;re short on cash, or if you don&#8217;t need that much space yet, just get one mirror. You can always add another mirror later. The later part is the interesting part. If you have to buy two more drives a short amount of time later, you&#8217;ve not lost much. Two mirrors have a similar fault tolerance to <span class="caps">RAIDZ2</span><sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup>, and you&#8217;ve maybe gotten another paycheck to spread the cost. But 2 or 3 years later, and chances are drives have gotten bigger/cheaper. So now, your second mirror can be bigger/cheaper that mirror&nbsp;#1.</p>
 <p>Aparently, you can also <a href="https://jsosic.wordpress.com/2013/01/01/expanding-zfs-zpool-raid/">grow mirrors</a> by replacing the older drives with newer ones one-by-one and rebuilding each time (so twice). At the end, <span class="caps">ZFS</span> will expand the mirror to the new&nbsp;size.</p>
 <p>In my opinion, this flexibility makes two mirrors preferable to <span class="caps">RAIDZ2</span> and <span class="caps">RAIDZ1</span>.</p>
 <p><em><span class="dquo">&#8220;</span>But Toby, <span class="caps">RAIDZ1</span> gets me more storage space than a mirror but is cheaper than <span class="caps">RAIDZ2</span>!&#8221;</em> <span class="caps">RAIDZ1</span> does seem like a sweet deal. You should know that <a href="https://forums.freebsd.org/threads/raid-z1-or-z2.50089/#post-280139">businesses don&#8217;t use <span class="caps">RAIDZ1</span> any more</a>; the idea is that with modern disks and <span class="caps">RAIDZ1</span>, it&#8217;s just too dangerous that another drive will die during a rebuild and ruin the redundancy. This is true for many drives, but it probably won&#8217;t matter with three disks, and anyway we&#8217;re not a business. People who tell you not to use <span class="caps">RAIDZ1</span> usually don&#8217;t have off-site backups in place, which you do,&nbsp;right?</p>
 <p>My argument against <span class="caps">RAIDZ1</span> is more practical. Your microserver only has 4 bays. <span class="caps">RAIDZ1</span> has worse rebuild and fault tolerance than <span class="caps">RAIDZ2</span> or two mirrors, and less flexibility than two mirrors. The only time I can see <span class="caps">RAIDZ1</span> being useful is if you&#8217;re so limited that you can&#8217;t afford 4 drives soon, but you know you&#8217;ll need the all the space sooner. If you&#8217;re that strapped for cash and desperate for space, a <span class="caps">NAS</span> probably isn&#8217;t for&nbsp;you.</p>
-<hr>
+<hr />
 <p><span class="caps">TL</span>;<span class="caps">DR</span>: Use&nbsp;mirrors!</p>
 <div class="footnote">
-<hr>
+<hr />
 <ol>
-<li id="fn-1">
-<p>It&#8217;s slightly worse: If one drive dies, then it&#8217;s partner can&#8217;t die. Arguably, the partner is now more likely to die because it&#8217;s being read for the rebuild. But rebuilding mirrors is often faster than arrays. It&#8217;s complicated. You have backups, right? So stop worrying.&#160;<a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<li id="fn:1">
+<p>It&#8217;s slightly worse: If one drive dies, then it&#8217;s partner can&#8217;t die. Arguably, the partner is now more likely to die because it&#8217;s being read for the rebuild. But rebuilding mirrors is often faster than arrays. It&#8217;s complicated. You have backups, right? So stop worrying.&#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>
 </article>
 <section>
-  <p><span class="fa fa-tags"></span> <a href="/tag/ZFS/">ZFS</a>, <a href="/tag/FreeNAS/">FreeNAS</a>, <a href="/tag/NAS/">NAS</a>, <a href="/tag/storage/">storage</a>, <a href="/tag/BSD/">BSD</a></p>
+  <p><span class="fa fa-tags"></span> <a href="/tag/zfs/">ZFS</a>, <a href="/tag/freenas/">FreeNAS</a>, <a href="/tag/nas/">NAS</a>, <a href="/tag/storage/">storage</a>, <a href="/tag/bsd/">BSD</a></p>
   <a href="/2016/01/javascript-development-is-crazy/" class="newer">Newer <span class="fa fa-chevron-circle-right"></span></a>
   <a href="/2016/01/ansible-2.0-launched/" class="older"><span class="fa fa-chevron-circle-left"></span> Older</a>
 </section>
