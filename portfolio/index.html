@@ -10,12 +10,12 @@
   <link rel="icon" href="/theme/favicon.png" />
 </head>
 <body class="portfolio">
-<!-- content start -->
   <header id="top">
     <div>
-      <h1 class="cap">Toby&nbsp;Fleming</h1>
+      <h1 class="cap">Toby Fleming</h1>
     </div>
   </header>
+<!-- content start -->
   <section id="img">
     <div>
       <img src="/portfolio/images/collage.png" />
@@ -23,12 +23,12 @@
   </section>
   <section id="into">
     <div>
-      <h2 class="monospace">>>> print(&#8220;Hello&#8221;)</h2>
+      <h2 class="monospace">&gt;&gt;&gt;&nbsp;print(&#8220;Hello&#8221;)</h2>
       <p>
-        My name is Toby Fleming and I&#8217;m a musician, physicist and&nbsp;problem-solver.
+        My name is Toby Fleming and I help teams build highly reliable, secure products with great user&nbsp;experience.
       </p>
       <p>
-        I&#8217;m currently employed full-time at <a href="http://www.ibm.com/uk/en/"><span class="caps">IBM</span></a>.
+        From telecommunication (<em>Ostertag Solutions <span class="caps">AG</span></em>) to enterprise storage (<em>WorkAnyWare Ltd</em>, <a href="#ibm"><span class="caps">IBM</span></a>), all my previous projects demanded high reliability, security and extreme performance in some cases (e.g. <span class="caps">IBM</span> FlashSystem). These great products also required great user experience, from intuitive command-line interfaces to crystal-clear graphical or web-based&nbsp;interfaces.
       </p>
     </div>
   </section>
@@ -46,6 +46,18 @@
      --><a href="#caltech"><figure>
           <div><img src="/portfolio/images/caltech.png" /></div>
           <figcaption><span>California Institute of Technology</span></figcaption>
+        </figure></a><!--
+     --><a><figure>
+          <div><img src="/portfolio/images/workanyware.png" /></div>
+          <figcaption><span>WorkAnyWare Ltd</span></figcaption>
+        </figure></a><!--
+     --><a href="#leeds"><figure>
+          <div><img src="/portfolio/images/leeds.png" /></div>
+          <figcaption><span>University of Leeds</span></figcaption>
+        </figure></a><!--
+     --><a><figure>
+          <div><img src="/portfolio/images/ostertag.png" /></div>
+          <figcaption><span>Ostertag Solutions <span class="caps">AG</span></span></figcaption>
         </figure></a>
       </div>
     </div>
@@ -53,8 +65,11 @@
   <section id="ibm">
     <div>
       <h2><span class="caps">IBM</span></h2>
-      <h3>Publications</h3>
+      <h3>Publications and&nbsp;releases</h3>
       <ul>
+        <li>Code delivered for several Storwize&nbsp;releases</li>
+        <li>Part of the team that release the FlashSystem&nbsp;V9000</li>
+        <li>Lead developer for <span class="caps">IP</span>-based quorum in the Storwize 7.6&nbsp;release</li>
         <li>Contributor to <a href="http://www.redbooks.ibm.com/abstracts/redp5113.html">A Deployment Guide for Elastic Storage Object</a>&nbsp;Redpaper</li>
         <li>Patent&nbsp;filed</li>
       </ul>
@@ -63,42 +78,37 @@
         <ul>
           <li><a href="http://www-03.ibm.com/systems/uk/storage/flash/v9000/"><span class="caps">IBM</span> FlashSystem</a> and <a href="http://www-03.ibm.com/systems/uk/storage/storwize/"><span class="caps">IBM</span> Storwize</a>&nbsp;families</li>
           <li><a href="http://www-03.ibm.com/systems/uk/storage/disk/xiv/"><span class="caps">IBM</span> <span class="caps">XIV</span> Storage&nbsp;System</a></li>
-          <li><a href="http://www-03.ibm.com/systems/uk/storage/spectrum/scale/"><span class="caps">IBM</span> Spectrum Scale</a> and <span class="caps">IBM</span> General Parallel File System before&nbsp;rebranding</li>
+          <li><a href="http://www-03.ibm.com/systems/uk/storage/spectrum/scale/"><span class="caps">IBM</span> Spectrum Scale</a> aka. <span class="caps">IBM</span> General Parallel File&nbsp;System</li>
         </ul>
       </p>
       <h3>Highlighted&nbsp;technologies</h3>
       <ul class="tech-icon-list">
         <li>
           <div class="tech-icon-c"></div><a>C</a>
-          <p>Main static type-checked&nbsp;language.</p>
         </li>
         <li>
           <div class="tech-icon-python"></div><a href="https://www.python.org/">Python</a>
-          <p>Main dynamic-typed&nbsp;language.</p>
         </li>
         <li>
           <div class="tech-icon-git"></div><a href="http://git-scm.com/">Git <span class="caps">SCM</span></a>
-          <p>Source code&nbsp;management.</p>
         </li>
         <li>
           <div class="tech-icon-vagrant"></div><a href="https://www.vagrantup.com/">Vagrant</a>
-          <p>Provisioning VMs for DevOps and&nbsp;testing.</p>
         </li>
         <li>
           <div class="tech-icon-ansible"></div><a href="http://www.ansible.com/home">Ansible</a>
-          <p><span class="caps">IT</span> automation, configuration&nbsp;management.</p>
         </li>
         <li>
           <div class="tech-icon-chef"></div><a href="https://www.chef.io/">Chef</a>
-          <p><span class="caps">IT</span> automation, used for interop&nbsp;reasons.</p>
         </li>
         <li>
           <div class="tech-icon-gerrit"></div><a href="https://code.google.com/p/gerrit/">Gerrit</a>
-          <p>Code&nbsp;review.</p>
         </li>
         <li>
           <div class="tech-icon-jenkins"></div><a href="https://jenkins-ci.org/">Jenkins <span class="caps">CI</span></a>
-          <p>Continuous integration, acceptance and regression&nbsp;testing.</p>
+        </li>
+        <li>
+          <div class="tech-icon-flask"></div><a href="https://flask.pocoo.org/">Flask</a>
         </li>
       </ul>
     </div>
@@ -106,43 +116,66 @@
   <section id="caltech">
     <div>
       <h2>Caltech</h2>
-      <h3>Project</h3>
+      <h3>Proof-of-concept web&nbsp;application</h3>
       <p>
-        As part of my <a href="https://sfp.caltech.edu/programs/surf">Summer Undergraduate Research Fellowship</a>.
+        My <a href="https://sfp.caltech.edu/programs/surf">Summer Undergraduate Research Fellowship</a> was with the ground-breaking <span class="caps">LIGO</span> project, which in 2016 announced the discovery of gravitational waves.
+        <br />
+        This project manipulated high resolution astronomical data and rendered the resulting &#8220;skymaps&#8221; in a browser. Since everything had to happen during page loading, this meant processing a lot of data very quickly (&lt; 100ms).
+        <br />
+        The successful proof-of-concept showed that a correctly engineered web application could deal with large amounts of data, and opened up the possibility of a more collaborative workflow compared to desktop&nbsp;applications.
       </p>
       <h3>Highlighted&nbsp;technologies</h3>
       <ul class="tech-icon-list">
         <li>
           <div class="tech-icon-python"></div><a href="https://www.python.org/">Python</a>
-          <p>Primary&nbsp;language.</p>
-        </li>
-        <li>
-          <div class="tech-icon-git"></div><a href="http://git-scm.com/">Git <span class="caps">SCM</span></a>
-          <p>Source code&nbsp;management.</p>
-        </li>
-        <li>
-          <div class="tech-icon-numpy"></div><a href="http://www.numpy.org/">NumPy</a>
-          <p>Fast N-dimensional array&nbsp;library.</p>
         </li>
         <li>
           <div class="tech-icon-scipy"></div><a href="http://www.scipy.org/">SciPy</a>
-          <p>Scientific computing&nbsp;library.</p>
         </li>
         <li>
-          <div class="tech-icon-matplotlib"></div><a href="http://matplotlib.org/">Matplotlib</a>
-          <p>2d plotting and graphing&nbsp;library.</p>
+          <div class="tech-icon-numpy"></div><a href="http://www.numpy.org/">NumPy</a>
         </li>
         <li>
           <div class="tech-icon-memcached"></div><a href="http://memcached.org/">memcached</a>
-          <p>High-performance, memory object&nbsp;caching.</p>
         </li>
         <li>
-          <div class="tech-icon-google-maps"></div><a href="https://maps.google.com/">Google Maps</a>
-          <p>Mapping&nbsp;library.</p>
+          <div class="tech-icon-google-maps"></div><a href="https://maps.google.com/">Google&nbsp;Maps</a>
         </li>
         <li>
-          <div class="tech-icon-html5"></div><span><span class="caps">HTML5</span> <span class="amp">&amp;</span> Javascript</span>
-          <p>Portable&nbsp;front-end.</p>
+          <div class="tech-icon-html5"></div><span><span class="caps">HTML5</span> <span class="amp">&amp;</span>&nbsp;Javascript</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+  <section id="leeds">
+    <div>
+      <h2>University of&nbsp;Leeds</h2>
+      <!--
+      <h3>Publications and&nbsp;releases</h3>
+      <ul>
+        <li><a href="http://www.cosmos-research.org/cosmos2013.html">CoSMoS 2013: Simulation methods for quantum walks on graphs applied to perfect state transfer and formal language&nbsp;recognition</a></li>
+      </ul>
+      -->
+      <h3>Masters&nbsp;project</h3>
+      <p>
+        My Masters project was computationally simulating quantum mechanical systems, where my Python implementation beat existing C code in execution speed and maintainability. Improved execution times were nice, but the rich visualisations including animation really captured the dynamic energy transfers in the&nbsp;system.
+      </p>
+      <h3>Highlighted&nbsp;technologies</h3>
+      <ul class="tech-icon-list">
+        <li>
+          <div class="tech-icon-python"></div><a href="https://www.python.org/">Python</a>
+        </li>
+        <li>
+          <div class="tech-icon-git"></div><a href="http://git-scm.com/">Git <span class="caps">SCM</span></a>
+        </li>
+        <li>
+          <div class="tech-icon-scipy"></div><a href="http://www.scipy.org/">SciPy</a>
+        </li>
+        <li>
+          <div class="tech-icon-numpy"></div><a href="http://www.numpy.org/">NumPy</a>
+        </li>
+        <li>
+          <div class="tech-icon-matplotlib"></div><a href="http://matplotlib.org/">Matplotlib</a>
         </li>
       </ul>
     </div>
