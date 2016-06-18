@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Flask web dev: MVC simplicity with SQLAlchemy - tobywf</title>
+  <meta charset="utf-8" />
+  <meta name="author" content="Toby Fleming" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,300italic,700|Source+Code+Pro:400,700|Montserrat:400" />
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css" />
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png" />
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <ul>
+<!-- breadcrumbs start -->
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" /></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2016/">&#x27;16</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2016/06/">Jun</a></li>
+<li class="portfolio"><a href="https://tobywf.com/portfolio/" class="cap">portfolio</a></li>
+<!-- breadcrumbs end -->
+      </ul>
+    </nav>
+<!-- content start -->
+<header class="post-head">
+  <h1>Flask web dev: <span class="caps">MVC</span> simplicity with&nbsp;SQLAlchemy</h1>
+  <h2>Flask web development tip number 2</h2>
+  <div class="infoline">
+    <span class="fa fa-calendar"></span> <span class="date">18 Jun &#x27;16</span>
+  </div>
+</header>
+<article>
+<p><a href="http://flask.pocoo.org/">Flask is a web microframework</a> for Python. It&#8217;s small, but because it&#8217;s so easy to understand it&#8217;s also <a href="http://flask.pocoo.org/extensions/">extremely extensible</a>. No more&nbsp;bloat.</p>
+<p>I&#8217;m hoping to share some tips from developing and deploying several large Flask applications, some which aren&#8217;t obvious from the&nbsp;documentation.</p>
+<h2 id="tip-2-how-i-learned-to-stop-worrying-and-love-orm">Tip 2: How I Learned to Stop Worrying and Love <span class="caps">ORM</span></h2>
+<p><a href="http://www.sqlalchemy.org/">SQLAlchemy</a> is a great Object Relational Mapper (<span class="caps">ORM</span>). Yeah, yeah, <span class="caps">SQL</span> and <span class="caps">ORM</span>, how 90s. But it works, so stop worrying about <span class="caps">SQL</span> and start building&nbsp;websites.</p>
+<p>SQLAlchemy works great because it&#8217;s very transparent. So it doesn&#8217;t replace <span class="caps">SQL</span> knowledge, but augments it. That doesn&#8217;t mean it doesn&#8217;t get you nice features like portability over different <span class="caps">SQL</span> implementations, but write terrible models and queries and you&#8217;ll still get terrible&nbsp;performance.</p>
+<p>SQLAlchemy cuts down on the littering of <span class="caps">SQL</span> throughout the codebase and wraps everything in models. When writing a view, which of these approaches would you rather&nbsp;do?</p>
+<div class="codehilite"><pre><span></span><span class="c1"># raw SQL</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">execute</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;SELECT</span>
+<span class="s1">    foo.id,</span>
+<span class="s1">    foo.name,</span>
+<span class="s1">    foo.description,</span>
+<span class="s1">    bar.id,</span>
+<span class="s1">    bar.name,</span>
+<span class="s1">    bar.description</span>
+<span class="s1">FROM foo INNER JOIN bar ON (foo.bar_id = bar.id)</span>
+<span class="s1">ORDER BY foo.name LIMIT 1&#39;&#39;&#39;</span><span class="p">)</span>
+<span class="n">foo</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">foo</span><span class="o">.</span><span class="n">bar</span> <span class="o">=</span> <span class="n">Bar</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+
+<span class="c1"># SQLAlchemy with relationship on model</span>
+<span class="n">foo</span> <span class="o">=</span> <span class="n">Foo</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">Foo</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+</pre></div>
+
+
+<p>We all know <span class="caps">MVC</span> is a good idea. Flask and SQLAlchemy make <span class="caps">MVC</span> painless. Do&nbsp;it.</p>
+<hr />
+<p>Good luck with Flask and&nbsp;SQLAlchemy!</p>
+</article>
+<section>
+  <p><span class="fa fa-tags"></span> <a href="https://tobywf.com/tag/python/">Python</a>, <a href="https://tobywf.com/tag/flask/">Flask</a>, <a href="https://tobywf.com/tag/sqlalchemy/">SQLAlchemy</a></p>
+  <a href="https://tobywf.com/2016/06/flask-embrace-sqlite/" class="newer">Newer <span class="fa fa-chevron-circle-right"></span></a>
+  <a href="https://tobywf.com/2016/06/flask-always-use-application-factories/" class="older"><span class="fa fa-chevron-circle-left"></span> Older</a>
+</section>
+<!-- content end -->
+    <footer>
+      <hr />
+      <p class="center">
+        <a href="https://github.com/tobywf" class="fa-stack fa-lg">
+          <span class="fa fa-github fa-stack-2x"></span>
+        </a>
+        <a href="https://uk.linkedin.com/in/tobywf" class="fa-stack fa-lg">
+          <span class="fa fa-circle fa-stack-2x"></span>
+          <span class="fa fa-linkedin fa-stack-1x fa-inverse"></span>
+        </a>
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="fa-stack fa-lg" style="font-size: 120%;">
+          <span class="fa fa-creative-commons fa-stack-2x"></span>
+        </a>
+      </p>
+      <p>
+        <span class="fa fa-child fa-fw"></span>Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a code craftsman, tinkerer, and musician. He posts his ramblings here. Toby currently lives in England.
+      </p>
+      <p>
+        <span class="fa fa-copyright fa-fw"></span><span class="date cap">mmxii&ndash;mmxvi</span> <span class="name cap">Toby Fleming</span>
+      </p>
+      <p>
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+          <span class="fa fa-creative-commons fa-fw"></span>BY-NC-ND 4.0
+        </a>
+      </p>
+    </footer>
+  </div>
+</body>
+</html>

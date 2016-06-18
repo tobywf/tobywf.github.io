@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>All tags - tobywf</title>
+  <title>Flask web dev: Embrace SQLite - tobywf</title>
   <meta charset="utf-8" />
   <meta name="author" content="Toby Fleming" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -16,43 +16,36 @@
       <ul>
 <!-- breadcrumbs start -->
 <li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" /></a></li>
-<li class="breadcrumb"><a href="https://tobywf.com/tag/">Tags</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2016/">&#x27;16</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2016/06/">Jun</a></li>
 <li class="portfolio"><a href="https://tobywf.com/portfolio/" class="cap">portfolio</a></li>
 <!-- breadcrumbs end -->
       </ul>
     </nav>
 <!-- content start -->
+<header class="post-head">
+  <h1>Flask web dev: Embrace&nbsp;SQLite</h1>
+  <h2>Flask web development tip number 3</h2>
+  <div class="infoline">
+    <span class="fa fa-calendar"></span> <span class="date">18 Jun &#x27;16</span>
+  </div>
+</header>
+<article>
+<p><a href="http://flask.pocoo.org/">Flask is a web microframework</a> for Python. It&#8217;s small, but because it&#8217;s so easy to understand it&#8217;s also <a href="http://flask.pocoo.org/extensions/">extremely extensible</a>. No more&nbsp;bloat.</p>
+<p>I&#8217;m hoping to share some tips from developing and deploying several large Flask applications, some which aren&#8217;t obvious from the&nbsp;documentation.</p>
+<h2 id="tip-3-embrace-sqlite">Tip 3: Embrace&nbsp;SQLite</h2>
+<p><a href="https://www.sqlite.org/">SQLite</a> is ubiquitous. It&#8217;s zero-configuration. There&#8217;s no server to get&nbsp;hacked.</p>
+<ul>
+<li>Especially for development, a dev SQLite database will do the&nbsp;job</li>
+<li>SQLite <a href="https://www.sqlite.org/whentouse.html">is fine to use in&nbsp;production</a></li>
+</ul>
+<p>You don&#8217;t need a big <span class="caps">SQL</span> server (e.g. PostgreSQL, MySQL) until you&#8217;re big. And since <a href="https://tobywf.com/2016/06/flask-mvc-simplicity-with-sqlalchemy/">you&#8217;re using SQLAlchemy (right?)</a>, migrating to something bigger isn&#8217;t an issue. What are you waiting for? 100k more users? Just use&nbsp;SQLite.</p>
+<hr />
+<p>Good luck with&nbsp;Flask!</p>
+</article>
 <section>
-  <ul>
-    <li><a href="https://tobywf.com/tag/ansible/">ansible</a></li>
-    <li><a href="https://tobywf.com/tag/audio/">audio</a></li>
-    <li><a href="https://tobywf.com/tag/blog/">blog</a></li>
-    <li><a href="https://tobywf.com/tag/bsd/">BSD</a></li>
-    <li><a href="https://tobywf.com/tag/cryptography/">cryptography</a></li>
-    <li><a href="https://tobywf.com/tag/diy/">DIY</a></li>
-    <li><a href="https://tobywf.com/tag/fish-shell/">fish shell</a></li>
-    <li><a href="https://tobywf.com/tag/flask/">Flask</a></li>
-    <li><a href="https://tobywf.com/tag/freenas/">FreeNAS</a></li>
-    <li><a href="https://tobywf.com/tag/hackspace/">hackspace</a></li>
-    <li><a href="https://tobywf.com/tag/infosec/">infosec</a></li>
-    <li><a href="https://tobywf.com/tag/javascript/">javascript</a></li>
-    <li><a href="https://tobywf.com/tag/language/">language</a></li>
-    <li><a href="https://tobywf.com/tag/linux/">Linux</a></li>
-    <li><a href="https://tobywf.com/tag/mac/">Mac</a></li>
-    <li><a href="https://tobywf.com/tag/madness/">madness</a></li>
-    <li><a href="https://tobywf.com/tag/minecraft/">Minecraft</a></li>
-    <li><a href="https://tobywf.com/tag/nas/">NAS</a></li>
-    <li><a href="https://tobywf.com/tag/non-technical/">non-technical</a></li>
-    <li><a href="https://tobywf.com/tag/osx/">OSX</a></li>
-    <li><a href="https://tobywf.com/tag/python/">Python</a></li>
-    <li><a href="https://tobywf.com/tag/rant/">rant</a></li>
-    <li><a href="https://tobywf.com/tag/sqlalchemy/">SQLAlchemy</a></li>
-    <li><a href="https://tobywf.com/tag/ssl/">SSL</a></li>
-    <li><a href="https://tobywf.com/tag/storage/">storage</a></li>
-    <li><a href="https://tobywf.com/tag/sysadmin/">sysadmin</a></li>
-    <li><a href="https://tobywf.com/tag/update/">update</a></li>
-    <li><a href="https://tobywf.com/tag/zfs/">ZFS</a></li>
-  </ul>
+  <p><span class="fa fa-tags"></span> <a href="https://tobywf.com/tag/python/">Python</a>, <a href="https://tobywf.com/tag/flask/">Flask</a>, <a href="https://tobywf.com/tag/sqlalchemy/">SQLAlchemy</a></p>
+  <a href="https://tobywf.com/2016/06/flask-mvc-simplicity-with-sqlalchemy/" class="older"><span class="fa fa-chevron-circle-left"></span> Older</a>
 </section>
 <!-- content end -->
     <footer>
