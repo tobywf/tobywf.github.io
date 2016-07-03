@@ -27,7 +27,7 @@
   <h1>Flask web dev: Embrace&nbsp;SQLite</h1>
   <h2>Flask web development tip number 3</h2>
   <div class="infoline">
-    <span class="fa fa-calendar"></span> <span class="date">18 Jun &#x27;16</span>
+    <span class="fa fa-calendar"></span> <span class="date">18 Jun &#x27;16</span> &mdash; last updated&nbsp;<span class="date">30 Jun &#x27;16</span>
   </div>
 </header>
 <article>
@@ -37,14 +37,16 @@
 <p><a href="https://www.sqlite.org/">SQLite</a> is ubiquitous. It&#8217;s zero-configuration. There&#8217;s no server to get&nbsp;hacked.</p>
 <ul>
 <li>Especially for development, a dev SQLite database will do the&nbsp;job</li>
-<li>SQLite <a href="https://www.sqlite.org/whentouse.html">is fine to use in&nbsp;production</a></li>
+<li>SQLite <a href="https://www.sqlite.org/whentouse.html">is fine to use in production</a>, especially for <a href="http://beets.io/blog/sqlite-performance.html">read-intensive&nbsp;workloads</a></li>
 </ul>
 <p>You don&#8217;t need a big <span class="caps">SQL</span> server (e.g. PostgreSQL, MySQL) until you&#8217;re big. And since <a href="https://tobywf.com/2016/06/flask-mvc-simplicity-with-sqlalchemy/">you&#8217;re using SQLAlchemy (right?)</a>, migrating to something bigger isn&#8217;t an issue. What are you waiting for? 100k more users? Just use&nbsp;SQLite.</p>
+<p>Update: It has been put to me that you should use the same database in production and development. In principle, I think this is a good idea. However, if this isn&#8217;t possible, your integration tests should catch any issues,&nbsp;right?</p>
 <hr />
 <p>Good luck with&nbsp;Flask!</p>
 </article>
 <section>
   <p><span class="fa fa-tags"></span> <a href="https://tobywf.com/tag/python/">Python</a>, <a href="https://tobywf.com/tag/flask/">Flask</a>, <a href="https://tobywf.com/tag/sqlalchemy/">SQLAlchemy</a></p>
+  <a href="https://tobywf.com/2016/07/summer-2016-hackathon-recap/" class="newer">Newer <span class="fa fa-chevron-circle-right"></span></a>
   <a href="https://tobywf.com/2016/06/flask-mvc-simplicity-with-sqlalchemy/" class="older"><span class="fa fa-chevron-circle-left"></span> Older</a>
 </section>
 <!-- content end -->
