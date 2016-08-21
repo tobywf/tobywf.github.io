@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Nikita - a story of obsessed developers - tobywf</title>
+  <meta charset="utf-8" />
+  <meta name="author" content="Toby Fleming" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,300italic,700|Source+Code+Pro:400,700|Montserrat:400" />
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css" />
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png" />
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <ul>
+<!-- breadcrumbs start -->
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" /></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2016/">&#x27;16</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2016/08/">Aug</a></li>
+<li class="portfolio"><a href="https://tobywf.com/portfolio/" class="cap">portfolio</a></li>
+<!-- breadcrumbs end -->
+      </ul>
+    </nav>
+<!-- content start -->
+<header class="post-head">
+  <h1>Nikita - a story of obsessed&nbsp;developers</h1>
+  <div class="infoline">
+    <span class="fa fa-calendar"></span> <span class="date">21 Aug &#x27;16</span>
+  </div>
+</header>
+<article>
+<pre>FADE IN: IBM MANCHESTER LAB - DAY
+Enterprise-y office setting.
+                <a href="https://manuelreinhard.com/">MANUEL</a>
+        Coffee? Tea?
+                TOBY
+        Sure.
+                MANUEL
+        By the way, I found this awesome
+        problem on HackerRank - it's called
+        <a href="https://www.hackerrank.com/challenges/array-splitting">Nikita and the Game</a>.
+                TOBY
+        It's... hmm. Interesting. Maybe if
+        you start with... No, wait. Hmm...
+Some time later:
+                JOE
+        What are you guys looking at?
+</pre>
+
+<p>And that&#8217;s how we got <a href="https://xkcd.com/356/">nerd sniped</a>.</p>
+<hr />
+<p>There&#8217;s the obvious solution, which happens to be the quickest to implement. This is the route I chose, in Python. You simply start on each end of the array segment, and look for the mid-point by moving the position of the smaller&nbsp;sum:</p>
+<div class="codehilite"><pre><span></span>  array: 4 1 1 3 1
+l/r pos: ^       ^
+l/r sum: 4   &gt;   1
+
+  array: 4 1 1 3 1
+l/r pos: ^     ^
+l/r sum: 4  =  4
+
+  array: 4 1 1 3 1
+l/r pos: ^   ^
+l/r sum: 5 &gt; 4
+
+  array: 4 1 1 3 1
+l/r pos:   ^ ^
+l/r sum:   5=5
+
+=&gt; [4, 1] [1, 3, 1]
+</pre></div>
+
+
+<p>The performance of this is satisfactory. In fact, the only issue I hit was recursion depth. While I could bump this up on my machine, on HackerRank this didn&#8217;t work. No worries though, just use a list as a stack for array segments and&nbsp;iterate.</p>
+<hr />
+<p>Joe however figured out that you can use a <a href="https://en.wikipedia.org/wiki/Prefix_sum">prefix sum</a> to express the problem, at which point you have an ordered list which you can search really&nbsp;quickly:</p>
+<div class="codehilite"><pre><span></span><span class="n">array</span><span class="o">:</span> <span class="n">_</span> <span class="mi">4</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">3</span>  <span class="mi">1</span>
+<span class="n">scan</span><span class="o">:</span>  <span class="mi">0</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">9</span> <span class="mi">10</span>
+<span class="n">hi</span><span class="o">/</span><span class="n">lo</span><span class="o">:</span> <span class="o">^</span>          <span class="o">^,</span> <span class="n">mid</span> <span class="o">=</span> <span class="mi">5</span><span class="o">,</span> <span class="n">index</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="o">=&gt;</span> <span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">4</span><span class="o">,</span> <span class="mi">5</span><span class="o">]</span> <span class="o">[</span><span class="mi">6</span><span class="o">,</span> <span class="mi">9</span><span class="o">,</span> <span class="mi">10</span><span class="o">]</span>
+</pre></div>
+
+
+<p>This works because you only need the depth. It&#8217;s also extremely efficient because you&#8217;re only summing once. Additionally, as soon as you get an array segment with an odd sum, you can stop because you&#8217;ll never be able to split it into equal parts in this&nbsp;representation.</p>
+<p>Problem solved, right? Wrong. Now we have two solutions (both Python), and one is quicker. It&#8217;s officially a&nbsp;competition!</p>
+<hr />
+<p>There&#8217;s one more (easy) optimisation we can make. Zeros don&#8217;t matter, because if you have a zero, it acts like a wildcard for any side of the sum. It&#8217;s not completely obvious in the simple approach, but the prefix sum approach obviously doesn&#8217;t change by adding zeros. There&#8217;s one edge case: if all your values are zeros. Say you have <code>n</code> zeros, then you can split <code>n - 1</code> times:</p>
+<div class="codehilite"><pre><span></span><span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span>
+<span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span>
+<span class="m">0</span> <span class="m">0</span> <span class="m">0</span>
+<span class="m">0</span> <span class="m">0</span>
+<span class="m">0</span> <span class="o">&lt;-</span> depth <span class="o">=</span> <span class="m">4</span>
+</pre></div>
+
+
+<p>It&#8217;s worth handling this edge case, as one of the test cases has a fairly large <code>n</code>.</p>
+<hr />
+<p>Joe and I did some profiling on the Python code. Turns out that the majority of time is spent on <code>int()</code>, parsing the&nbsp;input!</p>
+<div class="codehilite"><pre><span></span><span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">s</span> <span class="o">!=</span> <span class="s1">&#39;0&#39;</span><span class="p">]</span>
+</pre></div>
+
+
+<p>At this point, Manuel moved to C and Joe moved to Golang. Both of these will execute faster than Python (but take longer to write). Manuel found out the biggest speed-up came from implementing your own <code>atoi</code>, which is super simplistic because the input is very limited. I implemented it like&nbsp;this:</p>
+<div class="codehilite"><pre><span></span><span class="kt">uint64_t</span> <span class="nf">_atoi</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">uint64_t</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">getchar</span><span class="p">();</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">b</span> <span class="o">!=</span> <span class="sc">&#39; &#39;</span> <span class="o">&amp;&amp;</span> <span class="n">b</span> <span class="o">!=</span> <span class="sc">&#39;\n&#39;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="n">num</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="sc">&#39;0&#39;</span><span class="p">);</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">getchar</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">num</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>This does make sense if the problem is I/O bound. I also put this into Joe&#8217;s go program. Surprisingly, the go version was quicker than Manuel&#8217;s C version! Now that&#8217;s&nbsp;interesting.</p>
+<p>By using <code>gcc&nbsp;-O3</code>, I managed to shave a few milliseconds off. Then I used <code>clang</code>, which I prefer because the assembly output is much cleaner. The <code>clang&nbsp;-O3</code> version was also faster than <code>gcc&nbsp;-O3</code> - llvm is simply better at rearranging the code at a higher level. <code>clang</code> can output the assembly directly. For comparing it with the go version, <code>objdump</code> works on both. <sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup></p>
+<div class="codehilite"><pre><span></span>$ clang -O3 -S -masm<span class="o">=</span>intel nikita.c -o nikita.s
+<span class="c1"># or</span>
+$ clang -O3 -Wall -Wextra nikita.c -o nikita
+$ objdump -M intel -S nikita &gt; nikita.s
+</pre></div>
+
+
+<p>Let&#8217;s see what we&nbsp;have:</p>
+<div class="codehilite"><pre><span></span><span class="c1">; Intel-syntax 64-bit assembly</span>
+<span class="c1">; prologue omitted</span>
+  <span class="nf">xor</span> <span class="nb">ebx</span><span class="p">,</span> <span class="nb">ebx</span>              <span class="c1">; uint64_t num = 0; *</span>
+  <span class="nf">jmp</span> <span class="nv">getchar</span>               <span class="c1">; goto getchar;</span>
+  <span class="nf">.align</span>  <span class="mi">4</span><span class="p">,</span> <span class="mh">0x90</span>           <span class="c1">; 6 bytes of nop padding for alignment</span>
+<span class="nl">loop_start:</span>                 <span class="c1">; do {</span>
+  <span class="nf">lea</span> <span class="nb">rcx</span><span class="p">,</span> <span class="p">[</span><span class="nb">rbx</span><span class="o">+</span><span class="mi">4</span><span class="o">*</span><span class="nb">rbx</span><span class="p">]</span>      <span class="c1">;   tmp = num + num * 4 = num * 5;</span>
+  <span class="nf">cdqe</span>                      <span class="c1">;   b = (uint64_t)b;</span>
+  <span class="nf">lea</span> <span class="nb">rbx</span><span class="p">,</span> <span class="p">[</span><span class="nb">rax</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="nb">rcx</span><span class="o">-</span><span class="mi">48</span><span class="p">]</span>   <span class="c1">;   num = tmp * 2 + b - &#39;0&#39;;</span>
+<span class="c1">; so the last 3 lines are:   num = num * 10 + (uint64_t)b - &#39;0&#39;;</span>
+<span class="nl">getchar:</span>
+  <span class="nf">call</span>    <span class="nv">_getchar</span>          <span class="c1">;   b = getchar();</span>
+<span class="c1">; return value is in rax, but since it&#39;s an int use eax.</span>
+  <span class="nf">cmp</span> <span class="nb">eax</span><span class="p">,</span> <span class="mi">10</span>               <span class="c1">;   if (b == &#39;\n&#39;)</span>
+  <span class="nf">je</span>  <span class="nv">loop_end</span>              <span class="c1">;     break;</span>
+  <span class="nf">cmp</span> <span class="nb">eax</span><span class="p">,</span> <span class="mi">32</span>               <span class="c1">; } while (b != &#39; &#39;)</span>
+  <span class="nf">jne</span> <span class="nv">loop_start</span>
+<span class="nl">loop_end:</span>
+  <span class="nf">mov</span> <span class="nb">rax</span><span class="p">,</span> <span class="nb">rbx</span>              <span class="c1">; return num;</span>
+<span class="c1">; epilogue omitted</span>
+</pre></div>
+
+
+<p>* for amd64, zeroing the 32-bit register implicitly zeros the top 32-bits. Doing this as a 32-bit op takes one less byte than the corresponding 64-bit op: <code>48 31 db  xor  rbx,rbx</code> vs <code>31 db  xor  ebx,ebx</code>.</p>
+<p>Pretty tight - not much optimisation there, except for <code>getchar</code>. I tried using <code>fread</code> on <code>stdin</code> instead, but that was about the same as <code>getchar</code>. In the go disassembly, I didn&#8217;t find either <code>getchar</code> or <code>fread</code>, but I did find <code>mmap</code>! Aha, so that&#8217;s how the go version is&nbsp;faster.</p>
+<p>Using <a href="http://linux.die.net/man/2/mmap">mmap</a>, the C version was now 3x as fast as the go version. Now we could all get on with our lives. Nikita, it&#8217;s been&nbsp;fun!</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>There are several other ways to output assembly from a go&nbsp;program:</p>
+<ul>
+<li><code>go tool compile -S [-N] nikita.go &gt; nikita.s</code> - This produces some weird output. <code>-N</code> for&nbsp;unoptimised.</li>
+<li><code>go tool objdump $GOPATH/bin/nikita &gt; nikita.s</code> - The same as <code>compile</code>, but with all the statically linked&nbsp;stuff.</li>
+</ul>
+<p>I prefer the <code>objdump -S $GOPATH/bin/nikita</code> route.&#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+</article>
+<section>
+  <p><span class="fa fa-tags"></span> <a href="https://tobywf.com/tag/python/">Python</a>, <a href="https://tobywf.com/tag/golang/">Golang</a></p>
+  <a href="https://tobywf.com/2016/07/summer-2016-hackathon-recap/" class="older"><span class="fa fa-chevron-circle-left"></span> Older</a>
+</section>
+<!-- content end -->
+    <footer>
+      <hr />
+      <p class="center">
+        <a href="https://github.com/tobywf" class="fa-stack fa-lg">
+          <span class="fa fa-github fa-stack-2x"></span>
+        </a>
+        <a href="https://uk.linkedin.com/in/tobywf" class="fa-stack fa-lg">
+          <span class="fa fa-circle fa-stack-2x"></span>
+          <span class="fa fa-linkedin fa-stack-1x fa-inverse"></span>
+        </a>
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="fa-stack fa-lg" style="font-size: 120%;">
+          <span class="fa fa-creative-commons fa-stack-2x"></span>
+        </a>
+      </p>
+      <p>
+        <span class="fa fa-child fa-fw"></span>Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a code craftsman, tinkerer, and musician. He posts his ramblings here. Toby currently lives in England.
+      </p>
+      <p>
+        <span class="fa fa-copyright fa-fw"></span><span class="date cap">mmxii&ndash;mmxvi</span> <span class="name cap">Toby Fleming</span>
+      </p>
+      <p>
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+          <span class="fa fa-creative-commons fa-fw"></span>BY-NC-ND 4.0
+        </a>
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
