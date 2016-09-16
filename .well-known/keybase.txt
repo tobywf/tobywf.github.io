@@ -1,0 +1,68 @@
+==================================================================
+https://keybase.io/tobywf
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://tobywf.com
+  * I am tobywf (https://keybase.io/tobywf) on keybase.
+  * I have a public key with fingerprint 90A8 0C6B 788D 1574 F349  AA29 B0BF 051F 9B20 2065
+
+To do so, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "eldest_kid": "010181afc0c964bdb88377c2c7c4c21ea6a87d2011336c62784dd90858cce67210f30a",
+            "fingerprint": "90a80c6b788d1574f349aa29b0bf051f9b202065",
+            "host": "keybase.io",
+            "key_id": "b0bf051f9b202065",
+            "kid": "010181afc0c964bdb88377c2c7c4c21ea6a87d2011336c62784dd90858cce67210f30a",
+            "uid": "7a2f24f15cdcdd57bc15a40bbb3fac19",
+            "username": "tobywf"
+        },
+        "service": {
+            "hostname": "tobywf.com",
+            "protocol": "https:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1474058141,
+    "expire_in": 157680000,
+    "prev": "501cb8089a4e946828d63cc86a351ab7a65364afe565f2e8be262e3e27869fa6",
+    "seqno": 3,
+    "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v2.0.56
+Comment: https://keybase.io/crypto
+
+yMImAnicrVJJaBRBFJ1EjTg6GgJKPI22ijkMsaqX6urxIAgJYlTwFOM2VlVXz7Qm
+3ZOZTkwICbgGRSLiAkYFNS4g4hKNS8YlLuCKEg2ocVziAooYl5sBl+qgB8GjdSnq
+1Xvvv//510NDAsGcmb1vNoVLN5fk3LmytSZQni3f0yBR16yXog3SCj548UqTp73Y
+CtuUohKAAGJILAaYgVRqUowVXWcy05nKZMgJIlg3ZQChoiCGZB2rpmkArGHGONJl
+CCwFECkiWbYT56lkynY8YWsAggFDVMfYhJquWopqECIbFFALaNAyqAxkgDQhTLhp
+XyHCUZLmxbYrMPGIDcb7B/8/564ZtNOJbMmqBTVmMtPUdMqgRlRAKVUswqDhE9M8
+5ZAqLtieS+tXWlJjRBJYrc24P1a/j7/+i5lbJXTJlOu5zK0UeMLzkumor/Pqkz5x
+Jaex3xYxajummKFQ1PJU2nYdKQoFk3m27wlVXQUahiqMSLwuaad4zPYZmo4wEMev
+w2uFpQYgoxhgg6jcUBGWsYkUxjAiigYJ1QnSFKQSi2tIs2SOKZeRzBUuJoQMiyDJ
+b6racaWoImKSuLBM23GHeDUpLjVe7Vo8NJATDOQNy/V3KxAckf9n40Ltw7+HsTFl
+/sSpoz/VtfZf2nenraKp+OyC8d/Of3Ufli7XM2sfrc4OXfpqoL1tZvWVjwt3lEQa
+n+7qnf0F4y2J/qPs2Ixth38MnF7F+p5lL/RfD3WFbhb+aK/4/Pz1izXzOssaLm+P
+l80Kj5yUPu6cqn6ZOFDkhktKV+0bOTe+pjrAe/cs8yozT/LKw/NHzOlzpdxDNyaM
+7fmw8HR80s+DbUE+e/+XaxOWTj6yrHtJd0VBblXT3rz1Le8f3y8ad6tnw6IHrXfX
+ZbpSLWM6lmtnLr/NdwrPBXYuuLe7c1pjwYmT7aOy04uyP3e1nozcT0xuvrnx1sW7
+15qnqyG8OLPjdqajuaOm4N2ouuAvTxBCLg==
+=GsqS
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/tobywf
+
+==================================================================
