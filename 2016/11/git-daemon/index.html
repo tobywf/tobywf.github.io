@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Quick and dirty git server - tobywf</title>
+  <meta charset="utf-8" />
+  <meta name="author" content="Toby Fleming" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,300italic,700|Source+Code+Pro:400,700|Montserrat:400" />
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css" />
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png" />
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <ul>
+<!-- breadcrumbs start -->
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" /></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2016/">&#x27;16</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2016/11/">Nov</a></li>
+<li class="portfolio"><a href="https://tobywf.com/portfolio/" class="cap">portfolio</a></li>
+<!-- breadcrumbs end -->
+      </ul>
+    </nav>
+<!-- content start -->
+<header class="post-head">
+  <h1>Quick and dirty git&nbsp;server</h1>
+  <div class="infoline">
+    <span class="fa fa-calendar"></span> <span class="date">2 Nov &#x27;16</span>
+  </div>
+</header>
+<article>
+<p>If you want to quickly share a Git repository with someone, you can use <a href="https://git-scm.com/book/en/v2/Git-on-the-Server-Git-Daemon">git daemon</a>:</p>
+<div class="codehilite"><pre><span></span>$ hostname
+blah
+$ <span class="nb">cd</span> my_repo/
+$ git daemon <span class="se">\</span>
+    --verbose <span class="se">\</span>
+    --reuseaddr <span class="se">\</span>
+    --export-all <span class="se">\</span>
+    --strict-paths <span class="se">\</span>
+    --base-path<span class="o">=</span>.git <span class="se">\</span>
+    .git/
+</pre></div>
+
+
+<p>Guests can now clone from you: <code>git clone git://blah/my_repo</code>. Note that this is completely unauthenticated read-only&nbsp;access!</p>
+<p>If you&#8217;re lazy like me, you can create an alias so all you have to type is <code>git serve</code> (from the root of the&nbsp;repo):</p>
+<div class="codehilite"><pre><span></span><span class="k">[alias]</span>
+    <span class="na">serve</span> <span class="o">=</span> <span class="s">!git daemon --verbose --reuseaddr --export-all --strict-paths --base-path=.git .git/</span>
+</pre></div>
+
+
+<p>So what do the options&nbsp;mean?</p>
+<ul>
+<li><code>--verbose</code> prints all connection attempts to&nbsp;stdout.</li>
+<li><code>--reuseaddr</code> stops old connections from causing issues when restarting the&nbsp;server.</li>
+<li><code>--export-all</code> means <code>git deamon</code> will allow pulling from repositories without a <code>git-daemon-export-ok</code> file.</li>
+<li><code>--strict-paths</code> isn&#8217;t so important for single-repo sharing, but avoids oversharing issues if you accidentally run the daemon from the wrong&nbsp;directory.</li>
+<li><code>--base-path=.git</code> remaps the path so guests don&#8217;t need to know where the repo is hosted on your machine, only the repo&nbsp;name.</li>
+<li><code>.git/</code> - this is the directory of the bare repo to whitelist/share. In other words, only share the git repository data, not your working&nbsp;directory.</li>
+</ul>
+<p>You might need to punch through your firewall. On Ubuntu, if you are using <code>iptables</code>, this is how you can check if you&#8217;ve already added a firewall rule and how to add a firewall exception. I believe this lasts until you&nbsp;restart:</p>
+<div class="codehilite"><pre><span></span>$ sudo iptables -nL <span class="p">|</span> grep 9418
+$ sudo iptables -I INPUT <span class="m">1</span> -p tcp --dport <span class="m">9418</span> -j ACCEPT
+</pre></div>
+</article>
+<section>
+  <p><span class="fa fa-tags"></span> <a href="https://tobywf.com/tag/git/">git</a>, <a href="https://tobywf.com/tag/linux/">Linux</a></p>
+  <a href="https://tobywf.com/2016/10/macos-dotfiles/" class="older"><span class="fa fa-chevron-circle-left"></span> Older</a>
+</section>
+<!-- content end -->
+    <footer>
+      <hr />
+      <p class="center">
+        <a href="https://github.com/tobywf" class="fa-stack fa-lg">
+          <span class="fa fa-github fa-stack-2x"></span>
+        </a>
+        <a href="https://uk.linkedin.com/in/tobywf" class="fa-stack fa-lg">
+          <span class="fa fa-circle fa-stack-2x"></span>
+          <span class="fa fa-linkedin fa-stack-1x fa-inverse"></span>
+        </a>
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="fa-stack fa-lg" style="font-size: 120%;">
+          <span class="fa fa-creative-commons fa-stack-2x"></span>
+        </a>
+      </p>
+      <p>
+        <span class="fa fa-child fa-fw"></span>Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a code craftsman, tinkerer, and musician. He posts his ramblings here. Toby currently lives in England.
+      </p>
+      <p>
+        <span class="fa fa-copyright fa-fw"></span><span class="date cap">mmxii&ndash;mmxvi</span> <span class="name cap">Toby Fleming</span>
+      </p>
+      <p>
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+          <span class="fa fa-creative-commons fa-fw"></span>BY-NC-ND 4.0
+        </a>
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
