@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>resume - tobywf</title>
+  <meta charset="utf-8" />
+  <meta name="author" content="Toby Fleming" />
+  <link href="https://fonts.googleapis.com/css?family=Montserrat|Source+Serif+Pro:400,700" rel="stylesheet">
+  <style type="text/css">
+html, body, p, div, section, header, article, footer, h1, dl, dt, dd {
+  background: transparent;
+  border: 0 none;
+  padding: 0;
+  margin: 0;
+  font-size: 1em;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: "Source Serif Pro", Georgia, serif;
+  font-size: 11pt;
+  background: white;
+  color: black;
+  text-align: left;
+  vertical-align: baseline;
+  -webkit-font-feature-settings: "pnum" 1, "kern" 1, "liga" 1;
+}
+
+#wrapper {
+  display: flex;
+  flex-flow: column;
+  width: 210mm;
+  height: 297mm;
+  margin: 0 auto;
+  background-color: white;
+}
+
+header, article, footer { padding: 0 24mm; box-sizing: border-box; }
+
+header {
+  font-family: "Montserrat", Helvetica, Arial, sans-serif;
+  text-transform: uppercase;
+  display: block;
+  width: auto;
+  padding-top: 24mm;
+  padding-bottom: 11pt;
+  background-color: #404040;
+  color: rgb(100, 177, 242);
+}
+header span { color: white; }
+footer { text-align: right; padding-bottom: 24mm; }
+article { flex: 1; overflow: hidden; padding-top: 6pt; }
+
+dl {
+  width: 100%;
+  overflow: hidden;
+}
+
+dt {
+  font-weight: bold;
+  vertical-align: top;
+  float: left;
+  width: 70pt;
+}
+
+dd { margin-left: 75pt; margin-bottom: 6pt; }
+dt.header {
+  font-family: "Montserrat", Helvetica, Arial, sans-serif;
+  text-transform: uppercase;
+  font-weight: bold;
+  float: none;
+  width: 100%;
+  margin-bottom: 6pt;
+}
+
+dd > p { margin: 6pt 0; letter-spacing: -0.2pt; }
+
+@media screen {
+  body { background-color: gray; }
+}
+
+a { text-decoration: none; font-weight: bold; }
+a:link, a:visited, a:link:hover, a:visited:hover { color: rgb(100, 177, 242); }
+h1 > a:link, h1 > a:visited, h1 > a:link:hover, h1 > a:visited:hover {
+  font-size: 36pt;
+  font-weight: normal;
+  color: white;
+}
+  </style>
+</head>
+<body>
+  <div id="wrapper">
+<header>
+  <h1><a href="https://tobywf.com">Toby Fleming</a></h1>
+  <div>Scrum Master <span>&amp;</span> Software Engineer <span>&mdash;</span> <a href="https://www.linkedin.com/in/tobywf">LinkedIn</a>
+</header>
+<article>
+  <dl>
+    <dt class="header">Education</dt>
+    <dt>2009 &ndash; 2013</dt>
+    <dd>
+      <p><b>Masters of Physics (MPhys)</b> at <a href="http://www.physics.leeds.ac.uk/">University&nbsp;of&nbsp;Leeds</a></p>
+      <p><b>Bachelor of Physics (BSc&nbsp;Hons.)</b> at <a href="http://www.physics.leeds.ac.uk/">University&nbsp;of&nbsp;Leeds</a></p>
+    </dd>
+    <dt class="header">Work History</dt>
+    <dt>2013 &ndash; 2016</dt>
+    <dd>
+      <p><b>Scrum Master &amp; Software Engineer</b> at <a href="http://www.ibm.com/uk/en/">IBM&nbsp;United&nbsp;Kingdom&nbsp;Ltd</a></p>
+      <p>I was the scrum master for the global <a href="http://www-03.ibm.com/systems/uk/storage/flash/v9000/">IBM FlashSystem V9000</a> development team. <b>(agile, scrum, Jira, Confluence, Kanban)</b></p>
+      <p>As the software architect for the Openstack on GFPS* deployment team, I supported the development of an install toolkit that provided a setup wizard and a fully auditable, automated cluster installation. I also helped design and set-up our continuous integration pipeline. * aka. <a href="http://www-03.ibm.com/systems/uk/storage/spectrum/scale/">IBM Spectrum Scale</a> <b>(Python, Chef, Vagrant, Jenkins, Gerrit, Linux/Unix, GPFS, Openstack)</b></p>
+      <p>I led the development of IP quorum on <a href="http://www-03.ibm.com/systems/uk/storage/storwize/">IBM Storwize</a> products. If the connection between two sites is lost, this feature allows the cluster to continue running. Instead of a third site appliance, a simple application can be deployed without costly fibre-channel connectivity between all sites. <b>(C, Java, Linux/Unix)</b></p>
+      <p>For the initial release of <a href="http://www-03.ibm.com/systems/uk/storage/flash/v9000/">IBM FlashSystem V9000</a> I owned and shipped the first-time data capture and disaster recovery (tier 4) features. <b>(Perl, C)</b></p>
+      <p>As part of the Manchester Lab DevOps team, I ran our DNS &amp; DHCP infrastructure until mid-2015. <b>(Linux/Unix, DevOps, sysadmin, Ansible)</b></p>
+    </dd>
+    <dt>2011 &ndash; 2013</dt>
+    <dd>
+      <p><b>Software Engineer</b> at <a href="https://www.workanyware.co.uk">Work&nbsp;AnyWare&nbsp;Ltd</a></p>
+      <p>To augment our web-based cloud document storage service I created a Microsoft Office plugin, which automatically versions and uploads documents when the user saves. Users can also open any version directly without switching to the web interface. I also wrote the server side API.  <b>(C#, PHP)</b></p>
+    </dd>
+    <dt>2012</dt>
+    <dd>
+      <p><b>Summer Undergraduate Research Fellow (SURF)</b> at <a href="https://www.caltech.edu/">California&nbsp;Institute&nbsp;of&nbsp;Technology</a></p>
+      <p>As part of the <a href="http://www.ligo.caltech.edu/">LIGO Scientific Collaboration</a>, I designed and wrote a web application for collaborative electromagnetic follow-up of gravitational wave candidates. <b>(Python, NumPy, C, HTML5, Javascript)</b></p>
+    </dd>
+    <dt>2008 &ndash; 2009</dt>
+    <dd>
+      <p><b>Junior Software Engineer</b> at <a href="http://www.ostertagonline.de/de/index.php">Ostertag&nbsp;Solutions&nbsp;AG</a></p>
+      <p>I ported our attendant console product from legacy Visual Basic to C#. I designed and coded the UI for a 24" touch-screen VoIP/SIP telephone that was presented at the 2009 CeBIT conference. I also deployed servers and hardware on-site for customers. <b>(Visual Basic, C#, .NET, Linux/Unix)</b></p>
+    </dd>
+  </dl>
+</article>
+<footer>Sydney, December 28, 2016</footer>
+  </div>
+</body>
+</html>
