@@ -5,6 +5,7 @@
   <meta charset="utf-8" />
   <meta name="author" content="Toby Fleming" />
   <link href="https://fonts.googleapis.com/css?family=Montserrat|Source+Serif+Pro:400,700" rel="stylesheet">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <style type="text/css">
 html, body, p, div, section, header, article, footer, h1, dl, dt, dd {
   background: transparent;
@@ -19,14 +20,43 @@ html, body, p, div, section, header, article, footer, h1, dl, dt, dd {
 }
 
 body {
+  width: 100%;
   font-family: "Source Serif Pro", Georgia, serif;
   font-size: 11pt;
-  background: white;
+  background: gray;
   color: black;
   text-align: left;
   vertical-align: baseline;
   -webkit-font-feature-settings: "pnum" 1, "kern" 1, "liga" 1;
 }
+
+a { text-decoration: none; font-weight: bold; }
+a:link, a:visited, a:link:hover, a:visited:hover { color: rgb(100, 177, 242); }
+h1 > a:link, h1 > a:visited, h1 > a:link:hover, h1 > a:visited:hover {
+  font-weight: normal;
+  color: white;
+}
+
+header {
+  font-family: "Montserrat", Helvetica, Arial, sans-serif;
+  text-transform: uppercase;
+  background-color: #404040;
+  color: rgb(100, 177, 242);
+}
+
+header span { color: white; }
+footer { text-align: right; }
+dt { font-weight: bold; }
+
+p { margin: 6pt 0; letter-spacing: -0.2pt; }
+
+#wrapper {
+  width: 100%;
+  background-color: white;
+}
+header, article, footer { padding: 6pt; }
+
+@media all and (min-width: 210mm) {
 
 #wrapper {
   display: flex;
@@ -34,23 +64,17 @@ body {
   width: 210mm;
   height: 297mm;
   margin: 0 auto;
-  background-color: white;
 }
 
 header, article, footer { padding: 0 24mm; box-sizing: border-box; }
 
 header {
-  font-family: "Montserrat", Helvetica, Arial, sans-serif;
-  text-transform: uppercase;
   display: block;
   width: auto;
   padding-top: 24mm;
   padding-bottom: 11pt;
-  background-color: #404040;
-  color: rgb(100, 177, 242);
 }
-header span { color: white; }
-footer { text-align: right; padding-bottom: 24mm; }
+footer { padding-bottom: 24mm; }
 article { flex: 1; overflow: hidden; padding-top: 6pt; }
 
 dl {
@@ -59,7 +83,6 @@ dl {
 }
 
 dt {
-  font-weight: bold;
   vertical-align: top;
   float: left;
   width: 70pt;
@@ -69,24 +92,12 @@ dd { margin-left: 75pt; margin-bottom: 6pt; }
 dt.header {
   font-family: "Montserrat", Helvetica, Arial, sans-serif;
   text-transform: uppercase;
-  font-weight: bold;
   float: none;
   width: 100%;
   margin-bottom: 6pt;
 }
 
-dd > p { margin: 6pt 0; letter-spacing: -0.2pt; }
-
-@media screen {
-  body { background-color: gray; }
-}
-
-a { text-decoration: none; font-weight: bold; }
-a:link, a:visited, a:link:hover, a:visited:hover { color: rgb(100, 177, 242); }
-h1 > a:link, h1 > a:visited, h1 > a:link:hover, h1 > a:visited:hover {
-  font-size: 36pt;
-  font-weight: normal;
-  color: white;
+h1 > a { font-size: 36pt; }
 }
   </style>
 </head>
