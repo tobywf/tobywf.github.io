@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>macOS’ Disk Utility sucks, here’s how to use a CLI to partition instead - tobywf</title>
+  <meta charset="utf-8" />
+  <meta name="author" content="Toby Fleming" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,300italic,700|Source+Code+Pro:400,700|Montserrat:400" />
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css" />
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png" />
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <ul>
+<!-- breadcrumbs start -->
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon" /></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2017/">&#x27;17</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2017/01/">Jan</a></li>
+<li class="last"><a href="https://tobywf.com/resume/" class="cap">resume</a></li>
+<!-- breadcrumbs end -->
+      </ul>
+    </nav>
+<!-- content start -->
+<header class="post-head">
+  <h1>macOS&#8217; Disk Utility sucks, here&#8217;s how to use a <span class="caps">CLI</span> to partition&nbsp;instead</h1>
+  <div class="infoline">
+    <span class="fa fa-calendar"></span> <span class="date">1 Jan &#x27;17</span>
+  </div>
+</header>
+<article>
+<p>I recently found out that Apple&#8217;s Disk Utility won&#8217;t allow multiple partitions
+with a Master Boot Record. This is incredibly annoying. But the <span class="caps">CLI</span>&nbsp;will.</p>
+<p>Warning: There is no confirmation, no &#8220;are you sure?&#8221; prompts. <code>diskutil</code> will
+mess your disks up, zero fucks given. You need to double and triple check the
+commands you issue. That is&nbsp;all.</p>
+<div class="codehilite"><pre><span></span>$ diskutil list
+/dev/disk0 <span class="o">(</span>internal, physical<span class="o">)</span>:
+   <span class="c1">#:                       TYPE NAME         \</span>
+     SIZE       IDENTIFIER
+   0:      GUID_partition_scheme              <span class="se">\</span>
+    *121.3 GB   disk0
+   1:                        EFI EFI          <span class="se">\</span>
+     209.7 MB   disk0s1
+   2:          Apple_CoreStorage XXX          <span class="se">\</span>
+     120.5 GB   disk0s2
+   3:                 Apple_Boot Recovery HD  <span class="se">\</span>
+     650.0 MB   disk0s3
+
+<span class="o">[</span>...<span class="o">]</span>
+
+/dev/disk2 <span class="o">(</span>external, physical<span class="o">)</span>:
+   <span class="c1">#:                       TYPE NAME         \</span>
+     SIZE       IDENTIFIER
+   0:      GUID_partition_scheme              <span class="se">\</span>
+    *2.0 TB     disk2
+   1:                        EFI EFI          <span class="se">\</span>
+     209.7 MB   disk2s1
+   2:                  Apple_HFS one          <span class="se">\</span>
+     1.8 TB     disk2s2
+   3:                  Apple_HFS two          <span class="se">\</span>
+     249.7 GB   disk2s3
+</pre></div>
+
+
+<p>This command will be your friend, a lifesaver. Learn to love it. It shows the
+disks attached to the computer. You&#8217;re most interested in the value in the
+<code>IDENTIFIER</code> column, but the other columns will help you figure out what&#8217;s&nbsp;what.</p>
+<p>In this case, we&#8217;ve got two physical disks, one internal disk and one external.
+Do not touch the internal disk, this is your hard&nbsp;drive.</p>
+<p>To partition a disk, use the <code>partitionDisk</code> subcommand. The help is actually
+rather good. To view which filesystems you can create, you&#8217;ll also need the
+<code>listFilesystems</code> subcommand.</p>
+<div class="codehilite"><pre><span></span>$ diskutil partitionDisk -h
+<span class="o">[</span>...<span class="o">]</span>
+$ diskutil listFilesystems
+<span class="o">[</span>...<span class="o">]</span>
+</pre></div>
+
+
+<p>Briefly, you&nbsp;need:</p>
+<ul>
+<li>The disk identifier (you can also use the mount point&nbsp;instead)</li>
+<li>The number of partitions (optional, will be inferred otherwise - a good sanity&nbsp;check)</li>
+<li>The partition scheme (optional, will be <span class="caps">GUID</span>/<span class="caps">GPT</span> by&nbsp;default)</li>
+<li>Next come the partition&nbsp;parameters</li>
+<li>Partition format, from <code>diskutil listFilesystems</code></li>
+<li>Partition&nbsp;name</li>
+<li>Partition&nbsp;size</li>
+<li>repeat</li>
+</ul>
+<p>For partition size, you can use decimal numbers with the suffixes B, K, M, G,
+T, P (bytes, kilobytes, megabytes, gigabytes, terabytes or petabytes), % of
+the disk size, or <code>R</code> for&nbsp;remainder.</p>
+<p>These examples show you how to create one, two or three&nbsp;partitions:</p>
+<div class="codehilite"><pre><span></span>$ sudo diskutil partitionDisk disk3 <span class="m">1</span> <span class="se">\</span>
+    JHFS+ one R
+$ sudo diskutil partitionDisk disk3 <span class="m">2</span> GPT <span class="se">\</span>
+    JHFS+ one R <span class="se">\</span>
+    JHFS+ two 250G
+$ sudo diskutil partitionDisk disk3 MBR <span class="se">\</span>
+    JHFS+ one R <span class="se">\</span>
+    JHFS+ two 250G <span class="se">\</span>
+    ExFAT three 10G
+</pre></div>
+</article>
+<section>
+  <p><span class="fa fa-tags"></span> <a href="https://tobywf.com/tag/macos/">macOS</a></p>
+  <a href="https://tobywf.com/2016/11/git-daemon/" class="older"><span class="fa fa-chevron-circle-left"></span> Older</a>
+</section>
+<!-- content end -->
+    <footer>
+      <hr />
+      <p class="center">
+        <a href="https://github.com/tobywf" class="fa-stack fa-lg">
+          <span class="fa fa-github fa-stack-2x"></span>
+        </a>
+        <a href="https://uk.linkedin.com/in/tobywf" class="fa-stack fa-lg">
+          <span class="fa fa-circle fa-stack-2x"></span>
+          <span class="fa fa-linkedin fa-stack-1x fa-inverse"></span>
+        </a>
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="fa-stack fa-lg" style="font-size: 120%;">
+          <span class="fa fa-creative-commons fa-stack-2x"></span>
+        </a>
+      </p>
+      <p>
+        <span class="fa fa-child fa-fw"></span>Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a code craftsman, tinkerer, and musician. He posts his ramblings here. Toby is currently travelling.
+      </p>
+      <p>
+        <span class="fa fa-copyright fa-fw"></span><span class="date cap">mmxii&ndash;mmxvi</span> <span class="name cap">Toby Fleming</span>
+      </p>
+      <p>
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+          <span class="fa fa-creative-commons fa-fw"></span>BY-NC-ND 4.0
+        </a>
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
