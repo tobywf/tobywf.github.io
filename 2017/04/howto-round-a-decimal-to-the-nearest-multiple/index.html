@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Howto round a decimal up or down to the nearest multiple - tobywf</title>
+  <meta charset="utf-8" />
+  <meta name="author" content="Toby Fleming" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,300italic,700|Source+Code+Pro:400,700|Montserrat:400" />
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css" />
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png" />
+  <script src="https://tobywf.com/theme/metrique-min.js"></script>
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <ul>
+<!-- breadcrumbs start -->
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon" /></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2017/">&#x27;17</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2017/04/">Apr</a></li>
+<li class="last"><a href="https://tobywf.com/resume/" class="cap">resume</a></li>
+<!-- breadcrumbs end -->
+      </ul>
+    </nav>
+<!-- content start -->
+<header class="post-head">
+  <h1>Howto round a decimal up or down to the nearest&nbsp;multiple</h1>
+  <div class="infoline">
+    <span class="fa fa-calendar"></span> <span class="date">10 Apr &#x27;17</span>
+  </div>
+</header>
+<article>
+<p><a href="https://gist.github.com/tobywf/b0f67e9e414e41813c1590ed1ea39e2c">Take me to the code, dammit</a>. (I strongly recommend you look at the explanation. But then I would say&nbsp;that.)</p>
+<p>Say you live in a country without 1, 5, or 10 cent coins (or the monetary equivalent), and you need to round a <a href="https://docs.python.org/3/library/decimal.html"><code>Decimal</code></a> number to 20 or 25 cents. Unfortunately, the <a href="https://docs.python.org/3/library/decimal.html#decimal.Decimal.quantize"><code>quantize</code></a> method will only round your number to the argument&#8217;s&nbsp;exponent:</p>
+<div class="codehilite"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.03&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.02&#39;</span><span class="p">))</span>
+<span class="go">Decimal(&#39;0.03&#39;)</span>
+</pre></div>
+
+
+<p>What we really want is the number rounded to the nearest&nbsp;multiple:</p>
+<div class="codehilite"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">round_up</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.03&#39;</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.02&#39;</span><span class="p">))</span>
+<span class="go">Decimal(&#39;0.04&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">round_down</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.03&#39;</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.02&#39;</span><span class="p">))</span>
+<span class="go">Decimal(&#39;0.02&#39;)</span>
+</pre></div>
+
+
+<p>Luckily, this isn&#8217;t too difficult. But before I show the code, I want to walk through the operations we&#8217;ll perform. And don&#8217;t worry if maths isn&#8217;t your strong suit. In these examples, we&#8217;ll use 20 cents, or 0.2. First up, rounding&nbsp;down:</p>
+<p><img alt="Graphical representation of the rounding down maths operations" src="https://tobywf.com/2017/04/howto-round-a-decimal-to-the-nearest-multiple/images/2017-04-10-rounding-down.svg" /></p>
+<ol>
+<li>Rescale the number continuum, so that 0.2 is equal to&nbsp;1</li>
+<li>Round down to the nearest&nbsp;integer</li>
+<li>Rescale the number continuum, so that 1 is equal to 0.2, i.e. the original scale has been&nbsp;restored</li>
+</ol>
+<p>Rounding up is pretty much the&nbsp;same:</p>
+<p><img alt="Graphical representation of the rounding up maths operations" src="https://tobywf.com/2017/04/howto-round-a-decimal-to-the-nearest-multiple/images/2017-04-10-rounding-up.svg" /></p>
+<p>Finally, here&#8217;s the code. It even has unit tests, which probe the behaviour over various precision levels, exponents and&nbsp;values.</p>
+<script src="https://gist.github.com/tobywf/b0f67e9e414e41813c1590ed1ea39e2c.js"></script>
+</article>
+<section>
+  <p><span class="fa fa-tags"></span> <a href="https://tobywf.com/tag/python/">Python</a></p>
+  <a href="https://tobywf.com/2017/01/fortran-considerations/" class="older"><span class="fa fa-chevron-circle-left"></span> Older</a>
+</section>
+<!-- content end -->
+    <footer>
+      <hr />
+      <p class="center">
+        <a href="https://github.com/tobywf" class="fa-stack fa-lg">
+          <span class="fa fa-github fa-stack-2x"></span>
+        </a>
+        <a href="https://uk.linkedin.com/in/tobywf" class="fa-stack fa-lg">
+          <span class="fa fa-circle fa-stack-2x"></span>
+          <span class="fa fa-linkedin fa-stack-1x fa-inverse"></span>
+        </a>
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="fa-stack fa-lg" style="font-size: 120%;">
+          <span class="fa fa-creative-commons fa-stack-2x"></span>
+        </a>
+      </p>
+      <p>
+        <span class="fa fa-child fa-fw"></span>Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a code craftsman, tinkerer, and musician. He posts his ramblings here. Toby is currently travelling.
+      </p>
+      <p>
+        <span class="fa fa-copyright fa-fw"></span><span class="date cap">mmxii&ndash;mmxvii</span> <span class="name cap">Toby Fleming</span>
+      </p>
+      <p>
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+          <span class="fa fa-creative-commons fa-fw"></span>BY-NC-ND 4.0
+        </a>
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
