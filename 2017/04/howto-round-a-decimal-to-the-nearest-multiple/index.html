@@ -34,33 +34,39 @@
 <p><a href="https://gist.github.com/tobywf/b0f67e9e414e41813c1590ed1ea39e2c">Take me to the code, dammit</a>. (I strongly recommend you look at the explanation. But then I would say&nbsp;that.)</p>
 <p>Say you live in a country without 1, 5, or 10 cent coins (or the monetary equivalent), and you need to round a <a href="https://docs.python.org/3/library/decimal.html"><code>Decimal</code></a> number to 20 or 25 cents. Unfortunately, the <a href="https://docs.python.org/3/library/decimal.html#decimal.Decimal.quantize"><code>quantize</code></a> method will only round your number to the argument&#8217;s&nbsp;exponent:</p>
 <div class="codehilite"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.03&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.02&#39;</span><span class="p">))</span>
-<span class="go">Decimal(&#39;0.03&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.3&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.2&#39;</span><span class="p">))</span>
+<span class="go">Decimal(&#39;0.3&#39;)</span>
 </pre></div>
 
 
 <p>What we really want is the number rounded to the nearest&nbsp;multiple:</p>
-<div class="codehilite"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">round_up</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.03&#39;</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.02&#39;</span><span class="p">))</span>
-<span class="go">Decimal(&#39;0.04&#39;)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">round_down</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.03&#39;</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.02&#39;</span><span class="p">))</span>
-<span class="go">Decimal(&#39;0.02&#39;)</span>
+<div class="codehilite"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">round_up</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.3&#39;</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.2&#39;</span><span class="p">))</span>
+<span class="go">Decimal(&#39;0.4&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">round_down</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.3&#39;</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.2&#39;</span><span class="p">))</span>
+<span class="go">Decimal(&#39;0.2&#39;)</span>
 </pre></div>
 
 
-<p>Luckily, this isn&#8217;t too difficult. But before I show the code, I want to walk through the operations we&#8217;ll perform. And don&#8217;t worry if maths isn&#8217;t your strong suit. In these examples, we&#8217;ll use 20 cents, or 0.2. First up, rounding&nbsp;down:</p>
+<p>Luckily, this isn&#8217;t too difficult. But before I show the code, I want to walk through the operations we&#8217;ll perform. And don&#8217;t worry if maths isn&#8217;t your strong suit. In these examples, we&#8217;ll round 30 cents (0.3) to the nearest 20 cents (0.2), as indicated by the dotted line. First up, rounding&nbsp;down:</p>
 <p><img alt="Graphical representation of the rounding down maths operations" src="https://tobywf.com/2017/04/howto-round-a-decimal-to-the-nearest-multiple/images/2017-04-10-rounding-down.svg" /></p>
 <ol>
-<li>Rescale the number continuum, so that 0.2 is equal to&nbsp;1</li>
-<li>Round down to the nearest&nbsp;integer</li>
+<li>Rescale the number continuum, so that 0.2 is equal to 1, and 0.3 becomes&nbsp;1.5</li>
+<li>Round down to the nearest integer, so 1.5 becomes&nbsp;1</li>
 <li>Rescale the number continuum, so that 1 is equal to 0.2, i.e. the original scale has been&nbsp;restored</li>
 </ol>
 <p>Rounding up is pretty much the&nbsp;same:</p>
 <p><img alt="Graphical representation of the rounding up maths operations" src="https://tobywf.com/2017/04/howto-round-a-decimal-to-the-nearest-multiple/images/2017-04-10-rounding-up.svg" /></p>
+<ol>
+<li>Rescale the number continuum, so that 0.2 is equal to 1, and 0.3 becomes&nbsp;1.5</li>
+<li>Round up to the nearest integer, so 1.5 becomes&nbsp;2</li>
+<li>Rescale the number continuum, so that 1 is equal to 0.2, i.e. the original scale has been&nbsp;restored</li>
+</ol>
 <p>Finally, here&#8217;s the code. It even has unit tests, which probe the behaviour over various precision levels, exponents and&nbsp;values.</p>
 <script src="https://gist.github.com/tobywf/b0f67e9e414e41813c1590ed1ea39e2c.js"></script>
 </article>
 <section>
   <p><span class="fa fa-tags"></span> <a href="https://tobywf.com/tag/python/">Python</a></p>
+  <a href="https://tobywf.com/2017/04/build-dvisvgm-kpathsea-on-macos/" class="newer">Newer <span class="fa fa-chevron-circle-right"></span></a>
   <a href="https://tobywf.com/2017/01/fortran-considerations/" class="older"><span class="fa fa-chevron-circle-left"></span> Older</a>
 </section>
 <!-- content end -->

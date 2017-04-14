@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Building dvisvgm and kpathsea on macOS - tobywf</title>
+  <meta charset="utf-8" />
+  <meta name="author" content="Toby Fleming" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,300italic,700|Source+Code+Pro:400,700|Montserrat:400" />
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css" />
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png" />
+  <script src="https://tobywf.com/theme/metrique-min.js"></script>
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <ul>
+<!-- breadcrumbs start -->
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon" /></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2017/">&#x27;17</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2017/04/">Apr</a></li>
+<li class="last"><a href="https://tobywf.com/resume/" class="cap">resume</a></li>
+<!-- breadcrumbs end -->
+      </ul>
+    </nav>
+<!-- content start -->
+<header class="post-head">
+  <h1>Building dvisvgm and kpathsea on&nbsp;macOS</h1>
+  <div class="infoline">
+    <span class="fa fa-calendar"></span> <span class="date">14 Apr &#x27;17</span>
+  </div>
+</header>
+<article>
+<p><a href="http://dvisvgm.bplaced.net"><code>dvisvgm</code></a> converts <span class="caps">DVI</span> files produced by LaTeX to <span class="caps">SVG</span>. It&#8217;s included in <a href="https://www.tug.org/texlive/">TeXLive</a>/<a href="https://www.tug.org/mactex/">MacTeX</a>, which is good enough for most users. But the binary in my (fully upgraded) TeXLive 2016 is somewhat out of date: 1.15.1, which is from 19 April 2016. In the meantime, 2.1.3 has been&nbsp;released.</p>
+<p>Luckily, dvisvgm is a very modern and well-maintained project. And <a href="https://brew.sh/">homebrew</a> has almost all dependencies we need (<code>automake</code>, <code>freetype</code>, <code>ghostscript</code>, and <code>potrace</code>), with one major exception:&nbsp;kpathsea.</p>
+<p><strong><span class="caps">TL</span>;<span class="caps">DR</span></strong>: Here&#8217;s <a href="https://gist.github.com/tobywf/aeeeee63053aaaa841b4032963406684">a script that downloads and builds dvisvgm on macOS</a>. Tested on macOS Sierra&nbsp;10.12.4.</p>
+<p><a href="https://www.tug.org/kpathsea/">Kpathsea</a> &#8220;is a library to do path searching&#8221;, which basically means it&#8217;s like <code>which</code> or <code>locate</code> for TeX. Also, &#8220;[k]pathsea is maintained as part of the TeX Live distribution. It has never been distributed as a standalone library, though some distros have deployed it that way.&#8221; Turns out those distros probably did that because (<span class="caps">AFAIK</span>), TeXLive ships with all the binaries statically linked, i.e. without any libraries in the form of shared objects or dynamic libraries. So if you want to rebuild something that depends on kpathsea, you&#8217;d basically have to build the TeX distribution yourself. Which is so very tedious, but TeXLive is <a href="https://www.tug.org/texlive/svn/">open&nbsp;source</a></p>
+<p>In fact, it turns out you can just build kpathsea by itself, as it has no other dependencies. But it isn&#8217;t that easy, because nothing in TeX can be&nbsp;easy.</p>
+<p>Kpathsea needs something to base it&#8217;s search paths on. And while the <a href="https://www.tug.org/texinfohtml/kpathsea.html#Path-sources">documentation of path sources</a> sounds reasonable, a major pitfall is that most paths are based on a variable called <code>SELFAUTOLOC</code>; this is the (runtime) path of the kpathsea binaries. At least that&#8217;s the case when I build it. For MacTeX, not so&nbsp;much:</p>
+<div class="codehilite"><pre><span></span>$ which kpsewhich
+/Library/TeX/texbin/kpsewhich
+$ kpsewhich -var SELFAUTOLOC
+/usr/local/texlive/2016/bin/x86_64-darwin
+</pre></div>
+
+
+<p>So far, I have not been able to figure out how MacTeX manages to hardcode <code>SELFAUTOLOC</code>. I messed around with it for hours. My final solution is to simply patch the function that returns the executable directory (<code>kpathsea_selfdir</code>) to return a hardcoded path to the TeXLive installation directory. Then you can build kpathsea with no issues, and it will point to all the right locations. And with that built, dvisvgm is also easy to&nbsp;build.</p>
+<p>Finally, something else to be aware of. Both kpathsea and dvisvgm both use the default prefix <code>/usr/local/</code>, which means e.g. the binaries get installed to <code>/usr/local/bin</code>. As mentioned earlier, MacTeX uses <code>/usr/local/texlive/2016</code> as a prefix. So when you build kpathsea and dvisvgm, they shouldn&#8217;t overwrite anything. But uninstalling them from <code>/usr/local/</code> is tricky, and it depends on your <code>$PATH</code> order which binaries will get used. To avoid this hassle, I&#8217;d recommend using a custom prefix. Then you can just delete the whole prefix folder when you want to uninstall&nbsp;dvisvgm.</p>
+<p>To avoid even more hassle, here&#8217;s the script I wrote to do it&nbsp;all:</p>
+<script src="https://gist.github.com/tobywf/aeeeee63053aaaa841b4032963406684.js"></script>
+</article>
+<section>
+  <p><span class="fa fa-tags"></span> <a href="https://tobywf.com/tag/macos/">macOS</a>, <a href="https://tobywf.com/tag/tex/">TeX</a></p>
+  <a href="https://tobywf.com/2017/04/howto-round-a-decimal-to-the-nearest-multiple/" class="older"><span class="fa fa-chevron-circle-left"></span> Older</a>
+</section>
+<!-- content end -->
+    <footer>
+      <hr />
+      <p class="center">
+        <a href="https://github.com/tobywf" class="fa-stack fa-lg">
+          <span class="fa fa-github fa-stack-2x"></span>
+        </a>
+        <a href="https://uk.linkedin.com/in/tobywf" class="fa-stack fa-lg">
+          <span class="fa fa-circle fa-stack-2x"></span>
+          <span class="fa fa-linkedin fa-stack-1x fa-inverse"></span>
+        </a>
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="fa-stack fa-lg" style="font-size: 120%;">
+          <span class="fa fa-creative-commons fa-stack-2x"></span>
+        </a>
+      </p>
+      <p>
+        <span class="fa fa-child fa-fw"></span>Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a code craftsman, tinkerer, and musician. He posts his ramblings here. Toby is currently travelling.
+      </p>
+      <p>
+        <span class="fa fa-copyright fa-fw"></span><span class="date cap">mmxii&ndash;mmxvii</span> <span class="name cap">Toby Fleming</span>
+      </p>
+      <p>
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+          <span class="fa fa-creative-commons fa-fw"></span>BY-NC-ND 4.0
+        </a>
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
