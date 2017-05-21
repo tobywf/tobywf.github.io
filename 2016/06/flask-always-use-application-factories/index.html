@@ -57,7 +57,7 @@
 
 <p>Remember that the factory can provide default configuration values. So the development server script looks roughly like&nbsp;this:</p>
 <div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">example</span> <span class="kn">import</span> <span class="n">create_app</span>
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">app</span> <span class="o">=</span> <span class="n">create_app</span><span class="p">()</span>
     <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>  <span class="c1"># using the default, debug database connection</span>
 </pre></div>
@@ -73,7 +73,7 @@
 <h3 id="example-2-dependencies">Example 2:&nbsp;Dependencies</h3>
 <p>By not having an initialised application to import, you have to be much more clear about dependencies. This is a good thing, especially if you want your application to grow. Personally, I find it demystifies relationships and avoids circular import hell. People are put off by late initialisation, but it&#8217;s really easy. For example, when you use <a href="http://www.sqlalchemy.org/">SQLAlchemy</a>, you need a database&nbsp;object:</p>
 <div class="codehilite"><pre><span></span><span class="c1"># __init__.py</span>
-<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="n">db</span> <span class="o">=</span> <span class="n">SQLAlchemy</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
 
 <span class="c1"># models.py</span>
@@ -87,7 +87,7 @@
 <p>When you use an app factory, this won&#8217;t work any more. But it does give you the opportunity to express the relationships more&nbsp;clearly:</p>
 <div class="codehilite"><pre><span></span><span class="c1"># __init__.py</span>
 <span class="k">def</span> <span class="nf">create_app</span><span class="p">():</span>
-    <span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
     <span class="kn">from</span> <span class="nn">example.models</span> <span class="kn">import</span> <span class="n">db</span>
     <span class="n">db</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">app</span>

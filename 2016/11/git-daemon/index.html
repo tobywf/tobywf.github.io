@@ -62,7 +62,7 @@ $ git daemon <span class="se">\</span>
 <li><code>.git/</code> - this is the directory of the bare repo to whitelist/share. In other words, only share the git repository data, not your working&nbsp;directory.</li>
 </ul>
 <p>You might need to punch through your firewall. On Ubuntu, if you are using <code>iptables</code>, this is how you can check if you&#8217;ve already added a firewall rule and how to add a firewall exception. I believe this lasts until you&nbsp;restart:</p>
-<div class="codehilite"><pre><span></span>$ sudo iptables -nL <span class="p">|</span> grep 9418
+<div class="codehilite"><pre><span></span>$ sudo iptables -nL <span class="p">|</span> grep <span class="m">9418</span>
 $ sudo iptables -I INPUT <span class="m">1</span> -p tcp --dport <span class="m">9418</span> -j ACCEPT
 </pre></div>
 </article>

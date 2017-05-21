@@ -102,7 +102,7 @@ sudo make install
 
 <span class="nv">FRAMESERVER</span><span class="o">=</span>http://localhost:8080
 
-<span class="nb">eval</span> <span class="sb">`</span>wget <span class="si">${</span><span class="nv">FRAMESERVER</span><span class="si">}</span>/info.txt -O - 2&gt;/dev/null <span class="p">|</span>
+<span class="nb">eval</span> <span class="sb">`</span>wget <span class="si">${</span><span class="nv">FRAMESERVER</span><span class="si">}</span>/info.txt -O - <span class="m">2</span>&gt;/dev/null <span class="p">|</span>
     <span class="k">while</span> <span class="nb">read</span> key val <span class="p">;</span> <span class="k">do</span>
         <span class="nb">echo</span> R_<span class="nv">$key</span><span class="o">=</span><span class="nv">$val</span>
     <span class="k">done</span><span class="sb">`</span>
@@ -111,7 +111,7 @@ sudo make install
 
 <span class="o">{</span>
     <span class="k">while</span> <span class="o">[</span> <span class="nv">$i</span> -le <span class="nv">$R_end</span> <span class="o">]</span> <span class="p">;</span> <span class="k">do</span>
-         wget <span class="si">${</span><span class="nv">FRAMESERVER</span><span class="si">}</span>/images/ppm/<span class="nv">$i</span>.ppm -O - 2&gt;/dev/null
+         wget <span class="si">${</span><span class="nv">FRAMESERVER</span><span class="si">}</span>/images/ppm/<span class="nv">$i</span>.ppm -O - <span class="m">2</span>&gt;/dev/null
      <span class="nv">i</span><span class="o">=</span><span class="k">$((</span><span class="nv">$i</span><span class="o">+</span><span class="m">1</span><span class="k">))</span>
     <span class="k">done</span>
 <span class="o">}</span> <span class="p">|</span> ffmpeg -f image2pipe -vcodec ppm -i pipe:0 <span class="se">\</span>
@@ -119,7 +119,7 @@ sudo make install
     -codec:v libx264 -preset slow -tune animation -qp <span class="m">0</span> <span class="se">\</span>
     -pix_fmt yuv420p encode.mkv
 
-wget <span class="si">${</span><span class="nv">FRAMESERVER</span><span class="si">}</span>/close.txt -O - 2&gt;/dev/null &gt;/dev/null
+wget <span class="si">${</span><span class="nv">FRAMESERVER</span><span class="si">}</span>/close.txt -O - <span class="m">2</span>&gt;/dev/null &gt;/dev/null
 </pre></div>
 
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>&#x27;17 - tobywf</title>
+  <title>Installing PyICU on macOS - tobywf</title>
   <meta charset="utf-8" />
   <meta name="author" content="Toby Fleming" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -18,43 +18,39 @@
 <!-- breadcrumbs start -->
 <li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon" /></a></li>
 <li class="breadcrumb"><a href="https://tobywf.com/2017/">&#x27;17</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2017/05/">May</a></li>
 <li class="last"><a href="https://tobywf.com/resume/" class="cap">resume</a></li>
 <!-- breadcrumbs end -->
       </ul>
     </nav>
 <!-- content start -->
-<section>
-  <ul class="fa-ul floating-list">
-    <li><span class="fa-li fa fa-calendar"></span> <a href="https://tobywf.com/2017/05/">May</a></li>
-    <li><span class="fa-li fa fa-calendar"></span> <a href="https://tobywf.com/2017/04/">Apr</a></li>
-    <li><span class="fa-li fa fa-calendar"></span> <a href="https://tobywf.com/2017/01/">Jan</a></li>
-  </ul>
-</section>
-<section>
-  <ul class="posts">
-    <li class="post-head">
-      <span class="dateline"><span class="fa fa-calendar"></span> 2 Jan &#x27;17</span>
-      <span class="title"><a href="https://tobywf.com/2017/01/fortran-considerations/">Fortran&nbsp;considerations</a></span>
-    </li>
-    <li class="post-head">
-      <span class="dateline"><span class="fa fa-calendar"></span> 1 Jan &#x27;17</span>
-      <span class="title"><a href="https://tobywf.com/2017/01/diskutil/">macOS&#8217; Disk Utility sucks, here&#8217;s how to use a <span class="caps">CLI</span> to partition&nbsp;instead</a></span>
-    </li>
-    <li class="post-head">
-      <span class="dateline"><span class="fa fa-calendar"></span> 14 Apr &#x27;17</span>
-      <span class="title"><a href="https://tobywf.com/2017/04/build-dvisvgm-kpathsea-on-macos/">Building dvisvgm and kpathsea on&nbsp;macOS</a></span>
-    </li>
-    <li class="post-head">
-      <span class="dateline"><span class="fa fa-calendar"></span> 10 Apr &#x27;17</span>
-      <span class="title"><a href="https://tobywf.com/2017/04/howto-round-a-decimal-to-the-nearest-multiple/">Howto round a decimal up or down to the nearest&nbsp;multiple</a></span>
-    </li>
-    <li class="post-head">
-      <span class="dateline"><span class="fa fa-calendar"></span> 21 May &#x27;17</span>
-      <span class="title"><a href="https://tobywf.com/2017/05/installing-pyicu-on-macos/">Installing PyICU on&nbsp;macOS</a></span>
-    </li>
-  </ul>
-</section>
+<header class="post-head">
+  <h1>Installing PyICU on&nbsp;macOS</h1>
+  <div class="infoline">
+    <span class="fa fa-calendar"></span> <span class="date">21 May &#x27;17</span>
+  </div>
+</header>
+<article>
+<p><a href="http://site.icu-project.org/">International Components for Unicode (<span class="caps">ICU</span>)</a> is an enterprise library for Unicode support. Being both very enterprise-y and Unicode-y, it is stupidly complex. I hope you&#8217;ll never need it, but if you do, luckily there&#8217;s a <a href="https://pypi.python.org/pypi/PyICU/">Python library (PyICU)</a> for that. But as it just interfaces with the <span class="caps">ICU</span> C library, PyICU can be tricky to&nbsp;install.</p>
+<p>Of course, the first step is to install the <span class="caps">ICU</span> C library with <a href="https://brew.sh/">Homebrew</a>. In theory, now PyICU should just install using <code>pip</code>. I found that PyICU didn&#8217;t have the correct search paths, and the simplest solution to this is to set some environmental variables to set PyICU on&nbsp;track:</p>
+<div class="codehilite"><pre><span></span>$ brew install icu4c
+<span class="o">[</span>...<span class="o">]</span>
+$ ls /usr/local/Cellar/icu4c/
+<span class="m">58</span>.2
+$ <span class="nb">export</span> <span class="nv">ICU_VERSION</span><span class="o">=</span><span class="m">58</span>
+$ <span class="nb">export</span> <span class="nv">PYICU_INCLUDES</span><span class="o">=</span>/usr/local/Cellar/icu4c/58.2/include
+$ <span class="nb">export</span> <span class="nv">PYICU_LFLAGS</span><span class="o">=</span>-L/usr/local/Cellar/icu4c/58.2/lib
+$ pip install pyicu
+<span class="o">[</span>...<span class="o">]</span>
+</pre></div>
 
+
+<p>Job&nbsp;done.</p>
+</article>
+<section>
+  <p><span class="fa fa-tags"></span> <a href="https://tobywf.com/tag/macos/">macOS</a>, <a href="https://tobywf.com/tag/python/">Python</a></p>
+  <a href="https://tobywf.com/2017/04/build-dvisvgm-kpathsea-on-macos/" class="older"><span class="fa fa-chevron-circle-left"></span> Older</a>
+</section>
 <!-- content end -->
     <footer>
       <hr />
