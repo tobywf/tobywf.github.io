@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Installing PyICU on macOS - tobywf</title>
+  <title>gzip compression for S3 uploads with boto3 - tobywf</title>
   <meta charset="utf-8" />
   <meta name="author" content="Toby Fleming" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -18,39 +18,40 @@
 <!-- breadcrumbs start -->
 <li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon" /></a></li>
 <li class="breadcrumb"><a href="https://tobywf.com/2017/">&#x27;17</a></li>
-<li class="breadcrumb"><a href="https://tobywf.com/2017/05/">May</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2017/06/">Jun</a></li>
 <li class="last"><a href="https://tobywf.com/resume/" class="cap">resume</a></li>
 <!-- breadcrumbs end -->
       </ul>
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Installing PyICU on&nbsp;macOS</h1>
+  <h1>gzip compression for S3 uploads with&nbsp;boto3</h1>
   <div class="infoline">
-    <span class="fa fa-calendar"></span> <span class="date">21 May &#x27;17</span>
+    <span class="fa fa-calendar"></span> <span class="date">2 Jun &#x27;17</span>
   </div>
 </header>
 <article>
-<p><a href="http://site.icu-project.org/">International Components for Unicode (<span class="caps">ICU</span>)</a> is an enterprise library for Unicode support. Being both very enterprise-y and Unicode-y, it is stupidly complex. I hope you&#8217;ll never need it, but if you do, luckily there&#8217;s a <a href="https://pypi.python.org/pypi/PyICU/">Python library (PyICU)</a> for that. But as it just interfaces with the <span class="caps">ICU</span> C library, PyICU can be tricky to&nbsp;install.</p>
-<p>Of course, the first step is to install the <span class="caps">ICU</span> C library with <a href="https://brew.sh/">Homebrew</a>. In theory, now PyICU should just install using <code>pip</code>. I found that PyICU didn&#8217;t have the correct search paths, and the simplest solution to this is to set some environmental variables to set PyICU on&nbsp;track:</p>
-<div class="codehilite"><pre><span></span>$ brew install icu4c
-<span class="o">[</span>...<span class="o">]</span>
-$ ls /usr/local/Cellar/icu4c/
-<span class="m">58</span>.2
-$ <span class="nb">export</span> <span class="nv">ICU_VERSION</span><span class="o">=</span><span class="m">58</span>
-$ <span class="nb">export</span> <span class="nv">PYICU_INCLUDES</span><span class="o">=</span>/usr/local/Cellar/icu4c/58.2/include
-$ <span class="nb">export</span> <span class="nv">PYICU_LFLAGS</span><span class="o">=</span>-L/usr/local/Cellar/icu4c/58.2/lib
-$ pip install pyicu
-<span class="o">[</span>...<span class="o">]</span>
-</pre></div>
-
-
-<p>Job&nbsp;done.</p>
+<p><a href="https://boto3.readthedocs.io/en/latest/">boto3</a> doesn&#8217;t do compressed
+uploading, probably because  S3 is pretty cheap, and in most cases it&#8217;s simply
+not worth the&nbsp;effort.</p>
+<p>But for text files, compression can be over 10x (e.g. uncompressed 50MiB,
+compressed 5MiB). And if you allow downloads from S3, and you use gzip,
+browsers can uncompress the file automatically on download. This is awesome if
+you have e.g. the sales team download a huge <span class="caps">CSV</span> file! (To get this to work,
+you&#8217;ll need to set the correct content type. Browsers care about that, boto3&nbsp;doesn&#8217;t.)</p>
+<p>Sadly, Python&#8217;s <a href="https://docs.python.org/3/library/gzip.html">gzip library</a>
+is a bit confusing to use. Also, you need to know the final file size to upload
+files to S3. So the compression needs to be performed in&nbsp;advance.</p>
+<p>For well-compressible files, I compress them in memory, but for truly large
+files, you can pass in e.g. a
+<a href="https://docs.python.org/3/library/tempfile.html#tempfile.TemporaryFile">TemporaryFile</a>
+to allow better scaling. See for&nbsp;yourself:</p>
+<script src="https://gist.github.com/tobywf/079b36898d39eeb1824977c6c2f6d51e.js"></script>
 </article>
 <section>
-  <p><span class="fa fa-tags"></span> <a href="https://tobywf.com/tag/macos/">macOS</a>, <a href="https://tobywf.com/tag/python/">Python</a></p>
-  <a href="https://tobywf.com/2017/06/gzip-compression-for-boto3/" class="newer">Newer <span class="fa fa-chevron-circle-right"></span></a>
-  <a href="https://tobywf.com/2017/04/build-dvisvgm-kpathsea-on-macos/" class="older"><span class="fa fa-chevron-circle-left"></span> Older</a>
+  <p><span class="fa fa-tags"></span> <a href="https://tobywf.com/tag/python/">Python</a></p>
+  <a href="https://tobywf.com/2017/06/building-tensorflow-on-macos/" class="newer">Newer <span class="fa fa-chevron-circle-right"></span></a>
+  <a href="https://tobywf.com/2017/05/installing-pyicu-on-macos/" class="older"><span class="fa fa-chevron-circle-left"></span> Older</a>
 </section>
 <!-- content end -->
     <footer>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Building TensorFlow on macOS (CPU) - tobywf</title>
+  <meta charset="utf-8" />
+  <meta name="author" content="Toby Fleming" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,300italic,700|Source+Code+Pro:400,700|Montserrat:400" />
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css" />
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png" />
+  <script src="https://tobywf.com/theme/metrique-min.js"></script>
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <ul>
+<!-- breadcrumbs start -->
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon" /></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2017/">&#x27;17</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2017/06/">Jun</a></li>
+<li class="last"><a href="https://tobywf.com/resume/" class="cap">resume</a></li>
+<!-- breadcrumbs end -->
+      </ul>
+    </nav>
+<!-- content start -->
+<header class="post-head">
+  <h1>Building TensorFlow on macOS (<span class="caps">CPU</span>)</h1>
+  <div class="infoline">
+    <span class="fa fa-calendar"></span> <span class="date">3 Jun &#x27;17</span>
+  </div>
+</header>
+<article>
+<p>Why would you do this? <code>pip install tensorflow</code> works&nbsp;fine!</p>
+<p>That&#8217;s true. But the standard package ships without <span class="caps">SSE4</span>.1, <span class="caps">SSE4</span>.2, and <span class="caps">AVX</span>
+instructions. And when you&#8217;re running a mid-2012 Macbook Air, you want all the
+optimisations you can get. <a href="https://www.tensorflow.org/install/install_sources">The TensorFlow installation docs</a>
+are pretty good! This is pretty much a straight crib from the docs. Building
+TensorFlow takes a while though, on my underpowered machine it took over 1.5&nbsp;hours.</p>
+<div class="codehilite"><pre><span></span>$ brew install bazel
+$ mkdir &lt;project&gt;
+$ <span class="nb">cd</span> &lt;project&gt;
+$ virtualenv -p python3 env
+$ <span class="nb">source</span> env/bin/activate
+$ pip install six wheel numpy
+$ <span class="nb">cd</span> ..
+$ git clone --depth <span class="m">1</span> <span class="o">[</span>--branch r1.0<span class="o">]</span> https://github.com/tensorflow/tensorflow
+$ <span class="nb">cd</span> tensorflow
+$ ./configure
+$ bazel build --config<span class="o">=</span>opt //tensorflow/tools/pip_package:build_pip_package
+<span class="o">[</span>...<span class="o">]</span>
+INFO: Elapsed time: <span class="m">5635</span>.340s, Critical Path: <span class="m">4545</span>.85s
+$ bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
+$ pip install /tmp/tensorflow_pkg/tensorflow-1.2.0rc1-cp36-cp36m-macosx_10_12_x86_64.whl
+</pre></div>
+
+
+<p>Before you test your custom build of TensorFlow, change the directory! If you
+try and run Python from the <code>tensorflow</code> repository, you&#8217;ll get a weird error
+when you import TensorFlow (<a href="https://github.com/tensorflow/tensorflow/issues/8107#issuecomment-285843603">StackOverflow</a>):</p>
+<div class="codehilite"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="kn">as</span> <span class="nn">tf</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;/Users/tobywf/Documents/tensorflow/tensorflow/python/pywrap_tensorflow.py&quot;</span>, line <span class="m">41</span>, in <span class="n">&lt;module&gt;</span>
+    <span class="kn">from</span> <span class="nn">tensorflow.python.pywrap_tensorflow_internal</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gr">ModuleNotFoundError</span>: <span class="n">No module named &#39;tensorflow.python.pywrap_tensorflow_internal&#39;</span>
+<span class="go">[...]</span>
+</pre></div>
+
+
+<p>From any other directory, it&#8217;ll work&nbsp;fine:</p>
+<div class="codehilite"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="kn">as</span> <span class="nn">tf</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hello</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;Hello, TensorFlow!&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">hello</span><span class="p">))</span>
+<span class="go">b&#39;Hello, TensorFlow!&#39;</span>
+</pre></div>
+</article>
+<section>
+  <p><span class="fa fa-tags"></span> <a href="https://tobywf.com/tag/macos/">macOS</a>, <a href="https://tobywf.com/tag/python/">Python</a></p>
+  <a href="https://tobywf.com/2017/06/gzip-compression-for-boto3/" class="older"><span class="fa fa-chevron-circle-left"></span> Older</a>
+</section>
+<!-- content end -->
+    <footer>
+      <hr />
+      <p class="center">
+        <a href="https://github.com/tobywf" class="fa-stack fa-lg">
+          <span class="fa fa-github fa-stack-2x"></span>
+        </a>
+        <a href="https://uk.linkedin.com/in/tobywf" class="fa-stack fa-lg">
+          <span class="fa fa-circle fa-stack-2x"></span>
+          <span class="fa fa-linkedin fa-stack-1x fa-inverse"></span>
+        </a>
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="fa-stack fa-lg" style="font-size: 120%;">
+          <span class="fa fa-creative-commons fa-stack-2x"></span>
+        </a>
+      </p>
+      <p>
+        <span class="fa fa-child fa-fw"></span>Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a code craftsman, tinkerer, and musician. He posts his ramblings here. Toby is currently travelling.
+      </p>
+      <p>
+        <span class="fa fa-copyright fa-fw"></span><span class="date cap">mmxii&ndash;mmxvii</span> <span class="name cap">Toby Fleming</span>
+      </p>
+      <p>
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+          <span class="fa fa-creative-commons fa-fw"></span>BY-NC-ND 4.0
+        </a>
+      </p>
+    </footer>
+  </div>
+</body>
+</html>

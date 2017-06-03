@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Installing PyICU on macOS - tobywf</title>
+  <title>Jun &#x27;17 - tobywf</title>
   <meta charset="utf-8" />
   <meta name="author" content="Toby Fleming" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -18,39 +18,23 @@
 <!-- breadcrumbs start -->
 <li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon" /></a></li>
 <li class="breadcrumb"><a href="https://tobywf.com/2017/">&#x27;17</a></li>
-<li class="breadcrumb"><a href="https://tobywf.com/2017/05/">May</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2017/06/">Jun</a></li>
 <li class="last"><a href="https://tobywf.com/resume/" class="cap">resume</a></li>
 <!-- breadcrumbs end -->
       </ul>
     </nav>
 <!-- content start -->
-<header class="post-head">
-  <h1>Installing PyICU on&nbsp;macOS</h1>
-  <div class="infoline">
-    <span class="fa fa-calendar"></span> <span class="date">21 May &#x27;17</span>
-  </div>
-</header>
-<article>
-<p><a href="http://site.icu-project.org/">International Components for Unicode (<span class="caps">ICU</span>)</a> is an enterprise library for Unicode support. Being both very enterprise-y and Unicode-y, it is stupidly complex. I hope you&#8217;ll never need it, but if you do, luckily there&#8217;s a <a href="https://pypi.python.org/pypi/PyICU/">Python library (PyICU)</a> for that. But as it just interfaces with the <span class="caps">ICU</span> C library, PyICU can be tricky to&nbsp;install.</p>
-<p>Of course, the first step is to install the <span class="caps">ICU</span> C library with <a href="https://brew.sh/">Homebrew</a>. In theory, now PyICU should just install using <code>pip</code>. I found that PyICU didn&#8217;t have the correct search paths, and the simplest solution to this is to set some environmental variables to set PyICU on&nbsp;track:</p>
-<div class="codehilite"><pre><span></span>$ brew install icu4c
-<span class="o">[</span>...<span class="o">]</span>
-$ ls /usr/local/Cellar/icu4c/
-<span class="m">58</span>.2
-$ <span class="nb">export</span> <span class="nv">ICU_VERSION</span><span class="o">=</span><span class="m">58</span>
-$ <span class="nb">export</span> <span class="nv">PYICU_INCLUDES</span><span class="o">=</span>/usr/local/Cellar/icu4c/58.2/include
-$ <span class="nb">export</span> <span class="nv">PYICU_LFLAGS</span><span class="o">=</span>-L/usr/local/Cellar/icu4c/58.2/lib
-$ pip install pyicu
-<span class="o">[</span>...<span class="o">]</span>
-</pre></div>
-
-
-<p>Job&nbsp;done.</p>
-</article>
 <section>
-  <p><span class="fa fa-tags"></span> <a href="https://tobywf.com/tag/macos/">macOS</a>, <a href="https://tobywf.com/tag/python/">Python</a></p>
-  <a href="https://tobywf.com/2017/06/gzip-compression-for-boto3/" class="newer">Newer <span class="fa fa-chevron-circle-right"></span></a>
-  <a href="https://tobywf.com/2017/04/build-dvisvgm-kpathsea-on-macos/" class="older"><span class="fa fa-chevron-circle-left"></span> Older</a>
+  <ul class="posts">
+    <li class="post-head">
+      <span class="dateline"><span class="fa fa-calendar"></span> 3 Jun &#x27;17</span>
+      <span class="title"><a href="https://tobywf.com/2017/06/building-tensorflow-on-macos/">Building TensorFlow on macOS (<span class="caps">CPU</span>)</a></span>
+    </li>
+    <li class="post-head">
+      <span class="dateline"><span class="fa fa-calendar"></span> 2 Jun &#x27;17</span>
+      <span class="title"><a href="https://tobywf.com/2017/06/gzip-compression-for-boto3/">gzip compression for S3 uploads with&nbsp;boto3</a></span>
+    </li>
+  </ul>
 </section>
 <!-- content end -->
     <footer>
