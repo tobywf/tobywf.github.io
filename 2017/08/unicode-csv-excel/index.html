@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Excel compatible Unicode CSV files from Python - tobywf</title>
+  <meta charset="utf-8" />
+  <meta name="author" content="Toby Fleming" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,300italic,700|Source+Code+Pro:400,700|Montserrat:400" />
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css" />
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png" />
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <ul>
+<!-- breadcrumbs start -->
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon" /></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2017/">&#x27;17</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2017/08/">Aug</a></li>
+<li class="last"><a href="https://tobywf.com/resume/" class="cap">resume</a></li>
+<!-- breadcrumbs end -->
+      </ul>
+    </nav>
+<!-- content start -->
+<header class="post-head">
+  <h1>Excel compatible Unicode <span class="caps">CSV</span> files from&nbsp;Python</h1>
+  <h2>Finally, I can use emojis in comma separated value (CSV) files!</h2>
+  <div class="infoline">
+    <span class="fa fa-calendar"></span> <span class="date">18 Aug &#x27;17</span>
+  </div>
+</header>
+<article>
+<p>Part of <a href="https://tobywf.com/tag/csv/">my exploration into <span class="caps">CSV</span> handling</a>. <a href="#jackpot">Jump straight to the code</a>.</p>
+<hr />
+<p>When you have a terrible program like Excel, it tries to &#8220;be helpful&#8221; and guess the encoding of a <span class="caps">CSV</span> file (and almost always fails). Back in the 90s or 00s, because of all the different encodings this may have been helpful, but today it isn&#8217;t. Most of the time, you just want to use <span class="caps">UTF</span>-8. While exploring <a href="https://tobywf.com/drafts/csv-handling-excel.html">the wonderful world of <span class="caps">CSV</span> handling</a> in Excel, I came across a way to write <span class="caps">UTF</span>-8 <span class="caps">CSV</span> files that Excel would read reliably every time. I thought I&#8217;d split it out into it&#8217;s own&nbsp;post.</p>
+<p>Let&#8217;s take a step back. Unicode has several common encodings, <span class="caps">UTF</span>-8, <span class="caps">UTF</span>-16, and <span class="caps">UTF</span>-32. Because <a href="https://en.wikipedia.org/wiki/Endianness">endianness</a>, <span class="caps">UTF</span>-16 and <span class="caps">UTF</span>-32 must have a <a href="https://en.wikipedia.org/wiki/Byte_order_mark">byte-order mark (<span class="caps">BOM</span>)</a> at the start of a file. Here&#8217;s where it gets weird. <span class="caps">UTF</span>-8 can also have a <span class="caps">BOM</span>, even though it does nothing functionally and isn&#8217;t recommended. However, this <span class="caps">UTF</span>-8 <span class="caps">BOM</span> offers a valuable hint to Excel, and continue to work in Google Sheets, Numbers, and most text editors (even though those don&#8217;t need the <span class="caps">BOM</span>).</p>
+<p>The <span class="caps">UTF</span>-8 <span class="caps">BOM</span> is <code>0xEF,0xBB,0xBF</code>, that&#8217;s too much hard work to remember. Python - with batteries included - has a handy constant for the <span class="caps">BOM</span>:</p>
+<div class="codehilite"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">codecs</span> <span class="kn">import</span> <span class="n">BOM_UTF8</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">BOM_UTF8</span>
+<span class="go">b&#39;\xef\xbb\xbf&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">BOM_UTF8</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="go">&#39;\ufeff&#39;</span>
+</pre></div>
+
+
+<p>But wait! This is effort to add onto every file when saving, and strip out of every file when loading. There must be a better way? Python again delivers. There exists an encoding called <code>utf-8-sig</code>. It will add and strip out the <span class="caps">BOM</span> automatically. Additionally, it will read <span class="caps">UTF</span>-8 without the <span class="caps">BOM</span> just&nbsp;fine:</p>
+<div class="codehilite"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;Hello, world&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8-sig&#39;</span><span class="p">)</span>
+<span class="go">b&#39;\xef\xbb\xbfHello, world&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8-sig&#39;</span><span class="p">)</span>
+<span class="go">&#39;Hello, world&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;Hello, world&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="go">b&#39;Hello, world&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8-sig&#39;</span><span class="p">)</span>
+<span class="go">&#39;Hello, world&#39;</span>
+</pre></div>
+
+
+<p><a name="jackpot">Try it out</a> (legacy Python 2 version further&nbsp;down):</p>
+<script src="https://gist.github.com/tobywf/3773a7dc896f780c2216c8f8afbe62fc.js"></script>
+
+<p>Oh Python ❤️ how easy you make&nbsp;things.</p>
+<hr />
+<p>And the legacy Python&nbsp;version:</p>
+<script src="https://gist.github.com/tobywf/5be49947253abf1c0cd56d27568d4ad7.js"></script>
+
+<p>If you&#8217;re still using Python 2 and want to write Unicode CSVs, I strongly recommend you use <a href="https://pypi.python.org/pypi/backports.csv"><code>backports.csv</code></a>. Do <strong>not</strong> use <a href="https://github.com/jdunck/python-unicodecsv"><code>unicodecsv</code></a>, even though it seems like it&#8217;s easier to use. It doesn&#8217;t force you to think as clearly about encoding as <code>backports.csv</code>, and consequently, migrating away from <code>unicodecsv</code> is a pain (if you&#8217;ll ever do it, and then you&#8217;ll have two different ways of generating CSVs). Don&#8217;t kick the can down the road, just fix it properly and use <a href="https://pypi.python.org/pypi/backports.csv"><code>backports.csv</code></a>!</p>
+<p>The code above code will also run unmodified in Python 3 (if you have <code>backports.csv</code> installed). And as you can see, the first four lines are the only thing that changes, so dropping from <code>backports.csv</code> to Python 3&#8217;s <a href="https://docs.python.org/3/library/csv.html"><span class="caps">CSV</span> module</a> is completely&nbsp;trivial.</p>
+</article>
+<section>
+  <p><span class="fa fa-tags"></span> <a href="https://tobywf.com/tag/macos/">macOS</a>, <a href="https://tobywf.com/tag/python/">Python</a>, <a href="https://tobywf.com/tag/csv/">CSV</a></p>
+  <a href="https://tobywf.com/2017/07/2fa-fails/" class="older"><span class="fa fa-chevron-circle-left"></span> Older</a>
+</section>
+<!-- content end -->
+    <footer>
+      <hr />
+      <p class="center">
+        <a href="https://github.com/tobywf" class="fa-stack fa-lg">
+          <span class="fa fa-github fa-stack-2x"></span>
+        </a>
+        <a href="https://uk.linkedin.com/in/tobywf" class="fa-stack fa-lg">
+          <span class="fa fa-circle fa-stack-2x"></span>
+          <span class="fa fa-linkedin fa-stack-1x fa-inverse"></span>
+        </a>
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="fa-stack fa-lg" style="font-size: 120%;">
+          <span class="fa fa-creative-commons fa-stack-2x"></span>
+        </a>
+      </p>
+      <p>
+        <span class="fa fa-child fa-fw"></span>Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a code craftsman, tinkerer, and musician. He posts his ramblings here. Toby is currently travelling.
+      </p>
+      <p>
+        <span class="fa fa-copyright fa-fw"></span><span class="date cap">mmxii&ndash;mmxvii</span> <span class="name cap">Toby Fleming</span>
+      </p>
+      <p>
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+          <span class="fa fa-creative-commons fa-fw"></span>BY-NC-ND 4.0
+        </a>
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
