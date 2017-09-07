@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>AWS Lambda: Code Storage Limit Exceeded - tobywf</title>
+  <meta charset="utf-8" />
+  <meta name="author" content="Toby Fleming" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,300italic,700|Source+Code+Pro:400,700|Montserrat:400" />
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css" />
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png" />
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <ul>
+<!-- breadcrumbs start -->
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon" /></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2017/">&#x27;17</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2017/09/">Sep</a></li>
+<li class="last"><a href="https://tobywf.com/resume/" class="cap">resume</a></li>
+<!-- breadcrumbs end -->
+      </ul>
+    </nav>
+<!-- content start -->
+<header class="post-head">
+  <h1><span class="caps">AWS</span> Lambda: Code Storage Limit&nbsp;Exceeded</h1>
+  <div class="infoline">
+    <span class="fa fa-calendar"></span> <span class="date">7 Sep &#x27;17</span>
+  </div>
+</header>
+<article>
+<p>You&#8217;re deploying a new version of some <a href="https://aws.amazon.com/lambda/"><span class="caps">AWS</span> Lambda functions</a>,
+and then you get a very cryptic error from CloudFormation: &#8220;Code Storage Limit&nbsp;Exceeded&#8221;.</p>
+<p><img alt="CloudFormation showing &quot;Code Storage Limit Exceeded&quot; error messages" src="https://tobywf.com/2017/09/aws-lambda-code-storage-limit-exceeded/images/2017-09-07-aws-lambda-code-storage-limit-exceeded.png" /></p>
+<p>Not only does this make the deployment fail, but it also prevents rolling&nbsp;back.</p>
+<p>So what&#8217;s going on? Most likely you&#8217;ve hit the <a href="http://docs.aws.amazon.com/lambda/latest/dg/limits.html#limits-list">75 GiB code storage limit</a>; the <span class="caps">AWS</span> Lambda dashboard should be displaying a
+warning to confirm&nbsp;this.</p>
+<p>How is this possible? Well, Lambda functions have
+versions. And when you deploy a Lambda function, it creates a new version.
+You may not know this, because it&#8217;s simply called <code>$LATEST</code>. Also, <span class="caps">AWS</span>
+doesn&#8217;t call it &#8220;version&#8221; in the <span class="caps">GUI</span>, but <a href="http://docs.aws.amazon.com/lambda/latest/dg/versioning-intro.html">&#8220;qualifier&#8221;</a>
+(this is because it <a href="http://docs.aws.amazon.com/lambda/latest/dg/versioning-aliases.html">includes aliases</a>).</p>
+<p>How do you fix this? It&#8217;s easy in principle, delete the old Lambda function
+versions. However, doing this in the web <span class="caps">UI</span> is extremely tedious. So here&#8217;s a
+script to delete all the versions except <code>$LATEST</code>. Don&#8217;t use it if you have
+published any other versions/aliases, and - as always - this is an example
+script with no&nbsp;warranty.</p>
+<script src="https://gist.github.com/tobywf/6eb494f4b46cef367540074512161334.js"></script>
+</article>
+<section>
+  <p><span class="fa fa-tags"></span> <a href="https://tobywf.com/tag/python/">Python</a>, <a href="https://tobywf.com/tag/aws/">AWS</a></p>
+  <a href="https://tobywf.com/2017/08/unicode-csv-excel/" class="older"><span class="fa fa-chevron-circle-left"></span> Older</a>
+</section>
+<!-- content end -->
+    <footer>
+      <hr />
+      <p class="center">
+        <a href="https://github.com/tobywf" class="fa-stack fa-lg">
+          <span class="fa fa-github fa-stack-2x"></span>
+        </a>
+        <a href="https://uk.linkedin.com/in/tobywf" class="fa-stack fa-lg">
+          <span class="fa fa-circle fa-stack-2x"></span>
+          <span class="fa fa-linkedin fa-stack-1x fa-inverse"></span>
+        </a>
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="fa-stack fa-lg" style="font-size: 120%;">
+          <span class="fa fa-creative-commons fa-stack-2x"></span>
+        </a>
+      </p>
+      <p>
+        <span class="fa fa-child fa-fw"></span>Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a code craftsman, tinkerer, and musician. He posts his ramblings here. Toby is currently in Melbourne.
+      </p>
+      <p>
+        <span class="fa fa-copyright fa-fw"></span><span class="date cap">mmxii&ndash;mmxvii</span> <span class="name cap">Toby Fleming</span>
+      </p>
+      <p>
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+          <span class="fa fa-creative-commons fa-fw"></span>BY-NC-ND 4.0
+        </a>
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
