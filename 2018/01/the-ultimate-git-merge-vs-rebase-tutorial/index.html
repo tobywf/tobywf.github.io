@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>The ultimate git merge vs rebase tutorial - tobywf</title>
+  <meta charset="utf-8" />
+  <meta name="author" content="Toby Fleming" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,300italic,700|Source+Code+Pro:400,700|Montserrat:400" />
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css" />
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png" />
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <ul>
+<!-- breadcrumbs start -->
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon" /></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2018/">&#x27;18</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2018/01/">Jan</a></li>
+<li class="last"><a href="https://tobywf.com/resume/" class="cap">resume</a></li>
+<!-- breadcrumbs end -->
+      </ul>
+    </nav>
+<!-- content start -->
+<header class="post-head">
+  <h1>The ultimate git merge vs rebase&nbsp;tutorial</h1>
+  <div class="infoline">
+    <span class="fa fa-calendar"></span> <span class="date">27 Jan &#x27;18</span>
+  </div>
+</header>
+<article>
+<p>Back in September 2017, another post titled &#8220;<a href="https://medium.com/@fredrikmorken/why-you-should-stop-using-git-rebase-5552bee4fed1">Why you should stop using Git rebase</a>&#8221; has made it quite high on Hackernews. As always, it only tells half of the story. So I started writing this post, and four months later it&#8217;s finally&nbsp;finished.</p>
+<p>But enough talk, because talking about git can get confusing. So I have some pretty pictures, and <a href="https://gist.github.com/tobywf/0743a9241171ff5cc9406d7ba696c8f8">a small script</a>. It initialises a new repo called &#8220;test&#8221;, and creates two feature branches in a way that might happen with developers working on different features at the same time, over a given time&nbsp;period.</p>
+<p>This will be the initial state for all examples, which you can follow along with if you wish. Let me also introduce two variations on the <code>git log</code> command that will help. You can run at any time to give you a good overview of the history of the repository. The first, <code>git log --pretty=format:'%s'</code>, prints out only the commit messages. This is compact and allows you to easily compare your results to mine, ignoring commit author names or commit SHAs. The second, a slight variation, <code>git log --pretty=format:'%s' --graph</code>, has git display the history as a graph, which is useful for identifying feature&nbsp;branches.</p>
+<h2 id="merge-defaultfast-forward">Merge,&nbsp;default/fast-forward</h2>
+<p><img alt="Two branches, the first called feature1 with commits B and C, the second called feature2 with commits D and E, both based of master with commit A. Commits B and D have a conflict." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-initial.svg" /></p>
+<p>The default merge behaviour of git is to perform a fast-forward, so that commits without conflicts are simply absorbed into the branch as they are, and no merge commits are&nbsp;created.</p>
+<div class="codehilite"><pre><span></span><span class="gp">$</span> git merge feature1
+<span class="go">Updating xxxxxx..xxxxxx</span>
+<span class="go">Fast-forward</span>
+<span class="go"> src.txt | 2 +-</span>
+<span class="go"> 1 file changed, 1 insertion(+), 1 deletion(-)</span>
+<span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">&#39;%s&#39;</span> --graph
+<span class="go">* C</span>
+<span class="go">* B</span>
+<span class="go">* A</span>
+</pre></div>
+
+
+<p><img alt="feature1 was merged into master without a merge commit." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-merge1.svg" /></p>
+<p>If there are conflicts, a merge commit is still&nbsp;necessary.</p>
+<div class="codehilite"><pre><span></span><span class="gp">$</span> git merge feature2
+<span class="go">Auto-merging src.txt</span>
+<span class="go">CONFLICT (content): Merge conflict in src.txt</span>
+<span class="go">Automatic merge failed; fix conflicts and then commit the result.</span>
+<span class="gp">$</span> <span class="c1"># fake fixing the conflict, we know it should end up as &quot;E&quot;</span>
+<span class="gp">$</span> <span class="nb">echo</span> <span class="s2">&quot;E&quot;</span> &gt; src.txt <span class="o">&amp;&amp;</span> git add -- src.txt <span class="o">&amp;&amp;</span> git commit --no-edit
+<span class="go">[master xxxxxx] Merge branch &#39;feature2&#39;</span>
+</pre></div>
+
+
+<p><img alt="Commit D on feature2 conflicted with commit B on feature1 and so a merge commit was necessary." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-merge2.svg" /></p>
+<p>This seems good, until we look at <code>git log</code>.</p>
+<div class="codehilite"><pre><span></span><span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">&#39;%s&#39;</span>
+<span class="go">Merge branch &#39;feature2&#39;</span>
+<span class="go">E</span>
+<span class="go">C</span>
+<span class="go">D</span>
+<span class="go">B</span>
+<span class="go">A</span>
+</pre></div>
+
+
+<p>The linear history is based on the time of the commit, and so we get the order A, B, D, C, E, and M1. Which is logically correct, but really confusing. When using a graph view, things are clearer, but it looks like commits B and C were always part of master, because of the fast-forward behaviour (indicated by the diagonally filled commits). Super confusing - or it will when the feature branch is deleted/never checked out/otherwise&nbsp;missing.</p>
+<div class="codehilite"><pre><span></span><span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">&#39;%s&#39;</span> --graph
+<span class="go">*   Merge branch &#39;feature2&#39;</span>
+<span class="go">|\</span>
+<span class="go">| * E</span>
+<span class="go">| * D</span>
+<span class="go">* | C</span>
+<span class="go">* | B</span>
+<span class="go">|/</span>
+<span class="go">* A</span>
+</pre></div>
+
+
+<p>Thanks to the merge commit, we know where commits D and E come from. This is a huge&nbsp;benefit.</p>
+<h2 id="merge-no-fast-forward">Merge, no&nbsp;fast-forward</h2>
+<p>So the solution to the shortcomings of the default merge behaviour is obvious: force every merge to produce a merge commit, and never&nbsp;fast-forward.</p>
+<p>(Remember to reset the repo to the initial state! You can do this by deleting the directory and re-running the&nbsp;script.)</p>
+<p><img alt="Two branches, the first called feature1 with commits B and C, the second called feature2 with commits D and E, both based of master with commit A. Commits B and D have a conflict." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-initial.svg" /></p>
+<div class="codehilite"><pre><span></span><span class="gp">$</span> git merge feature1 --no-ff
+<span class="go">Merge made by the &#39;recursive&#39; strategy.</span>
+<span class="go"> src.txt | 2 +-</span>
+<span class="go"> 1 file changed, 1 insertion(+), 1 deletion(-)</span>
+</pre></div>
+
+
+<p><img alt="feature1, although fast-forward-able, was merged into master with a merge commit." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-no-ff1.svg" /></p>
+<div class="codehilite"><pre><span></span><span class="gp">$</span> git merge feature2 --no-ff
+<span class="go">Auto-merging src.txt</span>
+<span class="go">CONFLICT (content): Merge conflict in src.txt</span>
+<span class="go">Automatic merge failed; fix conflicts and then commit the result.</span>
+<span class="gp">$</span> <span class="c1"># fake fixing the conflict, we know it should end up as &quot;E&quot;</span>
+<span class="gp">$</span> <span class="nb">echo</span> <span class="s2">&quot;E&quot;</span> &gt; src.txt <span class="o">&amp;&amp;</span> git add -- src.txt <span class="o">&amp;&amp;</span> git commit --no-edit
+<span class="go">[master xxxxxx] Merge branch &#39;feature2&#39;</span>
+</pre></div>
+
+
+<p><img alt="feature1, was merged into master with a merge commit." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-no-ff2.svg" /></p>
+<p>When viewed as a graph, the merge commits indicate clearly when the feature branches were merged&nbsp;in.</p>
+<div class="codehilite"><pre><span></span><span class="gp">$</span> git log --graph --pretty<span class="o">=</span>format:<span class="s1">&#39;%s&#39;</span>
+<span class="go">*   Merge branch &#39;feature2&#39;</span>
+<span class="go">|\</span>
+<span class="go">| * E</span>
+<span class="go">| * D</span>
+<span class="go">* |   Merge branch &#39;feature1&#39;</span>
+<span class="go">|\ \</span>
+<span class="go">| |/</span>
+<span class="go">|/|</span>
+<span class="go">| * C</span>
+<span class="go">| * B</span>
+<span class="go">|/</span>
+<span class="go">* A</span>
+</pre></div>
+
+
+<p>The linear <code>git log</code> is still ordered by timestamp, and so commits B, C, D, and E are still&nbsp;interleaved.</p>
+<div class="codehilite"><pre><span></span><span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">&#39;%s&#39;</span>
+<span class="go">Merge branch &#39;feature2&#39;</span>
+<span class="go">Merge branch &#39;feature1&#39;</span>
+<span class="go">E</span>
+<span class="go">C</span>
+<span class="go">D</span>
+<span class="go">B</span>
+<span class="go">A</span>
+</pre></div>
+
+
+<p>If you opt for a merge-based workflow, using <code>--no-ff</code> is highly recommended. It&#8217;s such an improvement, and so prevalent that Github just does <a href="https://help.github.com/articles/about-merge-methods-on-github/">exactly this by default</a>.</p>
+<h1 id="rebase">Rebase</h1>
+<p>There is a third option. Rebasing actually produces a log similar to a fast-forwarded merge, every time. How is this&nbsp;possible?</p>
+<p><code>git rebase</code> is a separate command that applys the commits from one branch onto another. If there&#8217;s a merge conflict, it must be fixed when the commits are applied, right there and then. Additionally, if changes are needed, it means rebase is actually &#8220;rewriting&#8221; commits, which creates new commits with new <span class="caps">SHA</span> hashes and new timestamps - of course. (With interactive rebasing, you can change even more, such as the commit message, squashing to commits together, or even <a href="https://git-scm.com/docs/git-rebase#_splitting_commits">splitting commits</a>.)</p>
+<p>Rebasing does not actually merge the commits from the feature branch into master - it just means they stack nicely on top of master, and can be fast-forwarded. I will discuss later why this is very&nbsp;useful.</p>
+<p>(Remember to reset the repo to the initial state! You can do this by deleting the directory and re-running the&nbsp;script.)</p>
+<p><img alt="Two branches, the first called feature1 with commits B and C, the second called feature2 with commits D and E, both based of master with commit A. Commits B and D have a conflict." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-initial.svg" /></p>
+<div class="codehilite"><pre><span></span><span class="gp">$</span> git checkout feature1
+<span class="go">Switched to branch &#39;feature1&#39;</span>
+<span class="gp">$</span> <span class="c1"># print hashes (yours will be different throughout)</span>
+<span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">&#39;%s (%h)&#39;</span>
+<span class="go">C (61dcdc9)</span>
+<span class="go">B (32acae7)</span>
+<span class="go">A (08229ff)</span>
+<span class="gp">$</span> <span class="c1"># make sure feature1 is up to date with master</span>
+<span class="gp">$</span> git rebase master
+<span class="go">Current branch feature1 is up to date.</span>
+<span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">&#39;%s (%h)&#39;</span>
+<span class="go">C (61dcdc9)</span>
+<span class="go">B (32acae7)</span>
+<span class="go">A (08229ff)</span>
+<span class="gp">$</span> git checkout master
+<span class="go">Switched to branch &#39;master&#39;</span>
+<span class="gp">$</span> git merge feature1 --ff-only
+<span class="go">Updating xxxxxx..xxxxxx</span>
+<span class="go">Fast-forward</span>
+<span class="go"> src.txt | 2 +-</span>
+<span class="go"> 1 file changed, 1 insertion(+), 1 deletion(-)</span>
+</pre></div>
+
+
+<p><img alt="feature1, was fast-forward merged into master without a merge commit." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-merge1.svg" /></p>
+<div class="codehilite"><pre><span></span><span class="gp">$</span> git checkout feature2
+<span class="go">Switched to branch &#39;feature2&#39;</span>
+<span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">&#39;%s (%h)&#39;</span>
+<span class="go">E (1376c86)</span>
+<span class="go">D (5e84a89)</span>
+<span class="go">A (08229ff)</span>
+<span class="gp">$</span> <span class="c1"># make sure feature2 is up to date with master</span>
+<span class="gp">$</span> git rebase master
+<span class="go">[...]</span>
+<span class="gp">$</span> <span class="c1"># fake fixing the conflict, we know the first commit of feature2 changed it to &quot;D&quot;</span>
+<span class="gp">$</span> <span class="nb">echo</span> <span class="s2">&quot;D&quot;</span> &gt; src.txt <span class="o">&amp;&amp;</span> git add -- src.txt <span class="o">&amp;&amp;</span> git rebase --continue
+<span class="go">Applying: D</span>
+<span class="go">Applying: E</span>
+<span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">&#39;%s (%h)&#39;</span>
+<span class="go">E (cc58c69)</span>
+<span class="go">D (4c886de)</span>
+<span class="go">C (61dcdc9)</span>
+<span class="go">B (32acae7)</span>
+<span class="go">A (08229ff)</span>
+<span class="gp">$</span> git checkout master
+<span class="go">Switched to branch &#39;master&#39;</span>
+<span class="gp">$</span> git merge feature2 --ff-only
+<span class="go">Updating xxxxxx..xxxxxx</span>
+<span class="go">Fast-forward</span>
+<span class="go"> src.txt | 2 +-</span>
+<span class="go"> 1 file changed, 1 insertion(+), 1 deletion(-)</span>
+<span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">&#39;%s (%h)&#39;</span>
+<span class="go">E (cc58c69)</span>
+<span class="go">D (4c886de)</span>
+<span class="go">C (61dcdc9)</span>
+<span class="go">B (32acae7)</span>
+<span class="go">A (08229ff)</span>
+</pre></div>
+
+
+<p><img alt="feature2, was fast-forward merged into master without a merge commit." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-rebase.svg" /></p>
+<p>Technically, the second feature branch is no longer the one it was. When feature1 was rebased, no changes were necessary, so the commit hashes didn&#8217;t change. But feature2 needed conflict resolution, and commits D and E are actually newly rewritten commits (indicated by an&nbsp;asterisk).</p>
+<h2 id="rebasing-vs-merging">Rebasing vs&nbsp;merging</h2>
+<div class="codehilite"><pre><span></span><span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">&#39;%s&#39;</span> --graph
+<span class="go">* E</span>
+<span class="go">* D</span>
+<span class="go">* C</span>
+<span class="go">* B</span>
+<span class="go">* A</span>
+</pre></div>
+
+
+<p>With rebasing, because we fast-forward merged, the information on which commit belonged to which feature branch is&nbsp;lost.</p>
+<blockquote>
+<p>I&#8217;d also argue that merge and rebase represent fundamental differences in what commits mean. The former being commits are history, and the latter being commits are&nbsp;features.</p>
+<p><a href="https://news.ycombinator.com/item?id=15264320">keeperofdakeys</a></p>
+</blockquote>
+<p>To recap that subtle quote, there are two situations. If your features consist of several commits, merging preserves that information. Conversely, if you prefer a single feature to be one commit, rebasing is almost a&nbsp;must.</p>
+<p>So this comes down to your workflow. The case for rebasing is stronger in my opinion. First, do you really want all commits in master, even commits that are code review fixes? I have never wanted that, because once the feature is done, it gets merged. Second, if you&#8217;re &#8220;agile&#8221;, feature branches don&#8217;t exist for too long, and they&#8217;re somewhat self-contained code changes anyway. Third, if you use a platform like in Github or Gerrit, feature branches are usually still accessible/preserved, so the branch information isn&#8217;t &#8220;lost&#8221;, it just isn&#8217;t clogging up&nbsp;master.</p>
+<p>Rebasing has other advantages, too. Since rebasing doesn&#8217;t merge the commits, but just makes sure they stack nicely on top of master, this makes it super useful to do before code reviews, testing, and in continuous integration workflows. Because if something works on master but is broken on the rebased feature branch, it <em>has</em> to be the feature&nbsp;branch.</p>
+<p>Because rebase is rewriting the commits, all sorts of alterations can be made, such as changing the commit message, merging commits, etc. This is useful again to clean up a feature branch before code review, or merging into master. This is called an <a href="https://www.atlassian.com/git/tutorials/rewriting-history/git-rebase">interactive rebase</a>, and gives you the opportunity to clean up messy feature branches. Some people work well by over-zealously committing every little change, and then squashing those once it&nbsp;works.</p>
+<p>The killer feature of rebasing is when finding bugs or regressions. Because commits are cleanly placed on the top of the head of a branch, it&#8217;s possible to revert them. Reverting merges is painful. It also makes using <code>git bisect</code> much&nbsp;easier.</p>
+<hr />
+<p>While rebasing is vastly more powerful than merging and allows for more flexible workflows, it has some&nbsp;drawbacks.</p>
+<p>Because rebasing can alter commits/change history, this means rebasing is only <span class="caps">OK</span> for local branches, not branches that have been pushed. Altering the history* is not cool if somebody else is working on it. But for local/private branches? No problem, you can already do whatever you want with those. Still, it&#8217;s a pitfall, if only a small&nbsp;one.</p>
+<p>(* You&#8217;ll never rebase the master branch or any shared branches - it simply isn&#8217;t necessary/doesn&#8217;t make sense. So while rebasing does &#8220;alter history&#8221;, this doesn&#8217;t mean the history of the whole repository can change. Just pointing this out, since it&#8217;s a bit of <span class="caps">FUD</span> that is sometimes used against&nbsp;rebasing.)</p>
+<p>Additionally, because commits are applied step-by-step, this can make conflicts during rebasing much easier to resolve, or sometimes cause you to have to stop and fix merge conflicts on each commit. This is painful, and there are ways around this. Personally, I like it an indication that my commits changed the same bit of code, and therefore weren&#8217;t as dependant as I thought. Time to&nbsp;squash.</p>
+<p>Also, because they way git is designed, when resolving conflicts during a rebase, <a href="https://git-scm.com/docs/git-rebase#git-rebase--m">the sides are swapped</a>:</p>
+<blockquote>
+<p>Note that a rebase merge works by replaying each commit from the working branch on top of the <upstream> branch. Because of this, when a merge conflict happens, the side reported as ours is the so-far rebased series, starting with <upstream>, and theirs is the working branch. In other words, the sides are&nbsp;swapped.</p>
+<p><a href="https://git-scm.com/docs/git-rebase#git-rebase--m">Git documentation on&nbsp;rebase</a></p>
+</blockquote>
+<h2 id="conclusion">Conclusion</h2>
+<p>The difference between merging and rebasing is philosophical in the way git is used in a workflow, hence why it comes up so often. Both have advantages and drawbacks. Personally, I always lean towards rebases to keep a projects master branch&nbsp;sane.</p>
+</article>
+<section>
+  <p><span class="fa fa-tags"></span> <a href="https://tobywf.com/tag/git/">git</a></p>
+  <a href="https://tobywf.com/2018/01/svg-editors-on-macos/" class="newer">Newer <span class="fa fa-chevron-circle-right"></span></a>
+  <a href="https://tobywf.com/2017/09/aws-lambda-code-storage-limit-exceeded/" class="older"><span class="fa fa-chevron-circle-left"></span> Older</a>
+</section>
+<!-- content end -->
+    <footer>
+      <hr />
+      <p class="center">
+        <a href="https://github.com/tobywf" class="fa-stack fa-lg">
+          <span class="fa fa-github fa-stack-2x"></span>
+        </a>
+        <a href="https://uk.linkedin.com/in/tobywf" class="fa-stack fa-lg">
+          <span class="fa fa-circle fa-stack-2x"></span>
+          <span class="fa fa-linkedin fa-stack-1x fa-inverse"></span>
+        </a>
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="fa-stack fa-lg" style="font-size: 120%;">
+          <span class="fa fa-creative-commons fa-stack-2x"></span>
+        </a>
+      </p>
+      <p>
+        <span class="fa fa-child fa-fw"></span>Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a code craftsman, tinkerer, and musician. He posts his ramblings here. Toby is currently in Melbourne.
+      </p>
+      <p>
+        <span class="fa fa-copyright fa-fw"></span><span class="date cap">mmxii&ndash;mmxvii</span> <span class="name cap">Toby Fleming</span>
+      </p>
+      <p>
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+          <span class="fa fa-creative-commons fa-fw"></span>BY-NC-ND 4.0
+        </a>
+      </p>
+    </footer>
+  </div>
+</body>
+</html>

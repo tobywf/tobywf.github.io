@@ -26,10 +26,12 @@
 <header class="post-head">
   <h1>Building dvisvgm and kpathsea on&nbsp;macOS</h1>
   <div class="infoline">
-    <span class="fa fa-calendar"></span> <span class="date">14 Apr &#x27;17</span>
+    <span class="fa fa-calendar"></span> <span class="date">14 Apr &#x27;17</span> &mdash; last updated&nbsp;<span class="date">27 Jan &#x27;18</span>
   </div>
 </header>
 <article>
+<p><strong>Update</strong> (Jan 2018): TexLive 2017 now has dvisvgm version 2.1.3&#8230; which is now almost a year out of date -.-. If you&#8217;re interested in how to produce <span class="caps">SVG</span> files from TikZ/LaTeX, <a href="https://tobywf.com/2018/01/beautiful-svg-diagrams-with-tikz-dvisvgm/">I got you covered</a>.</p>
+<hr />
 <p><a href="http://dvisvgm.bplaced.net"><code>dvisvgm</code></a> converts <span class="caps">DVI</span> files produced by LaTeX to <span class="caps">SVG</span>. It&#8217;s included in <a href="https://www.tug.org/texlive/">TeXLive</a>/<a href="https://www.tug.org/mactex/">MacTeX</a>, which is good enough for most users. But the binary in my (fully upgraded) TeXLive 2016 is somewhat out of date: 1.15.1, which is from 19 April 2016. In the meantime, 2.1.3 has been&nbsp;released.</p>
 <p>Luckily, dvisvgm is a very modern and well-maintained project. And <a href="https://brew.sh/">homebrew</a> has almost all dependencies we need (<code>automake</code>, <code>freetype</code>, <code>ghostscript</code>, and <code>potrace</code>), with one major exception:&nbsp;kpathsea.</p>
 <p><strong><span class="caps">TL</span>;<span class="caps">DR</span></strong>: Here&#8217;s <a href="https://gist.github.com/tobywf/aeeeee63053aaaa841b4032963406684">a script that downloads and builds dvisvgm on macOS</a>. Tested on macOS Sierra&nbsp;10.12.4.</p>

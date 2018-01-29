@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Beautiful SVG diagrams with TikZ and dvisvgm - tobywf</title>
+  <meta charset="utf-8" />
+  <meta name="author" content="Toby Fleming" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,300italic,700|Source+Code+Pro:400,700|Montserrat:400" />
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css" />
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png" />
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <ul>
+<!-- breadcrumbs start -->
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon" /></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2018/">&#x27;18</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2018/01/">Jan</a></li>
+<li class="last"><a href="https://tobywf.com/resume/" class="cap">resume</a></li>
+<!-- breadcrumbs end -->
+      </ul>
+    </nav>
+<!-- content start -->
+<header class="post-head">
+  <h1>Beautiful <span class="caps">SVG</span> diagrams with TikZ and&nbsp;dvisvgm</h1>
+  <div class="infoline">
+    <span class="fa fa-calendar"></span> <span class="date">28 Jan &#x27;18</span>
+  </div>
+</header>
+<article>
+<p>Using <a href="http://dvisvgm.bplaced.net">dvisvgm</a>, you can produce beautiful SVGs, for example the diagrams in my <a href="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/">git merge vs rebase tutorial</a>.</p>
+<p>Installing LaTeX is the first step. Windows users want <a href="https://miktex.org">MikTeX</a>, and can follow the Ghostscript installation instructions <a href="http://dvisvgm.bplaced.net/FAQ">on the dvisvgm <span class="caps">FAQ</span></a>.</p>
+<p>On macOS, it&#8217;s a bit more involved. First, use <a href="http://www.tug.org/mactex/">MacTeX</a>, which can be installed with homebrew. You&#8217;ll also need Ghostscript if you want things like fonts to work properly with&nbsp;dvisvgm.</p>
+<div class="codehilite"><pre><span></span><span class="gp">$</span> brew cask install mactex
+<span class="gp">$</span> brew install ghostscript
+</pre></div>
+
+
+<p>dvisvgm is installed with MacTeX. In the current version (2.1.3), you also need to tell dvisvgm where to find Ghostscript. I&#8217;ve submitted a patch for it to work automatically, but that isn&#8217;t in MacTeX yet. To do this, add the following to your <code>.bash_profile</code>:</p>
+<div class="codehilite"><pre><span></span><span class="nb">export</span> <span class="nv">LIBGS</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>brew --prefix ghostscript<span class="k">)</span><span class="s2">/lib/libgs.9.dylib&quot;</span>
+</pre></div>
+
+
+<p>Or, for <a href="https://fishshell.com">Fish shell</a> fans, put this in your <code>~/.config/fish/config.fish</code> file:</p>
+<div class="codehilite"><pre><span></span><span class="k">set</span> -x LIBGS <span class="o">(</span>brew --prefix ghostscript<span class="o">)</span>/lib/libgs.9.dylib
+</pre></div>
+
+
+<p>Then, make sure dvisvgm finds Ghostscript. You&#8217;ll have to make sure your shell reloads the changes to <code>.bash_profile</code>.</p>
+<div class="codehilite"><pre><span></span><span class="gp">$</span> <span class="nb">source</span> ~/.bash_profile
+<span class="gp">$</span> dvisvgm -l <span class="p">|</span> grep ps
+<span class="go">ps         dvips PostScript specials</span>
+</pre></div>
+
+
+<p>If you don&#8217;t see any output, dvisvgm can&#8217;t find Ghostscript. But if you do, you&#8217;re&nbsp;ready.</p>
+<hr />
+<p>Using the <code>standalone</code> class, each TikZ picture is rendered on a separate page, and each page is the size of the TikZ picture. Here&#8217;s a basic&nbsp;example:</p>
+<div class="codehilite"><pre><span></span><span class="k">\documentclass</span><span class="na">[tikz,margin=5pt]</span><span class="nb">{</span>standalone<span class="nb">}</span>
+<span class="k">\begin</span><span class="nb">{</span>document<span class="nb">}</span>
+<span class="k">\begin</span><span class="nb">{</span>tikzpicture<span class="nb">}</span>
+<span class="k">\node</span> <span class="nb">{</span>Hello World<span class="nb">}</span>;
+<span class="k">\end</span><span class="nb">{</span>tikzpicture<span class="nb">}</span>
+<span class="k">\end</span><span class="nb">{</span>document<span class="nb">}</span>
+</pre></div>
+
+
+<p>First, <code>margin=5pt</code> sets a margin, otherwise standalone really does only set the picture size to what is required. And here&#8217;s the result, converted to <span class="caps">PNG</span> with a border added to emphasise the&nbsp;margin:</p>
+<p><img alt="The rendered TeX file that reads &quot;Hello World&quot;, with a border added afterwards" src="https://tobywf.com/2018/01/beautiful-svg-diagrams-with-tikz-dvisvgm/images/2018-01-28-helloworld.png" /></p>
+<p>However, if you compiled this, you&#8217;ll still get a <span class="caps">PDF</span> out. To get an <span class="caps">SVG</span>, add the <code>dvisvgm</code> option to the document class options. Here&#8217;s another example with&nbsp;that:</p>
+<div class="codehilite"><pre><span></span><span class="k">\documentclass</span><span class="na">[dvisvgm,tikz]</span><span class="nb">{</span>standalone<span class="nb">}</span>
+<span class="k">\renewcommand</span><span class="nb">{</span><span class="k">\familydefault</span><span class="nb">}{</span><span class="k">\sfdefault</span><span class="nb">}</span>
+<span class="k">\begin</span><span class="nb">{</span>document<span class="nb">}</span>
+<span class="k">\begin</span><span class="nb">{</span>tikzpicture<span class="nb">}</span>[very thick]
+<span class="k">\useasboundingbox</span> (2,2) -- (-2,-2);
+<span class="k">\node</span> (a) at (-1,-1) <span class="nb">{</span>A<span class="nb">}</span>;
+<span class="k">\node</span> (b) at (1,1) <span class="nb">{</span>B<span class="nb">}</span>;
+<span class="k">\path</span> (a) edge[-&gt;] (b);
+<span class="k">\end</span><span class="nb">{</span>tikzpicture<span class="nb">}</span>
+<span class="k">\end</span><span class="nb">{</span>document<span class="nb">}</span>
+</pre></div>
+
+
+<p>A pitfall is that if you add the <code>dvisvgm</code> option, you lose the ability to make <span class="caps">PDF</span> files properly. This isn&#8217;t a huge issue, LaTeX packages usually provide a <span class="caps">DVI</span> viewer. But if you want <span class="caps">PDF</span> files while you&#8217;re making the graphics, you can omit the <code>dvisvgm</code> option, and then add it in when you&#8217;re ready to make the <span class="caps">SVG</span> file. (Of course, if you forget <code>dvisvgm</code> in the options, the output won&#8217;t work well with&nbsp;dvisvgm.)</p>
+<p>I&#8217;ve also used this to demonstrate how to set the font to sans-serif (<code>\renewcommand{\familydefault}{\sfdefault}</code>), and how to use <code>\useasboundingbox</code> to set the output page size instead of <code>margin</code>. To create the <span class="caps">SVG</span> file, first have LaTeX make a <span class="caps">DVI</span> file, and then convert it to <span class="caps">SVG</span> with&nbsp;dvisvgm:</p>
+<div class="codehilite"><pre><span></span><span class="gp">$</span> latex example.tex
+<span class="gp">$</span> dvisvgm <span class="se">\</span>
+    --clipjoin <span class="se">\</span>
+    --bbox<span class="o">=</span>papersize <span class="se">\</span>
+    --page<span class="o">=</span><span class="m">1</span>- <span class="se">\</span>
+    example.dvi
+</pre></div>
+
+
+<p>The dvisvgm options are important. <code>--clipjoin</code> <a href="http://dvisvgm.bplaced.net/FAQ">prevents clipping issues</a>. <code>--bbox=papersize</code> instructs dvisvgm to use the papersize information in the <span class="caps">DVI</span> file. Some other options for <code>--box</code>, <code>dvi</code> and <code>preview</code> do not work reliably when I tried them, especially if your TikZ coordinates can be negative (easy to do). Finally, and this is awesome, since you can have multiple TikZ pictures in one TeX file, <code>--page=1-</code> tells dvisvgm to process all pages, and output them to separate <span class="caps">SVG</span> files.&nbsp;Nice.</p>
+<p>And this is the resulting <span class="caps">SVG</span>:</p>
+<p><img alt="The example TeX file converted to an SVG file. The content is meaningless" src="https://tobywf.com/2018/01/beautiful-svg-diagrams-with-tikz-dvisvgm/images/2018-01-28-example.svg" /></p>
+<p>I have performed one extra operation on the file. <a href="https://github.com/svg/svgo"><span class="caps">SVGO</span></a> optimised <span class="caps">SVG</span> files by stripping out unnecessary rubbish and greatly reduces the filesize of <span class="caps">SVG</span> files. The only downside is you&#8217;ll need <code>npm</code> installed. (I hate <span class="caps">NPM</span> and Javascript, but <span class="caps">SVGO</span> is really the best thing out there to optimise <span class="caps">SVG</span>&nbsp;files.)</p>
+<div class="codehilite"><pre><span></span><span class="gp">$</span> brew install npm
+<span class="gp">$</span> npm install -g svgo
+</pre></div>
+
+
+<p><span class="caps">SVGO</span> has loads of options, too many to specify on the <span class="caps">CLI</span>. You can <a href="https://gist.github.com/tobywf/a11ff29e5b9128e04b2e39ea2fb9cee6">download the <code>config.yml</code> file</a> I use, or use <a href="https://jakearchibald.github.io/svgomg/">this <span class="caps">SVGO</span> <span class="caps">GUI</span></a> to try them out&nbsp;yourself.</p>
+<div class="codehilite"><pre><span></span><span class="gp">$</span> svgo --config<span class="o">=</span>config.yml example.svg
+</pre></div>
+
+
+<p>And that&#8217;s&nbsp;it!</p>
+</article>
+<section>
+  <p><span class="fa fa-tags"></span> <a href="https://tobywf.com/tag/tex/">TeX</a>, <a href="https://tobywf.com/tag/macos/">macOS</a></p>
+  <a href="https://tobywf.com/2018/01/svg-editors-on-macos/" class="older"><span class="fa fa-chevron-circle-left"></span> Older</a>
+</section>
+<!-- content end -->
+    <footer>
+      <hr />
+      <p class="center">
+        <a href="https://github.com/tobywf" class="fa-stack fa-lg">
+          <span class="fa fa-github fa-stack-2x"></span>
+        </a>
+        <a href="https://uk.linkedin.com/in/tobywf" class="fa-stack fa-lg">
+          <span class="fa fa-circle fa-stack-2x"></span>
+          <span class="fa fa-linkedin fa-stack-1x fa-inverse"></span>
+        </a>
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="fa-stack fa-lg" style="font-size: 120%;">
+          <span class="fa fa-creative-commons fa-stack-2x"></span>
+        </a>
+      </p>
+      <p>
+        <span class="fa fa-child fa-fw"></span>Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a code craftsman, tinkerer, and musician. He posts his ramblings here. Toby is currently in Melbourne.
+      </p>
+      <p>
+        <span class="fa fa-copyright fa-fw"></span><span class="date cap">mmxii&ndash;mmxvii</span> <span class="name cap">Toby Fleming</span>
+      </p>
+      <p>
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+          <span class="fa fa-creative-commons fa-fw"></span>BY-NC-ND 4.0
+        </a>
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
