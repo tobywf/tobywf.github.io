@@ -51,25 +51,30 @@
 </ul>
 </li>
 <li><a href="#discussion">Discussion</a></li>
+<li><a href="#recommendations">Recommendations</a><ul>
+<li><a href="#pure-git">Pure&nbsp;Git</a></li>
+<li><a href="#githubgitlab">Github/Gitlab</a></li>
+<li><a href="#gerrit">Gerrit</a></li>
+</ul>
+</li>
 <li><a href="#conclusion">Conclusion</a></li>
 </ul>
 </div>
 <h3 id="keeping-branches-up-to-date">Keeping branches up to&nbsp;date</h3>
 <p>Say you have a feature branch based on a master branch, and commits have been added to master to fix a bug. Now your feature branch is trailing master, and you need those bug-fixes <span class="caps">ASAP</span>.</p>
 <h4 id="merge">Merge</h4>
-<p>When you merge a branch into another, generally speaking you combine both histories together, fixing any conflicts in a merge commit. (There are a few different merge semantics, which we will explore in the next&nbsp;section.)</p>
+<p>When you merge a branch into another, generally speaking you combine both histories, and fix any conflicts in a merge commit. There are a few different merge semantics, which we will explore in the next section. It&#8217;s easier with&nbsp;examples.</p>
 <p><img alt="Two branches have diverged, and so merging combines the histories with a merge commit." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-merge-update.svg" /></p>
 <h4 id="rebase">Rebase</h4>
-<p>Rebasing is simpler (in theory). <code>git rebase &lt;branch&gt;</code> applies the commits from the current branch onto the specified&nbsp;branch.</p>
-<p>If the specified branch hasn&#8217;t changed, rebasing is a no-op, it does nothing. But if the specified branch has changed, then the branches have diverged. Rebasing will apply the diverged commits from current branch onto the <span class="caps">HEAD</span> of the specified&nbsp;branch.</p>
-<p><img alt="Two branches have diverged, and so rebase replays the divergent commits, creating new commits." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-rebase-update.svg" /></p>
-<p>This means rebase is actually &#8220;rewriting&#8221; commits, which creates new brand-new commits with new commit hashes and new timestamps. If there&#8217;s a merge conflict, it must be fixed when the commit is applied, right there and then. The merge resolution will get absorbed into the new commit, instead of creating a merge&nbsp;commit.</p>
-<p>In practice, rebasing can sometimes be gnarly. The benefit is that after rebasing, your feature branch is cleanly ahead of master. In my view, rebasing is fixing the problem now and on your branch, paying it forwards but keeping the branches separate. Merging does fix the issue, but permanently entangles the branches&nbsp;together.</p>
-<p><em>Don&#8217;t rebase a branch that has another branch merged into it</em>. So say you have a feature branch, and you merge master into it. I would recommend not using rebase on that branch. Rebase can still work and produce the desired result in simple cases. However, unexpected things can happen. For example, since rebases are performed from the earliest common commit and not the last, doing this will undo your merge(s) and you&#8217;ll have to fix merge conflicts all over again. That&#8217;s best case in my experience. It&#8217;s just easier to pick one strategy, and stick with it. (You can still rebase onto a branch with merges, e.g. if master has merges, you can still rebase your feature branch onto&nbsp;master.)</p>
+<p><code>git rebase &lt;branch&gt;</code> applies the commits from the current branch onto the specified&nbsp;branch.</p>
+<p>If the specified branch hasn&#8217;t changed, rebasing is a no-op, it does nothing. But if the specified branch has changed, then rebasing will apply the commits from current branch onto the head of the specified branch&nbsp;(&#8220;replaying&#8221;).</p>
+<p><img alt="Two branches have diverged, and so rebase replays the current branch's commits on the head of the specified branch, creating new commits." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-rebase-update.svg" /></p>
+<p>For this to work, rebase is actually creating brand-new commits with the same changes, but new commit hashes and new timestamps. If there&#8217;s a merge conflict, it must be fixed when the commit is applied. The merge resolution is absorbed into the new commit, instead of creating a merge commit. Rebasing is very powerful, and has almost no limits what can be done during a replay. We will explore later in <a href="#squash-on-rebase">squash on rebase</a>. The benefit of rebasing is that the branch is cleanly ahead of the&nbsp;other.</p>
+<p><strong>Don&#8217;t mix merging and rebasing on the same branch</strong>. Did you know rebases are performed from the earliest common commit and not the last? So if you merge master in, and then later rebase onto master, that will undo your merge commits and you&#8217;ll have to fix the conflicts again. It gets worse with more complicated histories. Pick one strategy, and stick with it. (Only on the same branch, e.g. rebasing onto master if it contains merges is fine, as long as those merges aren&#8217;t with the current&nbsp;branch.)</p>
 <h3 id="getting-your-work-into-master">Getting your work into&nbsp;master</h3>
-<p>Talking about git can get confusing. So I have more pretty pictures, and <a href="https://gist.github.com/tobywf/0743a9241171ff5cc9406d7ba696c8f8">a small script</a>. It initialises a new repo called <code>test</code>, and creates two feature branches in a way that might happen with developers working on different features at the same time, over a given time period. The initial commit A is the basis. Time-wise, first commit B is created on the feature1 branch, then D on the feature2 branch, then C on the feature1 branch, and finally E on the feature2&nbsp;branch.</p>
+<p>Talking about git can get confusing. So I have more pretty pictures, and <a href="https://gist.github.com/tobywf/0743a9241171ff5cc9406d7ba696c8f8">a small script</a>. It initialises a new repo called <code>test</code>, and creates two feature branches in a way that might happen with developers working on different features at the same time, over a given time period. The initial commit A is the basis. Time-wise, first commit B is created on the feature1 branch, then D on the feature2 branch, then C on the feature1 branch, and finally E on the feature2 branch (A &lt; C &lt; B &lt;&nbsp;D).</p>
 <p><img alt="Two branches, the first called feature1 with commits B and C, the second called feature2 with commits D and E, both based of master with commit A. Commits B and D have a conflict." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-initial.svg" /></p>
-<p>This will be the initial state for all examples, which you can follow along with if you wish. Let me also introduce two variations on the <code>git log</code> command that will help. You can run at any time to give you a good overview of the history of the repository. The first, <code>git log --pretty=format:'%s'</code>, prints out only the commit messages. This is compact and allows you to easily compare your results to mine, ignoring commit author names or commit hashes. The second, a slight variation, <code>git log --pretty=format:'%s' --graph</code>, has git display the history as a graph, which is useful for identifying feature&nbsp;branches.</p>
+<p>This will be the initial state for all examples, which you can follow along with if you wish. Let me also introduce two variations on the <code>git log</code> command that will help. You can run at any time to give you a good overview of the history of the repository. The first, <code>git log --pretty=format:'%s'</code>, prints out only the commit messages. This is compact and allows you to easily compare your results to mine, ignoring commit author names or commit hashes. The second, a slight variation, <code>git log --pretty=format:'%s' --graph</code>, has git display the history as a graph, which is useful for visualising where branches diverged and&nbsp;joined.</p>
 <h4 id="merge-defaultfast-forward">Merge,&nbsp;default/fast-forward</h4>
 <p>The default merge behaviour of git is to perform a fast-forward, so that commits without conflicts are simply absorbed into the branch as they are, and no merge commits are created. This is the case with commits B and C (diagonally&nbsp;filled).</p>
 <div class="codehilite"><pre><span></span><span class="gp">$</span> git merge feature1
@@ -108,7 +113,7 @@
 </pre></div>
 
 
-<p>The linear history is based on the time of the commit, and so we get the order A, B, D, C, E, and M1. Which is logically correct, but really confusing. When using a graph view, things are clearer, but it looks like commits B and C were always part of master, because of the fast-forward behaviour (indicated by the diagonally filled commits). Super confusing - or it will when the feature branch is deleted/never checked out/otherwise&nbsp;missing.</p>
+<p>The linear history is based on the time of the commit, and so we get the order A, B, D, C, E, and M1. Which is correct, but confusing. When using a graph view, things are clearer. But because of the fast-forward behaviour, it looks like commits B and C were always part of master (indicated by the diagonally filled commits). Super confusing - or it will when the feature branch is deleted/never checked out/otherwise&nbsp;missing.</p>
 <div class="codehilite"><pre><span></span><span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">&#39;%s&#39;</span> --graph
 <span class="go">*   Merge branch &#39;feature2&#39;</span>
 <span class="go">|\</span>
@@ -174,13 +179,12 @@
 </pre></div>
 
 
-<p>If you opt for a merge-based workflow, using <code>--no-ff</code> is highly recommended. It&#8217;s such an improvement, and so prevalent that Github just does <a href="https://help.github.com/articles/about-merge-methods-on-github/">exactly this by default</a>.</p>
-<p>(If you wish to, now is a good point to verify that the commits on master have the same commit hashes on the branches, which means they&#8217;re the same&nbsp;commits.)</p>
+<p>Using <code>--no-ff</code> is highly recommended. It&#8217;s such an improvement, and so prevalent that Github just does <a href="https://help.github.com/articles/about-merge-methods-on-github/">exactly this by default</a>.</p>
 <h4 id="rebase_1">Rebase</h4>
-<p>There is a third option. Rebasing actually produces a log similar to a fast-forwarded merge, every time. Since <code>git rebase master</code> applies the commits from the current branch on top of master, the result will always be fast-forward-able onto master. Note: rebasing does not actually merge the commits from the feature branch into&nbsp;master.</p>
+<p>There is a third option. Since <code>git rebase master</code> applies the commits from the current branch on top of master, the resulting branch can always be fast-forward merged into master. This is the opposite of the&nbsp;above.</p>
 <p>(Remember to reset the repo to the initial state! You can do this by deleting the directory and re-running the&nbsp;script.)</p>
 <p><img alt="Two branches, the first called feature1 with commits B and C, the second called feature2 with commits D and E, both based of master with commit A. Commits B and D have a conflict." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-initial.svg" /></p>
-<p>Since commits B and C are based on commit A, there is nothing to be done, and the rebase is a&nbsp;no-op.</p>
+<p>Since commits B and C are based on commit A, there is nothing to be done, and the rebase is a no-op. (Rebasing never merges the commits into the other branch, so merging is still&nbsp;required.)</p>
 <div class="codehilite"><pre><span></span><span class="gp">$</span> git checkout feature1
 <span class="go">Switched to branch &#39;feature1&#39;</span>
 <span class="gp">$</span> <span class="c1"># print hashes (yours will be different throughout)</span>
@@ -206,7 +210,7 @@
 
 
 <p><img alt="feature1, was fast-forward merged into master without a merge commit." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-merge1.svg" /></p>
-<p>However, now commits D and E clash with the commits on master and must be&nbsp;updated.</p>
+<p>However, now commits D and E clash with the commits on master and will be&nbsp;updated.</p>
 <div class="codehilite"><pre><span></span><span class="gp">$</span> git checkout feature2
 <span class="go">Switched to branch &#39;feature2&#39;</span>
 <span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">&#39;%s (%h)&#39;</span>
@@ -243,7 +247,7 @@
 
 
 <p><img alt="feature2, was fast-forward merged into master without a merge commit." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-rebase-merge.svg" /></p>
-<p>Technically, the second feature branch is no longer the one it was. Unlike when feature1 was rebased, feature2 needed conflict resolution, and commits D and E are actually newly rewritten commits (indicated by an asterisk). You can see that the commit hashes have&nbsp;changed.</p>
+<p>Technically, the second feature branch is no longer the one it was. Unlike when feature1 was rebased, feature2 needed conflict resolution, and commits D and E are actually newly rewritten commits (indicated by an asterisk). You can see above that the commit hashes have&nbsp;changed.</p>
 <div class="codehilite"><pre><span></span><span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">&#39;%s&#39;</span> --graph
 <span class="go">* E</span>
 <span class="go">* D</span>
@@ -253,7 +257,7 @@
 </pre></div>
 
 
-<p>With rebasing, because we fast-forward merged, the information on which commit belonged to which feature branch is&nbsp;lost.</p>
+<p>With rebasing, because of fast-forward merging, the information about which commit was in which branch is lost. Basically, you&#8217;d better hope your commits make sense on their&nbsp;own.</p>
 <h3 id="squashing">Squashing</h3>
 <p>Squashing is a way to mash several commits into one. Say you have a feature branch, and you&#8217;ve made some changes (after a code review, or fixing bugs), but it doesn&#8217;t make sense to commit these small bug-fix commits to master. Squashing is for&nbsp;you.</p>
 <h4 id="squash-on-merge">Squash on&nbsp;merge</h4>
@@ -280,7 +284,7 @@
 </pre></div>
 
 
-<p><img alt="feature1 and feature2 were squashed into master as a new commits." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-merge-squash.svg" /></p>
+<p><img alt="feature1 and feature2 were squashed into master as a new commit." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-merge-squash.svg" /></p>
 <p>The default commit messages are a bit useless when printing the first line, and I recommend writing something about the feature on the first line. But this also results in a clean&nbsp;graph.</p>
 <div class="codehilite"><pre><span></span><span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">&#39;%s&#39;</span> --graph
 <span class="go">* Squashed commit of the following:</span>
@@ -289,7 +293,7 @@
 </pre></div>
 
 
-<p>So you can use a merge workflow and squash. Note that squashing a branch with only one commit will still produce a new squash commit (as opposed to simply fast-forwarding the commit, so <code>--no-ff</code> is not needed with <code>--squash</code>):</p>
+<p>Note that squashing a branch with only one commit will still produce a new squash commit (as opposed to simply fast-forwarding the commit, so <code>--no-ff</code> is not needed with <code>--squash</code>):</p>
 <div class="codehilite"><pre><span></span><span class="gp">$</span> git checkout -b feature3
 <span class="go">Switched to a new branch &#39;feature3&#39;</span>
 <span class="gp">$</span> <span class="nb">echo</span> <span class="s2">&quot;F&quot;</span> &gt; src.txt <span class="o">&amp;&amp;</span> git add -- src.txt <span class="o">&amp;&amp;</span> git commit -m <span class="s2">&quot;F&quot;</span>
@@ -315,31 +319,42 @@
 
 
 <h4 id="squash-on-rebase">Squash on&nbsp;rebase</h4>
-<p>This only works with rebase workflows, as this rewrites the branch before you merge it. Again, I recommend not to mix rebasing and merging on the same&nbsp;branch.</p>
-<p>To do this, you follow the <a href="#rebase">rebase</a> instructions, but you&#8217;d use <code>git rebase master -i</code> to start an <a href="https://www.atlassian.com/git/tutorials/rewriting-history/git-rebase">interactive rebase</a>. Because rebase is rewriting the commits, all sorts of alterations can be made; such as changing the commit message, even splitting commits (!), and yes, squashing&nbsp;commits.</p>
+<p>(Again, I recommend not to mix rebasing and merging on the same branch, so don&#8217;t merge changes into the feature branch and then use this method to&nbsp;squash.)</p>
+<p>This is just rebasing. Follow the <a href="#rebase">rebase</a> instructions, but use <code>git rebase master -i</code> to start an <a href="https://www.atlassian.com/git/tutorials/rewriting-history/git-rebase">interactive rebase</a>. Because rebase is rewriting the commits, all sorts of alterations can be made; such as changing the commit message, squashing commits together, even splitting commits&nbsp;(!).</p>
 <p><img alt="feature1 and feature2 were squashed, and then fast-forwarded onto master." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-rebase-squash.svg" /></p>
-<p>So rebasing gives you the opportunity to clean up messy feature branches. Some people work well by committing every little change, so that if you go wrong you can revert. But since this is noisy, squashing makes the feature sane for&nbsp;code-reviewers.</p>
+<p>So rebasing gives you the opportunity to clean up messy feature&nbsp;branches.</p>
 <h3 id="discussion">Discussion</h3>
 <blockquote>
 <p>I&#8217;d also argue that merge and rebase represent fundamental differences in what commits mean. The former being commits are history, and the latter being commits are&nbsp;features.</p>
 <p><a href="https://news.ycombinator.com/item?id=15264320">keeperofdakeys</a></p>
 </blockquote>
-<p>To recap that subtle quote, there are two situations. If your features consist of several commits, merging preserves that information. Conversely, if you prefer a single feature to be one commit, rebasing is almost a must, although you can&nbsp;squash-merge.</p>
-<p>The case for rebasing is stronger in my opinion. Since rebasing doesn&#8217;t merge the commits, but just makes sure they stack nicely on top of master, this makes it super useful to do before code reviews, testing, and in continuous integration workflows. Because if something works on master but is broken on the rebased feature branch, it <em>has</em> to be the feature&nbsp;branch.</p>
-<p>In any case, squashing or rebasing onto master is a killer feature when finding bugs or regressions. Using <code>git bisect</code> on a linear history is much easier, and reverting commits is possible. Reverting non-fast-forward merges is painful, if it&#8217;s even feasible. You can imagine a feature branch where master was merged in several times, and the finally the feature branch was merged into master, causing a ratsnest of interdependencies between the&nbsp;branches.</p>
+<p>To recap that subtle quote, there are two situations. If your features consist of several commits and their history is important information, non-fast-forward merging preserves that. Conversely, if you prefer a simple, linear history with single features being (roughly) one commit, rebasing or squash on merge gets you there. This only holds for pure&nbsp;git.</p>
+<p>When using a repository manager, e.g. Github/Gitlab, if you squash a pull request, that pull request is still there with all its commits, for future reference. So you can have your cake and eat&nbsp;it.</p>
+<p>A linear history is also a killer feature when finding bugs or regressions. Using <code>git bisect</code> on a linear history is much easier, and reverting commits is straight-forward. Reverting non-fast-forward merges is painful. You can easily imagine a feature branch where master was merged in several times, and the finally the feature branch was merged into master. Do this with several branches at about the same time, and it becomes a jungle. Then again, after a while you learn how to navigate this&nbsp;jungle.</p>
+<p>My main issue with merging/preserving history at all costs is that low quality commits (e.g. &#8220;fixed linting&#8221;) just add noise. And no matter how careful, mistakes happen. We&#8217;ve all been there. (Although some people are worse than others in abusing the <span class="caps">CI</span> system as a replacement for local linting - you know who you&nbsp;are.)</p>
 <hr />
-<p>While rebasing is vastly more powerful than merging and allows for more flexible workflows, it has some&nbsp;drawbacks.</p>
-<p>Because rebasing can alter commits/change history, this means rebasing is only <span class="caps">OK</span> for local branches, not branches that have been pushed. Altering the history* is not cool if somebody else is working on it. But for local/private branches? No problem, you can already do whatever you want with those. Still, it&#8217;s a pitfall, if only a small&nbsp;one.</p>
-<p>(* You&#8217;ll never rebase the master branch or any shared branches - it simply isn&#8217;t necessary/doesn&#8217;t make sense. So while rebasing does &#8220;alter history&#8221;, this doesn&#8217;t mean the history of the whole repository can change. Just pointing this out, since it&#8217;s a bit of <span class="caps">FUD</span> that is sometimes used against rebasing. Additionally, most decent software, e.g. Github allows you to protect the master branch from having it&#8217;s history altered, i.e. you can only add new commits, not changed already pushed&nbsp;commits.)</p>
-<p>Additionally, because commits are applied step-by-step, this can make conflicts during rebasing much easier to resolve, or sometimes cause you to have to stop and fix merge conflicts on each commit. Personally, I like this as an indication that my commits changed the same bit of code, and therefore weren&#8217;t as dependant as I thought. Time to&nbsp;squash.</p>
-<p>Also, because they way git is designed, when resolving conflicts during a rebase, <a href="https://git-scm.com/docs/git-rebase#git-rebase--m">the sides are swapped</a>:</p>
+<p>I have learned the hard way that Github doesn&#8217;t work great with&nbsp;rebases.</p>
+<p>In general, rebasing alters commits and therefore history*, this is fine on local branches. But doing that to branches which have been made available to other people (pushed to a remote) is not cool, since they might be using it. To avoid this, git won&#8217;t alter history on a remote branch without a force push. To create a pull request on Github, you have to push the branch - so rebasing after the initial push is out, this severely limits the&nbsp;usefulness.</p>
+<p>(* Sidenote: while rebasing does &#8220;alter history&#8221; of the current branch, this doesn&#8217;t mean the history of the whole repository changes. Just pointing this out, since it&#8217;s a bit of <span class="caps">FUD</span> that is sometimes used against rebasing. Additionally, most repository managers allow you to protect the master branch from being altered by forbidding force pushing. This is a good&nbsp;idea.)</p>
+<p>Even if you agree to check before force pushing, on Github links in code reviews break. Github does have a <a href="https://help.github.com/articles/about-pull-request-merges/">rebase and merge</a> option, but if there are conflicts you have to do it locally, and all the caveats still&nbsp;apply.</p>
+<hr />
+<p>Some tools, like <a href="https://www.gerritcodereview.com">Gerrit</a>, are completely rebased focussed. A feature, called &#8220;change set&#8221; in Gerrit, is given an <span class="caps">ID</span>, which is appended to every commit message in that feature. So when the feature is rebased, Gerrit can keep track (new commit hashes, but same commit message). A rebase is called a &#8220;patch set&#8221;, and the <span class="caps">GUI</span> can show diffs between the patch sets in a change set. This makes Gerrit one of the best code review tools I have used, and I&#8217;ve come to love Gerrit, even if the <span class="caps">UI</span> is ugly as&nbsp;sin.</p>
+<hr />
+<p>A quirk of git is when resolving conflicts during a rebase, <a href="https://git-scm.com/docs/git-rebase#git-rebase--m">the sides are swapped</a> compared to&nbsp;merging:</p>
 <blockquote>
 <p>Note that a rebase merge works by replaying each commit from the working branch on top of the <upstream> branch. Because of this, when a merge conflict happens, the side reported as ours is the so-far rebased series, starting with <upstream>, and theirs is the working branch. In other words, the sides are&nbsp;swapped.</p>
 <p><a href="https://git-scm.com/docs/git-rebase#git-rebase--m">Git documentation on&nbsp;rebase</a></p>
 </blockquote>
 <p>This can cause some confusion for people unfamiliar with&nbsp;rebasing.</p>
+<h3 id="recommendations">Recommendations</h3>
+<h4 id="pure-git">Pure&nbsp;Git</h4>
+<p><strong>Merge &gt; Rebase &gt; Squash</strong>. Merging preserves feature history, rebasing gives a linear history and is more flexible than&nbsp;squashing.</p>
+<h4 id="githubgitlab">Github/Gitlab</h4>
+<p><strong>Squash &gt; Merge &gt; Rebase</strong>. Squashing gives a linear history while preserving pull request history. Avoid&nbsp;rebasing.</p>
+<h4 id="gerrit">Gerrit</h4>
+<p>Gerrit has its own workflow; tracking commit metadata results in a linear history while preserving full feature history. It is excellent, but&nbsp;unusual.</p>
 <h3 id="conclusion">Conclusion</h3>
-<p>The difference between merging and rebasing is philosophical in the way git is used in a workflow, hence why it comes up so often. Both have advantages and drawbacks. Personally, I always lean towards rebases to keep a project&#8217;s master branch sane, and allow programmers the flexibility of rewriting their feature branches as they see&nbsp;fit.</p>
+<p>There is no right answer, only bad blog posts and&nbsp;experience.</p>
 </article>
 <section>
   <p><span class="fa fa-tags"></span> <a href="https://tobywf.com/tag/git/">git</a></p>
