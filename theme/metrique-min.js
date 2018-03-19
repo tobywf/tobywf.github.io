@@ -1,1 +1,0 @@
-(function(b,g,d,a,h,e,c,f){if(h=/uid=[^;]*/g.exec(b.cookie))a=h[0];else{a=Array(d).join("0");for(e=d/8;0<e;e--)a+=(4294967296*Math.random()>>>0).toString(16);b.cookie=a="uid="+a.slice(-d)}c=b.createElement(g);f=b.getElementsByTagName(g)[0];c.async=1;c.src="https://tobywf.pythonanywhere.com/?"+a;f.parentNode.insertBefore(c,f)})(document,"script",32);
