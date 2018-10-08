@@ -114,7 +114,7 @@ l/r sum:   5=5
 
 
 <p>This does make sense if the problem is I/O bound. I also put this into Joe&#8217;s go program. Surprisingly, the go version was quicker than Manuel&#8217;s C version! Now that&#8217;s&nbsp;interesting.</p>
-<p>By using <code>gcc&nbsp;-O3</code>, I managed to shave a few milliseconds off. Then I used <code>clang</code>, which I prefer because the assembly output is much cleaner. The <code>clang&nbsp;-O3</code> version was also faster than <code>gcc&nbsp;-O3</code> - llvm is simply better at rearranging the code at a higher level. <code>clang</code> can output the assembly directly. For comparing it with the go version, <code>objdump</code> works on both. <sup id="fnref-1"><a class="footnote-ref" href="#fn-1">1</a></sup></p>
+<p>By using <code>gcc&nbsp;-O3</code>, I managed to shave a few milliseconds off. Then I used <code>clang</code>, which I prefer because the assembly output is much cleaner. The <code>clang&nbsp;-O3</code> version was also faster than <code>gcc&nbsp;-O3</code> - llvm is simply better at rearranging the code at a higher level. <code>clang</code> can output the assembly directly. For comparing it with the go version, <code>objdump</code> works on both. <sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup></p>
 <div class="codehilite"><pre><span></span>$ clang -O3 -S -masm<span class="o">=</span>intel nikita.c -o nikita.s
 <span class="c1"># or</span>
 $ clang -O3 -Wall -Wextra nikita.c -o nikita
@@ -152,13 +152,13 @@ $ objdump -M intel -S nikita &gt; nikita.s
 <div class="footnote">
 <hr />
 <ol>
-<li id="fn-1">
+<li id="fn:1">
 <p>There are several other ways to output assembly from a go&nbsp;program:</p>
 <ul>
 <li><code>go tool compile -S [-N] nikita.go &gt; nikita.s</code> - This produces some weird output. <code>-N</code> for&nbsp;unoptimised.</li>
 <li><code>go tool objdump $GOPATH/bin/nikita &gt; nikita.s</code> - The same as <code>compile</code>, but with all the statically linked&nbsp;stuff.</li>
 </ul>
-<p>I prefer the <code>objdump -S $GOPATH/bin/nikita</code> route.&#160;<a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<p>I prefer the <code>objdump -S $GOPATH/bin/nikita</code> route.&#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>
