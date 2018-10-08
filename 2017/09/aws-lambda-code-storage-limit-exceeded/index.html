@@ -30,20 +30,20 @@
   </div>
 </header>
 <article>
-<p>You&#8217;re deploying a new version of some <a href="https://aws.amazon.com/lambda/">AWS Lambda functions</a>,
-and then you get a very cryptic error from CloudFormation: &#8220;Code Storage Limit&nbsp;Exceeded&#8221;.</p>
+<p>You’re deploying a new version of some <a href="https://aws.amazon.com/lambda/">AWS Lambda functions</a>,
+and then you get a very cryptic error from CloudFormation: “Code Storage Limit&nbsp;Exceeded”.</p>
 <p><img alt="CloudFormation showing &quot;Code Storage Limit Exceeded&quot; error messages" src="https://tobywf.com/2017/09/aws-lambda-code-storage-limit-exceeded/images/2017-09-07-aws-lambda-code-storage-limit-exceeded.png" /></p>
 <p>Not only does this make the deployment fail, but it also prevents rolling&nbsp;back.</p>
-<p>So what&#8217;s going on? Most likely you&#8217;ve hit the <a href="http://docs.aws.amazon.com/lambda/latest/dg/limits.html#limits-list">75 GiB code storage limit</a>; the AWS Lambda dashboard should be displaying a
+<p>So what’s going on? Most likely you’ve hit the <a href="http://docs.aws.amazon.com/lambda/latest/dg/limits.html#limits-list">75 GiB code storage limit</a>; the AWS Lambda dashboard should be displaying a
 warning to confirm&nbsp;this.</p>
 <p>How is this possible? Well, Lambda functions have
 versions. And when you deploy a Lambda function, it creates a new version.
-You may not know this, because it&#8217;s simply called <code>$LATEST</code>. Also, AWS
-doesn&#8217;t call it &#8220;version&#8221; in the GUI, but <a href="http://docs.aws.amazon.com/lambda/latest/dg/versioning-intro.html">&#8220;qualifier&#8221;</a>
+You may not know this, because it’s simply called <code>$LATEST</code>. Also, AWS
+doesn’t call it “version” in the GUI, but <a href="http://docs.aws.amazon.com/lambda/latest/dg/versioning-intro.html">“qualifier”</a>
 (this is because it <a href="http://docs.aws.amazon.com/lambda/latest/dg/versioning-aliases.html">includes aliases</a>).</p>
-<p>How do you fix this? It&#8217;s easy in principle, delete the old Lambda function
-versions. However, doing this in the web UI is extremely tedious. So here&#8217;s a
-script to delete all the versions except <code>$LATEST</code>. Don&#8217;t use it if you have
+<p>How do you fix this? It’s easy in principle, delete the old Lambda function
+versions. However, doing this in the web UI is extremely tedious. So here’s a
+script to delete all the versions except <code>$LATEST</code>. Don’t use it if you have
 published any other versions/aliases, and - as always - this is an example
 script with no&nbsp;warranty.</p>
 <script src="https://gist.github.com/tobywf/6eb494f4b46cef367540074512161334.js"></script>

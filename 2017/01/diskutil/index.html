@@ -30,9 +30,9 @@
   </div>
 </header>
 <article>
-<p>I recently found out that Apple&#8217;s Disk Utility won&#8217;t allow multiple partitions
+<p>I recently found out that Apple’s Disk Utility won’t allow multiple partitions
 with a Master Boot Record. This is incredibly annoying. But the CLI&nbsp;will.</p>
-<p>Warning: There is no confirmation, no &#8220;are you sure?&#8221; prompts. <code>diskutil</code> will
+<p>Warning: There is no confirmation, no “are you sure?” prompts. <code>diskutil</code> will
 mess your disks up, zero fucks given. You need to double and triple check the
 commands you issue. That is&nbsp;all.</p>
 <div class="codehilite"><pre><span></span>$ diskutil list
@@ -65,12 +65,12 @@ commands you issue. That is&nbsp;all.</p>
 
 
 <p>This command will be your friend, a lifesaver. Learn to love it. It shows the
-disks attached to the computer. You&#8217;re most interested in the value in the
-<code>IDENTIFIER</code> column, but the other columns will help you figure out what&#8217;s&nbsp;what.</p>
-<p>In this case, we&#8217;ve got two physical disks, one internal disk and one external.
+disks attached to the computer. You’re most interested in the value in the
+<code>IDENTIFIER</code> column, but the other columns will help you figure out what’s&nbsp;what.</p>
+<p>In this case, we’ve got two physical disks, one internal disk and one external.
 Do not touch the internal disk, this is your hard&nbsp;drive.</p>
 <p>To partition a disk, use the <code>partitionDisk</code> subcommand. The help is actually
-rather good. To view which filesystems you can create, you&#8217;ll also need the
+rather good. To view which filesystems you can create, you’ll also need the
 <code>listFilesystems</code> subcommand.</p>
 <div class="codehilite"><pre><span></span>$ diskutil partitionDisk -h
 <span class="o">[</span>...<span class="o">]</span>

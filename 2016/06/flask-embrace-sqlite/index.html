@@ -31,16 +31,16 @@
   </div>
 </header>
 <article>
-<p><a href="http://flask.pocoo.org/">Flask is a web microframework</a> for Python. It&#8217;s small, but because it&#8217;s so easy to understand it&#8217;s also <a href="http://flask.pocoo.org/extensions/">extremely extensible</a>. No more&nbsp;bloat.</p>
-<p>I&#8217;m hoping to share some tips from developing and deploying several large Flask applications, some which aren&#8217;t obvious from the&nbsp;documentation.</p>
+<p><a href="http://flask.pocoo.org/">Flask is a web microframework</a> for Python. It’s small, but because it’s so easy to understand it’s also <a href="http://flask.pocoo.org/extensions/">extremely extensible</a>. No more&nbsp;bloat.</p>
+<p>I’m hoping to share some tips from developing and deploying several large Flask applications, some which aren’t obvious from the&nbsp;documentation.</p>
 <h2 id="tip-3-embrace-sqlite">Tip 3: Embrace&nbsp;SQLite</h2>
-<p><a href="https://www.sqlite.org/">SQLite</a> is ubiquitous. It&#8217;s zero-configuration. There&#8217;s no server to get&nbsp;hacked.</p>
+<p><a href="https://www.sqlite.org/">SQLite</a> is ubiquitous. It’s zero-configuration. There’s no server to get&nbsp;hacked.</p>
 <ul>
 <li>Especially for development, a dev SQLite database will do the&nbsp;job</li>
 <li>SQLite <a href="https://www.sqlite.org/whentouse.html">is fine to use in production</a>, especially for <a href="http://beets.io/blog/sqlite-performance.html">read-intensive&nbsp;workloads</a></li>
 </ul>
-<p>You don&#8217;t need a big SQL server (e.g. PostgreSQL, MySQL) until you&#8217;re big. And since <a href="https://tobywf.com/2016/06/flask-mvc-simplicity-with-sqlalchemy/">you&#8217;re using SQLAlchemy (right?)</a>, migrating to something bigger isn&#8217;t an issue. What are you waiting for? 100k more users? Just use&nbsp;SQLite.</p>
-<p>Update: It has been put to me that you should use the same database in production and development. In principle, I think this is a good idea. However, if this isn&#8217;t possible, your integration tests should catch any issues,&nbsp;right?</p>
+<p>You don’t need a big SQL server (e.g. PostgreSQL, MySQL) until you’re big. And since <a href="https://tobywf.com/2016/06/flask-mvc-simplicity-with-sqlalchemy/">you’re using SQLAlchemy (right?)</a>, migrating to something bigger isn’t an issue. What are you waiting for? 100k more users? Just use&nbsp;SQLite.</p>
+<p>Update: It has been put to me that you should use the same database in production and development. In principle, I think this is a good idea. However, if this isn’t possible, your integration tests should catch any issues,&nbsp;right?</p>
 <hr />
 <p>Good luck with&nbsp;Flask!</p>
 </article>

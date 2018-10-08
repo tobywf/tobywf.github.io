@@ -45,7 +45,7 @@ $ git daemon <span class="se">\</span>
 
 
 <p>Guests can now clone from you: <code>git clone git://blah/my_repo</code>. Note that this is completely unauthenticated read-only&nbsp;access!</p>
-<p>If you&#8217;re lazy like me, you can create an alias so all you have to type is <code>git serve</code> (from the root of the&nbsp;repo):</p>
+<p>If you’re lazy like me, you can create an alias so all you have to type is <code>git serve</code> (from the root of the&nbsp;repo):</p>
 <div class="codehilite"><pre><span></span><span class="k">[alias]</span>
     <span class="na">serve</span> <span class="o">=</span> <span class="s">!git daemon --verbose --reuseaddr --export-all --strict-paths --base-path=.git .git/</span>
 </pre></div>
@@ -56,11 +56,11 @@ $ git daemon <span class="se">\</span>
 <li><code>--verbose</code> prints all connection attempts to&nbsp;stdout.</li>
 <li><code>--reuseaddr</code> stops old connections from causing issues when restarting the&nbsp;server.</li>
 <li><code>--export-all</code> means <code>git deamon</code> will allow pulling from repositories without a <code>git-daemon-export-ok</code> file.</li>
-<li><code>--strict-paths</code> isn&#8217;t so important for single-repo sharing, but avoids oversharing issues if you accidentally run the daemon from the wrong&nbsp;directory.</li>
-<li><code>--base-path=.git</code> remaps the path so guests don&#8217;t need to know where the repo is hosted on your machine, only the repo&nbsp;name.</li>
+<li><code>--strict-paths</code> isn’t so important for single-repo sharing, but avoids oversharing issues if you accidentally run the daemon from the wrong&nbsp;directory.</li>
+<li><code>--base-path=.git</code> remaps the path so guests don’t need to know where the repo is hosted on your machine, only the repo&nbsp;name.</li>
 <li><code>.git/</code> - this is the directory of the bare repo to whitelist/share. In other words, only share the git repository data, not your working&nbsp;directory.</li>
 </ul>
-<p>You might need to punch through your firewall. On Ubuntu, if you are using <code>iptables</code>, this is how you can check if you&#8217;ve already added a firewall rule and how to add a firewall exception. I believe this lasts until you&nbsp;restart:</p>
+<p>You might need to punch through your firewall. On Ubuntu, if you are using <code>iptables</code>, this is how you can check if you’ve already added a firewall rule and how to add a firewall exception. I believe this lasts until you&nbsp;restart:</p>
 <div class="codehilite"><pre><span></span>$ sudo iptables -nL <span class="p">|</span> grep <span class="m">9418</span>
 $ sudo iptables -I INPUT <span class="m">1</span> -p tcp --dport <span class="m">9418</span> -j ACCEPT
 </pre></div>
