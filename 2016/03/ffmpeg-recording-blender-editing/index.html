@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Recording from desktop with ffmpeg and editing with Blender on Ubuntu - tobywf</title>
+  <title>Recording from desktop with ffmpeg and editing with Blender on Ubuntu - tobywf</title>
   <meta charset="utf-8" />
   <meta name="author" content="Toby Fleming" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -24,26 +24,26 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Recording from desktop with ffmpeg and editing with Blender on&nbsp;Ubuntu</h1>
+  <h1>Recording from desktop with ffmpeg and editing with Blender on Ubuntu</h1>
   <h2>Serious Linux video editing</h2>
   <div class="infoline">
     <span class="fa fa-calendar"></span> <span class="date">31 Mar '16</span>
   </div>
 </header>
 <article>
-<p>Because of a demo possibly involving management, I was looking for a way to record my desktop. Video recording/editing on Linux still isn’t a great experience, but it’s getting better. There’s still too many apps which are unreliable or terrible, especially on the Ubuntu software&nbsp;center.</p>
-<p>I chose <a href="https://www.ffmpeg.org/">ffmpeg</a> and <a href="https://www.blender.org/">Blender</a>, both not obvious choices for the&nbsp;uninitiated.</p>
-<p><code>ffmpeg</code> is a collection of multimedia libraries. It’s rock-solid and can record desktop footage via the <code>x11grab</code> format. It’s CLI-based, which I consider a bonus. Many graphical programs that perform video encoding use <code>ffmpeg</code> behind the scenes, but usually fall flat in some way. The number of options is quite large, but the internet exists. Might as well go&nbsp;CLI.</p>
-<p>Blender is actually an open-source 3D computer graphics program. It’s very professional, very reliable and includes a decent and very capable video&nbsp;editor.</p>
-<p>So let’s get&nbsp;started.</p>
-<h2 id="installing-ffmpeg">Installing&nbsp;ffmpeg</h2>
-<p>You can try a&nbsp;simple</p>
+<p>Because of a demo possibly involving management, I was looking for a way to record my desktop. Video recording/editing on Linux still isn’t a great experience, but it’s getting better. There’s still too many apps which are unreliable or terrible, especially on the Ubuntu software center.</p>
+<p>I chose <a href="https://www.ffmpeg.org/">ffmpeg</a> and <a href="https://www.blender.org/">Blender</a>, both not obvious choices for the uninitiated.</p>
+<p><code>ffmpeg</code> is a collection of multimedia libraries. It’s rock-solid and can record desktop footage via the <code>x11grab</code> format. It’s CLI-based, which I consider a bonus. Many graphical programs that perform video encoding use <code>ffmpeg</code> behind the scenes, but usually fall flat in some way. The number of options is quite large, but the internet exists. Might as well go CLI.</p>
+<p>Blender is actually an open-source 3D computer graphics program. It’s very professional, very reliable and includes a decent and very capable video editor.</p>
+<p>So let’s get started.</p>
+<h2 id="installing-ffmpeg">Installing ffmpeg</h2>
+<p>You can try a simple</p>
 <div class="codehilite"><pre><span></span>sudo apt-get install ffmpeg
 </pre></div>
 
 
-<p>Except the <code>ffmpeg</code> version that this installs on my 14.04 Ubuntu wasn’t compiled with <code>x11grab</code> support. You’ll find out if that’s the case when you run the record command further down, if so read&nbsp;on.</p>
-<p>Compiling <code>ffmpeg</code> from source was painless, but took some time and worked the&nbsp;CPU</p>
+<p>Except the <code>ffmpeg</code> version that this installs on my 14.04 Ubuntu wasn’t compiled with <code>x11grab</code> support. You’ll find out if that’s the case when you run the record command further down, if so read on.</p>
+<p>Compiling <code>ffmpeg</code> from source was painless, but took some time and worked the CPU</p>
 <div class="codehilite"><pre><span></span>tar -xvf ffmpeg-3.0.1.tar.bz2
 <span class="nb">cd</span> ffmpeg-3.0.1
 ./configure --enable-nonfree <span class="se">\</span>
@@ -58,38 +58,38 @@ sudo make install
 </pre></div>
 
 
-<h2 id="recording-with-ffmpeg">Recording with&nbsp;ffmpeg</h2>
-<p>Recording the desktop is very&nbsp;straight-forward:</p>
+<h2 id="recording-with-ffmpeg">Recording with ffmpeg</h2>
+<p>Recording the desktop is very straight-forward:</p>
 <div class="codehilite"><pre><span></span>ffmpeg <span class="se">\</span>
     -f x11grab -video_size 960x540 -framerate <span class="m">30</span> -i :0.0+0,81 <span class="se">\</span>
     -codec:v libx264 -qp <span class="m">0</span> -preset ultrafast capture.mkv
 </pre></div>
 
 
-<p>The various&nbsp;parameters:</p>
+<p>The various parameters:</p>
 <ul>
 <li><code>-f x11grab</code> sets the input format to be <code>x11grab</code></li>
-<li><code>-video_size &lt;w&gt;x&lt;h&gt;</code> sets the size of the recorded region - in my case 1/4 of a full-HD screen. If you wanted to capture the whole screen but resize it, you would insert a scale output&nbsp;filter</li>
-<li><code>-framerate &lt;rate&gt;</code> sets, you guessed it, the framerate of&nbsp;capture</li>
-<li><code>-i</code> is the “input filename”, in this case display 0, screen 0 of my X11 server (I only have one screen). The optional coordinates after the plus sign specify the x and y offset, in my case skipping the menu&nbsp;bar</li>
-<li><code>-codec:v libx264</code> sets the output video codec to be x264, which is excellent as far as quality vs file size, but also fast (a rare&nbsp;combination)</li>
+<li><code>-video_size &lt;w&gt;x&lt;h&gt;</code> sets the size of the recorded region - in my case 1/4 of a full-HD screen. If you wanted to capture the whole screen but resize it, you would insert a scale output filter</li>
+<li><code>-framerate &lt;rate&gt;</code> sets, you guessed it, the framerate of capture</li>
+<li><code>-i</code> is the “input filename”, in this case display 0, screen 0 of my X11 server (I only have one screen). The optional coordinates after the plus sign specify the x and y offset, in my case skipping the menu bar</li>
+<li><code>-codec:v libx264</code> sets the output video codec to be x264, which is excellent as far as quality vs file size, but also fast (a rare combination)</li>
 <li><code>-qp 0</code> sets x264 to encode losslessly. We want this because we’ll be editing the footage, so we don’t want to compress it multiple times. But honestly, when recording desktop video, there is so little movement, the lossless encoder output isn’t much bigger than the lossy encoder. The lossless option is also hassle free, as you don’t have to dial in the encode quality and worry if the text is legible. I recommend it. If you wanted lossy, use the <code>-crf</code> option</li>
-<li><code>-preset ultrafast</code> tells x264 to haul ass, and use as little resource as possible. For lossless that we’ll also re-encode, this is fine and avoids stuttering during the&nbsp;record</li>
-<li><code>capture.mkv</code> is simply the output filename, in this case I’m using a Matroska container, because they just&nbsp;work</li>
+<li><code>-preset ultrafast</code> tells x264 to haul ass, and use as little resource as possible. For lossless that we’ll also re-encode, this is fine and avoids stuttering during the record</li>
+<li><code>capture.mkv</code> is simply the output filename, in this case I’m using a Matroska container, because they just work</li>
 </ul>
-<p>If I was outputting a final video, I might use these options&nbsp;instead:</p>
+<p>If I was outputting a final video, I might use these options instead:</p>
 <ul>
-<li><code>-preset slow</code>: I really don’t know if this makes a difference with lossless, but possibly the encoder will try and find smaller deltas between&nbsp;frames</li>
-<li><code>-tune animation</code>: Again for lossless this might have no effect, but I’m hoping it gives x264 a better initial starting point for&nbsp;optimisation</li>
-<li><code>-pix_fmt yuv420p</code>: Recorded from the desktop, the video will have equal sampling for luminance (Y) and chroma (UV), called 4:4:4. Some players don’t deal with higher chroma sampling, so this sets the sampling to 4:2:0. It’s highly technical, but required to just work(tm). <a href="https://en.wikipedia.org/wiki/YUV">Wikipedia on YUV</a> has more&nbsp;info</li>
+<li><code>-preset slow</code>: I really don’t know if this makes a difference with lossless, but possibly the encoder will try and find smaller deltas between frames</li>
+<li><code>-tune animation</code>: Again for lossless this might have no effect, but I’m hoping it gives x264 a better initial starting point for optimisation</li>
+<li><code>-pix_fmt yuv420p</code>: Recorded from the desktop, the video will have equal sampling for luminance (Y) and chroma (UV), called 4:4:4. Some players don’t deal with higher chroma sampling, so this sets the sampling to 4:2:0. It’s highly technical, but required to just work(tm). <a href="https://en.wikipedia.org/wiki/YUV">Wikipedia on YUV</a> has more info</li>
 </ul>
-<h2 id="editing-with-blender">Editing with&nbsp;Blender</h2>
-<p>Warning: The interface has a steep learning curve. I’ve used Blender for 3D work before, so I’m happy with it. But definitely go check out a tutorial and be prepared to spend a while getting into the swing of&nbsp;things.</p>
-<p>I recommend it, because everything else I tried crashes all the time or is too simple - you can even colour grade footage in Blender! It really will allow you to create a professional-looking video, for&nbsp;free.</p>
-<p>To install Blender, visit the website, and then look at a tutorial, which will explain stuff much better than I&nbsp;could.</p>
-<h2 id="encoding-with-blender">Encoding with&nbsp;Blender</h2>
-<p>Blender is pretty bad at encoding. You’ll want to use <code>ffmpeg</code> again. Some Blender builds come with the <code>ffmpeg</code> output format. If not, this is something we can work&nbsp;around.</p>
-<p>You can export every frame and then combine them if you want. If your files are called <code>output0000.png</code> and so forth, do&nbsp;this:</p>
+<h2 id="editing-with-blender">Editing with Blender</h2>
+<p>Warning: The interface has a steep learning curve. I’ve used Blender for 3D work before, so I’m happy with it. But definitely go check out a tutorial and be prepared to spend a while getting into the swing of things.</p>
+<p>I recommend it, because everything else I tried crashes all the time or is too simple - you can even colour grade footage in Blender! It really will allow you to create a professional-looking video, for free.</p>
+<p>To install Blender, visit the website, and then look at a tutorial, which will explain stuff much better than I could.</p>
+<h2 id="encoding-with-blender">Encoding with Blender</h2>
+<p>Blender is pretty bad at encoding. You’ll want to use <code>ffmpeg</code> again. Some Blender builds come with the <code>ffmpeg</code> output format. If not, this is something we can work around.</p>
+<p>You can export every frame and then combine them if you want. If your files are called <code>output0000.png</code> and so forth, do this:</p>
 <div class="codehilite"><pre><span></span>ffmpeg -framerate <span class="m">30</span> -i output%04d.png <span class="se">\</span>
     -codec:v libx264 -preset slow -tune animation -qp <span class="m">0</span> <span class="se">\</span>
     -pix_fmt yuv420p render.mkv
@@ -122,7 +122,7 @@ wget <span class="si">${</span><span class="nv">FRAMESERVER</span><span class="s
 </pre></div>
 
 
-<p>As you can see, the <code>ffmpeg</code> options I’ve already used come in handy here. And that’s it, you should have a beautiful rendered and encoded video at the end (although this can take a while, video work is notoriously hard even for a beefy&nbsp;rig).</p>
+<p>As you can see, the <code>ffmpeg</code> options I’ve already used come in handy here. And that’s it, you should have a beautiful rendered and encoded video at the end (although this can take a while, video work is notoriously hard even for a beefy rig).</p>
 <h2 id="fin">Fin</h2>
 </article>
 <section>

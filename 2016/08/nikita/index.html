@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Nikita - a story of obsessed developers - tobywf</title>
+  <title>Nikita - a story of obsessed developers - tobywf</title>
   <meta charset="utf-8" />
   <meta name="author" content="Toby Fleming" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -24,7 +24,7 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Nikita - a story of obsessed&nbsp;developers</h1>
+  <h1>Nikita - a story of obsessed developers</h1>
   <div class="infoline">
     <span class="fa fa-calendar"></span> <span class="date">21 Aug '16</span>
   </div>
@@ -50,7 +50,7 @@ Some time later:
 
 <p>And that’s how we got <a href="https://xkcd.com/356/">nerd sniped</a>.</p>
 <hr />
-<p>There’s the obvious solution, which happens to be the quickest to implement. This is the route I chose, in Python. You simply start on each end of the array segment, and look for the mid-point by moving the position of the smaller&nbsp;sum:</p>
+<p>There’s the obvious solution, which happens to be the quickest to implement. This is the route I chose, in Python. You simply start on each end of the array segment, and look for the mid-point by moving the position of the smaller sum:</p>
 <div class="codehilite"><pre><span></span>  array: 4 1 1 3 1
 l/r pos: ^       ^
 l/r sum: 4   &gt;   1
@@ -71,9 +71,9 @@ l/r sum:   5=5
 </pre></div>
 
 
-<p>The performance of this is satisfactory. In fact, the only issue I hit was recursion depth. While I could bump this up on my machine, on HackerRank this didn’t work. No worries though, just use a list as a stack for array segments and&nbsp;iterate.</p>
+<p>The performance of this is satisfactory. In fact, the only issue I hit was recursion depth. While I could bump this up on my machine, on HackerRank this didn’t work. No worries though, just use a list as a stack for array segments and iterate.</p>
 <hr />
-<p>Joe however figured out that you can use a <a href="https://en.wikipedia.org/wiki/Prefix_sum">prefix sum</a> to express the problem, at which point you have an ordered list which you can search really&nbsp;quickly:</p>
+<p>Joe however figured out that you can use a <a href="https://en.wikipedia.org/wiki/Prefix_sum">prefix sum</a> to express the problem, at which point you have an ordered list which you can search really quickly:</p>
 <div class="codehilite"><pre><span></span><span class="n">array</span><span class="o">:</span> <span class="n">_</span> <span class="mi">4</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">3</span>  <span class="mi">1</span>
 <span class="n">scan</span><span class="o">:</span>  <span class="mi">0</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">9</span> <span class="mi">10</span>
 <span class="n">hi</span><span class="o">/</span><span class="n">lo</span><span class="o">:</span> <span class="o">^</span>          <span class="o">^,</span> <span class="n">mid</span> <span class="o">=</span> <span class="mi">5</span><span class="o">,</span> <span class="n">index</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span> <span class="o">=</span> <span class="mi">2</span>
@@ -81,8 +81,8 @@ l/r sum:   5=5
 </pre></div>
 
 
-<p>This works because you only need the depth. It’s also extremely efficient because you’re only summing once. Additionally, as soon as you get an array segment with an odd sum, you can stop because you’ll never be able to split it into equal parts in this&nbsp;representation.</p>
-<p>Problem solved, right? Wrong. Now we have two solutions (both Python), and one is quicker. It’s officially a&nbsp;competition!</p>
+<p>This works because you only need the depth. It’s also extremely efficient because you’re only summing once. Additionally, as soon as you get an array segment with an odd sum, you can stop because you’ll never be able to split it into equal parts in this representation.</p>
+<p>Problem solved, right? Wrong. Now we have two solutions (both Python), and one is quicker. It’s officially a competition!</p>
 <hr />
 <p>There’s one more (easy) optimisation we can make. Zeros don’t matter, because if you have a zero, it acts like a wildcard for any side of the sum. It’s not completely obvious in the simple approach, but the prefix sum approach obviously doesn’t change by adding zeros. There’s one edge case: if all your values are zeros. Say you have <code>n</code> zeros, then you can split <code>n - 1</code> times:</p>
 <div class="codehilite"><pre><span></span><span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span>
@@ -95,12 +95,12 @@ l/r sum:   5=5
 
 <p>It’s worth handling this edge case, as one of the test cases has a fairly large <code>n</code>.</p>
 <hr />
-<p>Joe and I did some profiling on the Python code. Turns out that the majority of time is spent on <code>int()</code>, parsing the&nbsp;input!</p>
+<p>Joe and I did some profiling on the Python code. Turns out that the majority of time is spent on <code>int()</code>, parsing the input!</p>
 <div class="codehilite"><pre><span></span><span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">s</span> <span class="o">!=</span> <span class="s1">&#39;0&#39;</span><span class="p">]</span>
 </pre></div>
 
 
-<p>At this point, Manuel moved to C and Joe moved to Golang. Both of these will execute faster than Python (but take longer to write). Manuel found out the biggest speed-up came from implementing your own <code>atoi</code>, which is super simplistic because the input is very limited. I implemented it like&nbsp;this:</p>
+<p>At this point, Manuel moved to C and Joe moved to Golang. Both of these will execute faster than Python (but take longer to write). Manuel found out the biggest speed-up came from implementing your own <code>atoi</code>, which is super simplistic because the input is very limited. I implemented it like this:</p>
 <div class="codehilite"><pre><span></span><span class="kt">uint64_t</span> <span class="nf">_atoi</span><span class="p">()</span> <span class="p">{</span>
     <span class="kt">uint64_t</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">getchar</span><span class="p">();</span>
@@ -113,8 +113,8 @@ l/r sum:   5=5
 </pre></div>
 
 
-<p>This does make sense if the problem is I/O bound. I also put this into Joe’s go program. Surprisingly, the go version was quicker than Manuel’s C version! Now that’s&nbsp;interesting.</p>
-<p>By using <code>gcc&nbsp;-O3</code>, I managed to shave a few milliseconds off. Then I used <code>clang</code>, which I prefer because the assembly output is much cleaner. The <code>clang&nbsp;-O3</code> version was also faster than <code>gcc&nbsp;-O3</code> - llvm is simply better at rearranging the code at a higher level. <code>clang</code> can output the assembly directly. For comparing it with the go version, <code>objdump</code> works on both. <sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup></p>
+<p>This does make sense if the problem is I/O bound. I also put this into Joe’s go program. Surprisingly, the go version was quicker than Manuel’s C version! Now that’s interesting.</p>
+<p>By using <code>gcc -O3</code>, I managed to shave a few milliseconds off. Then I used <code>clang</code>, which I prefer because the assembly output is much cleaner. The <code>clang -O3</code> version was also faster than <code>gcc -O3</code> - llvm is simply better at rearranging the code at a higher level. <code>clang</code> can output the assembly directly. For comparing it with the go version, <code>objdump</code> works on both. <sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup></p>
 <div class="codehilite"><pre><span></span>$ clang -O3 -S -masm<span class="o">=</span>intel nikita.c -o nikita.s
 <span class="c1"># or</span>
 $ clang -O3 -Wall -Wextra nikita.c -o nikita
@@ -122,7 +122,7 @@ $ objdump -M intel -S nikita &gt; nikita.s
 </pre></div>
 
 
-<p>Let’s see what we&nbsp;have:</p>
+<p>Let’s see what we have:</p>
 <div class="codehilite"><pre><span></span><span class="c1">; Intel-syntax 64-bit assembly</span>
 <span class="c1">; prologue omitted</span>
   <span class="nf">xor</span> <span class="nb">ebx</span><span class="p">,</span> <span class="nb">ebx</span>              <span class="c1">; uint64_t num = 0; *</span>
@@ -147,16 +147,16 @@ $ objdump -M intel -S nikita &gt; nikita.s
 
 
 <p>* for amd64, zeroing the 32-bit register implicitly zeros the top 32-bits. Doing this as a 32-bit op takes one less byte than the corresponding 64-bit op: <code>48 31 db  xor  rbx,rbx</code> vs <code>31 db  xor  ebx,ebx</code>.</p>
-<p>Pretty tight - not much optimisation there, except for <code>getchar</code>. I tried using <code>fread</code> on <code>stdin</code> instead, but that was about the same as <code>getchar</code>. In the go disassembly, I didn’t find either <code>getchar</code> or <code>fread</code>, but I did find <code>mmap</code>! Aha, so that’s how the go version is&nbsp;faster.</p>
-<p>Using <a href="http://linux.die.net/man/2/mmap">mmap</a>, the C version was now 3x as fast as the go version. Now we could all get on with our lives. Nikita, it’s been&nbsp;fun!</p>
+<p>Pretty tight - not much optimisation there, except for <code>getchar</code>. I tried using <code>fread</code> on <code>stdin</code> instead, but that was about the same as <code>getchar</code>. In the go disassembly, I didn’t find either <code>getchar</code> or <code>fread</code>, but I did find <code>mmap</code>! Aha, so that’s how the go version is faster.</p>
+<p>Using <a href="http://linux.die.net/man/2/mmap">mmap</a>, the C version was now 3x as fast as the go version. Now we could all get on with our lives. Nikita, it’s been fun!</p>
 <div class="footnote">
 <hr />
 <ol>
 <li id="fn:1">
-<p>There are several other ways to output assembly from a go&nbsp;program:</p>
+<p>There are several other ways to output assembly from a go program:</p>
 <ul>
-<li><code>go tool compile -S [-N] nikita.go &gt; nikita.s</code> - This produces some weird output. <code>-N</code> for&nbsp;unoptimised.</li>
-<li><code>go tool objdump $GOPATH/bin/nikita &gt; nikita.s</code> - The same as <code>compile</code>, but with all the statically linked&nbsp;stuff.</li>
+<li><code>go tool compile -S [-N] nikita.go &gt; nikita.s</code> - This produces some weird output. <code>-N</code> for unoptimised.</li>
+<li><code>go tool objdump $GOPATH/bin/nikita &gt; nikita.s</code> - The same as <code>compile</code>, but with all the statically linked stuff.</li>
 </ul>
 <p>I prefer the <code>objdump -S $GOPATH/bin/nikita</code> route.&#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>

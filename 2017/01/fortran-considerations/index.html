@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Fortran considerations - tobywf</title>
+  <title>Fortran considerations - tobywf</title>
   <meta charset="utf-8" />
   <meta name="author" content="Toby Fleming" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -24,34 +24,34 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Fortran&nbsp;considerations</h1>
+  <h1>Fortran considerations</h1>
   <h2>Thoughts on the ever-present "Why physicists still use Fortran" debate</h2>
   <div class="infoline">
     <span class="fa fa-calendar"></span> <span class="date">2 Jan '17</span>
   </div>
 </header>
 <article>
-<p>Ever so often, someone feels the need to either mock the fact Fortran is still used justify why Fortran is still being used. Like this <a href="https://news.ycombinator.com/item?id=13205899">Hackernews discussion</a> from December 2016 of an article from 2015, titled <a href="http://www.moreisdifferent.com/2015/07/16/why-physicsts-still-use-fortran/">“Why physicists still use Fortran”</a>. Now, I don’t think anybody is criticising Fortran as a tool per se. Fortran is a powerful tool. But you have to know how to use&nbsp;it.</p>
-<h2 id="dont-use-fortran-because-it-is-faster">Don’t use Fortran “because it is&nbsp;faster”</h2>
-<p>The joke in the heading is of course that when people say “it’s fast” or “it’s faster”, they usually forget to mention what it’s faster than, and in which&nbsp;aspect.</p>
-<p>Speed isn’t a great argument for Fortran specifically. The flaw in this argument is that almost everybody overestimates how much they know. Which means they also overestimate how good they are at writing code, and debugging it. (Obviously, if you’re a Fortran god, feel free to skip this&nbsp;part.)</p>
-<p>Maybe in the past it was true that C/C++ compilers weren’t as good as Fortran compilers at producing optimised code. For most cases, this is no longer true. And compilers aren’t infallible. Small changes in code can result in better cache usage, yielding huge speed increases for no apparent reason. For example, it isn’t obvious why (or even if) <a href="https://en.wikipedia.org/wiki/Quicksort">quicksort</a> is quicker than other algorithms with the same&nbsp;complexity.</p>
-<p>So <a href="https://en.wikipedia.org/wiki/Not_invented_here">not invented here</a> becomes a big issue. Ideally, you want to be using code that many other people have also used/worked on, and as much of that as possible. Custom-written Fortran is rarely as fast as an existing library function. Worse than that, it’s untested (read: probably full of&nbsp;bugs).</p>
+<p>Ever so often, someone feels the need to either mock the fact Fortran is still used justify why Fortran is still being used. Like this <a href="https://news.ycombinator.com/item?id=13205899">Hackernews discussion</a> from December 2016 of an article from 2015, titled <a href="http://www.moreisdifferent.com/2015/07/16/why-physicsts-still-use-fortran/">“Why physicists still use Fortran”</a>. Now, I don’t think anybody is criticising Fortran as a tool per se. Fortran is a powerful tool. But you have to know how to use it.</p>
+<h2 id="dont-use-fortran-because-it-is-faster">Don’t use Fortran “because it is faster”</h2>
+<p>The joke in the heading is of course that when people say “it’s fast” or “it’s faster”, they usually forget to mention what it’s faster than, and in which aspect.</p>
+<p>Speed isn’t a great argument for Fortran specifically. The flaw in this argument is that almost everybody overestimates how much they know. Which means they also overestimate how good they are at writing code, and debugging it. (Obviously, if you’re a Fortran god, feel free to skip this part.)</p>
+<p>Maybe in the past it was true that C/C++ compilers weren’t as good as Fortran compilers at producing optimised code. For most cases, this is no longer true. And compilers aren’t infallible. Small changes in code can result in better cache usage, yielding huge speed increases for no apparent reason. For example, it isn’t obvious why (or even if) <a href="https://en.wikipedia.org/wiki/Quicksort">quicksort</a> is quicker than other algorithms with the same complexity.</p>
+<p>So <a href="https://en.wikipedia.org/wiki/Not_invented_here">not invented here</a> becomes a big issue. Ideally, you want to be using code that many other people have also used/worked on, and as much of that as possible. Custom-written Fortran is rarely as fast as an existing library function. Worse than that, it’s untested (read: probably full of bugs).</p>
 <p>And while Fortran does have good math libraries (BLAS, LAPACK), other languages have bindings to these, too. It’s a myth (or oversimplification) that BLAS is “fast” because it’s written in Fortran. The reference BLAS implementation is written in Fortran, but is not optimised for speed. So it depends on the BLAS-compatible implementation being used. And a significant part of those is hand-written assembly (see e.g. <a href="https://github.com/xianyi/OpenBLAS">OpenBLAS</a>).</p>
-<p>Generally, more modern languages like C/C++ simply have more libraries in general. Whether it’s <a href="https://root.cern.ch/">CERN’s ROOT</a>, <a href="http://www.boost.org/">Boost</a>, some graphics library, or the C++ standard library, having these tools makes writing good code much easier. So not only are you potentially writing slower code, it’s taking you longer to do&nbsp;so.</p>
-<p>Anecdotally, I’ve encountered this situation when somebody decided they’d write the same simulation code I was writing in C, because my Python code was going to be “slow”. The code relied mainly on matrix operations. Of course NumPy provides great matrix math functions. So the Python code took less time to develop, had less bugs and ran&nbsp;faster.</p>
-<p>But even if it did take longer to run, two more hours runtime overnight is nothing if you can save several days of development effort. And by that I mean writing the code and debugging&nbsp;it.</p>
-<h2 id="dont-use-outdated-development-practices">Don’t use outdated development&nbsp;practices</h2>
-<p>Okay, but say you’re good at writing Fortran, or you have to use it. Part of the critique of such an “old” language is implicitly the worry that development practices will also be&nbsp;old.</p>
-<p><em>At the very least, you must be using source code management/version control</em>. SVN is barely acceptable, and you need to make sure it’s backed up. <a href="https://git-scm.com/">git</a> is strongly recommended, simply because it’s so ubiquitous. Yeah it isn’t the easiest but it’s a transferable skill, so worth the time. Put it on your CV or&nbsp;something.</p>
+<p>Generally, more modern languages like C/C++ simply have more libraries in general. Whether it’s <a href="https://root.cern.ch/">CERN’s ROOT</a>, <a href="http://www.boost.org/">Boost</a>, some graphics library, or the C++ standard library, having these tools makes writing good code much easier. So not only are you potentially writing slower code, it’s taking you longer to do so.</p>
+<p>Anecdotally, I’ve encountered this situation when somebody decided they’d write the same simulation code I was writing in C, because my Python code was going to be “slow”. The code relied mainly on matrix operations. Of course NumPy provides great matrix math functions. So the Python code took less time to develop, had less bugs and ran faster.</p>
+<p>But even if it did take longer to run, two more hours runtime overnight is nothing if you can save several days of development effort. And by that I mean writing the code and debugging it.</p>
+<h2 id="dont-use-outdated-development-practices">Don’t use outdated development practices</h2>
+<p>Okay, but say you’re good at writing Fortran, or you have to use it. Part of the critique of such an “old” language is implicitly the worry that development practices will also be old.</p>
+<p><em>At the very least, you must be using source code management/version control</em>. SVN is barely acceptable, and you need to make sure it’s backed up. <a href="https://git-scm.com/">git</a> is strongly recommended, simply because it’s so ubiquitous. Yeah it isn’t the easiest but it’s a transferable skill, so worth the time. Put it on your CV or something.</p>
 <p>Code distributed via zip files is bad. Zip files named “code-final.zip”, “code-final-final.zip”, “code-final-1.zip”, etc. are worse. If you are not using SCM, this is a far bigger problem than your choice of language will ever be. Because it’s a fundamental problem about how you go about development. There are no excuses for not using SCM, even if you are the only person (currently) coding on the project. Do not pass Go. Do not collect $200. Use <a href="https://git-scm.com/">git</a>.</p>
 <hr />
-<p>There are other&nbsp;considerations.</p>
-<p>Testing new, unproven code is essential, especially numerical code. How else do you know that it’s working correctly? There are several papers now that have been withdrawn due to bugs in code. But testing frameworks for Fortran are either non-existent or&nbsp;underdeveloped.</p>
-<p>Dependencies and documentation are also important. What if you need to get a undergrad working on the project ASAP? If you are using <code>git</code>, and you must, he/she can clone the repository with all the history. But what about dependencies? Will it even run on their machine. For example, Python lets you specify dependencies via <code>setup.py</code> (or at least <code>requirements.txt</code>), which works more often than&nbsp;not.</p>
-<p>As a final suggestion, please consider open sourcing the code. But this post is long enough as it is, so I’ll write about the benefits of this approach some other&nbsp;time.</p>
+<p>There are other considerations.</p>
+<p>Testing new, unproven code is essential, especially numerical code. How else do you know that it’s working correctly? There are several papers now that have been withdrawn due to bugs in code. But testing frameworks for Fortran are either non-existent or underdeveloped.</p>
+<p>Dependencies and documentation are also important. What if you need to get a undergrad working on the project ASAP? If you are using <code>git</code>, and you must, he/she can clone the repository with all the history. But what about dependencies? Will it even run on their machine. For example, Python lets you specify dependencies via <code>setup.py</code> (or at least <code>requirements.txt</code>), which works more often than not.</p>
+<p>As a final suggestion, please consider open sourcing the code. But this post is long enough as it is, so I’ll write about the benefits of this approach some other time.</p>
 <hr />
-<p><strong>TL;DR</strong>: Please, please use source code management. Always, even with&nbsp;Fortran.</p>
+<p><strong>TL;DR</strong>: Please, please use source code management. Always, even with Fortran.</p>
 </article>
 <section>
   <p><span class="fa fa-tags"></span> <a href="https://tobywf.com/tag/physics/">physics</a>, <a href="https://tobywf.com/tag/git/">git</a>, <a href="https://tobywf.com/tag/rant/">rant</a></p>

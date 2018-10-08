@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Awesome prompts with fish - tobywf</title>
+  <title>Awesome prompts with fish - tobywf</title>
   <meta charset="utf-8" />
   <meta name="author" content="Toby Fleming" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -24,63 +24,63 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Awesome prompts with&nbsp;fish</h1>
+  <h1>Awesome prompts with fish</h1>
   <div class="infoline">
     <span class="fa fa-calendar"></span> <span class="date">30 Mar '16</span>
   </div>
 </header>
 <article>
-<p>A while back, <a href="https://tobywf.com/2016/01/fisherman/">I wrote</a> about <a href="http://fishshell.com/">the fish shell</a> and a plugin manager named <a href="https://github.com/fisherman/fisherman">fisherman</a>. Today, a colleague asked me: “how do I get your awesome prompt?” And I realised I hadn’t explained at all how to use either - luckily, it’s fairly&nbsp;easy.</p>
-<p>So here’s a&nbsp;guide.</p>
-<h2 id="step-1-install-fish">Step 1: Install&nbsp;fish</h2>
-<p>See <a href="http://fishshell.com/">the fish shell</a> for up-to-date&nbsp;instructions.</p>
-<p>Ubuntu, if you want updates via <code>apt</code> (you&nbsp;do):</p>
+<p>A while back, <a href="https://tobywf.com/2016/01/fisherman/">I wrote</a> about <a href="http://fishshell.com/">the fish shell</a> and a plugin manager named <a href="https://github.com/fisherman/fisherman">fisherman</a>. Today, a colleague asked me: “how do I get your awesome prompt?” And I realised I hadn’t explained at all how to use either - luckily, it’s fairly easy.</p>
+<p>So here’s a guide.</p>
+<h2 id="step-1-install-fish">Step 1: Install fish</h2>
+<p>See <a href="http://fishshell.com/">the fish shell</a> for up-to-date instructions.</p>
+<p>Ubuntu, if you want updates via <code>apt</code> (you do):</p>
 <div class="codehilite"><pre><span></span>sudo apt-add-repository ppa:fish-shell/release-2
 sudo apt-get update
 sudo apt-get install fish
 </pre></div>
 
 
-<p>Mac OS X, if you have homebrew (you&nbsp;should):</p>
+<p>Mac OS X, if you have homebrew (you should):</p>
 <div class="codehilite"><pre><span></span>brew install fish
 </pre></div>
 
 
-<h2 id="step-2-make-sure-fish-is-registered-with-the-system">Step 2: Make sure fish is registered with the&nbsp;system</h2>
-<p>Optional, required if you want to use fish as the default shell on your&nbsp;system.</p>
+<h2 id="step-2-make-sure-fish-is-registered-with-the-system">Step 2: Make sure fish is registered with the system</h2>
+<p>Optional, required if you want to use fish as the default shell on your system.</p>
 <p>This usually is done by package managers such as <code>apt</code>, but sometimes not. So better check <code>/etc/shells</code> that it includes the full path to <code>fish</code>. The full path is usually something like <code>/usr/bin/fish</code> or <code>/usr/local/bin/fish</code>, you can find out via <code>which fish</code>.</p>
-<h2 id="step-3-change-the-default-shell-to-fish">Step 3: Change the default shell to&nbsp;fish</h2>
-<p>Optional, requires step 2. Make sure you did step 2.&nbsp;Now.</p>
+<h2 id="step-3-change-the-default-shell-to-fish">Step 3: Change the default shell to fish</h2>
+<p>Optional, requires step 2. Make sure you did step 2. Now.</p>
 <div class="codehilite"><pre><span></span>chsh -s /usr/bin/fish
 </pre></div>
 
 
-<h2 id="step-4-install-fisherman">Step 4: Install&nbsp;fisherman</h2>
+<h2 id="step-4-install-fisherman">Step 4: Install fisherman</h2>
 <div class="codehilite"><pre><span></span>curl -sL get.fisherman.sh | fish
 </pre></div>
 
 
-<h2 id="step-5-install-powerline-and-powerline-fonts">Step 5: Install powerline and powerline&nbsp;fonts</h2>
-<p>This is required for the cool themes with glyphs and arrows and&nbsp;stuff.</p>
+<h2 id="step-5-install-powerline-and-powerline-fonts">Step 5: Install powerline and powerline fonts</h2>
+<p>This is required for the cool themes with glyphs and arrows and stuff.</p>
 <div class="codehilite"><pre><span></span>sudo pip install powerline
 </pre></div>
 
 
-<p>For the fonts, see <a href="https://github.com/powerline/fonts">patched fonts</a> on&nbsp;github.</p>
-<h2 id="step-6-install-a-fish-theme">Step 6: Install a fish&nbsp;theme</h2>
-<p>I recommend <a href="https://github.com/simnalamburt/shellder">shellder</a>, although I have <a href="https://github.com/tobywf/fish-ps">made my own theme</a> loosely based on shellder and&nbsp;bob-the-fish.</p>
+<p>For the fonts, see <a href="https://github.com/powerline/fonts">patched fonts</a> on github.</p>
+<h2 id="step-6-install-a-fish-theme">Step 6: Install a fish theme</h2>
+<p>I recommend <a href="https://github.com/simnalamburt/shellder">shellder</a>, although I have <a href="https://github.com/tobywf/fish-ps">made my own theme</a> loosely based on shellder and bob-the-fish.</p>
 <div class="codehilite"><pre><span></span>fisher install simnalamburt/shellder
 # fisher install tobywf/fish-ps
 </pre></div>
 
 
-<h2 id="step-7-tweak-the-fish-colour-scheme">Step 7: Tweak the fish colour&nbsp;scheme</h2>
+<h2 id="step-7-tweak-the-fish-colour-scheme">Step 7: Tweak the fish colour scheme</h2>
 <div class="codehilite"><pre><span></span>fish_config
 </pre></div>
 
 
 <h2 id="fin">Fin</h2>
-<p>And that’s it! To be honest, installing the fonts is probably the most hassle. But totally worth&nbsp;it.</p>
+<p>And that’s it! To be honest, installing the fonts is probably the most hassle. But totally worth it.</p>
 </article>
 <section>
   <p><span class="fa fa-tags"></span> <a href="https://tobywf.com/tag/fish-shell/">fish shell</a>, <a href="https://tobywf.com/tag/mac/">Mac</a>, <a href="https://tobywf.com/tag/osx/">OSX</a>, <a href="https://tobywf.com/tag/linux/">Linux</a></p>

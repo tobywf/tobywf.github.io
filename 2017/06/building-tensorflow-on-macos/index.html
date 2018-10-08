@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Building TensorFlow on macOS (CPU) - tobywf</title>
+  <title>Building TensorFlow on macOS (CPU) - tobywf</title>
   <meta charset="utf-8" />
   <meta name="author" content="Toby Fleming" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -24,18 +24,18 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Building TensorFlow on macOS&nbsp;(CPU)</h1>
+  <h1>Building TensorFlow on macOS (CPU)</h1>
   <div class="infoline">
     <span class="fa fa-calendar"></span> <span class="date">3 Jun '17</span>
   </div>
 </header>
 <article>
-<p>Why would you do this? <code>pip install tensorflow</code> works&nbsp;fine!</p>
+<p>Why would you do this? <code>pip install tensorflow</code> works fine!</p>
 <p>That’s true. But the standard package ships without SSE4.1, SSE4.2, and AVX
 instructions. And when you’re running a mid-2012 Macbook Air, you want all the
 optimisations you can get. <a href="https://www.tensorflow.org/install/install_sources">The TensorFlow installation docs</a>
 are pretty good! This is pretty much a straight crib from the docs. Building
-TensorFlow takes a while though, on my underpowered machine it took over 1.5&nbsp;hours.</p>
+TensorFlow takes a while though, on my underpowered machine it took over 1.5 hours.</p>
 <div class="codehilite"><pre><span></span>$ brew install bazel
 $ mkdir &lt;project&gt;
 $ <span class="nb">cd</span> &lt;project&gt;
@@ -66,7 +66,7 @@ when you import TensorFlow (<a href="https://github.com/tensorflow/tensorflow/is
 </pre></div>
 
 
-<p>From any other directory, it’ll work&nbsp;fine:</p>
+<p>From any other directory, it’ll work fine:</p>
 <div class="codehilite"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="kn">as</span> <span class="nn">tf</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hello</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;Hello, TensorFlow!&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>

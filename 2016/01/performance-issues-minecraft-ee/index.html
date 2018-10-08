@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Performance issues - tobywf</title>
+  <title>Performance issues - tobywf</title>
   <meta charset="utf-8" />
   <meta name="author" content="Toby Fleming" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -24,18 +24,18 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Performance&nbsp;issues</h1>
+  <h1>Performance issues</h1>
   <h2>Pondering the Minecraft Education Edition news</h2>
   <div class="infoline">
     <span class="fa fa-calendar"></span> <span class="date">26 Jan '16</span>
   </div>
 </header>
 <article>
-<p>This post does contain Minecraft, I&nbsp;promise.</p>
+<p>This post does contain Minecraft, I promise.</p>
 <hr />
-<p>An (old) post is about <a href="http://roscidus.com/blog/blog/2014/06/06/python-to-ocaml-retrospective/">a tool that was rewritten from Python to OCaml</a>. Aparently, “the take-away is this: The new code is a similar length (slightly shorter), runs around 10x faster, and is statically type&nbsp;checked.”</p>
-<p>So it must have run really slow to make it worth&nbsp;it?</p>
-<p>The first graph on the page seems to suggest yes. Finally, after 6 months, the results were in, and are quite&nbsp;clear:</p>
+<p>An (old) post is about <a href="http://roscidus.com/blog/blog/2014/06/06/python-to-ocaml-retrospective/">a tool that was rewritten from Python to OCaml</a>. Aparently, “the take-away is this: The new code is a similar length (slightly shorter), runs around 10x faster, and is statically type checked.”</p>
+<p>So it must have run really slow to make it worth it?</p>
+<p>The first graph on the page seems to suggest yes. Finally, after 6 months, the results were in, and are quite clear:</p>
 <table>
 <thead>
 <tr>
@@ -73,21 +73,21 @@
 </tbody>
 </table>
 <blockquote>
-<p>table from <a href="http://roscidus.com/blog/blog/2014/06/06/python-to-ocaml-retrospective/">Python to OCaml:&nbsp;Retrospective</a></p>
+<p>table from <a href="http://roscidus.com/blog/blog/2014/06/06/python-to-ocaml-retrospective/">Python to OCaml: Retrospective</a></p>
 </blockquote>
-<p><em>The median speed-up is about 8x, so surely this was totally worth&nbsp;it?</em></p>
-<p>To be completely accurate, the median speed-up of these examples is 8.25, in practice it could be close to 10. And, if you’re a business with several thousand web-requests, then saving execution time is worth $$$, and also might let you scale better, so it’s probably worth paying a programmer or two to do&nbsp;this.</p>
+<p><em>The median speed-up is about 8x, so surely this was totally worth it?</em></p>
+<p>To be completely accurate, the median speed-up of these examples is 8.25, in practice it could be close to 10. And, if you’re a business with several thousand web-requests, then saving execution time is worth $$$, and also might let you scale better, so it’s probably worth paying a programmer or two to do this.</p>
 <p>On the other hand, 322ms is 0.322 seconds (metric ftw), or as Wolfram Alpha informs me about the “average length of a human blink of an eye (100 to 400 ms)”. I’m not convinced this was worth it for a CLI tool used primarily by humans [<span class="blue">citation needed</span>].</p>
-<p>Now this sounds pretty negative. And to be fair, one of the goals was “learning OCaml along the way”. But even <a href="https://news.ycombinator.com/item?id=7858276">on Hackernews</a>, only one guy seems to have pointed the drawbacks out, and received down-voting for being spot&nbsp;on:</p>
+<p>Now this sounds pretty negative. And to be fair, one of the goals was “learning OCaml along the way”. But even <a href="https://news.ycombinator.com/item?id=7858276">on Hackernews</a>, only one guy seems to have pointed the drawbacks out, and received down-voting for being spot on:</p>
 <blockquote>
-<p>[…] The slowest metric for the old code is about 1/3 of a second — how much benefit does slicing that deliver in real world <code>0install</code> invocations? “Easier to maintain and extend” — well, he just cut the population of potential contributors to the project by a factor of&nbsp;1000.</p>
-<p><a href="https://news.ycombinator.com/item?id=7859168">spenrose on&nbsp;Hackernews</a></p>
+<p>[…] The slowest metric for the old code is about 1/3 of a second — how much benefit does slicing that deliver in real world <code>0install</code> invocations? “Easier to maintain and extend” — well, he just cut the population of potential contributors to the project by a factor of 1000.</p>
+<p><a href="https://news.ycombinator.com/item?id=7859168">spenrose on Hackernews</a></p>
 </blockquote>
 <hr />
-<p>I bring this up, because apparently the <a href="http://www.zdnet.com/article/minecrafts-new-education-edition-written-in-c-will-outrun-the-java-version/">Minecraft: Education Edition will be written in C++</a>. And while I’m not going to defend the Minecraft codebase or Java, part of the long-time draw of Minecraft are the mods. Even if most modders decide to make the jump, some won’t and the community will be worse&nbsp;off.</p>
+<p>I bring this up, because apparently the <a href="http://www.zdnet.com/article/minecrafts-new-education-edition-written-in-c-will-outrun-the-java-version/">Minecraft: Education Edition will be written in C++</a>. And while I’m not going to defend the Minecraft codebase or Java, part of the long-time draw of Minecraft are the mods. Even if most modders decide to make the jump, some won’t and the community will be worse off.</p>
 <p>Having said that, a performance increase would be great of the Raspberry Pi, but currently, it also <a href="https://news.ycombinator.com/item?id=10930194">looks like only Windows will be supported</a>.</p>
-<p>This is all <em>if</em> unlicensed, 3rd party mods will be allowed on the Education Edition. Maybe such amateur mods will be restricted to the Community Edition, for some bizzare reason. Can’t have people exposed to that hacker ethic, they might learn something venturing outside the walled garden. Will someone think of the&nbsp;kids&trade;!</p>
-<p>In short, it’s hard to see how this is going to turn into the great educational message(s) Microsoft is hoping to send(?). I am skeptical, but then I am also a bit cynical,&nbsp;apparently.</p>
+<p>This is all <em>if</em> unlicensed, 3rd party mods will be allowed on the Education Edition. Maybe such amateur mods will be restricted to the Community Edition, for some bizzare reason. Can’t have people exposed to that hacker ethic, they might learn something venturing outside the walled garden. Will someone think of the kids&trade;!</p>
+<p>In short, it’s hard to see how this is going to turn into the great educational message(s) Microsoft is hoping to send(?). I am skeptical, but then I am also a bit cynical, apparently.</p>
 </article>
 <section>
   <p><span class="fa fa-tags"></span> <a href="https://tobywf.com/tag/python/">Python</a>, <a href="https://tobywf.com/tag/minecraft/">Minecraft</a></p>

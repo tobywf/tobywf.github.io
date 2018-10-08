@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Installing PyICU on macOS - tobywf</title>
+  <title>Installing PyICU on macOS - tobywf</title>
   <meta charset="utf-8" />
   <meta name="author" content="Toby Fleming" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -24,14 +24,14 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Installing PyICU on&nbsp;macOS</h1>
+  <h1>Installing PyICU on macOS</h1>
   <div class="infoline">
     <span class="fa fa-calendar"></span> <span class="date">21 May '17</span>
   </div>
 </header>
 <article>
-<p><a href="http://site.icu-project.org/">International Components for Unicode (ICU)</a> is an enterprise library for Unicode support. Being both very enterprise-y and Unicode-y, it is stupidly complex. I hope you’ll never need it, but if you do, luckily there’s a <a href="https://pypi.python.org/pypi/PyICU/">Python library (PyICU)</a> for that. But as it just interfaces with the ICU C library, PyICU can be tricky to&nbsp;install.</p>
-<p>Of course, the first step is to install the ICU C library with <a href="https://brew.sh/">Homebrew</a>. In theory, now PyICU should just install using <code>pip</code>. I found that PyICU didn’t have the correct search paths, and the simplest solution to this is to set some environmental variables to set PyICU on&nbsp;track:</p>
+<p><a href="http://site.icu-project.org/">International Components for Unicode (ICU)</a> is an enterprise library for Unicode support. Being both very enterprise-y and Unicode-y, it is stupidly complex. I hope you’ll never need it, but if you do, luckily there’s a <a href="https://pypi.python.org/pypi/PyICU/">Python library (PyICU)</a> for that. But as it just interfaces with the ICU C library, PyICU can be tricky to install.</p>
+<p>Of course, the first step is to install the ICU C library with <a href="https://brew.sh/">Homebrew</a>. In theory, now PyICU should just install using <code>pip</code>. I found that PyICU didn’t have the correct search paths, and the simplest solution to this is to set some environmental variables to set PyICU on track:</p>
 <div class="codehilite"><pre><span></span>$ brew install icu4c
 <span class="o">[</span>...<span class="o">]</span>
 $ ls /usr/local/Cellar/icu4c/
@@ -44,7 +44,7 @@ $ pip install pyicu
 </pre></div>
 
 
-<p>Job&nbsp;done.</p>
+<p>Job done.</p>
 </article>
 <section>
   <p><span class="fa fa-tags"></span> <a href="https://tobywf.com/tag/macos/">macOS</a>, <a href="https://tobywf.com/tag/python/">Python</a></p>

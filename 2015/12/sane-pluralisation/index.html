@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>The quest for plural formatting in Python - tobywf</title>
+  <title>The quest for plural formatting in Python - tobywf</title>
   <meta charset="utf-8" />
   <meta name="author" content="Toby Fleming" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -24,21 +24,21 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>The quest for plural formatting in&nbsp;Python</h1>
+  <h1>The quest for plural formatting in Python</h1>
   <div class="infoline">
     <span class="fa fa-calendar"></span> <span class="date">15 Dec '15</span>
   </div>
 </header>
 <article>
-<p>The more technical post <a href="https://tobywf.com/2015/12/custom-formatters/">Custom formatter for Python strings</a> was inspired by this problem and dives deeper into string formatting internals. This post sticks to localisation (l10n)&nbsp;issues.</p>
+<p>The more technical post <a href="https://tobywf.com/2015/12/custom-formatters/">Custom formatter for Python strings</a> was inspired by this problem and dives deeper into string formatting internals. This post sticks to localisation (l10n) issues.</p>
 <hr />
-<p>I was looking for a sane way to <del>pluralize</del> pluralise nouns inside strings. Initially, we were passing the correct noun directly to <code>format</code>, but this is messy (extra if) and doesn’t translate. Plurals can be tricky to get right, you can’t always just add an&nbsp;‘s’:</p>
+<p>I was looking for a sane way to <del>pluralize</del> pluralise nouns inside strings. Initially, we were passing the correct noun directly to <code>format</code>, but this is messy (extra if) and doesn’t translate. Plurals can be tricky to get right, you can’t always just add an ‘s’:</p>
 <ul>
-<li>apple &gt;&nbsp;apples</li>
-<li>city &gt;&nbsp;cities</li>
-<li>cactus &gt;&nbsp;cacti</li>
+<li>apple &gt; apples</li>
+<li>city &gt; cities</li>
+<li>cactus &gt; cacti</li>
 </ul>
-<p>Also, people kept getting the logic wrong. It’s <code>count == 1</code>, not <code>count &gt; 1</code> as it’s ‘zero apples’, not ‘zero apple’ *. (* Not a guarantee. This issue will be back later with a&nbsp;vengeance.)</p>
+<p>Also, people kept getting the logic wrong. It’s <code>count == 1</code>, not <code>count &gt; 1</code> as it’s ‘zero apples’, not ‘zero apple’ *. (* Not a guarantee. This issue will be back later with a vengeance.)</p>
 <p><em>Voilà, la première tentative</em>:</p>
 <div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">string</span>
 
@@ -55,7 +55,7 @@
 </pre></div>
 
 
-<p>This implementation is okay. It does handle as many plural nouns as you want in a string, not just one. And you could use a lazy version where you just specify the plural ‘s’, but (<em>spoiler alert</em>) you&nbsp;shouldn’t:</p>
+<p>This implementation is okay. It does handle as many plural nouns as you want in a string, not just one. And you could use a lazy version where you just specify the plural ‘s’, but (<em>spoiler alert</em>) you shouldn’t:</p>
 <div class="codehilite"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fmt</span> <span class="o">=</span> <span class="n">PluralFormatter</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;{0} {0:plural,bottle,bottles} on the wall&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">bottle_count</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">99</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
@@ -70,17 +70,17 @@
 </pre></div>
 
 
-<p>What else is there? Easily translatable, right? Just translate the whole format string!&nbsp;Genius…</p>
+<p>What else is there? Easily translatable, right? Just translate the whole format string! Genius…</p>
 <div class="codehilite"><pre><span></span>EN: &#39;{0} {0:plural,bottle,bottles} on the wall&#39;
 DE: &#39;{0} {0:plural,Flasche,Flaschen} auf der Wand&#39;
 </pre></div>
 
 
 <p>… until you get to <a href="https://localization-guide.readthedocs.org/en/latest/l10n/pluralforms.html">non-Germanic languages</a>, where the rule <em>isn’t</em> <code>count == 1</code>. How about Russian: <code>(n%10==1 &amp;&amp; n%100!=11 ? 0 : n%10&gt;=2 &amp;&amp; n%10&lt;=4 &amp;&amp; (n%100&lt;10 || n%100&gt;=20) ? 1 : 2)</code>.</p>
-<p>Language is hard,&nbsp;man.</p>
+<p>Language is hard, man.</p>
 <hr />
-<p>There are, of course, existing solutions. But the ones I’ve seen feel lacking. Even gettext <a href="https://www.gnu.org/software/gettext/manual/gettext.html#Plural-forms">doesn’t get this quite right</a> in my opinion. But then again, I can barely understand that&nbsp;documentation.</p>
-<p>I think the formatter solution still has the advantage. It’s inherently cleaner than any gettext hack with two messages, and as it has more granular information to work with than most other solutions, it should be able to do better. The current downfall is the pluralisation logic. And while nouns can depend on context, the next thing I’d try is to simply translate the noun separately and on it’s&nbsp;own.</p>
+<p>There are, of course, existing solutions. But the ones I’ve seen feel lacking. Even gettext <a href="https://www.gnu.org/software/gettext/manual/gettext.html#Plural-forms">doesn’t get this quite right</a> in my opinion. But then again, I can barely understand that documentation.</p>
+<p>I think the formatter solution still has the advantage. It’s inherently cleaner than any gettext hack with two messages, and as it has more granular information to work with than most other solutions, it should be able to do better. The current downfall is the pluralisation logic. And while nouns can depend on context, the next thing I’d try is to simply translate the noun separately and on it’s own.</p>
 <div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">string</span>
 <span class="kn">from</span> <span class="nn">gettext</span> <span class="k">import</span> <span class="n">ngettext</span>
 
@@ -94,8 +94,8 @@ DE: &#39;{0} {0:plural,Flasche,Flaschen} auf der Wand&#39;
 </pre></div>
 
 
-<p>Note that this version doesn’t work with the lazy ‘s’, but otherwise we have a&nbsp;winner.</p>
-<p>In practice, I bet we’ll find a case where it doesn’t work. But this way we’ve thought of the documentation/publication/translation team and international users. All in all, a good&nbsp;solution.</p>
+<p>Note that this version doesn’t work with the lazy ‘s’, but otherwise we have a winner.</p>
+<p>In practice, I bet we’ll find a case where it doesn’t work. But this way we’ve thought of the documentation/publication/translation team and international users. All in all, a good solution.</p>
 </article>
 <section>
   <p><span class="fa fa-tags"></span> <a href="https://tobywf.com/tag/python/">Python</a>, <a href="https://tobywf.com/tag/language/">language</a></p>

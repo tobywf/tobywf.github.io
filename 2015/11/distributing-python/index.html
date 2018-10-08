@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Distributing Python in 2015 - tobywf</title>
+  <title>Distributing Python in 2015 - tobywf</title>
   <meta charset="utf-8" />
   <meta name="author" content="Toby Fleming" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -24,7 +24,7 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Distributing Python in&nbsp;2015</h1>
+  <h1>Distributing Python in 2015</h1>
   <h2>aka. oh setuptools, how I've underestimated you</h2>
   <div class="infoline">
     <span class="fa fa-calendar"></span> <span class="date">18 Nov '15</span>
@@ -32,10 +32,10 @@
 </header>
 <article>
 <p>When I got into Python, there were too many packaging tools: <a href="https://pypi.python.org/pypi/setuptools">setuptools</a>, <a href="https://pypi.python.org/pypi/Distutils/1.0">distutils</a>, <a href="https://pypi.python.org/pypi/distribute/0.6.49">distribute</a>, <a href="https://pypi.python.org/pypi/Distutils2/1.0a4">distutils2</a>, and <a href="https://pypi.python.org/pypi/bento">bento</a>. I’m sure I missed some. Luckily, only two survive: <em>distutils</em> and <em>setuptools</em>.</p>
-<p>How to choose? Basically, if you follow best practice and use <em>virtualenv</em>, <em>pip</em>, or <em>wheels</em>, you want to <a href="https://python-packaging-user-guide.readthedocs.org/en/latest/current/">use <em>setuptools</em></a>. This clarity is what Python needs. Also a big help: <a href="https://pythonhosted.org/setuptools/setuptools.html">the setuptools documentation</a> has also got substantially&nbsp;better.</p>
+<p>How to choose? Basically, if you follow best practice and use <em>virtualenv</em>, <em>pip</em>, or <em>wheels</em>, you want to <a href="https://python-packaging-user-guide.readthedocs.org/en/latest/current/">use <em>setuptools</em></a>. This clarity is what Python needs. Also a big help: <a href="https://pythonhosted.org/setuptools/setuptools.html">the setuptools documentation</a> has also got substantially better.</p>
 <hr />
 <p>But why use a packaging tool in the first place? An example is always good. Say you develop a tool, which you might want to give some colleagues eventually. You could just get everybody to clone the git repo. But <em>setuptools</em> helps solve several problems, so even if you never plan to upload the package to PyPI you definitely want to use <em>setuptools</em>.</p>
-<p>I’ve chosen a sensible directory structure with a virtual&nbsp;environment:</p>
+<p>I’ve chosen a sensible directory structure with a virtual environment:</p>
 <div class="codehilite"><pre><span></span>project/
 ├── env
 [...]
@@ -48,7 +48,7 @@
 </pre></div>
 
 
-<p>For this package, <code>setup.py</code> looks like&nbsp;this:</p>
+<p>For this package, <code>setup.py</code> looks like this:</p>
 <div class="codehilite"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
 
 <span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span>
@@ -68,14 +68,14 @@
 </pre></div>
 
 
-<p><code>package_data</code> is interesting. In this case, I have some Jinja templates that I want my package to use. Usually, I’d get the path from <code>__file__</code> and simply read the file. This doesn’t work so well in an <code>egg</code> or a <code>wheel</code>, because it’s zipped. I could set <code>zip_safe</code> to <code>False</code>, or I simply use <a href="https://pythonhosted.org/setuptools/pkg_resources.html">pkg_resources</a> which provides easy methods to get the contents. Much less of a&nbsp;hack!</p>
-<p><code>entry_points</code> solves a huge problem: How do you deploy a script that uses your package? <em>setuptools</em> makes this simple, just define an entry point (aka. a method) in the package, and <a href="https://pythonhosted.org/setuptools/setuptools.html#automatic-script-creation">the rest is taken care of</a> - even on Windows. I can’t stress how useful this&nbsp;is.</p>
-<p>Now, with the virtual environment activated, I just&nbsp;run</p>
+<p><code>package_data</code> is interesting. In this case, I have some Jinja templates that I want my package to use. Usually, I’d get the path from <code>__file__</code> and simply read the file. This doesn’t work so well in an <code>egg</code> or a <code>wheel</code>, because it’s zipped. I could set <code>zip_safe</code> to <code>False</code>, or I simply use <a href="https://pythonhosted.org/setuptools/pkg_resources.html">pkg_resources</a> which provides easy methods to get the contents. Much less of a hack!</p>
+<p><code>entry_points</code> solves a huge problem: How do you deploy a script that uses your package? <em>setuptools</em> makes this simple, just define an entry point (aka. a method) in the package, and <a href="https://pythonhosted.org/setuptools/setuptools.html#automatic-script-creation">the rest is taken care of</a> - even on Windows. I can’t stress how useful this is.</p>
+<p>Now, with the virtual environment activated, I just run</p>
 <div class="codehilite"><pre><span></span>$ python setup.py develop
 </pre></div>
 
 
-<p>This gets you an executable in <code>env/bin</code> which calls the entry point. Once I’ve finished developing, to deploy the application, I simply make sure <code>wheel</code> is installed, create a wheel and distribute&nbsp;that:</p>
+<p>This gets you an executable in <code>env/bin</code> which calls the entry point. Once I’ve finished developing, to deploy the application, I simply make sure <code>wheel</code> is installed, create a wheel and distribute that:</p>
 <div class="codehilite"><pre><span></span>$ pip install wheel
 $ python setup.py bdist_wheel
 $ <span class="nb">cd</span> dist/

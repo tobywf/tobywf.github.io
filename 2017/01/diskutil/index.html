@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>macOS’ Disk Utility sucks, here’s how to use a CLI to partition instead - tobywf</title>
+  <title>macOS’ Disk Utility sucks, here’s how to use a CLI to partition instead - tobywf</title>
   <meta charset="utf-8" />
   <meta name="author" content="Toby Fleming" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -24,17 +24,17 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>macOS’ Disk Utility sucks, here’s how to use a CLI to partition&nbsp;instead</h1>
+  <h1>macOS’ Disk Utility sucks, here’s how to use a CLI to partition instead</h1>
   <div class="infoline">
     <span class="fa fa-calendar"></span> <span class="date">1 Jan '17</span>
   </div>
 </header>
 <article>
 <p>I recently found out that Apple’s Disk Utility won’t allow multiple partitions
-with a Master Boot Record. This is incredibly annoying. But the CLI&nbsp;will.</p>
+with a Master Boot Record. This is incredibly annoying. But the CLI will.</p>
 <p>Warning: There is no confirmation, no “are you sure?” prompts. <code>diskutil</code> will
 mess your disks up, zero fucks given. You need to double and triple check the
-commands you issue. That is&nbsp;all.</p>
+commands you issue. That is all.</p>
 <div class="codehilite"><pre><span></span>$ diskutil list
 /dev/disk0 <span class="o">(</span>internal, physical<span class="o">)</span>:
    <span class="c1">#:                       TYPE NAME         \</span>
@@ -66,9 +66,9 @@ commands you issue. That is&nbsp;all.</p>
 
 <p>This command will be your friend, a lifesaver. Learn to love it. It shows the
 disks attached to the computer. You’re most interested in the value in the
-<code>IDENTIFIER</code> column, but the other columns will help you figure out what’s&nbsp;what.</p>
+<code>IDENTIFIER</code> column, but the other columns will help you figure out what’s what.</p>
 <p>In this case, we’ve got two physical disks, one internal disk and one external.
-Do not touch the internal disk, this is your hard&nbsp;drive.</p>
+Do not touch the internal disk, this is your hard drive.</p>
 <p>To partition a disk, use the <code>partitionDisk</code> subcommand. The help is actually
 rather good. To view which filesystems you can create, you’ll also need the
 <code>listFilesystems</code> subcommand.</p>
@@ -79,21 +79,21 @@ $ diskutil listFilesystems
 </pre></div>
 
 
-<p>Briefly, you&nbsp;need:</p>
+<p>Briefly, you need:</p>
 <ul>
-<li>The disk identifier (you can also use the mount point&nbsp;instead)</li>
-<li>The number of partitions (optional, will be inferred otherwise - a good sanity&nbsp;check)</li>
-<li>The partition scheme (optional, will be GUID/GPT by&nbsp;default)</li>
-<li>Next come the partition&nbsp;parameters</li>
+<li>The disk identifier (you can also use the mount point instead)</li>
+<li>The number of partitions (optional, will be inferred otherwise - a good sanity check)</li>
+<li>The partition scheme (optional, will be GUID/GPT by default)</li>
+<li>Next come the partition parameters</li>
 <li>Partition format, from <code>diskutil listFilesystems</code></li>
-<li>Partition&nbsp;name</li>
-<li>Partition&nbsp;size</li>
+<li>Partition name</li>
+<li>Partition size</li>
 <li>repeat</li>
 </ul>
 <p>For partition size, you can use decimal numbers with the suffixes B, K, M, G,
 T, P (bytes, kilobytes, megabytes, gigabytes, terabytes or petabytes), % of
-the disk size, or <code>R</code> for&nbsp;remainder.</p>
-<p>These examples show you how to create one, two or three&nbsp;partitions:</p>
+the disk size, or <code>R</code> for remainder.</p>
+<p>These examples show you how to create one, two or three partitions:</p>
 <div class="codehilite"><pre><span></span>$ sudo diskutil partitionDisk disk3 <span class="m">1</span> <span class="se">\</span>
     JHFS+ one R
 $ sudo diskutil partitionDisk disk3 <span class="m">2</span> GPT <span class="se">\</span>

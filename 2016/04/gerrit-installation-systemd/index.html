@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Gerrit as a systemd service unit… - tobywf</title>
+  <title>Gerrit as a systemd service unit… - tobywf</title>
   <meta charset="utf-8" />
   <meta name="author" content="Toby Fleming" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -24,7 +24,7 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Gerrit as a systemd service&nbsp;unit…</h1>
+  <h1>Gerrit as a systemd service unit…</h1>
   <h2>... and other install gotchas</h2>
   <div class="infoline">
     <span class="fa fa-calendar"></span> <span class="date">6 Apr '16</span>
@@ -42,26 +42,26 @@ in Gerrit a changeset is roughly equivalent to a commit (once merged), plus
 the changeset contains all revisions as patchsets. Alice reviews a patchset,
 Bob amends the commit, pushes it and Alice can see both patchsets, and crucially
 the diff of both patchsets also. I’m not saying other tools don’t do this, but
-Gerrit worked for our&nbsp;team.</p>
-<p>Deployment however is a bit of a hassle. Oh, and the interface is&nbsp;ugly.</p>
-<p>Note: This is for Gerrit v1, not v2 which was recently&nbsp;released.</p>
+Gerrit worked for our team.</p>
+<p>Deployment however is a bit of a hassle. Oh, and the interface is ugly.</p>
+<p>Note: This is for Gerrit v1, not v2 which was recently released.</p>
 <hr />
-<h2 id="short-intro">Short&nbsp;intro</h2>
+<h2 id="short-intro">Short intro</h2>
 <p>Gerrit is a Java program. I’ll be comparing it to <a href="https://www.go.cd/">Go CD</a>,
 because I’m <del>messing about</del> deploying that at the moment, but  a fairer comparison would
-probably be&nbsp;Jenkins.</p>
+probably be Jenkins.</p>
 <p>As far as Java programs go, it’s pretty light weight, certainly compared to
 Go CD or Eclipse. Although more users will quickly eat into resources such as
-file descriptors - to be&nbsp;expected!</p>
+file descriptors - to be expected!</p>
 <p>Go CD has packages for different platforms (and <code>yum</code>/<code>apt</code> repositories), and
-installs itself <a href="https://docs.go.cd/current/installation/install/server/linux.html#location-of-gocd-server-files">in fairly standard locations</a>, plus the documentation is top&nbsp;notch.</p>
+installs itself <a href="https://docs.go.cd/current/installation/install/server/linux.html#location-of-gocd-server-files">in fairly standard locations</a>, plus the documentation is top notch.</p>
 <p>Gerrit comes as a <code>.war</code> file, so you’ll have to check the documentation to get
 it deployed. Gerrit’s <a href="https://gerrit-documentation.storage.googleapis.com/Documentation/2.12.2/index.html">documentation</a>
 isn’t great, and whatever you do, don’t click the <a href="https://gerrit.googlesource.com/homepage/+/md-pages/docs/">Wiki</a>
-link. Very&nbsp;confusing.</p>
-<h3 id="deploying-gerrit">Deploying&nbsp;Gerrit</h3>
-<p>Turns out you have to “initialise a site”&nbsp;via:</p>
-<div class="codehilite"><pre><span></span>java -jar gerrit.war init -d &amp;lt;site&amp;gt;
+link. Very confusing.</p>
+<h3 id="deploying-gerrit">Deploying Gerrit</h3>
+<p>Turns out you have to “initialise a site” via:</p>
+<div class="codehilite"><pre><span></span>java -jar gerrit.war init -d &lt;site&gt;
 </pre></div>
 
 
@@ -74,49 +74,49 @@ running <code>init</code>, otherwise the default repositories <code>All-Projects
 <code>All-Users.git</code> aren’t created. Also, make sure the folder has the correct
 permissions - I’ve had instances where Gerrit hasn’t set up the default projects
 and shown no errors. Re-running <code>init</code> <em>will not</em> create these default
-repositories if the site already&nbsp;exists.</p>
+repositories if the site already exists.</p>
 <p>Also keep in mind that you need to run the <code>reindex</code> operation every time you
-modify the Gerrit config file - and for this, the Gerrit instance can’t be&nbsp;running.</p>
-<h3 id="webserver-woes">Webserver&nbsp;woes</h3>
+modify the Gerrit config file - and for this, the Gerrit instance can’t be running.</p>
+<h3 id="webserver-woes">Webserver woes</h3>
 <p>Other gotchas include that the built-in Java webserver Jetty is hard to set up
 for SSL. In this day and age that should be unacceptable, although luckily the
 solution is also straight-forward: Run Gerrit behind Nginx. At that point,
 I’d rather have Nginx do the authentication - if you know how to do this, please
-get in&nbsp;touch.</p>
-<h2 id="from-initd-script-to-systemd-service-unit">From init.d script to systemd service&nbsp;unit</h2>
+get in touch.</p>
+<h2 id="from-initd-script-to-systemd-service-unit">From init.d script to systemd service unit</h2>
 <p>The script to manage Gerrit is a) huge, b) hack-y, and c) an init.d script. I
 wanted a systemd script, because it’s usually simpler and even though systemd
 does support init.d scripts, bad things can happen if you interact via the
 script itself. With gerrit, this is particularly bad, as the script doesn’t
 live in <code>/etc/init.d/</code>, but in <code>&lt;site&gt;/bin/gerrit.sh</code>.</p>
 <p>This <code>gerrit.sh</code> script actually reads from <code>/etc/default/gerritcodereview</code>,
-environmental variables, and the gerrit config file, and debugging this is a&nbsp;pain.</p>
+environmental variables, and the gerrit config file, and debugging this is a pain.</p>
 <p>Instead, the systemd service unit configuration file (service file) lets us set
 many of these options ourself, and makes it much easier to support multiple
 sites (although why you would do this on the same machine/VM/container is
 beyond me, as Gerrit has fully featured auth and permissions). The
-options systemd inherits or replaces&nbsp;are:</p>
+options systemd inherits or replaces are:</p>
 <ul>
-<li>Java executable path&nbsp;(JAVA_HOME)</li>
-<li>Gerrit site path&nbsp;(GERRIT_SITE)</li>
-<li>Gerrit PID file&nbsp;(GERRIT_PID)</li>
-<li>Java command line options (container.javaOptions,&nbsp;container.heapLimit)</li>
-<li>Gerrit user to run as&nbsp;(container.user)</li>
-<li>Gerrit <code>.war</code> path&nbsp;(container.war)</li>
-<li>Gerrit slave setting&nbsp;(container.slave)</li>
-<li>Gerrit daemon setting&nbsp;(container.daemonOpt)</li>
+<li>Java executable path (JAVA_HOME)</li>
+<li>Gerrit site path (GERRIT_SITE)</li>
+<li>Gerrit PID file (GERRIT_PID)</li>
+<li>Java command line options (container.javaOptions, container.heapLimit)</li>
+<li>Gerrit user to run as (container.user)</li>
+<li>Gerrit <code>.war</code> path (container.war)</li>
+<li>Gerrit slave setting (container.slave)</li>
+<li>Gerrit daemon setting (container.daemonOpt)</li>
 </ul>
 <p>i.e. these are set in the service unit config, and not in the Gerrit config
 with this approach (unlike the init.d script which actually reads the config
-file). I think that’s all of&nbsp;them.</p>
+file). I think that’s all of them.</p>
 <p>The <code>gerrit.sh</code> script also has a section called “Configure sane ulimits for
 a daemon our size”, which as a sysadmin makes me worried. This isn’t a good
 thing to happen automatically. But again, systemd makes it easy to set the
-<code>ulimits</code> for Gerrit if you wish to do&nbsp;so.</p>
+<code>ulimits</code> for Gerrit if you wish to do so.</p>
 <p>In the end, the systemd service unit configuration file is about 20-30 lines,
 instead of 565 for a hack-y script. Granted, the service file is less…
-general? But well worth it for&nbsp;consistency.</p>
-<p><a name="systemd">The service unit configuration, in all its&nbsp;glory:</a></p>
+general? But well worth it for consistency.</p>
+<p><a name="systemd">The service unit configuration, in all its glory:</a></p>
 <div class="codehilite"><pre><span></span><span class="k">[Unit]</span>
 <span class="na">Description</span><span class="o">=</span><span class="s">Web based code review and project management for Git based projects</span>
 <span class="na">After</span><span class="o">=</span><span class="s">syslog.target network.target remote-fs.target</span>
