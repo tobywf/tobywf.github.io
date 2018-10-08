@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Building TensorFlow on macOS (CPU) - tobywf</title>
+  <title>Building TensorFlow on macOS (CPU) - tobywf</title>
   <meta charset="utf-8" />
   <meta name="author" content="Toby Fleming" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -24,14 +24,14 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Building TensorFlow on macOS (<span class="caps">CPU</span>)</h1>
+  <h1>Building TensorFlow on macOS&nbsp;(CPU)</h1>
   <div class="infoline">
     <span class="fa fa-calendar"></span> <span class="date">3 Jun &#x27;17</span>
   </div>
 </header>
 <article>
 <p>Why would you do this? <code>pip install tensorflow</code> works&nbsp;fine!</p>
-<p>That&#8217;s true. But the standard package ships without <span class="caps">SSE4</span>.1, <span class="caps">SSE4</span>.2, and <span class="caps">AVX</span>
+<p>That&#8217;s true. But the standard package ships without SSE4.1, SSE4.2, and AVX
 instructions. And when you&#8217;re running a mid-2012 Macbook Air, you want all the
 optimisations you can get. <a href="https://www.tensorflow.org/install/install_sources">The TensorFlow installation docs</a>
 are pretty good! This is pretty much a straight crib from the docs. Building

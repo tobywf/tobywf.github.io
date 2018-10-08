@@ -36,7 +36,7 @@ not worth the&nbsp;effort.</p>
 <p>But for text files, compression can be over 10x (e.g. uncompressed 50MiB,
 compressed 5MiB). And if you allow downloads from S3, and you use gzip,
 browsers can uncompress the file automatically on download. This is awesome if
-you have e.g. the sales team download a huge <span class="caps">CSV</span> file! (To get this to work,
+you have e.g. the sales team download a huge CSV file! (To get this to work,
 you&#8217;ll need to set the correct content type. Browsers care about that, boto3&nbsp;doesn&#8217;t.)</p>
 <p>Sadly, Python&#8217;s <a href="https://docs.python.org/3/library/gzip.html">gzip library</a>
 is a bit confusing to use. Also, you need to know the final file size to upload

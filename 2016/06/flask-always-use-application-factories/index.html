@@ -36,7 +36,7 @@
 <h2 id="tip-1-always-use-an-application-factory">Tip 1: Always use an application&nbsp;factory</h2>
 <p>The documentation does go over <a href="http://flask.pocoo.org/docs/0.11/patterns/appfactories/">application factories</a>, but completely glosses over most&nbsp;benefits.</p>
 <p>App factories have a pretentious name, but basically they wrap the initialisation of the application in a method. Sounds like the obvious way to do it, but many Flask examples put the init code inside the module so that when you import the module the application is initialised. This sounds easier, but actually makes it harder in the long run, when you want to control&nbsp;initialisation.</p>
-<p><span class="caps">TL</span>;<span class="caps">DR</span>: Application factories get&nbsp;you:</p>
+<p>TL;DR: Application factories get&nbsp;you:</p>
 <ol>
 <li><strong>Easier&nbsp;deployment</strong></li>
 <li><strong>Clearer&nbsp;dependencies</strong></li>
@@ -62,7 +62,7 @@
 </pre></div>
 
 
-<p>But the <span class="caps">WSGI</span> script looks like&nbsp;this:</p>
+<p>But the WSGI script looks like&nbsp;this:</p>
 <div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">example</span> <span class="kn">import</span> <span class="n">create_app</span>
 <span class="n">application</span> <span class="o">=</span> <span class="n">create_app</span><span class="p">(</span><span class="n">DB_CONN</span><span class="o">=</span><span class="s2">&quot;production&quot;</span><span class="p">)</span>
 </pre></div>

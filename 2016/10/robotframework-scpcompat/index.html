@@ -24,30 +24,30 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>RobotFramework SSHLibrary-compatible <span class="caps">SCP</span>&nbsp;library</h1>
+  <h1>RobotFramework SSHLibrary-compatible SCP&nbsp;library</h1>
   <div class="infoline">
     <span class="fa fa-calendar"></span> <span class="date">14 Oct &#x27;16</span>
   </div>
 </header>
 <article>
 <p>Recently, I released <a href="https://github.com/tobywf/robotframework-scpcompat">robotframework-scpcompat</a>,
-which is a <span class="caps">SCP</span> library for <a href="http://robotframework.org/">RobotFramework</a>.</p>
-<p>Now, there already exists a <span class="caps">SCP</span> library called <a href="https://github.com/tylercrumpton/robotframework-scplibrary">robotframework-scplibrary</a>, and it is perfectly usable on it&#8217;s own. In fact, if
-<em>all</em> you need is <span class="caps">SCP</span>, I&#8217;d encourage you to use that.
-However, the keywords it provides clash with the Robot <a href="http://robotframework.org/SSHLibrary/latest/SSHLibrary.html"><span class="caps">SSH</span> library</a>. This makes using both of them at the same time very tedious.
-Worse, the <span class="caps">SCP</span> library manages connections itself and separately - but the
-underlying <span class="caps">SSH</span> Python module, <a href="http://www.paramiko.org/">paramiko</a>, is the same
-for both <span class="caps">SSH</span> and <span class="caps">SCP</span>!</p>
-<p>In contrast, <code>scpcompat</code> hooks into the <span class="caps">SSH</span> library and uses the current
+which is a SCP library for <a href="http://robotframework.org/">RobotFramework</a>.</p>
+<p>Now, there already exists a SCP library called <a href="https://github.com/tylercrumpton/robotframework-scplibrary">robotframework-scplibrary</a>, and it is perfectly usable on it&#8217;s own. In fact, if
+<em>all</em> you need is SCP, I&#8217;d encourage you to use that.
+However, the keywords it provides clash with the Robot <a href="http://robotframework.org/SSHLibrary/latest/SSHLibrary.html">SSH library</a>. This makes using both of them at the same time very tedious.
+Worse, the SCP library manages connections itself and separately - but the
+underlying SSH Python module, <a href="http://www.paramiko.org/">paramiko</a>, is the same
+for both SSH and&nbsp;SCP!</p>
+<p>In contrast, <code>scpcompat</code> hooks into the SSH library and uses the current
 connection. This also means that none of it&#8217;s keywords clash. You can see
 SSHLibrary and my SCPLibrary working hand in hand <a href="https://github.com/tobywf/robotframework-scpcompat/blob/master/example.robot">in this example</a>.</p>
 <p>Note that <code>robotframework-scpcompat</code> and  <code>robotframework-scplibrary</code> shouldn&#8217;t
 be installed at the same time, in fact they will clash. Both use the
 <a href="https://pypi.python.org/pypi/scp">scp</a> Python module, so functionality is on&nbsp;par.</p>
-<p>Finally, why bother with <span class="caps">SCP</span> at all? The <span class="caps">SSH</span> library can do <span class="caps">SFTP</span>, surely that&#8217;s
-good enough. Turns out that <a href="https://github.com/robotframework/SSHLibrary/issues/113"><span class="caps">SFTP</span> can be horribly slow</a>,
+<p>Finally, why bother with SCP at all? The SSH library can do SFTP, surely that&#8217;s
+good enough. Turns out that <a href="https://github.com/robotframework/SSHLibrary/issues/113">SFTP can be horribly slow</a>,
 although this <a href="https://github.com/paramiko/paramiko/issues/175">seems to be fixed in paramiko</a>.
-Still though, <span class="caps">SCP</span> is simpler and generally still&nbsp;faster.</p>
+Still though, SCP is simpler and generally still&nbsp;faster.</p>
 <p>I hope this helps. If you have any issues or requests, <a href="https://github.com/tobywf/robotframework-scpcompat">head to the repo</a> and I&#8217;ll see what I can&nbsp;do.</p>
 </article>
 <section>

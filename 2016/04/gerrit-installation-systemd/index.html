@@ -31,13 +31,13 @@
   </div>
 </header>
 <article>
-<p><span class="caps">TL</span>;<span class="caps">DR</span>: <a href="#systemd">Click for the example service unit configuration file</a>.</p>
+<p>TL;DR: <a href="#systemd">Click for the example service unit configuration file</a>.</p>
 <hr />
 <p>I love <a href="https://www.gerritcodereview.com/">Gerrit</a> for code review at $work (Not my current work mind - personal opinion and all).
 <a href="https://github.com/">GitHub</a> and <a href="https://about.gitlab.com/">GitLab</a>
-are great tools (I&#8217;m sure I&#8217;ve missed others). The pull request (<span class="caps">PR</span>) workflow
+are great tools (I&#8217;m sure I&#8217;ve missed others). The pull request (PR) workflow
 is more suited to contributors with varying backgrounds, but Gerrit&#8217;s workflow
-<em>feels</em> faster. I think this is because a <span class="caps">PR</span> can be multiple commits, whereas
+<em>feels</em> faster. I think this is because a PR can be multiple commits, whereas
 in Gerrit a changeset is roughly equivalent to a commit (once merged), plus
 the changeset contains all revisions as patchsets. Alice reviews a patchset,
 Bob amends the commit, pushes it and Alice can see both patchsets, and crucially
@@ -47,13 +47,13 @@ Gerrit worked for our&nbsp;team.</p>
 <p>Note: This is for Gerrit v1, not v2 which was recently&nbsp;released.</p>
 <hr />
 <h2 id="short-intro">Short&nbsp;intro</h2>
-<p>Gerrit is a Java program. I&#8217;ll be comparing it to <a href="https://www.go.cd/">Go <span class="caps">CD</span></a>,
+<p>Gerrit is a Java program. I&#8217;ll be comparing it to <a href="https://www.go.cd/">Go CD</a>,
 because I&#8217;m <del>messing about</del> deploying that at the moment, but  a fairer comparison would
 probably be&nbsp;Jenkins.</p>
 <p>As far as Java programs go, it&#8217;s pretty light weight, certainly compared to
-Go <span class="caps">CD</span> or Eclipse. Although more users will quickly eat into resources such as
+Go CD or Eclipse. Although more users will quickly eat into resources such as
 file descriptors - to be&nbsp;expected!</p>
-<p>Go <span class="caps">CD</span> has packages for different platforms (and <code>yum</code>/<code>apt</code> repositories), and
+<p>Go CD has packages for different platforms (and <code>yum</code>/<code>apt</code> repositories), and
 installs itself <a href="https://docs.go.cd/current/installation/install/server/linux.html#location-of-gocd-server-files">in fairly standard locations</a>, plus the documentation is top&nbsp;notch.</p>
 <p>Gerrit comes as a <code>.war</code> file, so you&#8217;ll have to check the documentation to get
 it deployed. Gerrit&#8217;s <a href="https://gerrit-documentation.storage.googleapis.com/Documentation/2.12.2/index.html">documentation</a>
@@ -67,7 +67,7 @@ link. Very&nbsp;confusing.</p>
 
 <p>This creates a directory structure similar to the Filesystem Hierarchy Standard
 under <code>&lt;site&gt;</code>, including <code>bin</code>, <code>cache</code>, <code>data</code>, <code>etc</code>, <code>lib</code>, <code>logs</code>, and
-<code>tmp</code>. Not what I want as a sysadmin. <span class="caps">FYI</span>, the <span class="caps">PID</span> file lives in <code>logs</code>.</p>
+<code>tmp</code>. Not what I want as a sysadmin. FYI, the PID file lives in <code>logs</code>.</p>
 <p>To be fair, some of this is tweak-able, e.g. the location of git repositories
 can be configured via <code>gerrit.basePath</code>. However, you have to do this <em>before</em>
 running <code>init</code>, otherwise the default repositories <code>All-Projects.git</code> and
@@ -79,7 +79,7 @@ repositories if the site already&nbsp;exists.</p>
 modify the Gerrit config file - and for this, the Gerrit instance can&#8217;t be&nbsp;running.</p>
 <h3 id="webserver-woes">Webserver&nbsp;woes</h3>
 <p>Other gotchas include that the built-in Java webserver Jetty is hard to set up
-for <span class="caps">SSL</span>. In this day and age that should be unacceptable, although luckily the
+for SSL. In this day and age that should be unacceptable, although luckily the
 solution is also straight-forward: Run Gerrit behind Nginx. At that point,
 I&#8217;d rather have Nginx do the authentication - if you know how to do this, please
 get in&nbsp;touch.</p>
@@ -93,13 +93,13 @@ live in <code>/etc/init.d/</code>, but in <code>&lt;site&gt;/bin/gerrit.sh</code
 environmental variables, and the gerrit config file, and debugging this is a&nbsp;pain.</p>
 <p>Instead, the systemd service unit configuration file (service file) lets us set
 many of these options ourself, and makes it much easier to support multiple
-sites (although why you would do this on the same machine/<span class="caps">VM</span>/container is
+sites (although why you would do this on the same machine/VM/container is
 beyond me, as Gerrit has fully featured auth and permissions). The
 options systemd inherits or replaces&nbsp;are:</p>
 <ul>
 <li>Java executable path&nbsp;(JAVA_HOME)</li>
 <li>Gerrit site path&nbsp;(GERRIT_SITE)</li>
-<li>Gerrit <span class="caps">PID</span> file&nbsp;(GERRIT_PID)</li>
+<li>Gerrit PID file&nbsp;(GERRIT_PID)</li>
 <li>Java command line options (container.javaOptions,&nbsp;container.heapLimit)</li>
 <li>Gerrit user to run as&nbsp;(container.user)</li>
 <li>Gerrit <code>.war</code> path&nbsp;(container.war)</li>

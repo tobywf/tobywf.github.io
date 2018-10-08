@@ -31,16 +31,16 @@
 </header>
 <article>
 <p>Air-gapped systems are great for security, but a huge pain to manage. I recently set up a server that - while not strictly air-gapped - was on a subnet without internet access. The initial server was installed using a Debian network install image, because who wants to download 3 DVDs to get outdated packages? Besides, I like servers with minimal&nbsp;bloat.</p>
-<p>The <a href="https://www.debian.org/CD/netinst/">netinst page</a> isn&#8217;t joking when it says that the <span class="caps">ISO</span> &#8220;contains just the minimal amount of software to start the installation and fetch the remaining packages over the Internet.&#8221;. Not even an <span class="caps">SSH</span> server is installed. So let&#8217;s get some packages on this&nbsp;machine.</p>
-<p>Various sites will tell you to use dynamic port forwarding with <span class="caps">SSH</span>:</p>
+<p>The <a href="https://www.debian.org/CD/netinst/">netinst page</a> isn&#8217;t joking when it says that the ISO &#8220;contains just the minimal amount of software to start the installation and fetch the remaining packages over the Internet.&#8221;. Not even an SSH server is installed. So let&#8217;s get some packages on this&nbsp;machine.</p>
+<p>Various sites will tell you to use dynamic port forwarding with&nbsp;SSH:</p>
 <div class="codehilite"><pre><span></span>$ ssh -ND <span class="m">1080</span> &lt;user&gt;@&lt;remote&gt;
 $ <span class="nv">http_proxy</span><span class="o">=</span>socks://localhost:1080/ apt-get update
 </pre></div>
 
 
-<p>Spoiler: This doesn&#8217;t work. With <code>-D</code>, <span class="caps">SSH</span> acts as a <span class="caps">SOCKS</span> proxy, and while there&#8217;s speculation that <code>apt</code> supports <span class="caps">SOCKS</span> proxies, if you try it out it doesn&#8217;t. You can use <code>tsocks</code>, which works well&#8230; but how to install&nbsp;it?</p>
-<p>N.B.: If you&#8217;re doing this often, you probably want to set up some kind of <a href="https://apt-mirror.github.io/">internal <code>apt</code> mirror</a>, but downloading several GiB is a bit heavy-weight for once or twice. There&#8217;s probably also a way to bake packages into an install <span class="caps">CD</span>.</p>
-<p>The simplest solution I can come up with is to bootstrap the air-gapped machine with packages downloaded from a <span class="caps">VM</span> running the same Debian&nbsp;version.</p>
+<p>Spoiler: This doesn&#8217;t work. With <code>-D</code>, SSH acts as a SOCKS proxy, and while there&#8217;s speculation that <code>apt</code> supports SOCKS proxies, if you try it out it doesn&#8217;t. You can use <code>tsocks</code>, which works well&#8230; but how to install&nbsp;it?</p>
+<p>N.B.: If you&#8217;re doing this often, you probably want to set up some kind of <a href="https://apt-mirror.github.io/">internal <code>apt</code> mirror</a>, but downloading several GiB is a bit heavy-weight for once or twice. There&#8217;s probably also a way to bake packages into an install&nbsp;CD.</p>
+<p>The simplest solution I can come up with is to bootstrap the air-gapped machine with packages downloaded from a VM running the same Debian&nbsp;version.</p>
 <p>I wrote a script that given some package names will determine the dependencies iteratively, download all packages, and create a tarball that can be transferred to <a href="https://www.schneier.com/blog/archives/2013/10/air_gaps.html">the air-gapped system securely</a>.</p>
 <div class="codehilite"><pre><span></span><span class="ch">#!/bin/bash</span>
 <span class="nb">set</span> -euo pipefail

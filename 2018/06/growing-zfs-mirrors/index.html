@@ -24,18 +24,18 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Growing <span class="caps">ZFS</span>&nbsp;mirrors</h1>
+  <h1>Growing ZFS&nbsp;mirrors</h1>
   <div class="infoline">
     <span class="fa fa-calendar"></span> <span class="date">30 Jun &#x27;18</span>
   </div>
 </header>
 <article>
-<p>I have long contended that for small, home <span class="caps">NAS</span> systems, <a href="https://tobywf.com/2016/01/home-nas-build-guide/">mirrors are the way to go</a>. You don&#8217;t have to calculate how much parity you need, similarly, the backup size is also obvious. It costs less upfront, you only need two disks. And because you only need two disks, you can get the biggest disks you can afford, which usually have excellent <span class="caps">GB</span>/cent cost&nbsp;ratios.</p>
-<p>Finally, you can grow mirrors! As long as your storage needs don&#8217;t outstrip storage space growth, you can grow your mirrors very economically. Case in point, I was running a <span class="caps">2TB</span> mirror which was getting close to 80% full. I was able to buy <span class="caps">8TB</span> disks <a href="https://tobywf.com/2018/06/shucking-8tb-wd-easystores/">very cheaply</a>, and grow my mirror to <span class="caps">8TB</span>.</p>
+<p>I have long contended that for small, home NAS systems, <a href="https://tobywf.com/2016/01/home-nas-build-guide/">mirrors are the way to go</a>. You don&#8217;t have to calculate how much parity you need, similarly, the backup size is also obvious. It costs less upfront, you only need two disks. And because you only need two disks, you can get the biggest disks you can afford, which usually have excellent GB/cent cost&nbsp;ratios.</p>
+<p>Finally, you can grow mirrors! As long as your storage needs don&#8217;t outstrip storage space growth, you can grow your mirrors very economically. Case in point, I was running a 2TB mirror which was getting close to 80% full. I was able to buy 8TB disks <a href="https://tobywf.com/2018/06/shucking-8tb-wd-easystores/">very cheaply</a>, and grow my mirror to&nbsp;8TB.</p>
 <p>First things first, <strong>don&#8217;t be an idiot</strong>, this guide is how to modify storage. Triple check everything, and make sure you have backups. This guide also assumes the disks are blank, i.e.&nbsp;unformatted.</p>
 <h2 id="step-1-install-new-drive">Step 1: Install new&nbsp;drive</h2>
-<p>I had no spare bays/<span class="caps">SATA</span> connections, but if you did, you could potentially do this in a more safer way by adding the new disks to a mirror to create a 3 or 4-way mirror, and then pulling the old disks&nbsp;out.</p>
-<p>I had to do it more riskily by degrading the mirror. First, I powered down the <span class="caps">NAS</span>. Then I replaced one of the old disks in the mirror with a new one and powered up again. First, let&#8217;s check the right disk was&nbsp;pulled:</p>
+<p>I had no spare bays/SATA connections, but if you did, you could potentially do this in a more safer way by adding the new disks to a mirror to create a 3 or 4-way mirror, and then pulling the old disks&nbsp;out.</p>
+<p>I had to do it more riskily by degrading the mirror. First, I powered down the NAS. Then I replaced one of the old disks in the mirror with a new one and powered up again. First, let&#8217;s check the right disk was&nbsp;pulled:</p>
 <div class="codehilite"><pre><span></span><span class="gp">$</span> zpool status pool
 <span class="go">  pool: pool</span>
 <span class="go"> state: DEGRADED</span>
@@ -70,7 +70,7 @@
 
 
 <p>What&#8217;s going on? Well, drives are mounted in <code>/dev</code> and receive a name, e.g. <code>ada1</code>. The partitions are also mounted as <code>/dev/ada1p1</code> and <code>/dev/ada1p2</code>. So it&#8217;s already pretty obvious that the new drive is <code>ada0</code>.</p>
-<p>Just to check, we&#8217;ll look at the labels and partitions. <span class="caps">BSD</span> labels drives with UUIDs, since the name assigned in <code>/dev</code> is basically random, and drives could get reassigned on&nbsp;start-up.</p>
+<p>Just to check, we&#8217;ll look at the labels and partitions. BSD labels drives with UUIDs, since the name assigned in <code>/dev</code> is basically random, and drives could get reassigned on&nbsp;start-up.</p>
 <div class="codehilite"><pre><span></span>$ glabel status
                                       Name  Status  Components
 gptid/23edea4a-1742-11e8-b551-28924a390410     N/A  da0p1
@@ -94,8 +94,8 @@ $
 </pre></div>
 
 
-<p>Ignore <code>da0</code>, it is the <span class="caps">OS</span> <span class="caps">USB</span> disk. The blank disk is <code>ada0</code>, it has no labels or partition&nbsp;map.</p>
-<h2 id="step-2-create-gpt-partition-map">Step 2: Create <span class="caps">GPT</span> partition&nbsp;map</h2>
+<p>Ignore <code>da0</code>, it is the OS USB disk. The blank disk is <code>ada0</code>, it has no labels or partition&nbsp;map.</p>
+<h2 id="step-2-create-gpt-partition-map">Step 2: Create GPT partition&nbsp;map</h2>
 <p>Create the partition map on the new&nbsp;disk:</p>
 <div class="codehilite"><pre><span></span><span class="gp">$</span> sudo gpart create -s gpt ada0
 <span class="go">ada0 created</span>
@@ -174,7 +174,7 @@ $
 
 
 <h2 id="step-3-add-the-new-diskpartition-to-the-mirror">Step 3: Add the new disk/partition to the&nbsp;mirror</h2>
-<p>Now that the disk has a label/<span class="caps">UUID</span>, it&#8217;s time to stop referring to it as <code>ada0</code> where&nbsp;possible.</p>
+<p>Now that the disk has a label/UUID, it&#8217;s time to stop referring to it as <code>ada0</code> where&nbsp;possible.</p>
 <div class="codehilite"><pre><span></span><span class="gp">$</span> glabel status
 <span class="go">                                      Name  Status  Components</span>
 <span class="go">gptid/23edea4a-1742-11e8-b551-28924a390410     N/A  da0p1</span>

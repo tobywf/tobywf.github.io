@@ -24,7 +24,7 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Flask web dev: <span class="caps">MVC</span> simplicity with&nbsp;SQLAlchemy</h1>
+  <h1>Flask web dev: MVC simplicity with&nbsp;SQLAlchemy</h1>
   <h2>Flask web development tip number 2</h2>
   <div class="infoline">
     <span class="fa fa-calendar"></span> <span class="date">18 Jun &#x27;16</span>
@@ -33,10 +33,10 @@
 <article>
 <p><a href="http://flask.pocoo.org/">Flask is a web microframework</a> for Python. It&#8217;s small, but because it&#8217;s so easy to understand it&#8217;s also <a href="http://flask.pocoo.org/extensions/">extremely extensible</a>. No more&nbsp;bloat.</p>
 <p>I&#8217;m hoping to share some tips from developing and deploying several large Flask applications, some which aren&#8217;t obvious from the&nbsp;documentation.</p>
-<h2 id="tip-2-how-i-learned-to-stop-worrying-and-love-orm">Tip 2: How I Learned to Stop Worrying and Love <span class="caps">ORM</span></h2>
-<p><a href="http://www.sqlalchemy.org/">SQLAlchemy</a> is a great Object Relational Mapper (<span class="caps">ORM</span>). Yeah, yeah, <span class="caps">SQL</span> and <span class="caps">ORM</span>, how 90s. But it works, so stop worrying about <span class="caps">SQL</span> and start building&nbsp;websites.</p>
-<p>SQLAlchemy works great because it&#8217;s very transparent. So it doesn&#8217;t replace <span class="caps">SQL</span> knowledge, but augments it. That doesn&#8217;t mean it doesn&#8217;t get you nice features like portability over different <span class="caps">SQL</span> implementations, but write terrible models and queries and you&#8217;ll still get terrible&nbsp;performance.</p>
-<p>SQLAlchemy cuts down on the littering of <span class="caps">SQL</span> throughout the codebase and wraps everything in models. When writing a view, which of these approaches would you rather&nbsp;do?</p>
+<h2 id="tip-2-how-i-learned-to-stop-worrying-and-love-orm">Tip 2: How I Learned to Stop Worrying and Love&nbsp;ORM</h2>
+<p><a href="http://www.sqlalchemy.org/">SQLAlchemy</a> is a great Object Relational Mapper (ORM). Yeah, yeah, SQL and ORM, how 90s. But it works, so stop worrying about SQL and start building&nbsp;websites.</p>
+<p>SQLAlchemy works great because it&#8217;s very transparent. So it doesn&#8217;t replace SQL knowledge, but augments it. That doesn&#8217;t mean it doesn&#8217;t get you nice features like portability over different SQL implementations, but write terrible models and queries and you&#8217;ll still get terrible&nbsp;performance.</p>
+<p>SQLAlchemy cuts down on the littering of SQL throughout the codebase and wraps everything in models. When writing a view, which of these approaches would you rather&nbsp;do?</p>
 <div class="codehilite"><pre><span></span><span class="c1"># raw SQL</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">execute</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;SELECT</span>
 <span class="s1">    foo.id,</span>
@@ -55,7 +55,7 @@
 </pre></div>
 
 
-<p>We all know <span class="caps">MVC</span> is a good idea. Flask and SQLAlchemy make <span class="caps">MVC</span> painless. Do&nbsp;it.</p>
+<p>We all know MVC is a good idea. Flask and SQLAlchemy make MVC painless. Do&nbsp;it.</p>
 <hr />
 <p>Good luck with Flask and&nbsp;SQLAlchemy!</p>
 </article>

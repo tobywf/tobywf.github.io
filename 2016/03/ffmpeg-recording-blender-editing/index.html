@@ -33,7 +33,7 @@
 <article>
 <p>Because of a demo possibly involving management, I was looking for a way to record my desktop. Video recording/editing on Linux still isn&#8217;t a great experience, but it&#8217;s getting better. There&#8217;s still too many apps which are unreliable or terrible, especially on the Ubuntu software&nbsp;center.</p>
 <p>I chose <a href="https://www.ffmpeg.org/">ffmpeg</a> and <a href="https://www.blender.org/">Blender</a>, both not obvious choices for the&nbsp;uninitiated.</p>
-<p><code>ffmpeg</code> is a collection of multimedia libraries. It&#8217;s rock-solid and can record desktop footage via the <code>x11grab</code> format. It&#8217;s <span class="caps">CLI</span>-based, which I consider a bonus. Many graphical programs that perform video encoding use <code>ffmpeg</code> behind the scenes, but usually fall flat in some way. The number of options is quite large, but the internet exists. Might as well go <span class="caps">CLI</span>.</p>
+<p><code>ffmpeg</code> is a collection of multimedia libraries. It&#8217;s rock-solid and can record desktop footage via the <code>x11grab</code> format. It&#8217;s CLI-based, which I consider a bonus. Many graphical programs that perform video encoding use <code>ffmpeg</code> behind the scenes, but usually fall flat in some way. The number of options is quite large, but the internet exists. Might as well go&nbsp;CLI.</p>
 <p>Blender is actually an open-source 3D computer graphics program. It&#8217;s very professional, very reliable and includes a decent and very capable video&nbsp;editor.</p>
 <p>So let&#8217;s get&nbsp;started.</p>
 <h2 id="installing-ffmpeg">Installing&nbsp;ffmpeg</h2>
@@ -43,7 +43,7 @@
 
 
 <p>Except the <code>ffmpeg</code> version that this installs on my 14.04 Ubuntu wasn&#8217;t compiled with <code>x11grab</code> support. You&#8217;ll find out if that&#8217;s the case when you run the record command further down, if so read&nbsp;on.</p>
-<p>Compiling <code>ffmpeg</code> from source was painless, but took some time and worked the <span class="caps">CPU</span></p>
+<p>Compiling <code>ffmpeg</code> from source was painless, but took some time and worked the&nbsp;CPU</p>
 <div class="codehilite"><pre><span></span>tar -xvf ffmpeg-3.0.1.tar.bz2
 <span class="nb">cd</span> ffmpeg-3.0.1
 ./configure --enable-nonfree <span class="se">\</span>
@@ -69,7 +69,7 @@ sudo make install
 <p>The various&nbsp;parameters:</p>
 <ul>
 <li><code>-f x11grab</code> sets the input format to be <code>x11grab</code></li>
-<li><code>-video_size &lt;w&gt;x&lt;h&gt;</code> sets the size of the recorded region - in my case 1/4 of a full-<span class="caps">HD</span> screen. If you wanted to capture the whole screen but resize it, you would insert a scale output&nbsp;filter</li>
+<li><code>-video_size &lt;w&gt;x&lt;h&gt;</code> sets the size of the recorded region - in my case 1/4 of a full-HD screen. If you wanted to capture the whole screen but resize it, you would insert a scale output&nbsp;filter</li>
 <li><code>-framerate &lt;rate&gt;</code> sets, you guessed it, the framerate of&nbsp;capture</li>
 <li><code>-i</code> is the &#8220;input filename&#8221;, in this case display 0, screen 0 of my X11 server (I only have one screen). The optional coordinates after the plus sign specify the x and y offset, in my case skipping the menu&nbsp;bar</li>
 <li><code>-codec:v libx264</code> sets the output video codec to be x264, which is excellent as far as quality vs file size, but also fast (a rare&nbsp;combination)</li>
@@ -81,7 +81,7 @@ sudo make install
 <ul>
 <li><code>-preset slow</code>: I really don&#8217;t know if this makes a difference with lossless, but possibly the encoder will try and find smaller deltas between&nbsp;frames</li>
 <li><code>-tune animation</code>: Again for lossless this might have no effect, but I&#8217;m hoping it gives x264 a better initial starting point for&nbsp;optimisation</li>
-<li><code>-pix_fmt yuv420p</code>: Recorded from the desktop, the video will have equal sampling for luminance (Y) and chroma (<span class="caps">UV</span>), called 4:4:4. Some players don&#8217;t deal with higher chroma sampling, so this sets the sampling to 4:2:0. It&#8217;s highly technical, but required to just work(tm). <a href="https://en.wikipedia.org/wiki/YUV">Wikipedia on <span class="caps">YUV</span></a> has more&nbsp;info</li>
+<li><code>-pix_fmt yuv420p</code>: Recorded from the desktop, the video will have equal sampling for luminance (Y) and chroma (UV), called 4:4:4. Some players don&#8217;t deal with higher chroma sampling, so this sets the sampling to 4:2:0. It&#8217;s highly technical, but required to just work(tm). <a href="https://en.wikipedia.org/wiki/YUV">Wikipedia on YUV</a> has more&nbsp;info</li>
 </ul>
 <h2 id="editing-with-blender">Editing with&nbsp;Blender</h2>
 <p>Warning: The interface has a steep learning curve. I&#8217;ve used Blender for 3D work before, so I&#8217;m happy with it. But definitely go check out a tutorial and be prepared to spend a while getting into the swing of&nbsp;things.</p>
@@ -96,7 +96,7 @@ sudo make install
 </pre></div>
 
 
-<p>This takes up massive amounts of disk space, and writing so many images out is slow, especially <span class="caps">PNG</span> with compression (but otherwise it&#8217;d be even bigger). Instead, you can use the frame server to pipe the raw frames directly from Blender to <code>ffmpeg</code> (script slightly modified from <a href="https://wiki.blender.org/index.php/Doc_talk:2.6/Manual/Render/Output/Frameserver">1</a> and <a href="http://peter.schlaile.de/blender/sequencer/frameserver.html">2</a>):</p>
+<p>This takes up massive amounts of disk space, and writing so many images out is slow, especially PNG with compression (but otherwise it&#8217;d be even bigger). Instead, you can use the frame server to pipe the raw frames directly from Blender to <code>ffmpeg</code> (script slightly modified from <a href="https://wiki.blender.org/index.php/Doc_talk:2.6/Manual/Render/Output/Frameserver">1</a> and <a href="http://peter.schlaile.de/blender/sequencer/frameserver.html">2</a>):</p>
 <div class="codehilite"><pre><span></span><span class="ch">#!/bin/sh</span>
 
 <span class="nv">FRAMESERVER</span><span class="o">=</span>http://localhost:8080

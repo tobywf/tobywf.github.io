@@ -24,14 +24,14 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>macOS&#8217; Disk Utility sucks, here&#8217;s how to use a <span class="caps">CLI</span> to partition&nbsp;instead</h1>
+  <h1>macOS&#8217; Disk Utility sucks, here&#8217;s how to use a CLI to partition&nbsp;instead</h1>
   <div class="infoline">
     <span class="fa fa-calendar"></span> <span class="date">1 Jan &#x27;17</span>
   </div>
 </header>
 <article>
 <p>I recently found out that Apple&#8217;s Disk Utility won&#8217;t allow multiple partitions
-with a Master Boot Record. This is incredibly annoying. But the <span class="caps">CLI</span>&nbsp;will.</p>
+with a Master Boot Record. This is incredibly annoying. But the CLI&nbsp;will.</p>
 <p>Warning: There is no confirmation, no &#8220;are you sure?&#8221; prompts. <code>diskutil</code> will
 mess your disks up, zero fucks given. You need to double and triple check the
 commands you issue. That is&nbsp;all.</p>
@@ -83,7 +83,7 @@ $ diskutil listFilesystems
 <ul>
 <li>The disk identifier (you can also use the mount point&nbsp;instead)</li>
 <li>The number of partitions (optional, will be inferred otherwise - a good sanity&nbsp;check)</li>
-<li>The partition scheme (optional, will be <span class="caps">GUID</span>/<span class="caps">GPT</span> by&nbsp;default)</li>
+<li>The partition scheme (optional, will be GUID/GPT by&nbsp;default)</li>
 <li>Next come the partition&nbsp;parameters</li>
 <li>Partition format, from <code>diskutil listFilesystems</code></li>
 <li>Partition&nbsp;name</li>

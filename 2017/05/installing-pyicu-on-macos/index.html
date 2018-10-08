@@ -30,8 +30,8 @@
   </div>
 </header>
 <article>
-<p><a href="http://site.icu-project.org/">International Components for Unicode (<span class="caps">ICU</span>)</a> is an enterprise library for Unicode support. Being both very enterprise-y and Unicode-y, it is stupidly complex. I hope you&#8217;ll never need it, but if you do, luckily there&#8217;s a <a href="https://pypi.python.org/pypi/PyICU/">Python library (PyICU)</a> for that. But as it just interfaces with the <span class="caps">ICU</span> C library, PyICU can be tricky to&nbsp;install.</p>
-<p>Of course, the first step is to install the <span class="caps">ICU</span> C library with <a href="https://brew.sh/">Homebrew</a>. In theory, now PyICU should just install using <code>pip</code>. I found that PyICU didn&#8217;t have the correct search paths, and the simplest solution to this is to set some environmental variables to set PyICU on&nbsp;track:</p>
+<p><a href="http://site.icu-project.org/">International Components for Unicode (ICU)</a> is an enterprise library for Unicode support. Being both very enterprise-y and Unicode-y, it is stupidly complex. I hope you&#8217;ll never need it, but if you do, luckily there&#8217;s a <a href="https://pypi.python.org/pypi/PyICU/">Python library (PyICU)</a> for that. But as it just interfaces with the ICU C library, PyICU can be tricky to&nbsp;install.</p>
+<p>Of course, the first step is to install the ICU C library with <a href="https://brew.sh/">Homebrew</a>. In theory, now PyICU should just install using <code>pip</code>. I found that PyICU didn&#8217;t have the correct search paths, and the simplest solution to this is to set some environmental variables to set PyICU on&nbsp;track:</p>
 <div class="codehilite"><pre><span></span>$ brew install icu4c
 <span class="o">[</span>...<span class="o">]</span>
 $ ls /usr/local/Cellar/icu4c/
