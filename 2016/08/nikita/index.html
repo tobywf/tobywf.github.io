@@ -96,7 +96,7 @@ l/r sum:   5=5
 <p>It’s worth handling this edge case, as one of the test cases has a fairly large <code>n</code>.</p>
 <hr />
 <p>Joe and I did some profiling on the Python code. Turns out that the majority of time is spent on <code>int()</code>, parsing the input!</p>
-<div class="codehilite"><pre><span></span><span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">s</span> <span class="o">!=</span> <span class="s1">&#39;0&#39;</span><span class="p">]</span>
+<div class="codehilite"><pre><span></span><span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">' '</span><span class="p">)</span> <span class="k">if</span> <span class="n">s</span> <span class="o">!=</span> <span class="s1">'0'</span><span class="p">]</span>
 </pre></div>
 
 
@@ -104,8 +104,8 @@ l/r sum:   5=5
 <div class="codehilite"><pre><span></span><span class="kt">uint64_t</span> <span class="nf">_atoi</span><span class="p">()</span> <span class="p">{</span>
     <span class="kt">uint64_t</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">getchar</span><span class="p">();</span>
-    <span class="k">while</span> <span class="p">(</span><span class="n">b</span> <span class="o">!=</span> <span class="sc">&#39; &#39;</span> <span class="o">&amp;&amp;</span> <span class="n">b</span> <span class="o">!=</span> <span class="sc">&#39;\n&#39;</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">num</span> <span class="o">=</span> <span class="n">num</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="sc">&#39;0&#39;</span><span class="p">);</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">b</span> <span class="o">!=</span> <span class="sc">' '</span> <span class="o">&amp;&amp;</span> <span class="n">b</span> <span class="o">!=</span> <span class="sc">'\n'</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="n">num</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="sc">'0'</span><span class="p">);</span>
         <span class="n">b</span> <span class="o">=</span> <span class="n">getchar</span><span class="p">();</span>
     <span class="p">}</span>
     <span class="k">return</span> <span class="n">num</span><span class="p">;</span>
@@ -131,14 +131,14 @@ $ objdump -M intel -S nikita &gt; nikita.s
 <span class="nl">loop_start:</span>                 <span class="c1">; do {</span>
   <span class="nf">lea</span> <span class="nb">rcx</span><span class="p">,</span> <span class="p">[</span><span class="nb">rbx</span><span class="o">+</span><span class="mi">4</span><span class="o">*</span><span class="nb">rbx</span><span class="p">]</span>      <span class="c1">;   tmp = num + num * 4 = num * 5;</span>
   <span class="nf">cdqe</span>                      <span class="c1">;   b = (uint64_t)b;</span>
-  <span class="nf">lea</span> <span class="nb">rbx</span><span class="p">,</span> <span class="p">[</span><span class="nb">rax</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="nb">rcx</span><span class="o">-</span><span class="mi">48</span><span class="p">]</span>   <span class="c1">;   num = tmp * 2 + b - &#39;0&#39;;</span>
-<span class="c1">; so the last 3 lines are:   num = num * 10 + (uint64_t)b - &#39;0&#39;;</span>
+  <span class="nf">lea</span> <span class="nb">rbx</span><span class="p">,</span> <span class="p">[</span><span class="nb">rax</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="nb">rcx</span><span class="o">-</span><span class="mi">48</span><span class="p">]</span>   <span class="c1">;   num = tmp * 2 + b - '0';</span>
+<span class="c1">; so the last 3 lines are:   num = num * 10 + (uint64_t)b - '0';</span>
 <span class="nl">getchar:</span>
   <span class="nf">call</span>    <span class="nv">_getchar</span>          <span class="c1">;   b = getchar();</span>
-<span class="c1">; return value is in rax, but since it&#39;s an int use eax.</span>
-  <span class="nf">cmp</span> <span class="nb">eax</span><span class="p">,</span> <span class="mi">10</span>               <span class="c1">;   if (b == &#39;\n&#39;)</span>
+<span class="c1">; return value is in rax, but since it's an int use eax.</span>
+  <span class="nf">cmp</span> <span class="nb">eax</span><span class="p">,</span> <span class="mi">10</span>               <span class="c1">;   if (b == '\n')</span>
   <span class="nf">je</span>  <span class="nv">loop_end</span>              <span class="c1">;     break;</span>
-  <span class="nf">cmp</span> <span class="nb">eax</span><span class="p">,</span> <span class="mi">32</span>               <span class="c1">; } while (b != &#39; &#39;)</span>
+  <span class="nf">cmp</span> <span class="nb">eax</span><span class="p">,</span> <span class="mi">32</span>               <span class="c1">; } while (b != ' ')</span>
   <span class="nf">jne</span> <span class="nv">loop_start</span>
 <span class="nl">loop_end:</span>
   <span class="nf">mov</span> <span class="nb">rax</span><span class="p">,</span> <span class="nb">rbx</span>              <span class="c1">; return num;</span>
@@ -158,7 +158,7 @@ $ objdump -M intel -S nikita &gt; nikita.s
 <li><code>go tool compile -S [-N] nikita.go &gt; nikita.s</code> - This produces some weird output. <code>-N</code> for unoptimised.</li>
 <li><code>go tool objdump $GOPATH/bin/nikita &gt; nikita.s</code> - The same as <code>compile</code>, but with all the statically linked stuff.</li>
 </ul>
-<p>I prefer the <code>objdump -S $GOPATH/bin/nikita</code> route.&#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<p>I prefer the <code>objdump -S $GOPATH/bin/nikita</code> route. <a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">↩</a></p>
 </li>
 </ol>
 </div>

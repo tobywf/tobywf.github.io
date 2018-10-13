@@ -38,7 +38,7 @@
 <p>SQLAlchemy works great because it’s very transparent. So it doesn’t replace SQL knowledge, but augments it. That doesn’t mean it doesn’t get you nice features like portability over different SQL implementations, but write terrible models and queries and you’ll still get terrible performance.</p>
 <p>SQLAlchemy cuts down on the littering of SQL throughout the codebase and wraps everything in models. When writing a view, which of these approaches would you rather do?</p>
 <div class="codehilite"><pre><span></span><span class="c1"># raw SQL</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">execute</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;SELECT</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">execute</span><span class="p">(</span><span class="s1">'''SELECT</span>
 <span class="s1">    foo.id,</span>
 <span class="s1">    foo.name,</span>
 <span class="s1">    foo.description,</span>
@@ -46,7 +46,7 @@
 <span class="s1">    bar.name,</span>
 <span class="s1">    bar.description</span>
 <span class="s1">FROM foo INNER JOIN bar ON (foo.bar_id = bar.id)</span>
-<span class="s1">ORDER BY foo.name LIMIT 1&#39;&#39;&#39;</span><span class="p">)</span>
+<span class="s1">ORDER BY foo.name LIMIT 1'''</span><span class="p">)</span>
 <span class="n">foo</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
 <span class="n">foo</span><span class="o">.</span><span class="n">bar</span> <span class="o">=</span> <span class="n">Bar</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
 

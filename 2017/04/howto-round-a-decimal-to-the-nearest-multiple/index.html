@@ -33,16 +33,16 @@
 <p><a href="https://gist.github.com/tobywf/b0f67e9e414e41813c1590ed1ea39e2c">Take me to the code, dammit</a>. (I strongly recommend you look at the explanation. But then I would say that.)</p>
 <p>Say you live in a country without 1, 5, or 10 cent coins (or the monetary equivalent), and you need to round a <a href="https://docs.python.org/3/library/decimal.html"><code>Decimal</code></a> number to 20 or 25 cents. Unfortunately, the <a href="https://docs.python.org/3/library/decimal.html#decimal.Decimal.quantize"><code>quantize</code></a> method will only round your number to the argument’s exponent:</p>
 <div class="codehilite"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.3&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.2&#39;</span><span class="p">))</span>
-<span class="go">Decimal(&#39;0.3&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Decimal</span><span class="p">(</span><span class="s1">'0.3'</span><span class="p">)</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">'0.2'</span><span class="p">))</span>
+<span class="go">Decimal('0.3')</span>
 </pre></div>
 
 
 <p>What we really want is the number rounded to the nearest multiple:</p>
-<div class="codehilite"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">round_up</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.3&#39;</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.2&#39;</span><span class="p">))</span>
-<span class="go">Decimal(&#39;0.4&#39;)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">round_down</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.3&#39;</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.2&#39;</span><span class="p">))</span>
-<span class="go">Decimal(&#39;0.2&#39;)</span>
+<div class="codehilite"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">round_up</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">'0.3'</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">'0.2'</span><span class="p">))</span>
+<span class="go">Decimal('0.4')</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">round_down</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">'0.3'</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">'0.2'</span><span class="p">))</span>
+<span class="go">Decimal('0.2')</span>
 </pre></div>
 
 
@@ -61,7 +61,7 @@
 <li>Rescale the number continuum, so that 1 is equal to 0.2, i.e. the original scale has been restored</li>
 </ol>
 <p>Finally, here’s the code. It even has unit tests, which probe the behaviour over various precision levels, exponents and values.</p>
-<script src="https://gist.github.com/tobywf/b0f67e9e414e41813c1590ed1ea39e2c.js"></script>
+<script src="https://gist.github.com/tobywf/b0f67e9e414e41813c1590ed1ea39e2c.js" />
 </article>
 <section>
   <p><span class="fa fa-tags"></span> <a href="https://tobywf.com/tag/python/">Python</a></p>

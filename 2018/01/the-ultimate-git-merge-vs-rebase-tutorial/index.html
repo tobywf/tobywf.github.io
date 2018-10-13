@@ -82,7 +82,7 @@
 <span class="go">Fast-forward</span>
 <span class="go"> src.txt | 2 +-</span>
 <span class="go"> 1 file changed, 1 insertion(+), 1 deletion(-)</span>
-<span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">&#39;%s&#39;</span> --graph
+<span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">'%s'</span> --graph
 <span class="go">* C</span>
 <span class="go">* B</span>
 <span class="go">* A</span>
@@ -95,16 +95,16 @@
 <span class="go">Auto-merging src.txt</span>
 <span class="go">CONFLICT (content): Merge conflict in src.txt</span>
 <span class="go">Automatic merge failed; fix conflicts and then commit the result.</span>
-<span class="gp">$</span> <span class="c1"># fake fixing the conflict, we know it should end up as &quot;E&quot;</span>
-<span class="gp">$</span> <span class="nb">echo</span> <span class="s2">&quot;E&quot;</span> &gt; src.txt <span class="o">&amp;&amp;</span> git add -- src.txt <span class="o">&amp;&amp;</span> git commit --no-edit
-<span class="go">[master xxxxxx] Merge branch &#39;feature2&#39;</span>
+<span class="gp">$</span> <span class="c1"># fake fixing the conflict, we know it should end up as "E"</span>
+<span class="gp">$</span> <span class="nb">echo</span> <span class="s2">"E"</span> &gt; src.txt <span class="o">&amp;&amp;</span> git add -- src.txt <span class="o">&amp;&amp;</span> git commit --no-edit
+<span class="go">[master xxxxxx] Merge branch 'feature2'</span>
 </pre></div>
 
 
 <p><img alt="Commit D on feature2 conflicted with commits B and C on feature1 and so a merge commit was necessary." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-merge2.svg" /></p>
 <p>This seems good, until we look at <code>git log</code>.</p>
-<div class="codehilite"><pre><span></span><span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">&#39;%s&#39;</span>
-<span class="go">Merge branch &#39;feature2&#39;</span>
+<div class="codehilite"><pre><span></span><span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">'%s'</span>
+<span class="go">Merge branch 'feature2'</span>
 <span class="go">E</span>
 <span class="go">C</span>
 <span class="go">D</span>
@@ -114,8 +114,8 @@
 
 
 <p>The linear history is based on the time of the commit, and so we get the order A, B, D, C, E, and M1. Which is correct, but confusing. When using a graph view, things are clearer. But because of the fast-forward behaviour, it looks like commits B and C were always part of master (indicated by the diagonally filled commits). Super confusing - or it will when the feature branch is deleted/never checked out/otherwise missing.</p>
-<div class="codehilite"><pre><span></span><span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">&#39;%s&#39;</span> --graph
-<span class="go">*   Merge branch &#39;feature2&#39;</span>
+<div class="codehilite"><pre><span></span><span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">'%s'</span> --graph
+<span class="go">*   Merge branch 'feature2'</span>
 <span class="go">|\</span>
 <span class="go">| * E</span>
 <span class="go">| * D</span>
@@ -132,7 +132,7 @@
 <p>(Remember to reset the repo to the initial state! You can do this by deleting the directory and re-running the script.)</p>
 <p><img alt="Two branches, the first called feature1 with commits B and C, the second called feature2 with commits D and E, both based of master with commit A. Commits B and D have a conflict." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-initial.svg" /></p>
 <div class="codehilite"><pre><span></span><span class="gp">$</span> git merge feature1 --no-ff
-<span class="go">Merge made by the &#39;recursive&#39; strategy.</span>
+<span class="go">Merge made by the 'recursive' strategy.</span>
 <span class="go"> src.txt | 2 +-</span>
 <span class="go"> 1 file changed, 1 insertion(+), 1 deletion(-)</span>
 </pre></div>
@@ -143,20 +143,20 @@
 <span class="go">Auto-merging src.txt</span>
 <span class="go">CONFLICT (content): Merge conflict in src.txt</span>
 <span class="go">Automatic merge failed; fix conflicts and then commit the result.</span>
-<span class="gp">$</span> <span class="c1"># fake fixing the conflict, we know it should end up as &quot;E&quot;</span>
-<span class="gp">$</span> <span class="nb">echo</span> <span class="s2">&quot;E&quot;</span> &gt; src.txt <span class="o">&amp;&amp;</span> git add -- src.txt <span class="o">&amp;&amp;</span> git commit --no-edit
-<span class="go">[master xxxxxx] Merge branch &#39;feature2&#39;</span>
+<span class="gp">$</span> <span class="c1"># fake fixing the conflict, we know it should end up as "E"</span>
+<span class="gp">$</span> <span class="nb">echo</span> <span class="s2">"E"</span> &gt; src.txt <span class="o">&amp;&amp;</span> git add -- src.txt <span class="o">&amp;&amp;</span> git commit --no-edit
+<span class="go">[master xxxxxx] Merge branch 'feature2'</span>
 </pre></div>
 
 
 <p><img alt="feature1, was merged into master with a merge commit." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-no-ff2.svg" /></p>
 <p>When viewed as a graph, the merge commits indicate clearly when the feature branches were merged in.</p>
-<div class="codehilite"><pre><span></span><span class="gp">$</span> git log --graph --pretty<span class="o">=</span>format:<span class="s1">&#39;%s&#39;</span>
-<span class="go">*   Merge branch &#39;feature2&#39;</span>
+<div class="codehilite"><pre><span></span><span class="gp">$</span> git log --graph --pretty<span class="o">=</span>format:<span class="s1">'%s'</span>
+<span class="go">*   Merge branch 'feature2'</span>
 <span class="go">|\</span>
 <span class="go">| * E</span>
 <span class="go">| * D</span>
-<span class="go">* |   Merge branch &#39;feature1&#39;</span>
+<span class="go">* |   Merge branch 'feature1'</span>
 <span class="go">|\ \</span>
 <span class="go">| |/</span>
 <span class="go">|/|</span>
@@ -168,9 +168,9 @@
 
 
 <p>The linear <code>git log</code> is still ordered by timestamp, and so commits B, C, D, and E are still interleaved.</p>
-<div class="codehilite"><pre><span></span><span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">&#39;%s&#39;</span>
-<span class="go">Merge branch &#39;feature2&#39;</span>
-<span class="go">Merge branch &#39;feature1&#39;</span>
+<div class="codehilite"><pre><span></span><span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">'%s'</span>
+<span class="go">Merge branch 'feature2'</span>
+<span class="go">Merge branch 'feature1'</span>
 <span class="go">E</span>
 <span class="go">C</span>
 <span class="go">D</span>
@@ -186,21 +186,21 @@
 <p><img alt="Two branches, the first called feature1 with commits B and C, the second called feature2 with commits D and E, both based of master with commit A. Commits B and D have a conflict." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-initial.svg" /></p>
 <p>Since commits B and C are based on commit A, there is nothing to be done, and the rebase is a no-op. (Rebasing never merges the commits into the other branch, so merging is still required.)</p>
 <div class="codehilite"><pre><span></span><span class="gp">$</span> git checkout feature1
-<span class="go">Switched to branch &#39;feature1&#39;</span>
+<span class="go">Switched to branch 'feature1'</span>
 <span class="gp">$</span> <span class="c1"># print hashes (yours will be different throughout)</span>
-<span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">&#39;%s (%h)&#39;</span>
+<span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">'%s (%h)'</span>
 <span class="go">C (61dcdc9)</span>
 <span class="go">B (32acae7)</span>
 <span class="go">A (08229ff)</span>
 <span class="gp">$</span> <span class="c1"># make sure feature1 is up to date with master</span>
 <span class="gp">$</span> git rebase master
 <span class="go">Current branch feature1 is up to date.</span>
-<span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">&#39;%s (%h)&#39;</span>
+<span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">'%s (%h)'</span>
 <span class="go">C (61dcdc9)</span>
 <span class="go">B (32acae7)</span>
 <span class="go">A (08229ff)</span>
 <span class="gp">$</span> git checkout master
-<span class="go">Switched to branch &#39;master&#39;</span>
+<span class="go">Switched to branch 'master'</span>
 <span class="gp">$</span> git merge feature1 --ff-only
 <span class="go">Updating xxxxxx..xxxxxx</span>
 <span class="go">Fast-forward</span>
@@ -212,32 +212,32 @@
 <p><img alt="feature1, was fast-forward merged into master without a merge commit." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-merge1.svg" /></p>
 <p>However, now commits D and E clash with the commits on master and will be updated.</p>
 <div class="codehilite"><pre><span></span><span class="gp">$</span> git checkout feature2
-<span class="go">Switched to branch &#39;feature2&#39;</span>
-<span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">&#39;%s (%h)&#39;</span>
+<span class="go">Switched to branch 'feature2'</span>
+<span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">'%s (%h)'</span>
 <span class="go">E (1376c86)</span>
 <span class="go">D (5e84a89)</span>
 <span class="go">A (08229ff)</span>
 <span class="gp">$</span> <span class="c1"># make sure feature2 is up to date with master</span>
 <span class="gp">$</span> git rebase master
 <span class="go">[...]</span>
-<span class="gp">$</span> <span class="c1"># fake fixing the conflict, we know the first commit of feature2 changed it to &quot;D&quot;</span>
-<span class="gp">$</span> <span class="nb">echo</span> <span class="s2">&quot;D&quot;</span> &gt; src.txt <span class="o">&amp;&amp;</span> git add -- src.txt <span class="o">&amp;&amp;</span> git rebase --continue
+<span class="gp">$</span> <span class="c1"># fake fixing the conflict, we know the first commit of feature2 changed it to "D"</span>
+<span class="gp">$</span> <span class="nb">echo</span> <span class="s2">"D"</span> &gt; src.txt <span class="o">&amp;&amp;</span> git add -- src.txt <span class="o">&amp;&amp;</span> git rebase --continue
 <span class="go">Applying: D</span>
 <span class="go">Applying: E</span>
-<span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">&#39;%s (%h)&#39;</span>
+<span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">'%s (%h)'</span>
 <span class="go">E (cc58c69)</span>
 <span class="go">D (4c886de)</span>
 <span class="go">C (61dcdc9)</span>
 <span class="go">B (32acae7)</span>
 <span class="go">A (08229ff)</span>
 <span class="gp">$</span> git checkout master
-<span class="go">Switched to branch &#39;master&#39;</span>
+<span class="go">Switched to branch 'master'</span>
 <span class="gp">$</span> git merge feature2 --ff-only
 <span class="go">Updating xxxxxx..xxxxxx</span>
 <span class="go">Fast-forward</span>
 <span class="go"> src.txt | 2 +-</span>
 <span class="go"> 1 file changed, 1 insertion(+), 1 deletion(-)</span>
-<span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">&#39;%s (%h)&#39;</span>
+<span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">'%s (%h)'</span>
 <span class="go">E (cc58c69)</span>
 <span class="go">D (4c886de)</span>
 <span class="go">C (61dcdc9)</span>
@@ -248,7 +248,7 @@
 
 <p><img alt="feature2, was fast-forward merged into master without a merge commit." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-rebase-merge.svg" /></p>
 <p>Technically, the second feature branch is no longer the one it was. Unlike when feature1 was rebased, feature2 needed conflict resolution, and commits D and E are actually newly rewritten commits (indicated by an asterisk). You can see above that the commit hashes have changed.</p>
-<div class="codehilite"><pre><span></span><span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">&#39;%s&#39;</span> --graph
+<div class="codehilite"><pre><span></span><span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">'%s'</span> --graph
 <span class="go">* E</span>
 <span class="go">* D</span>
 <span class="go">* C</span>
@@ -277,8 +277,8 @@
 <span class="go">CONFLICT (content): Merge conflict in src.txt</span>
 <span class="go">Squash commit -- not updating HEAD</span>
 <span class="go">Automatic merge failed; fix conflicts and then commit the result.</span>
-<span class="gp">$</span> <span class="c1"># fake fixing the conflict, we know it should end up as &quot;E&quot;</span>
-<span class="gp">$</span> <span class="nb">echo</span> <span class="s2">&quot;E&quot;</span> &gt; src.txt <span class="o">&amp;&amp;</span> git add -- src.txt <span class="o">&amp;&amp;</span> git commit
+<span class="gp">$</span> <span class="c1"># fake fixing the conflict, we know it should end up as "E"</span>
+<span class="gp">$</span> <span class="nb">echo</span> <span class="s2">"E"</span> &gt; src.txt <span class="o">&amp;&amp;</span> git add -- src.txt <span class="o">&amp;&amp;</span> git commit
 <span class="go">[master xxxxxx] Squashed commit of the following:</span>
 <span class="go"> 1 file changed, 1 insertion(+), 1 deletion(-)</span>
 </pre></div>
@@ -286,7 +286,7 @@
 
 <p><img alt="feature1 and feature2 were squashed into master as a new commit." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-merge-squash.svg" /></p>
 <p>The default commit messages are a bit useless when printing the first line, and I recommend writing something about the feature on the first line. But this also results in a clean graph.</p>
-<div class="codehilite"><pre><span></span><span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">&#39;%s&#39;</span> --graph
+<div class="codehilite"><pre><span></span><span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">'%s'</span> --graph
 <span class="go">* Squashed commit of the following:</span>
 <span class="go">* Squashed commit of the following:</span>
 <span class="go">* A</span>
@@ -295,12 +295,12 @@
 
 <p>Note that squashing a branch with only one commit will still produce a new squash commit (as opposed to simply fast-forwarding the commit, so <code>--no-ff</code> is not needed with <code>--squash</code>):</p>
 <div class="codehilite"><pre><span></span><span class="gp">$</span> git checkout -b feature3
-<span class="go">Switched to a new branch &#39;feature3&#39;</span>
-<span class="gp">$</span> <span class="nb">echo</span> <span class="s2">&quot;F&quot;</span> &gt; src.txt <span class="o">&amp;&amp;</span> git add -- src.txt <span class="o">&amp;&amp;</span> git commit -m <span class="s2">&quot;F&quot;</span>
+<span class="go">Switched to a new branch 'feature3'</span>
+<span class="gp">$</span> <span class="nb">echo</span> <span class="s2">"F"</span> &gt; src.txt <span class="o">&amp;&amp;</span> git add -- src.txt <span class="o">&amp;&amp;</span> git commit -m <span class="s2">"F"</span>
 <span class="go">[feature3 xxxxxx] F</span>
 <span class="go"> 1 file changed, 1 insertion(+), 1 deletion(-)</span>
 <span class="gp">$</span> git checkout master
-<span class="go">Switched to branch &#39;master&#39;</span>
+<span class="go">Switched to branch 'master'</span>
 <span class="gp">$</span> git merge --squash feature3
 <span class="go">Updating xxxxxx..xxxxxx</span>
 <span class="go">Fast-forward</span>
@@ -310,7 +310,7 @@
 <span class="gp">$</span> git commit
 <span class="go">[master xxxxxx] Squashed commit of the following:</span>
 <span class="go"> 1 file changed, 1 insertion(+), 1 deletion(-)</span>
-<span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">&#39;%s&#39;</span>
+<span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">'%s'</span>
 <span class="go">Squashed commit of the following:</span>
 <span class="go">Squashed commit of the following:</span>
 <span class="go">Squashed commit of the following:</span>

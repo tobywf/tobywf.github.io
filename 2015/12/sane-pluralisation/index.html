@@ -44,8 +44,8 @@
 
 <span class="k">class</span> <span class="nc">PluralFormatter</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">Formatter</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">format_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">format_spec</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">format_spec</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;plural,&#39;</span><span class="p">):</span>
-            <span class="n">words</span> <span class="o">=</span> <span class="n">format_spec</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">format_spec</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'plural,'</span><span class="p">):</span>
+            <span class="n">words</span> <span class="o">=</span> <span class="n">format_spec</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">','</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">words</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
@@ -57,7 +57,7 @@
 
 <p>This implementation is okay. It does handle as many plural nouns as you want in a string, not just one. And you could use a lazy version where you just specify the plural ‘s’, but (<em>spoiler alert</em>) you shouldn’t:</p>
 <div class="codehilite"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fmt</span> <span class="o">=</span> <span class="n">PluralFormatter</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;{0} {0:plural,bottle,bottles} on the wall&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">msg</span> <span class="o">=</span> <span class="s1">'{0} {0:plural,bottle,bottles} on the wall'</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">bottle_count</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">99</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">bottle_count</span><span class="p">))</span>
 <span class="go">99 bottles on the wall</span>
@@ -65,14 +65,14 @@
 <span class="go">2 bottles on the wall</span>
 <span class="go">1 bottle on the wall</span>
 <span class="go">0 bottles on the wall</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;apple{0:plural,,s} and pear{1:plural,,s}&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="go">&#39;apples and pears&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">'apple{0:plural,,s} and pear{1:plural,,s}'</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="go">'apples and pears'</span>
 </pre></div>
 
 
 <p>What else is there? Easily translatable, right? Just translate the whole format string! Genius…</p>
-<div class="codehilite"><pre><span></span>EN: &#39;{0} {0:plural,bottle,bottles} on the wall&#39;
-DE: &#39;{0} {0:plural,Flasche,Flaschen} auf der Wand&#39;
+<div class="codehilite"><pre><span></span>EN: '{0} {0:plural,bottle,bottles} on the wall'
+DE: '{0} {0:plural,Flasche,Flaschen} auf der Wand'
 </pre></div>
 
 
@@ -86,8 +86,8 @@ DE: &#39;{0} {0:plural,Flasche,Flaschen} auf der Wand&#39;
 
 <span class="k">class</span> <span class="nc">PluralFormatter</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">Formatter</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">format_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">format_spec</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">format_spec</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;plural,&#39;</span><span class="p">):</span>
-            <span class="n">_</span><span class="p">,</span> <span class="n">singular</span><span class="p">,</span> <span class="n">plural</span> <span class="o">=</span> <span class="n">format_spec</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">format_spec</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'plural,'</span><span class="p">):</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">singular</span><span class="p">,</span> <span class="n">plural</span> <span class="o">=</span> <span class="n">format_spec</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">','</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">ngettext</span><span class="p">(</span><span class="n">singular</span><span class="p">,</span> <span class="n">plural</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">format_field</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">format_spec</span><span class="p">)</span>
