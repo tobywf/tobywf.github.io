@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>'18 - tobywf</title>
+  <title>FastMail custom domain with Cloudflare DNS - tobywf</title>
   <meta charset="utf-8" />
   <meta name="author" content="Toby Fleming" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -17,47 +17,31 @@
 <!-- breadcrumbs start -->
 <li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon" /></a></li>
 <li class="breadcrumb"><a href="https://tobywf.com/2018/">'18</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2018/10/">Oct</a></li>
 <li class="last"><a href="https://tobywf.com/resume/" class="cap">résumé</a></li>
 <!-- breadcrumbs end -->
       </ul>
     </nav>
 <!-- content start -->
+<header class="post-head">
+  <h1>FastMail custom domain with Cloudflare DNS</h1>
+  <div class="infoline">
+    <span class="fa fa-calendar"></span> <span class="date">13 Oct '18</span>
+  </div>
+</header>
+<article>
+<p><a href="https://www.fastmail.com/help/receive/domains-setup-mxonly.html">Setting up FastMail with a custom domain is easy</a>. However, there is <a href="https://support.cloudflare.com/hc/en-us/articles/200168696-How-do-I-add-DKIM-records-">one pitfall when using CloudFlare</a>:</p>
+<blockquote>
+<p>Some services require additional CNAME records for DKIM verification. CNAME DKIM records should be gray clouded; otherwise, the record value won’t be available and verification will fail.</p>
+<p><a href="https://support.cloudflare.com/hc/en-us/articles/200168696-How-do-I-add-DKIM-records-">CloudFlare Support</a></p>
+</blockquote>
+<p>So it’s important to “click the cloud next to each record” to turn CloudFlare off (grey icon):</p>
+<p><img alt="A screenshot showing grey clouded CNAME DKIM records" src="https://tobywf.com/2018/10/fastmail-and-cloudflare-dns/images/2018-10-13-fastmail-and-cloudflare-dns.png" /></p>
+</article>
 <section>
-  <ul class="fa-ul floating-list">
-    <li><span class="fa-li fa fa-calendar"></span> <a href="https://tobywf.com/2018/10/">Oct</a></li>
-    <li><span class="fa-li fa fa-calendar"></span> <a href="https://tobywf.com/2018/06/">Jun</a></li>
-    <li><span class="fa-li fa fa-calendar"></span> <a href="https://tobywf.com/2018/01/">Jan</a></li>
-  </ul>
+  <p><span class="fa fa-tags"></span> </p>
+  <a href="https://tobywf.com/2018/06/growing-zfs-mirrors/" class="older"><span class="fa fa-chevron-circle-left"></span> Older</a>
 </section>
-<section>
-  <ul class="posts">
-    <li class="post-head">
-      <span class="dateline"><span class="fa fa-calendar"></span> 13 Oct '18</span>
-      <span class="title"><a href="https://tobywf.com/2018/10/fastmail-and-cloudflare-dns/">FastMail custom domain with Cloudflare DNS</a></span>
-    </li>
-    <li class="post-head">
-      <span class="dateline"><span class="fa fa-calendar"></span> 30 Jun '18</span>
-      <span class="title"><a href="https://tobywf.com/2018/06/growing-zfs-mirrors/">Growing ZFS mirrors</a></span>
-    </li>
-    <li class="post-head">
-      <span class="dateline"><span class="fa fa-calendar"></span> 30 Jun '18</span>
-      <span class="title"><a href="https://tobywf.com/2018/06/shucking-8tb-wd-easystores/">Shucking 8TB WD Easystores</a></span>
-    </li>
-    <li class="post-head">
-      <span class="dateline"><span class="fa fa-calendar"></span> 28 Jan '18</span>
-      <span class="title"><a href="https://tobywf.com/2018/01/beautiful-svg-diagrams-with-tikz-dvisvgm/">Beautiful SVG diagrams with TikZ and dvisvgm</a></span>
-    </li>
-    <li class="post-head">
-      <span class="dateline"><span class="fa fa-calendar"></span> 28 Jan '18</span>
-      <span class="title"><a href="https://tobywf.com/2018/01/svg-editors-on-macos/">The state of SVG editors on macOS for diagrams</a></span>
-    </li>
-    <li class="post-head">
-      <span class="dateline"><span class="fa fa-calendar"></span> 27 Jan '18</span>
-      <span class="title"><a href="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/">The ultimate git merge vs rebase tutorial</a></span>
-    </li>
-  </ul>
-</section>
-
 <!-- content end -->
     <footer>
       <hr />
