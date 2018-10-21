@@ -48,7 +48,7 @@ $ kpsewhich -var SELFAUTOLOC
 <p>So far, I have not been able to figure out how MacTeX manages to hardcode <code>SELFAUTOLOC</code>. I messed around with it for hours. My final solution is to simply patch the function that returns the executable directory (<code>kpathsea_selfdir</code>) to return a hardcoded path to the TeXLive installation directory. Then you can build kpathsea with no issues, and it will point to all the right locations. And with that built, dvisvgm is also easy to build.</p>
 <p>Finally, something else to be aware of. Both kpathsea and dvisvgm both use the default prefix <code>/usr/local/</code>, which means e.g. the binaries get installed to <code>/usr/local/bin</code>. As mentioned earlier, MacTeX uses <code>/usr/local/texlive/2016</code> as a prefix. So when you build kpathsea and dvisvgm, they shouldn’t overwrite anything. But uninstalling them from <code>/usr/local/</code> is tricky, and it depends on your <code>$PATH</code> order which binaries will get used. To avoid this hassle, I’d recommend using a custom prefix. Then you can just delete the whole prefix folder when you want to uninstall dvisvgm.</p>
 <p>To avoid even more hassle, here’s the script I wrote to do it all:</p>
-<script src="https://gist.github.com/tobywf/aeeeee63053aaaa841b4032963406684.js" />
+<script src="https://gist.github.com/tobywf/aeeeee63053aaaa841b4032963406684.js"></script>
 </article>
 <section>
   <p><span class="fa fa-tags"></span> <a href="https://tobywf.com/tag/macos/">macOS</a>, <a href="https://tobywf.com/tag/tex/">TeX</a></p>
