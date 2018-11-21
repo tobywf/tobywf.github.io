@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Flask application factories and blueprints - tobywf</title>
+  <meta charset="utf-8" />
+  <meta name="author" content="Toby Fleming" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css" />
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png" />
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <ul>
+<!-- breadcrumbs start -->
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon" /></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2018/">'18</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2018/11/">Nov</a></li>
+<li class="last"><a href="https://tobywf.com/resume/" class="cap">résumé</a></li>
+<!-- breadcrumbs end -->
+      </ul>
+    </nav>
+<!-- content start -->
+<header class="post-head">
+  <h1>Flask application factories and blueprints</h1>
+  <h2>Patterns for scalable Flask applications</h2>
+  <div class="infoline">
+    <span class="fa fa-calendar"></span> <span class="date">20 Nov '18</span>
+  </div>
+</header>
+<article>
+<p>I wrote about <a href="https://tobywf.com/2016/06/flask-always-use-application-factories/">application factories in 2016</a>, but recently re-read the post in light of <a href="https://news.ycombinator.com/item?id=18482539">a HackerNews post</a>, and… well, I think I can do better.</p>
+<h2 id="application-factories">Application factories</h2>
+<p>Flask has documentation on <a href="http://flask.pocoo.org/docs/1.0/patterns/appfactories/">application factories</a>, and <a href="http://flask.pocoo.org/docs/1.0/tutorial/factory/">a tutorial</a>. Even the <a href="http://flask.pocoo.org/docs/1.0/tutorial/">default tutorial</a> now uses an <a href="https://github.com/pallets/flask/blob/1.0.2/examples/tutorial/flaskr/__init__.py">application factory</a>.</p>
+<blockquote>
+<p>The most straightforward way to create a Flask application is to create a global Flask instance […]. While this is simple and useful in some cases, it can cause some tricky issues as the project grows.</p>
+<p><a href="http://flask.pocoo.org/docs/1.0/tutorial/factory/">flask.pocoo.org</a></p>
+</blockquote>
+<p>But why bother? It has to do with how Python loads modules. Let’s take a file creatively called <code>file.py</code>:</p>
+<div class="codehilite"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"global"</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">func</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"local"</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span><span class="go">Python 3.7.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">file</span> <span class="kn">import</span> <span class="n">func</span>
+<span class="go">global</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">func</span><span class="p">()</span>
+<span class="go">local</span>
+</pre></div>
+
+
+<p>Oops. When I tried to import the function in an interactive session, the <code>print</code> function in the global context is executed. So if the Flask application is initialised outside of a function, it can’t be changed after importing the module (and before, really). If the Flask application is initialised inside a function, it can be customised!</p>
+<p>This function creating the Flask application is called the application factory. (It’s an awful name, but naming stuff is hard. <a href="https://en.wikipedia.org/wiki/Factory_method_pattern">Factory methods</a> are a thing in object-oriented programming, and this is kind of analogous.)</p>
+<p>Simple, right? The tricky part is be figuring out how to hook Flask extensions up. We know this is bad, but this is easy to initialise:</p>
+<div class="codehilite"><pre><span></span><span class="c1"># __init__.py</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="c1"># configuration of app here</span>
+<span class="c1"># (have to use environmental variable or something?)</span>
+
+<span class="c1"># models.py</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">SQLAlchemy</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+</pre></div>
+
+
+<p>But if <code>app</code> is created inside a function, how can <code>db</code> use it?</p>
+<p>All extensions include an <code>init_app</code> method for the application factory pattern. It’s going to look more complicated, but it’s worth it:</p>
+<div class="codehilite"><pre><span></span><span class="c1"># __init__.py</span>
+<span class="k">def</span> <span class="nf">create_app</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+    <span class="c1"># configuration of app here, can use `debug`, yay!</span>
+    <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">db</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">app</span>
+
+<span class="c1"># models.py</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">SQLAlchemy</span><span class="p">()</span>
+</pre></div>
+
+
+<p>Despite the name, application factories aren’t that complicated, and the documentation has improved significantly since 2016. It’s much easier to start with an application factory than try and reorganise a project later, so I’d recommend it from day one.</p>
+<p>The application factory pattern makes configuration easy, as well as helping to avoid circular imports. Because imports can be performed when the app is created, this is an inversion of the usual import order. Instead of <code>app</code> being imported by everything, everything (extensions, models, views/blueprints) is imported by the factory and bound together. Speaking of blueprints…</p>
+<h2 id="blueprints">Blueprints</h2>
+<p>In a normal project, the number of views, and templates, and models, and forms, etc. will grow. You can (hackily) separate them out, but wouldn’t it be nice to have something that groups related views, templates, models, and forms? <a href="http://flask.pocoo.org/docs/1.0/blueprints/">Blueprints</a>! They are a great way to modularly compose Flask applications, which will help scale up projects.</p>
+<p><a href="http://flask.pocoo.org/docs/1.0/blueprints/">The documentation on blueprints</a> is pretty good, and they’re very analogous to views, so I’m brazenly going to gloss over that. But let it be said that refactoring an application to use blueprints is hard. So the upfront time investment is worth it, and along with application factories, I do it even for small proof of concept projects.</p>
+</article>
+<section>
+  <p><span class="fa fa-tags"></span> <a href="https://tobywf.com/tag/python/">Python</a>, <a href="https://tobywf.com/tag/flask/">Flask</a></p>
+  <a href="https://tobywf.com/2018/11/simple-python-lambda-packaging-guide/" class="older"><span class="fa fa-chevron-circle-left"></span> Older</a>
+</section>
+<!-- content end -->
+    <footer>
+      <hr />
+      <p class="center">
+        <a href="https://github.com/tobywf" class="fa-stack fa-lg">
+          <span class="fa fa-github fa-stack-2x"></span>
+        </a>
+        <a href="https://uk.linkedin.com/in/tobywf" class="fa-stack fa-lg">
+          <span class="fa fa-circle fa-stack-2x"></span>
+          <span class="fa fa-linkedin fa-stack-1x fa-inverse"></span>
+        </a>
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="fa-stack fa-lg" style="font-size: 120%;">
+          <span class="fa fa-creative-commons fa-stack-2x"></span>
+        </a>
+      </p>
+      <p>
+        <span class="fa fa-child fa-fw"></span>Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a code craftsman, tinkerer, and musician. He posts his ramblings here. Toby is currently in Seattle.
+      </p>
+      <p>
+        <span class="fa fa-copyright fa-fw"></span><span class="date cap">mmxii–mmxviii</span> <span class="name cap">Toby Fleming</span>
+      </p>
+      <p>
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+          <span class="fa fa-creative-commons fa-fw"></span>BY-NC-ND 4.0
+        </a>
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
