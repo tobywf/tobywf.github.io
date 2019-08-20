@@ -58,14 +58,8 @@ header, article, footer { padding: 6pt; }
 
 @media all and (min-width: 150mm) {
 
-/*@page { size: A4; }*/
-@page { size: letter; }
-
 #wrapper {
-  display: flex;
-  flex-flow: column;
-  width: 210mm;
-  height: 297mm;
+  width: 8.5in;
   margin: 0 auto;
 }
 
@@ -78,12 +72,9 @@ header {
   padding-bottom: 11pt;
 }
 footer { padding-bottom: 24mm; }
-article { flex: 1; overflow: hidden; padding-top: 6pt; }
+article { padding-top: 6pt; }
 
-dl {
-  width: 100%;
-  overflow: hidden;
-}
+dl {width: 100%;}
 
 dt {
   vertical-align: top;
@@ -101,7 +92,7 @@ dt.header {
 }
 
 h1 > a { font-size: 36pt; }
-}
+} /* @media */
   </style>
 </head>
 <body>
@@ -133,18 +124,6 @@ h1 > a { font-size: 36pt; }
       <p>My stay in Australia was on a temporary visa. At Kogan, I delivered improvements to the store front-end and back-end systems. I integrated Visa Checkout functionality on the Australian and New Zealand sites. <b>(Python, Django, HTML, Full Stack, Javascript, React, Postgres, PostgreSQL, eCommerce, Payment Processing)</b></p>
       <p>I also developed serverless workflows for next-day delivery in the Melbourne metropolitan area, and improvements to product recommendation algorithms. <b>(Elasticsearch, AWS, AWS Lambda, Serverless, Data Mining)</b></p>
     </dd>
-  </dl>
-</article>
-<footer>(continued)</footer>
-  </div>
-  <div id="wrapper">
-<header>
-  <h1><a href="https://tobywf.com/cv/">Toby Fleming</a></h1>
-  <div><a href="https://tobywf.com" class="cap">Software Engineer</a> <span>&mdash;</span> <a href="https://www.linkedin.com/in/tobywf">LinkedIn</a> <span>/</span> <a href="https://github.com/tobywf">GitHub</a></div>
-</header>
-<article>
-  <dl>
-    <dt class="header">Work History (continued)</dt>
     <dt>2013 &ndash; 2016</dt>
     <dd>
       <p><b>Scrum Master &amp; Software Engineer</b> at <a href="http://www.ibm.com/uk/en/">IBM&nbsp;United&nbsp;Kingdom&nbsp;Ltd</a></p>
