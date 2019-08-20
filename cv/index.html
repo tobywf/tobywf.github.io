@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>curriculum vitæ - tobywf</title>
+  <meta charset="utf-8" />
+  <meta name="author" content="Toby Fleming" />
+  <link href="https://fonts.googleapis.com/css?family=Montserrat|Source+Serif+Pro:400,700" rel="stylesheet">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style type="text/css">
+html, body, p, div, section, header, article, footer, h1, dl, dt, dd {
+  background: transparent;
+  border: 0 none;
+  padding: 0;
+  margin: 0;
+  font-size: 1em;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  width: 100%;
+  font-family: "Source Serif Pro", Georgia, serif;
+  font-size: 11pt;
+  background: gray;
+  color: black;
+  text-align: left;
+  vertical-align: baseline;
+  -webkit-font-feature-settings: "pnum" 1, "kern" 1, "liga" 1;
+}
+
+a { text-decoration: none; font-weight: bold; }
+a:link, a:visited, a:link:hover, a:visited:hover { color: rgb(100, 177, 242); }
+h1 > a:link, h1 > a:visited, h1 > a:link:hover, h1 > a:visited:hover {
+  font-weight: normal;
+  color: white;
+}
+
+header {
+  font-family: "Montserrat", Helvetica, Arial, sans-serif;
+  background-color: #404040;
+  color: rgb(100, 177, 242);
+}
+header > h1, header .cap {text-transform: uppercase;}
+
+header span { color: white; }
+footer { text-align: right; }
+dt { font-weight: bold; }
+
+p { margin: 6pt 0; letter-spacing: -0.2pt; }
+
+#wrapper {
+  width: 100%;
+  background-color: white;
+}
+header, article, footer { padding: 6pt; }
+
+@media all and (min-width: 150mm) {
+
+/*@page { size: A4; }*/
+@page { size: letter; }
+
+#wrapper {
+  display: flex;
+  flex-flow: column;
+  width: 210mm;
+  height: 297mm;
+  margin: 0 auto;
+}
+
+header, article, footer { padding: 0 24mm; box-sizing: border-box; }
+
+header {
+  display: block;
+  width: auto;
+  padding-top: 24mm;
+  padding-bottom: 11pt;
+}
+footer { padding-bottom: 24mm; }
+article { flex: 1; overflow: hidden; padding-top: 6pt; }
+
+dl {
+  width: 100%;
+  overflow: hidden;
+}
+
+dt {
+  vertical-align: top;
+  float: left;
+  width: 70pt;
+}
+
+dd { margin-left: 75pt; margin-bottom: 6pt; }
+dt.header {
+  font-family: "Montserrat", Helvetica, Arial, sans-serif;
+  text-transform: uppercase;
+  float: none;
+  width: 100%;
+  margin-bottom: 6pt;
+}
+
+h1 > a { font-size: 36pt; }
+}
+  </style>
+</head>
+<body>
+  <div id="wrapper">
+<header>
+  <h1><a href="https://tobywf.com/cv/">Toby Fleming</a></h1>
+  <div><a href="https://tobywf.com" class="cap">Software Engineer</a> <span>&mdash;</span> <a href="https://www.linkedin.com/in/tobywf">LinkedIn</a> <span>/</span> <a href="https://github.com/tobywf">GitHub</a></div>
+</header>
+<article>
+  <dl>
+    <dt class="header">Education</dt>
+    <dt>2009 &ndash; 2013</dt>
+    <dd>
+      <p><b>Masters of Physics (MPhys)</b> at <a href="http://www.physics.leeds.ac.uk/">University&nbsp;of&nbsp;Leeds</a></p>
+      <p><b>Bachelor of Physics (BSc&nbsp;Hons.)</b> at <a href="http://www.physics.leeds.ac.uk/">University&nbsp;of&nbsp;Leeds</a></p>
+    </dd>
+    <dt class="header">Work History</dt>
+    <dt>2018&ndash;present</dt>
+    <dd>
+      <p><b>Software Development Engineer II</b> at <a href="https://aws.amazon.com/">Amazon Web Services (AWS)</a></p>
+      <p>On the AWS CloudFormation team, I delivered the <a href="https://aws.amazon.com/blogs/aws/new-cloudformation-drift-detection/">drift detection feature</a> as the tech lead, with support for over 50 resources. This included a private beta and global, multi-region roll-out with in-depth metrics and monitoring. <b>(Java, Distributed Systems, Scalability, Monitoring)</b></p>
+      <p>For over a year, I've worked on an internal project. As of mid-August 2019, I've authored over 70 code reviews and reviewed over 300. <a href="https://github.com/tobywf">My GitHub contributions</a> total over 600. Since February 2018, I've authored over 80 code reviews and review just under 200. My GitHub contributions for this period are around 300. This internal project serves on the order of magnitude of 10,000 requests per second i.e. over 10k/s in multiple regions (<a href="https://aws.amazon.com/about-aws/global-infrastructure/">AWS currently has 22 regions</a>). <b>(Java, Python, NoSQL, DynamoDB, Linux, Git, High Availability, Distributed Systems, Scalability, Load Testing)</b></p>
+      <p>I set up and maintain the Continuous Integration (CI) pipelines for around 10 projects. The CI includes auto-formatting enforcement, static analysers for code quality and security issues, comprehensive test suits with 100% code coverage, and integration/black-box testing. <b>(Python, DevOps, Continuous Integration)</b></p>
+      <p>Outside of the CloudFormation team, I wrote and maintain internal Python build tooling used by over 450 consumers. I've also developed and deployed mitigations/fixes for security issues. <b>(Information Security, Common Vulnerabilities and Exposures, CVE)</b></p>
+    </dd>
+    <dt>2017</dt>
+    <dd>
+      <p><b>Software Engineer</b> at <a href="https://www.kogan.com/au/">Kogan.com</a></p>
+      <p>My stay in Australia was on a temporary visa. At Kogan, I delivered improvements to the store front-end and back-end systems. I integrated Visa Checkout functionality on the Australian and New Zealand sites. <b>(Python, Django, HTML, Full Stack, Javascript, React, Postgres, PostgreSQL, eCommerce, Payment Processing)</b></p>
+      <p>I also developed serverless workflows for next-day delivery in the Melbourne metropolitan area, and improvements to product recommendation algorithms. <b>(Elasticsearch, AWS, AWS Lambda, Serverless, Data Mining)</b></p>
+    </dd>
+  </dl>
+</article>
+<footer>(continued)</footer>
+  </div>
+  <div id="wrapper">
+<header>
+  <h1><a href="https://tobywf.com/cv/">Toby Fleming</a></h1>
+  <div><a href="https://tobywf.com" class="cap">Software Engineer</a> <span>&mdash;</span> <a href="https://www.linkedin.com/in/tobywf">LinkedIn</a> <span>/</span> <a href="https://github.com/tobywf">GitHub</a></div>
+</header>
+<article>
+  <dl>
+    <dt class="header">Work History (continued)</dt>
+    <dt>2013 &ndash; 2016</dt>
+    <dd>
+      <p><b>Scrum Master &amp; Software Engineer</b> at <a href="http://www.ibm.com/uk/en/">IBM&nbsp;United&nbsp;Kingdom&nbsp;Ltd</a></p>
+      <p>I was the scrum master for the global <a href="http://www-03.ibm.com/systems/uk/storage/flash/v9000/">IBM FlashSystem V9000</a> development team. <b>(agile, scrum, Jira, Confluence, Kanban)</b></p>
+      <p>As the software architect for <a href="http://www-03.ibm.com/systems/uk/storage/spectrum/scale/">IBM Spectrum Scale</a> deployment team, I supported the development of an install toolkit that provided a setup wizard and a fully auditable, automated cluster installation. I also helped design and set-up our continuous integration pipeline. <b>(Python, Chef, Vagrant, Jenkins, Gerrit, Linux/Unix, GPFS, Openstack)</b></p>
+      <p>I led the development of IP quorum on <a href="http://www-03.ibm.com/systems/uk/storage/storwize/">IBM Storwize</a> products. If the connection between two sites is lost, this feature allows the cluster to continue running. Instead of a third site appliance, a simple application can be deployed without costly fibre-channel connectivity between all sites. <b>(C, Java, Linux/Unix)</b></p>
+      <p>For the initial release of <a href="http://www-03.ibm.com/systems/uk/storage/flash/v9000/">IBM FlashSystem V9000</a> I owned and shipped the first-time data capture and disaster recovery features. <b>(Perl, C)</b></p>
+      <p>As part of the Manchester Lab DevOps team, I ran our DNS &amp; DHCP infrastructure until mid-2015. <b>(Linux/Unix, DevOps, sysadmin, Ansible)</b></p>
+    </dd>
+    <dt>2011 &ndash; 2013</dt>
+    <dd>
+      <p><b>Software Engineer</b> at <a href="https://www.workanyware.co.uk">Work&nbsp;AnyWare&nbsp;Ltd</a></p>
+      <p>To augment our leading cloud intellectual property document storage service I created a Microsoft Office plugin, which automatically versions and uploads documents when the user saves. Users can also open any version directly without switching to the web interface. I also wrote the server side API. <b>(C#, PHP)</b></p>
+    </dd>
+    <dt>2012</dt>
+    <dd>
+      <p><b>Summer Undergraduate Research Fellow (SURF)</b> at <a href="https://www.caltech.edu/">California&nbsp;Institute&nbsp;of&nbsp;Technology</a></p>
+      <p>As part of the <a href="http://www.ligo.caltech.edu/">LIGO Scientific Collaboration</a>, I designed and wrote a web application for collaborative electromagnetic follow-up of gravitational wave candidates. The <b>(Python, NumPy, C, HTML5, Javascript, Data Visualization, Interactive Projection)</b></p>
+    </dd>
+    <dt>2008 &ndash; 2009</dt>
+    <dd>
+      <p><b>Junior Software Engineer</b> at <a href="http://www.ostertagonline.de/de/index.php">Ostertag&nbsp;Solutions&nbsp;AG</a></p>
+      <p>I ported our attendant console product from legacy Visual Basic to C#. I designed and coded the UI for a 24" touch-screen VoIP/SIP telephone that was presented at the 2009 CeBIT conference. I also deployed servers and hardware on-site for customers. <b>(Visual Basic, C#, .NET, Linux/Unix)</b></p>
+    </dd>
+  </dl>
+</article>
+<footer>Seattle, August 2019</footer>
+  </div>
+</body>
+</html>
