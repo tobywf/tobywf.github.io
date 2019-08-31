@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Running Sphinx on a single Python file - tobywf</title>
+  <meta charset="utf-8" />
+  <meta name="author" content="Toby Fleming" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css" />
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png" />
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <ul>
+<!-- breadcrumbs start -->
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon" /></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2019/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid" /></svg>'19</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2019/08/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid" /></svg>Aug</a></li>
+<li class="last"><a href="https://tobywf.com/cv/" class="cap">CV</a></li>
+<!-- breadcrumbs end -->
+      </ul>
+    </nav>
+<!-- content start -->
+<header class="post-head">
+  <h1>Running Sphinx on a single Python file</h1>
+  <div class="infoline">
+    <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid" /></svg> <span class="date">31 Aug '19</span>
+  </div>
+</header>
+<article>
+<p>Python’s default and awesome documentation generator is <a href="https://www.sphinx-doc.org">Sphinx</a>. And while it makes sense that Markdown is too limited for great documentation, I find <a href="http://docutils.sourceforge.net/rst.html">reStructuredText</a> to be tricky at times, since I don’t use it that regularly.</p>
+<p>For standalone documents, <a href="http://docutils.sourceforge.net/">Docutils</a> works great, and some Python IDEs have reStructuredText support. Of course, for small projects, a README is probably enough. But it’s undeniable Sphinx’ documentation is beautiful, and having features like autodoc or intersphinx is convenient. Luckily, it’s easy to run Sphinx and autodoc on a single file module. Bit of a niche use-case, I know. Why should small projects not have great documentation?</p>
+<p>As per usually, you start with <code>sphinx-quickstart</code>. To save time, here’s my final <code>conf.py</code> file:</p>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="c1"># enable autodoc to load local modules</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s2">"."</span><span class="p">))</span>
+
+<span class="n">project</span> <span class="o">=</span> <span class="s2">"&lt;project&gt;"</span>
+<span class="n">copyright</span> <span class="o">=</span> <span class="s2">"2019, Toby Fleming"</span>
+<span class="n">author</span> <span class="o">=</span> <span class="s2">"Toby Fleming"</span>
+<span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"sphinx.ext.autodoc"</span><span class="p">,</span> <span class="s2">"sphinx.ext.intersphinx"</span><span class="p">]</span>
+<span class="n">exclude_patterns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"_build"</span><span class="p">,</span> <span class="s2">"Thumbs.db"</span><span class="p">,</span> <span class="s2">".DS_Store"</span><span class="p">]</span>
+<span class="n">templates_path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"_templates"</span><span class="p">]</span>
+<span class="n">html_theme</span> <span class="o">=</span> <span class="s2">"alabaster"</span>
+<span class="n">html_static_path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"_static"</span><span class="p">]</span>
+<span class="n">intersphinx_mapping</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"python"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"https://docs.python.org/3"</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">html_theme_options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"nosidebar"</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
+</pre></div>
+
+
+<p><code>index.rst</code> can also be stripped down completely (it’s the only file you need with autodoc). Assuming the Python file is <code>&lt;project&gt;.py</code>, this works:</p>
+<div class="codehilite"><pre><span></span><span class="gh">&lt;project&gt;</span>
+<span class="gh">=========</span>
+
+<span class="p">..</span> <span class="ow">automodule</span><span class="p">::</span> <span class="nt">&lt;project&gt;</span>
+   <span class="nc">:members:</span>
+</pre></div>
+
+
+<p>Building the documentation works and outputs documentation for a single file:</p>
+<div class="codehilite"><pre><span></span><span class="gp">$</span> sphinx-build -b html . _build
+<span class="gp">$</span> open _build/index.html
+</pre></div>
+
+
+<p>By the way, instead of using (the de facto default) <code>html</code> output, <code>singlehtml</code> works great in this case. An example of this is in my repo <a href="https://github.com/tobywf/uuid_conv">uuid_conv</a>.</p>
+</article>
+<section>
+  <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid" /></svg> <a href="https://tobywf.com/tag/python/">Python</a></p>
+  <a href="https://tobywf.com/2019/08/show-dump-browse-intersphinx-inventory/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid" /></svg> Older</a>
+</section>
+<!-- content end -->
+    <footer>
+      <hr />
+      <p class="center">
+        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=correction&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2019%2F08%2Frunning-sphinx-on-a-single-python-file%2F">Corrections?</a>
+        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=feedback&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2019%2F08%2Frunning-sphinx-on-a-single-python-file%2F">Feedback?</a>
+      </p>
+      <p class="inline-block">
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#copyright" /></svg> <span class="date cap">MMXII–MMXIX</span>
+      </p>
+      <p class="inline-block">
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+          <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons" /></svg> <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-by" /></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nc-eu" /></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nd" /></svg> 4.0
+        </a>
+      </p>
+      <p>
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#child-solid" /></svg> Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a tinkerer, scuba diver, and musician. He posts his personal ramblings here.
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
