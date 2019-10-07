@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style type="text/css">
+  .horrible {background-color: #ff8989; }
+  .bad {background-color: #ffc543; }
+  .fair {background-color: #ffff00; }
+  .good {background-color: #c8ea00; }
+  .excellent {background-color: #53d000; }
+  td { min-width: 5em; text-align: center; }
+  table { width: 100%; }
+  .left { text-align: left; }
+</style>
+
+<h1>Data structures &amp; algorithm cheat sheet</h1>
+
+<h2>Overview</h2>
+
+<span class="horrible">Horrible O(n^2)</span>
+<span class="bad">Bad O(n log n)</span>
+<span class="fair">Fair O(n)</span>
+<span class="good">Good O(log n)</span>
+<span class="excellent">Excellent O(1)</span>
+
+<h3>Data structures: worst case (<a href="https://en.wikipedia.org/wiki/Big_O_notation">Big-O</a>)</h3>
+
+<table>
+  <tr>
+    <th class="left">Data Structure
+    <th>Access
+    <th>Search
+    <th>Insertion
+    <th>Deletion
+    <th>Space
+  </tr>
+  <tr>
+    <td class="left">Array
+    <td class="excellent">O(1)
+    <td class="fair">O(n)
+    <td class="fair">O(n)
+    <td class="fair">O(n)
+    <td class="fair">O(n)
+  </tr>
+  <tr>
+    <td class="left">Stack/Queue/Linked List
+    <td class="fair">O(n)
+    <td class="fair">O(n)
+    <td class="excellent">O(1)
+    <td class="excellent">O(1)
+    <td class="fair">O(n)
+  </tr>
+  <tr>
+    <td class="left">Binary Heap
+    <td class="excellent">O(1)
+    <td class="fair">O(n)
+    <td class="good">O(log n)
+    <td class="good">O(log n)
+    <td class="fair">O(n)
+  </tr>
+  <tr>
+    <td class="left">Hash Table aka. Dictionary
+    <td>N/A
+    <td class="fair">O(n)
+    <td class="fair">O(n)
+    <td class="fair">O(n)
+    <td class="fair">O(n)
+  </tr>
+  <tr>
+    <td class="left">AVL Tree/B-Tree/Red-Black Tree
+    <td class="good">O(log n)
+    <td class="good">O(log n)
+    <td class="good">O(log n)
+    <td class="good">O(log n)
+    <td class="fair">O(n)
+  </tr>
+  <tr>
+    <td colspan="6">Average case (if different than worst)
+  </tr>
+  <tr>
+    <td class="left">Hash Table aka. Dictionary
+    <td>N/A
+    <td class="excellent">Θ(1)
+    <td class="excellent">Θ(1)
+    <td class="excellent">Θ(1)
+    <td>N/A
+  </tr>
+</table>
+
+<h3>Array Sorting</h3>
+
+<table>
+  <tr>
+    <th class="left">Algorithm
+    <th>Best
+    <th>Average
+    <th>Worst
+    <th>Space
+    <th>Stable?
+  </tr>
+  <tr>
+    <td colspan="6">Comparison sorts (limited to <span>O(n log n)</span>)
+  </tr>
+  <tr>
+    <td class="left">Bubble sort
+    <td class="fair">Ω(n)
+    <td class="horrible">Θ(n^2)
+    <td class="horrible">O(n^2)
+    <td class="excellent">O(1)
+    <td class="excellent">Yes
+  </tr>
+  <tr>
+    <td class="left"><a href="#insertionsort">Insertion sort</a>
+    <td class="fair">Ω(n)
+    <td class="horrible">Θ(n^2)
+    <td class="horrible">O(n^2)
+    <td class="excellent">O(1)
+    <td class="excellent">Yes
+  </tr>
+  <tr>
+    <td class="left"><a href="#mergesort">Merge sort</a>
+    <td class="bad">Ω(n log n)
+    <td class="bad">Θ(n log n)
+    <td class="bad">O(n log n)
+    <td class="fair">O(n)
+    <td class="excellent">Yes
+  </tr>
+  <tr>
+    <td class="left">Selection sort (see <a href="#heapsort">Heapsort</a>)
+    <td class="horrible">Ω(n^2)
+    <td class="horrible">Θ(n^2)
+    <td class="horrible">O(n^2)
+    <td class="excellent">O(1)
+    <td class="horrible">No
+  </tr>
+  <tr>
+    <td class="left"><a href="#quicksort">Quicksort</a>
+    <td class="bad">Ω(n log n)
+    <td class="bad">Θ(n log n)
+    <td class="horrible">O(n^2)
+    <td class="good">O(log n)/O(n)
+    <td class="horrible">No
+  </tr>
+  <tr>
+    <td class="left"><a href="#heapsort">Heapsort</a>
+    <td class="bad">Ω(n log n)
+    <td class="bad">Θ(n log n)
+    <td class="bad">O(n log n)
+    <td class="excellent">O(1)
+    <td class="horrible">No
+  </tr>
+  <tr>
+    <td class="left"><a href="https://en.wikipedia.org/wiki/Timsort">Timsort</a> (merge + insertion hybrid)
+    <td class="fair">Ω(n)
+    <td class="bad">Θ(n log n)
+    <td class="bad">O(n log n)
+    <td class="fair">O(n)
+    <td class="excellent">Yes
+  </tr>
+  <tr>
+    <td colspan="6">Integer sorts (integer e {0,1,...,k-1} and fits in word, digits = log_b k)
+  </tr>
+  <tr>
+    <td class="left">Counting sort
+    <td class="excellent">Ω(n+k)
+    <td class="excellent">Θ(n+k)
+    <td class="excellent">O(n+k)
+    <td class="fair">O(k)
+    <td class="excellent">Yes
+  </tr>
+  <tr>
+    <td class="left"><a href="#radixsort">Radix sort</a>
+    <td class="excellent">Ω(nk)
+    <td class="excellent">Θ(nk)
+    <td class="excellent">O(nk)
+    <td class="fair">O(n+k)
+    <td class="excellent">Yes
+  </tr>
+  <tr>
+    <td class="left"><a href="#bucketsort">Bucket sort</a>
+    <td class="excellent">Ω(n+k)
+    <td class="excellent">Θ(n+k)
+    <td class="bad">O(n^2)
+    <td class="fair">O(n)
+    <td class="excellent">Yes
+  </tr>
+</table>
+
+<h2>Data structures</h2>
+
+<h3>Stack</h3>
+
+Can be implemented both as a linked list, or an array.
+
+<h3>Heap (implementation of priority queue)</h3>
+
+An array visualised as a (nearly complete) binary tree.
+
+<pre>
+heap.insert(x)
+heap.max
+heap.extract_max()
+heap.set_key(x, key)
+heap.max_heapify(i)
+
+parent(i) = i / 2
+left(i) = i * 2, right(i) = i * 2 + 1
+</pre>
+
+<h4><a id="maxheap">Max heap</a></h4>
+Node key >= keys of the children
+<pre>
+[16, 14, 10, 8, 7, 9, 3, 2, 4, 1]
+
+def build_max_heap(arr):
+  for i in range(len(arr) / 2, 0, -1):
+    max_heapify(arr, i)
+</pre>
+
+<code>max_heapify</code> is <span class="fair">Ω(n)</span> (easy to prove <span class="horrible">O(n log n)</span>)
+
+<h4>Min heap</h4>
+Node key <= keys of the children
+
+<h3>Binary search tree</h3>
+
+Like a heap, but with pointers instead of an array. Stricter ordering.
+
+Can add extra conditions to insert without penalty.
+
+O(h) for insert, find_min, find_max, next_lager, next_smaller, etc.
+
+Balanced means h = log n, worst-case i.e. most unbalanced tree = linked list.
+
+<h3><a id="avltree">AVL tree</a></h3>
+
+A way to keep binary search tree balanced. Store the heights of nodes, which are the lengths of the longest path from it to a leaf. Calculated via <code>h(node) := max(h(node.left), h(node.right)) + 1</code>.
+
+Require heights of left and right children of every node to differ by at most +-1.
+
+More rigidly balanced than <a href="#redblacktree">red-black trees</a>, which are also height balanced, so faster for lookup intensive applications.
+
+<ol>
+<li>simple BST insert
+<li>fix AVL property by starting at inserted node
+</ol>
+
+<h3><a id="redblacktree">Red-Black tree</a></h3>
+
+Use one bit (red or black) instead of height integer of <a href="#avltree">AVL tree</a>.
+
+<h3><a id="dictionary">Dictionary</a></h3>
+
+Operations in AVL tree are <span class="fair">O(log n)</span>, dictionary is usually <span class="excellent">O(1)</span>, but probabilistic.
+
+Use prehashing to map keys to non-negative integers.
+
+<h2>Algorithms (very much TODO)</h2>
+
+<h3><a id="insertionsort">Insertion sort</a></h3>
+
+Good for small lists. Shell sort better for large lists.
+
+Assumes compare and swap operations take about the same amount of time.
+
+More efficient than bubble sort, because loop can be short circuited.
+
+<h3><a id="mergesort">Merge sort</a></h3>
+
+Divides input into groups of max. 2.
+
+Sequential access, not random. Works well for large lists. Space complexity is large. Timsort is basically merge sort.
+
+In-place merge sort exists, but impractical.
+
+<h3><a id="quicksort">Quicksort</a></h3>
+
+Fast in practise because of e.g. computer architecture. Naive space complexity is <span class="horrible">O(n)</span>.
+
+<h3><a id="heapsort">Heapsort</a></h3>
+
+Less horrible selection sort:
+<ol>
+  <li><a href="#maxheap"><code>build_max_heap</code></a> -- O(n)</li>
+  <li>repeat next steps n times: -- O(n log n)<ol>
+  <li>find max <code>arr[i]</code> -- O(1)
+  <li>move max to back <code>arr[n - 1] = arr[i]</code> -- O(1)
+  <li>discard max leaf from heap (<code>heap.size--</code>) -- O(1)
+  <li>new root might violate heap, so <code>max_heapify</code> -- O(log n)
+  </ol></li>
+</ol>
+
+<h3><a id="countingsort">Counting sort</a></h3>
+
+Only sorts integers! Allocate array <code>c</code> of size k, and then loop over input and assign <code>c[key(item)].append(item)</code>. Finally, iterate over <code>c</code> and output. For integer items, can increment array instead of appending.
+
+<h3><a id="radixsort">Radix sort</a></h3>
+
+Uses counting sort, but iterate over digits of k with base b (d = log_b k), and sort digits with counting sort.
+
+TODO: cover complexity.
+
+Only stable when starting from the least significant digit.
+
+<h3><a id="bucketsort">Bucket sort</a></h3>
+
+Generalised counting sort, divide into buckets, then re-apply.
+
+<h3>Graphs</h3>
+
+<pre>
+Adj = {
+  a: [b, c],
+  d: [a],
+}
+</pre>
+
+<h4>Breadth-First Search</h4>
+
+Use to construct a tree with shortest path via parent array:
+<pre>
+level = {s: 0}
+parent = {s: None}
+i = 0
+frontier = [s]
+while frontier:
+  next = []
+  for u in frontier:
+    for v in adj[u]:
+      if v not in level:
+        level[v] = i
+        parent[v] = u
+        next.append(v)
+  frontier = next
+  i += 1
+</pre>
+
+
+<h4>Depth-first search</h4>
+
+aka. backtracking. Good for cycle detection.
+
+<pre>
+parent = {s: None}
+def visit(s):
+  for v in adj[s]:
+    if v not in parent:
+      parent[v] = s
+      visit(v)
+def visit_all():
+  parent = {}
+  for s in V:
+    if s not in parent:
+      parent[s] = None
+      visit(s)
+</pre>
+
+<h4>Dijkstra</h4>
+
+For weighted graphs, only positive weights (otherwise, Bellman-Ford).
+
+O(|E| + |V| log |V|) / BF O(|E||V|)
+
+<pre>
+ 1  function Dijkstra(Graph, source):
+ 2
+ 3      create vertex set Q
+ 4
+ 5      for each vertex v in Graph:             // Initialization
+ 6          dist[v] ← INFINITY                  // Unknown distance from source to v
+ 7          prev[v] ← UNDEFINED                 // Previous node in optimal path from source
+ 8          add v to Q                          // All nodes initially in Q (unvisited nodes)
+ 9
+10      dist[source] ← 0                        // Distance from source to source
+11
+12      while Q is not empty:
+13          u ← vertex in Q with min dist[u]    // Source node will be selected first
+14          remove u from Q
+15
+16          for each neighbor v of u:           // where v is still in Q.
+17              alt ← dist[u] + length(u, v)
+18              if alt < dist[v]:               // A shorter path to v has been found
+19                  dist[v] ← alt
+20                  prev[v] ← u
+21
+22      return dist[], prev[]
+</pre>
