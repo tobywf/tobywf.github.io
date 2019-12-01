@@ -148,10 +148,8 @@ body {
     <div class="wrap">
       <div class="pad">
         <h2 id="name"></h2>
-        <h3>Attack</h3>
-        <div id="attack"></div>
-        <h3>Defence</h3>
-        <div id="defence"></div>
+        <h3>Attack / Defence</h3>
+        <div id="matchup"></div>
       </div>
     </div>
   </div>
@@ -6764,22 +6762,18 @@ function or_default(val, def) {
   return val === undefined ? def : val;
 }
 
-function get_attack_matchup(type1, type2) {
-  matchup1 = matchups[type1];
-  matchup2 = type2 === undefined ? {} : matchups[type2];
+function get_matchup(type1, type2) {
+  const matchup1 = matchups[type1];
+  const matchup2 = type2 === undefined ? {} : matchups[type2];
   return types.reduce((obj, type) => {
-    const mul1 = or_default(matchup1[type], 1.0);
-    const mul2 = or_default(matchup2[type], 1.0);
-    obj[type] = mul1 * mul2;
-    return obj;
-  }, {});
-}
-
-function get_defence_matchup(type1, type2) {
-  return types.reduce((obj, type) => {
-    const mul1 = or_default(matchups[type][type1], 1.0);
-    const mul2 = or_default(matchups[type][type2], 1.0);
-    obj[type] = mul1 * mul2;
+    const mul_atk_1 = or_default(matchup1[type], 1.0);
+    const mul_atk_2 = or_default(matchup2[type], 1.0);
+    const mul_def_1 = or_default(matchups[type][type1], 1.0);
+    const mul_def_2 = or_default(matchups[type][type2], 1.0);
+    obj[type] = {
+      "atk": mul_atk_1 * mul_atk_2,
+      "def": mul_def_1 * mul_def_2,
+    }
     return obj;
   }, {});
 }
@@ -6801,37 +6795,48 @@ document.addEventListener("DOMContentLoaded", event => {
     return type_el;
   }
 
-  function create_type_effective_el(type, multiplier, mode) {
+  function create_type_effective_el(type, mul_atk, mul_def, mode) {
     /*
     <div class="effect">
       <span class="small-type type-${type}">
         ${type.substring(0, 3)}
       </span>
-      <span class="small-mul mul-${mode}-${mul}">
-        ${multiplier}
+      <span class="small-mul mul-atk-${mul_atk_css}">
+        ${mul_atk}
+      </span>
+      <span class="small-mul mul-def-${mul_def_css}">
+        ${mul_def}
       </span>
     </div>
     */
-    const wrap_el = document.createElement("div");
-    wrap_el.classList.add("effect");
+    const root_el = document.createElement("div");
+    root_el.classList.add("effect");
+
     const type_el = document.createElement("span");
     type_el.classList.add("small-type", `type-${type}`);
     type_el.appendChild(document.createTextNode(type.substring(0, 3)));
-    wrap_el.appendChild(type_el);
-    const mul_el = document.createElement("span");
-    const mul = multiplier.toString().replace(".", "");
-    mul_el.classList.add("small-mul", `mul-${mode}-${mul}`);
-    mul_el.appendChild(document.createTextNode(multiplier));
-    wrap_el.appendChild(mul_el);
-    return wrap_el;
+    root_el.appendChild(type_el);
+
+    const mul_atk_el = document.createElement("span");
+    const mul_atk_css = mul_atk.toString().replace(".", "");
+    mul_atk_el.classList.add("small-mul", `mul-atk-${mul_atk_css}`);
+    mul_atk_el.appendChild(document.createTextNode(mul_atk));
+    root_el.appendChild(mul_atk_el);
+
+    const mul_def_el = document.createElement("span");
+    const mul_def_css = mul_def.toString().replace(".", "");
+    mul_def_el.classList.add("small-mul", `mul-def-${mul_def_css}`);
+    mul_def_el.appendChild(document.createTextNode(mul_def));
+    root_el.appendChild(mul_def_el);
+
+    return root_el;
   }
 
   // --- type overlay
 
   const overlay_el = document.getElementById("overlay");
-  const overlay_attack_el = document.getElementById("attack");
-  const overlay_defence_el = document.getElementById("defence");
   const overlay_name_el = document.getElementById("name");
+  const overlay_matchup_el = document.getElementById("matchup");
 
   overlay_el.addEventListener("click", event => {
     overlay_el.classList.replace("visible", "hidden");
@@ -6845,21 +6850,13 @@ document.addEventListener("DOMContentLoaded", event => {
     }
 
     const types = el.dataset.types.split(",");
-    // clear and fill in attack
-    while (overlay_attack_el.firstChild) {
-      overlay_attack_el.removeChild(overlay_attack_el.firstChild);
+    // clear and fill in attack/defence
+    while (overlay_matchup_el.firstChild) {
+      overlay_matchup_el.removeChild(overlay_matchup_el.firstChild);
     }
-    Object.entries(get_attack_matchup(...types))
-      .map(([k, v]) => create_type_effective_el(k, v, "atk"))
-      .forEach(el => overlay_attack_el.appendChild(el));
-
-    // clear and fill in defence
-    while (overlay_defence_el.firstChild) {
-      overlay_defence_el.removeChild(overlay_defence_el.firstChild);
-    }
-    Object.entries(get_defence_matchup(...types))
-      .map(([k, v]) => create_type_effective_el(k, v, "def"))
-      .forEach(el => overlay_defence_el.appendChild(el));
+    Object.entries(get_matchup(...types))
+      .map(([k, v]) => create_type_effective_el(k, v.atk, v.def))
+      .forEach(el => overlay_matchup_el.appendChild(el));
 
     // set title
     overlay_name_el.innerText = el.dataset.name;
