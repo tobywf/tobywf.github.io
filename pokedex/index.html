@@ -6,11 +6,14 @@
   <meta name="author" content="Toby Fleming" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style type="text/css">
-body { background-color: #eee; }
+body {
+  background-color: #eee;
+  font-family: sans-serif;
+}
 
 .card {
   display: inline-block;
-  width: 120px;
+  width: 140px;
   margin: 5px;
   border: 1px solid #a3a3a3;
   border-radius: 4px;
@@ -18,20 +21,22 @@ body { background-color: #eee; }
 }
 
 .card .header { text-align: center; }
-.card img { width: 120px; }
+.card img { width: 120px; margin: 0 auto; }
 
-.type {
+.type, .effect {
   display: inline-block;
-  border: 1px solid #aaa;
-  border-radius: 4px;
   text-align: center;
   text-transform: uppercase;
   box-sizing: border-box;
   color: #eee;
 
-  width: 60px;
   font-size: 0.75rem;
   line-height: 1.50rem;
+}
+.type {
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  width: 70px;
 }
 .type-bug { background-color: #ab2; }
 .type-dark { background-color: #754; }
@@ -51,7 +56,35 @@ body { background-color: #eee; }
 .type-rock { background-color: #ba6; }
 .type-steel { background-color: #aab; }
 .type-water { background-color: #39f; }
-.type-only { background-color: #aaa; }
+.type-only, .type-clear {
+  background-color: #aaa;
+  background: repeating-linear-gradient(
+    45deg,
+    #aaa,
+    #666 10px,
+    #aaa 10px,
+    #666 20px
+  );
+}
+
+.effect { margin-right: 1px; }
+.effect, .effect > .small-mul, .effect > .small-type {
+  display: inline-block;
+  width: 30px;
+}
+.mul-atk-4 { background-color: #0a0; }
+.mul-atk-2 { background-color: #590; }
+.mul-atk-1 { background-color: #888; }
+.mul-atk-025 { background-color: #a00; }
+.mul-atk-05 { background-color: #700; }
+.mul-atk-0 { background-color: #000; }
+
+.mul-def-0 { background-color: #000; }
+.mul-def-4 { background-color: #700; }
+.mul-def-2 { background-color: #a00; }
+.mul-def-1 { background-color: #888; }
+.mul-def-025 { background-color: #590; }
+.mul-def-05 { background-color: #0a0; }
 
 .selected { border-color: #333; }
 
@@ -64,19 +97,66 @@ body { background-color: #eee; }
   line-height: 2rem;
   border-width: 3px;
 }
+
+#overlay.hidden, .hidden {
+  display: none;
+}
+
+#overlay {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  padding: 0;
+  background-color: rgba(0.5, 0.5, 0.5, 0.5);
+}
+
+#overlay > .wrap {
+  margin: 0 auto;
+  max-width: 660px;
+}
+
+#overlay > .wrap > .pad {
+  border: 1px solid #aaa;
+  border-radius: 8px;
+  background-color: #eee;
+  max-width: 560px;
+  padding: 20px;
+  margin: 20px;
+}
+
+#overlay h3 {
+  text-align: center;
+}
   </style>
 </head>
 <body>
   <h1>Pokémon Sword &amp; Shield Type Lookup</h1>
   <p>
     This helper is great for Dynamax battles, or quickly seeing which Pokémon will round out your team.
-    <br>
-    Click the type tag to select or deselect that type. You can select up to two types. If you select more, the first selection is forgotten.
-    <br>
-    "Only" is a meta-type which shows Pokémon with only one type. All data and images from <a href="https://pokemondb.net/pokedex/game/sword-shield" target="_blank" rel="noopener noreferrer">PokemonDB's Sword &amp; Shield Pokédex</a>.
+    All data and images from <a href="https://pokemondb.net/pokedex/game/sword-shield" target="_blank" rel="noopener noreferrer">PokemonDB's Sword &amp; Shield Pokédex</a>. [<a href="#" id="instruction-toggle">Toggle instructions</a>]
   </p>
+  <div id="instruction-box" class="hidden">
+    <p>Click the type tag to select or deselect that type. You can select up to two types. If you select more, the first selection is forgotten.</p>
+    <p>"Only" is a meta-type which shows Pokémon with only one type. "Clear" resets the selection.</p>
+    <p>Click a Pokémon's card to see the (calculated) attack and defence values against other types. Click again to close.</p>
+  </div>
+  <div id="overlay" class="hidden">
+    <div class="wrap">
+      <div class="pad">
+        <h2 id="name"></h2>
+        <h3>Attack</h3>
+        <div id="attack"></div>
+        <h3>Defence</h3>
+        <div id="defence"></div>
+      </div>
+    </div>
+  </div>
   <div id="selector"></div>
-  <div id="results">Please select a type!</div>
+  <div id="results"></div>
   <script>
 
 // All data and images from PokemonDB: https://pokemondb.net/pokedex/game/sword-shield
@@ -6520,49 +6600,308 @@ const lookup = {
   }
 };
 
-function create_type_el(type) {
-  const type_el = document.createElement("span");
-  type_el.classList.add("type", `type-${type}`);
-  type_el.appendChild(document.createTextNode(type));
-  return type_el;
+const matchups = {
+    "normal": {
+        "rock": 0.5,
+        "ghost": 0.0,
+        "steel": 0.5,
+    },
+    "fighting": {
+        "normal": 2.0,
+        "flying": 0.5,
+        "poison": 0.5,
+        "rock": 2.0,
+        "bug": 0.5,
+        "ghost": 0.0,
+        "steel": 2.0,
+        "psychic": 0.5,
+        "ice": 2.0,
+        "dark": 2.0,
+        "fairy": 0.5,
+    },
+    "flying": {
+        "fighting": 2.0,
+        "rock": 0.5,
+        "bug": 2.0,
+        "steel": 0.5,
+        "grass": 2.0,
+        "electric": 0.5,
+    },
+    "poison": {
+        "poison": 0.5,
+        "ground": 0.5,
+        "rock": 0.5,
+        "ghost": 0.5,
+        "steel": 0.0,
+        "grass": 2.0,
+        "fairy": 2.0,
+    },
+    "ground": {
+        "flying": 0.0,
+        "poison": 2.0,
+        "rock": 2.0,
+        "bug": 0.5,
+        "steel": 2.0,
+        "fire": 2.0,
+        "grass": 0.5,
+        "electric": 2.0,
+    },
+    "rock": {
+        "fighting": 0.5,
+        "flying": 2.0,
+        "ground": 0.5,
+        "bug": 2.0,
+        "steel": 0.5,
+        "fire": 2.0,
+        "ice": 2.0,
+    },
+    "bug": {
+        "fighting": 0.5,
+        "flying": 0.5,
+        "poison": 0.5,
+        "ghost": 0.5,
+        "steel": 0.5,
+        "fire": 0.5,
+        "grass": 2.0,
+        "psychic": 2.0,
+        "dark": 2.0,
+    },
+    "ghost": {
+        "normal": 0.0,
+        "ghost": 2.0,
+        "psychic": 2.0,
+        "dark": 0.5,
+    },
+    "steel": {
+        "rock": 2.0,
+        "steel": 0.5,
+        "fire": 0.5,
+        "water": 0.5,
+        "electric": 0.5,
+        "ice": 2.0,
+        "fairy": 2.0,
+    },
+    "fire": {
+        "rock": 0.5,
+        "bug": 2.0,
+        "steel": 2.0,
+        "fire": 0.5,
+        "water": 0.5,
+        "grass": 2.0,
+        "ice": 2.0,
+        "dragon": 0.5,
+    },
+    "water": {
+        "ground": 2.0,
+        "rock": 2.0,
+        "fire": 2.0,
+        "water": 0.5,
+        "grass": 0.5,
+        "dragon": 0.5,
+    },
+    "grass": {
+        "flying": 0.5,
+        "poison": 0.5,
+        "ground": 2.0,
+        "rock": 2.0,
+        "bug": 0.5,
+        "steel": 0.5,
+        "fire": 0.5,
+        "water": 2.0,
+        "grass": 0.5,
+        "dragon": 0.5,
+    },
+    "electric": {
+        "flying": 2.0,
+        "ground": 0.0,
+        "water": 2.0,
+        "grass": 0.5,
+        "electric": 0.5,
+        "dragon": 0.5,
+    },
+    "psychic": {
+        "fighting": 2.0,
+        "poison": 2.0,
+        "steel": 0.5,
+        "psychic": 0.5,
+        "dark": 0.0,
+    },
+    "ice": {
+        "flying": 2.0,
+        "ground": 2.0,
+        "steel": 0.5,
+        "fire": 0.5,
+        "water": 0.5,
+        "grass": 2.0,
+        "ice": 0.5,
+        "dragon": 2.0,
+    },
+    "dragon": {
+        "steel": 0.5,
+        "dragon": 2.0,
+        "fairy": 0.0,
+    },
+    "dark": {
+        "fighting": 0.5,
+        "ghost": 2.0,
+        "psychic": 2.0,
+        "dark": 0.5,
+        "fairy": 0.5,
+    },
+    "fairy": {
+        "fighting": 2.0,
+        "poison": 0.5,
+        "steel": 0.5,
+        "fire": 0.5,
+        "dragon": 2.0,
+        "dark": 2.0,
+    },
+};
+
+const types = Object.keys(lookup.type_map).filter(type => type !== "only");
+
+function or_default(val, def) {
+  return val === undefined ? def : val;
 }
 
-function create_pokemon_el(index) {
-  const pokemon = lookup.pokemon[index - 1];
+function get_attack_matchup(type1, type2) {
+  matchup1 = matchups[type1];
+  matchup2 = type2 === undefined ? {} : matchups[type2];
+  return types.reduce((obj, type) => {
+    const mul1 = or_default(matchup1[type], 1.0);
+    const mul2 = or_default(matchup2[type], 1.0);
+    obj[type] = mul1 * mul2;
+    return obj;
+  }, {});
+}
 
-  /*
-    <a href="${pokemon.url}" target="_blank" rel=noopener noreferrer" class="card">
-      <div class="header">${pokemon.number} ${pokemon.name}</div>
-      <img src="${pokemon.image}"/>
-      <div></div>
-    </a>
-  */
-  const root_el = document.createElement("a");
-  root_el.href = pokemon.url;
-  root_el.target = "_blank";
-  root_el.rel = "noopener noreferrer";
-  root_el.classList.add("card");
-  const header_el = document.createElement("div");
-  header_el.classList.add("header");
-  const padded_number = pokemon.number.toString().padStart(3, '0');
-  header_el.appendChild(document.createTextNode(`#${padded_number} ${pokemon.name}`));
-  root_el.appendChild(header_el);
-  const img_el = document.createElement("img");
-  img_el.src = pokemon.image;
-  root_el.appendChild(img_el);
-  const footer_el = document.createElement("div");
-  footer_el.classList.add("footer");
-  pokemon.types.forEach(type => {
-    footer_el.appendChild(create_type_el(type));
+function get_defence_matchup(type1, type2) {
+  return types.reduce((obj, type) => {
+    const mul1 = or_default(matchups[type][type1], 1.0);
+    const mul2 = or_default(matchups[type][type2], 1.0);
+    obj[type] = mul1 * mul2;
+    return obj;
+  }, {});
+}
+
+document.addEventListener("DOMContentLoaded", event => {
+  const instruction_toggle_el = document.getElementById("instruction-toggle");
+  const instruction_box_el = document.getElementById("instruction-box");
+
+  instruction_toggle_el.addEventListener("click", event => {
+    instruction_box_el.classList.toggle("hidden");
+    event.preventDefault();
   });
-  root_el.appendChild(footer_el);
-  return root_el;
-}
 
-document.addEventListener("DOMContentLoaded", function(event) {
-  const results_el = document.querySelector("#results");
-  const selector_el = document.querySelector("#selector");
-  const selector_queue = [];
+  function create_type_el(type) {
+    const type_el = document.createElement("span");
+    type_el.classList.add("type", `type-${type}`);
+    type_el.dataset.type = type;
+    type_el.appendChild(document.createTextNode(type));
+    return type_el;
+  }
+
+  function create_type_effective_el(type, multiplier, mode) {
+    /*
+    <div class="effect">
+      <span class="small-type type-${type}">
+        ${type.substring(0, 3)}
+      </span>
+      <span class="small-mul mul-${mode}-${mul}">
+        ${multiplier}
+      </span>
+    </div>
+    */
+    const wrap_el = document.createElement("div");
+    wrap_el.classList.add("effect");
+    const type_el = document.createElement("span");
+    type_el.classList.add("small-type", `type-${type}`);
+    type_el.appendChild(document.createTextNode(type.substring(0, 3)));
+    wrap_el.appendChild(type_el);
+    const mul_el = document.createElement("span");
+    const mul = multiplier.toString().replace(".", "");
+    mul_el.classList.add("small-mul", `mul-${mode}-${mul}`);
+    mul_el.appendChild(document.createTextNode(multiplier));
+    wrap_el.appendChild(mul_el);
+    return wrap_el;
+  }
+
+  // --- type overlay
+
+  const overlay_el = document.getElementById("overlay");
+  const overlay_attack_el = document.getElementById("attack");
+  const overlay_defence_el = document.getElementById("defence");
+  const overlay_name_el = document.getElementById("name");
+
+  overlay_el.addEventListener("click", event => {
+    overlay_el.classList.replace("visible", "hidden");
+  });
+
+  function show_overlay(event) {
+    // find card el
+    let el = event.target;
+    while (el.dataset.types === undefined) {
+      el = el.parentNode;
+    }
+
+    const types = el.dataset.types.split(",");
+    // clear and fill in attack
+    while (overlay_attack_el.firstChild) {
+      overlay_attack_el.removeChild(overlay_attack_el.firstChild);
+    }
+    Object.entries(get_attack_matchup(...types))
+      .map(([k, v]) => create_type_effective_el(k, v, "atk"))
+      .forEach(el => overlay_attack_el.appendChild(el));
+
+    // clear and fill in defence
+    while (overlay_defence_el.firstChild) {
+      overlay_defence_el.removeChild(overlay_defence_el.firstChild);
+    }
+    Object.entries(get_defence_matchup(...types))
+      .map(([k, v]) => create_type_effective_el(k, v, "def"))
+      .forEach(el => overlay_defence_el.appendChild(el));
+
+    // set title
+    overlay_name_el.innerText = el.dataset.name;
+
+    // make visible
+    overlay_el.classList.replace("hidden", "visible");
+  }
+
+  // --- type selection
+
+  const results_el = document.getElementById("results");
+  const selector_el = document.getElementById("selector");
+
+  let selector_queue = [];
+
+  function update_selection() {
+    // update selection css
+    selector_el.childNodes.forEach(type_el => {
+      if (selector_queue.includes(type_el.dataset.type)) {
+        type_el.classList.add("selected");
+      } else {
+        type_el.classList.remove("selected");
+      }
+    });
+
+    if (selector_queue.length === 0) {
+      results_el.childNodes.forEach(el => el.classList.remove("hidden"));
+      return;
+    }
+
+    const main_type = lookup.type_map[selector_queue[0]];
+    const type2 = selector_queue.length == 2 ? selector_queue[1] : "pokemon";
+    const indices = main_type[type2];
+
+    results_el.childNodes.forEach((el, index) => {
+      if (indices.includes(index + 1)) {
+        el.classList.remove("hidden");
+      } else {
+        el.classList.add("hidden");
+      }
+    });
+  }
 
   function type_select(event) {
     const selected = event.target.dataset.type;
@@ -6574,50 +6913,83 @@ document.addEventListener("DOMContentLoaded", function(event) {
     } else {
       selector_queue.push(selected);
     }
+
     // limit selection
     while (selector_queue.length > 2) {
       selector_queue.shift();
     }
 
-    // update selection css
-    selector_el.querySelectorAll("span").forEach(type_el => {
-      if (selector_queue.includes(type_el.dataset.type)) {
-        type_el.classList.add("selected");
-      } else {
-        type_el.classList.remove("selected");
-      }
-    });
-
-    // clean results
-    while (results_el.firstChild) {
-      results_el.removeChild(results_el.firstChild);
-    }
-
-    if (selector_queue.length === 0) {
-      results_el.appendChild(document.createTextNode("Please select a type!"));
-      return;
-    }
-
-    const main_type = lookup.type_map[selector_queue[0]];
-    let indices = [];
-    if (!!main_type) {
-      indices = main_type[selector_queue.length == 2 ? selector_queue[1] : "pokemon"];
-    }
-    if (indices.length > 0) {
-      indices.map(create_pokemon_el).forEach(el => results_el.appendChild(el));
-    } else {
-      results_el.appendChild(document.createTextNode("Sorry, no results"));
-    }
+    update_selection();
   }
 
   Object.keys(lookup.type_map).forEach(type => {
     let type_el = create_type_el(type);
-    type_el.dataset.type = type;
+    type_el.addEventListener("click", type_select);
     selector_el.appendChild(type_el);
-    selector_el.addEventListener("click", type_select);
   });
-});
 
+  const clear_el = create_type_el("clear")
+  clear_el.addEventListener("click", event => {
+    selector_queue = [];
+    update_selection();
+  });
+  selector_el.appendChild(clear_el);
+
+  // --- init
+
+  function create_pokemon_el(pokemon) {
+    /*
+    <div class="card" data-types="${pokemon.types}" data-name="${number_and_name}">
+      <div class="header">
+        <a href="${pokemon.url}" target="_blank" rel=noopener noreferrer">
+          ${number_and_name}
+        </a>
+      </div>
+      <img src="${pokemon.image}"/>
+      <div class="footer">
+        <!-- type els -->
+      </div>
+    </div>
+    */
+    const padded_number = pokemon.number.toString().padStart(3, '0');
+    const number_and_name = `#${padded_number} ${pokemon.name}`;
+
+    const root_el = document.createElement("div");
+    root_el.classList.add("card");
+    root_el.dataset.types = pokemon.types;
+    root_el.dataset.name = number_and_name;
+
+    const header_el = document.createElement("div");
+    header_el.classList.add("header");
+    const href_el = document.createElement("a");
+    href_el.href = pokemon.url;
+    href_el.target = "_blank";
+    href_el.rel = "noopener noreferrer";
+    href_el.appendChild(document.createTextNode(number_and_name));
+    header_el.appendChild(href_el);
+    root_el.appendChild(header_el);
+
+    const img_el = document.createElement("img");
+    img_el.src = pokemon.image;
+    root_el.appendChild(img_el);
+
+    const footer_el = document.createElement("div");
+    footer_el.classList.add("footer");
+    pokemon.types.forEach(type => {
+      footer_el.appendChild(create_type_el(type));
+    });
+    root_el.appendChild(footer_el);
+
+    root_el.addEventListener("click", show_overlay);
+    return root_el;
+  }
+
+  lookup.pokemon
+    .map(create_pokemon_el)
+    .forEach(el => results_el.appendChild(el));
+
+  update_selection();
+});
   </script>
 </body>
 </html>
