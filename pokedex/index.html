@@ -123,7 +123,7 @@ body {
   margin: 20px;
 }
 
-#overlay h3 {
+#overlay h3, #overlay p {
   text-align: center;
 }
   </style>
@@ -147,6 +147,7 @@ body {
         <div id="atk_matchup"></div>
         <h3>Defence effectiveness (other types against this Pokémon)</h3>
         <div id="def_matchup"></div>
+        <p>(enemy = green is better; your team = red is better)</p>
       </div>
     </div>
   </div>
@@ -6755,22 +6756,22 @@ const matchups = {
 
 const types = [
   "normal",
-  "fire",
-  "water",
-  "electric",
-  "grass",
-  "ice",
   "fighting",
+  "flying",
   "poison",
   "ground",
-  "flying",
-  "psychic",
-  "bug",
   "rock",
+  "bug",
   "ghost",
+  "steel",
+  "fire",
+  "water",
+  "grass",
+  "electric",
+  "psychic",
+  "ice",
   "dragon",
   "dark",
-  "steel",
   "fairy",
 ];
 
@@ -6963,11 +6964,15 @@ document.addEventListener("DOMContentLoaded", event => {
     update_selection();
   }
 
-  Object.keys(lookup.type_map).forEach(type => {
+  types.forEach(type => {
     let type_el = create_type_el(type);
     type_el.addEventListener("click", type_select);
     selector_el.appendChild(type_el);
   });
+
+  const only_el = create_type_el("only")
+  only_el.addEventListener("click", type_select);
+  selector_el.appendChild(only_el);
 
   const clear_el = create_type_el("clear")
   clear_el.addEventListener("click", event => {
