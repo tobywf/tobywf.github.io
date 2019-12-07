@@ -72,19 +72,14 @@ body {
   display: inline-block;
   width: 30px;
 }
-.mul-atk-4 { background-color: #0a0; }
-.mul-atk-2 { background-color: #590; }
-.mul-atk-1 { background-color: #888; }
-.mul-atk-025 { background-color: #a00; }
-.mul-atk-05 { background-color: #700; }
-.mul-atk-0 { background-color: #000; }
 
-.mul-def-0 { background-color: #000; }
-.mul-def-4 { background-color: #a00; }
-.mul-def-2 { background-color: #700; }
-.mul-def-1 { background-color: #888; }
-.mul-def-025 { background-color: #590; }
-.mul-def-05 { background-color: #0a0; }
+/* TODO: interpret multiplier values based on player/enemy team */
+.mul-4  , .mul-pos-4  , .mul-neg-025 { background-color: #0a0; }
+.mul-2  , .mul-pos-2  , .mul-neg-05  { background-color: #590; }
+.mul-1  , .mul-pos-1  , .mul-neg-1   { background-color: #888; }
+.mul-05 , .mul-pos-05 , .mul-neg-2   { background-color: #a00; }
+.mul-025, .mul-pos-025, .mul-neg-4   { background-color: #700; }
+.mul-0  , .mul-pos-0  , .mul-neg-0   { background-color: #000; }
 
 .selected { border-color: #333; }
 
@@ -92,7 +87,7 @@ body {
   cursor: default;
   margin: 4px;
 
-  width: 80px;
+  width: 90px;
   font-size: 1rem;
   line-height: 2rem;
   border-width: 3px;
@@ -116,14 +111,14 @@ body {
 
 #overlay > .wrap {
   margin: 0 auto;
-  max-width: 660px;
+  max-width: 680px;
 }
 
 #overlay > .wrap > .pad {
   border: 1px solid #aaa;
   border-radius: 8px;
   background-color: #eee;
-  max-width: 560px;
+  max-width: 600px;
   padding: 20px;
   margin: 20px;
 }
@@ -148,8 +143,10 @@ body {
     <div class="wrap">
       <div class="pad">
         <h2 id="name"></h2>
-        <h3>Attack / Defence</h3>
-        <div id="matchup"></div>
+        <h3>Attack effectiveness (this Pokémon against other types)</h3>
+        <div id="atk_matchup"></div>
+        <h3>Defence effectiveness (other types against this Pokémon)</h3>
+        <div id="def_matchup"></div>
       </div>
     </div>
   </div>
@@ -6756,24 +6753,45 @@ const matchups = {
     },
 };
 
-const types = Object.keys(lookup.type_map).filter(type => type !== "only");
+const types = [
+  "normal",
+  "fire",
+  "water",
+  "electric",
+  "grass",
+  "ice",
+  "fighting",
+  "poison",
+  "ground",
+  "flying",
+  "psychic",
+  "bug",
+  "rock",
+  "ghost",
+  "dragon",
+  "dark",
+  "steel",
+  "fairy",
+];
+
+// console.log(Object.keys(lookup.type_map).filter(type => !types.includes(type)));
 
 function or_default(val, def) {
   return val === undefined ? def : val;
 }
 
-function get_matchup(type1, type2) {
-  const matchup1 = matchups[type1];
-  const matchup2 = type2 === undefined ? {} : matchups[type2];
+function get_atk_matchup(pokemon_types) {
   return types.reduce((obj, type) => {
-    const mul_atk_1 = or_default(matchup1[type], 1.0);
-    const mul_atk_2 = or_default(matchup2[type], 1.0);
+    obj[type] = pokemon_types.map(pokemon_type => or_default(matchups[pokemon_type][type], 1.0));
+    return obj;
+  }, {});
+}
+
+function get_def_matchup(type1, type2) {
+  return types.reduce((obj, type) => {
     const mul_def_1 = or_default(matchups[type][type1], 1.0);
     const mul_def_2 = or_default(matchups[type][type2], 1.0);
-    obj[type] = {
-      "atk": mul_atk_1 * mul_atk_2,
-      "def": mul_def_1 * mul_def_2,
-    }
+    obj[type] = mul_def_1 * mul_def_2;
     return obj;
   }, {});
 }
@@ -6795,40 +6813,56 @@ document.addEventListener("DOMContentLoaded", event => {
     return type_el;
   }
 
-  function create_type_effective_el(type, mul_atk, mul_def, mode) {
-    /*
-    <div class="effect">
-      <span class="small-type type-${type}">
-        ${type.substring(0, 3)}
-      </span>
-      <span class="small-mul mul-atk-${mul_atk_css}">
-        ${mul_atk}
-      </span>
-      <span class="small-mul mul-def-${mul_def_css}">
-        ${mul_def}
-      </span>
-    </div>
-    */
-    const root_el = document.createElement("div");
-    root_el.classList.add("effect");
-
+  function create_small_type_el(type, desc) {
     const type_el = document.createElement("span");
     type_el.classList.add("small-type", `type-${type}`);
-    type_el.appendChild(document.createTextNode(type.substring(0, 3)));
-    root_el.appendChild(type_el);
+    type_el.appendChild(document.createTextNode(desc));
+    return type_el;
+  }
 
-    const mul_atk_el = document.createElement("span");
-    const mul_atk_css = mul_atk.toString().replace(".", "");
-    mul_atk_el.classList.add("small-mul", `mul-atk-${mul_atk_css}`);
-    mul_atk_el.appendChild(document.createTextNode(mul_atk));
-    root_el.appendChild(mul_atk_el);
+  function create_small_mul_el(mul) {
+    const mul_el = document.createElement("span");
+    const mul_css = mul.toString().replace(".", "");
+    mul_el.classList.add("small-mul", `mul-${mul_css}`);
+    // if (mul === 0.5) mul = "½";
+    // if (mul === 0.25) mul = "¼";
+    mul_el.appendChild(document.createTextNode(mul));
+    return mul_el;
+  }
 
-    const mul_def_el = document.createElement("span");
-    const mul_def_css = mul_def.toString().replace(".", "");
-    mul_def_el.classList.add("small-mul", `mul-def-${mul_def_css}`);
-    mul_def_el.appendChild(document.createTextNode(mul_def));
-    root_el.appendChild(mul_def_el);
+  function create_type_atk_header_el(pokemon_types) {
+    const root_el = document.createElement("div");
+    root_el.classList.add("effect");
+    root_el.appendChild(create_small_type_el("void", "&nbsp;"));
+    pokemon_types
+      .map(type => create_small_type_el(type, type.substring(0, 3)))
+      .forEach(el => root_el.appendChild(el));
+    return root_el;
+  }
 
+  function create_type_def_header_el() {
+    const root_el = document.createElement("div");
+    root_el.classList.add("effect");
+    root_el.appendChild(create_small_type_el("void", "&nbsp;"));
+    root_el.appendChild(create_small_type_el("void", "&nbsp;"));
+    return root_el;
+  }
+
+  function create_type_atk_effective_el(type, muls) {
+    const root_el = document.createElement("div");
+    root_el.classList.add("effect");
+    root_el.appendChild(create_small_type_el(type, type.substring(0, 3)));
+    muls
+      .map(mul => create_small_mul_el(mul))
+      .forEach(el => root_el.appendChild(el));
+    return root_el;
+  }
+
+  function create_type_def_effective_el(type, mul) {
+    const root_el = document.createElement("div");
+    root_el.classList.add("effect");
+    root_el.appendChild(create_small_type_el(type, type.substring(0, 3)));
+    root_el.appendChild(create_small_mul_el(mul));
     return root_el;
   }
 
@@ -6836,7 +6870,8 @@ document.addEventListener("DOMContentLoaded", event => {
 
   const overlay_el = document.getElementById("overlay");
   const overlay_name_el = document.getElementById("name");
-  const overlay_matchup_el = document.getElementById("matchup");
+  const overlay_atk_el = document.getElementById("atk_matchup");
+  const overlay_def_el = document.getElementById("def_matchup");
 
   overlay_el.addEventListener("click", event => {
     overlay_el.classList.replace("visible", "hidden");
@@ -6849,14 +6884,23 @@ document.addEventListener("DOMContentLoaded", event => {
       el = el.parentNode;
     }
 
-    const types = el.dataset.types.split(",");
+    const pokemon_types = el.dataset.types.split(",");
     // clear and fill in attack/defence
-    while (overlay_matchup_el.firstChild) {
-      overlay_matchup_el.removeChild(overlay_matchup_el.firstChild);
+    while (overlay_atk_el.firstChild) {
+      overlay_atk_el.removeChild(overlay_atk_el.firstChild);
     }
-    Object.entries(get_matchup(...types))
-      .map(([k, v]) => create_type_effective_el(k, v.atk, v.def))
-      .forEach(el => overlay_matchup_el.appendChild(el));
+    overlay_atk_el.appendChild(create_type_atk_header_el(pokemon_types));
+    Object.entries(get_atk_matchup(pokemon_types))
+      .map(([type, muls]) => create_type_atk_effective_el(type, muls))
+      .forEach(el => overlay_atk_el.appendChild(el));
+
+    while (overlay_def_el.firstChild) {
+      overlay_def_el.removeChild(overlay_def_el.firstChild);
+    }
+    overlay_def_el.appendChild(create_type_def_header_el());
+    Object.entries(get_def_matchup(...pokemon_types))
+      .map(([type, mul]) => create_type_def_effective_el(type, mul))
+      .forEach(el => overlay_def_el.appendChild(el));
 
     // set title
     overlay_name_el.innerText = el.dataset.name;
