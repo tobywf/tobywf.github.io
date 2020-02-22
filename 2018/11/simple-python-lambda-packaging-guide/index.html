@@ -2,20 +2,20 @@
 <html lang="en">
 <head>
   <title>Simple Python Lambda Packaging Guide - tobywf</title>
-  <meta charset="utf-8" />
-  <meta name="author" content="Toby Fleming" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="stylesheet" href="https://tobywf.com/theme/main.css" />
-  <link rel="icon" href="https://tobywf.com/theme/favicon.png" />
+  <meta charset="utf-8">
+  <meta name="author" content="Toby Fleming">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css">
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png">
 </head>
 <body>
   <div class="wrapper">
     <nav>
       <ul>
 <!-- breadcrumbs start -->
-<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon" /></a></li>
-<li class="breadcrumb"><a href="https://tobywf.com/2018/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid" /></svg>'18</a></li>
-<li class="breadcrumb"><a href="https://tobywf.com/2018/11/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid" /></svg>Nov</a></li>
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon"></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2018/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>'18</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2018/11/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>Nov</a></li>
 <li class="last"><a href="https://tobywf.com/cv/" class="cap">CV</a></li>
 <!-- breadcrumbs end -->
       </ul>
@@ -24,7 +24,7 @@
 <header class="post-head">
   <h1>Simple Python Lambda Packaging Guide</h1>
   <div class="infoline">
-    <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid" /></svg> <span class="date">4 Nov '18</span> — last updated <span class="date">24 Nov '18</span>
+    <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">4 Nov '18</span> — last updated <span class="date">24 Nov '18</span>
   </div>
 </header>
 <article>
@@ -158,7 +158,7 @@
 
 
 <div class="footnote">
-<hr />
+<hr>
 <ol>
 <li id="fn:1">
 <p>Pedantically speaking, Python also has <a href="https://www.python.org/dev/peps/pep-0427/">binary packaging via wheels</a>, which allows shipping pre-compiled C extensions for common platforms. This means it’s quicker to install, and you don’t necessarily need a compiler installed - a huge usability win. If all Python extensions provided Lambda-compatible wheels, conceivably running <code>pip install</code> could work. But it doesn’t, I’ve tried. I think because the Lambda environment is so locked down, <code>pip</code> gets confused and can’t figure out the Linux variant, and if it’s <a href="https://github.com/pypa/manylinux">manylinux</a> compatible. And so it falls back to building from source. <a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">↩</a></p>
@@ -173,27 +173,27 @@
 </div>
 </article>
 <section>
-  <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid" /></svg> <a href="https://tobywf.com/tag/python/">Python</a>, <a href="https://tobywf.com/tag/aws/">AWS</a>, <a href="https://tobywf.com/tag/lambda/">Lambda</a>, <a href="https://tobywf.com/tag/serverless/">Serverless</a></p>
-  <a href="https://tobywf.com/2018/11/flask-application-factories-and-blueprints/" class="newer">Newer <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-right-solid" /></svg></a>
-  <a href="https://tobywf.com/2018/10/removing-google-fonts/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid" /></svg> Older</a>
+  <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid"></use></svg> <a href="https://tobywf.com/tag/python/">Python</a>, <a href="https://tobywf.com/tag/aws/">AWS</a>, <a href="https://tobywf.com/tag/lambda/">Lambda</a>, <a href="https://tobywf.com/tag/serverless/">Serverless</a></p>
+  <a href="https://tobywf.com/2018/11/flask-application-factories-and-blueprints/" class="newer">Newer <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-right-solid"></use></svg></a>
+  <a href="https://tobywf.com/2018/10/removing-google-fonts/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid"></use></svg> Older</a>
 </section>
 <!-- content end -->
     <footer>
-      <hr />
+      <hr>
       <p class="center">
         <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=correction&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2018%2F11%2Fsimple-python-lambda-packaging-guide%2F">Corrections?</a>
         <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=feedback&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2018%2F11%2Fsimple-python-lambda-packaging-guide%2F">Feedback?</a>
       </p>
       <p class="inline-block">
-        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#copyright" /></svg> <span class="date cap">MMXII–MMXX</span>
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#copyright"></use></svg> <span class="date cap">MMXII–MMXX</span>
       </p>
       <p class="inline-block">
         <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
-          <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons" /></svg> <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-by" /></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nc-eu" /></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nd" /></svg> 4.0
+          <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons"></use></svg> <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-by"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nc-eu"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nd"></use></svg> 4.0
         </a>
       </p>
       <p>
-        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#child-solid" /></svg> Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a tinkerer, scuba diver, and musician. He posts his personal ramblings here.
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#child-solid"></use></svg> Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a tinkerer, scuba diver, and musician. He posts his personal ramblings here.
       </p>
     </footer>
   </div>

@@ -2,20 +2,20 @@
 <html lang="en">
 <head>
   <title>Custom formatter for Python strings - tobywf</title>
-  <meta charset="utf-8" />
-  <meta name="author" content="Toby Fleming" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="stylesheet" href="https://tobywf.com/theme/main.css" />
-  <link rel="icon" href="https://tobywf.com/theme/favicon.png" />
+  <meta charset="utf-8">
+  <meta name="author" content="Toby Fleming">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css">
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png">
 </head>
 <body>
   <div class="wrapper">
     <nav>
       <ul>
 <!-- breadcrumbs start -->
-<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon" /></a></li>
-<li class="breadcrumb"><a href="https://tobywf.com/2015/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid" /></svg>'15</a></li>
-<li class="breadcrumb"><a href="https://tobywf.com/2015/12/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid" /></svg>Dec</a></li>
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon"></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2015/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>'15</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2015/12/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>Dec</a></li>
 <li class="last"><a href="https://tobywf.com/cv/" class="cap">CV</a></li>
 <!-- breadcrumbs end -->
       </ul>
@@ -24,7 +24,7 @@
 <header class="post-head">
   <h1>Custom formatter for Python strings</h1>
   <div class="infoline">
-    <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid" /></svg> <span class="date">15 Dec '15</span>
+    <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">15 Dec '15</span>
   </div>
 </header>
 <article>
@@ -32,7 +32,7 @@
 <p>The <code>string.format</code> method in Python is probably my favourite string formatting mechanism in any language. C# is a close second.</p>
 <p>As most people now know, <a href="https://www.python.org/dev/peps/pep-3101/"><code>format</code> officially replaced <code>%</code>-based formatting</a> almost 10 years ago now. Do not use <code>%</code> for new projects, ever. If you see <code>%</code>-based formats, either the code base is ancient or the programmer is bad at Python. While it’s unfortunately true that some libraries e.g. logging never caught up, <code>format</code> fixes several issues that <code>%</code> had, and in my opinion is easier and more consistent throughout.</p>
 <p>For basic usage, <a href="https://pyformat.info/">pyformat.info</a> has outstanding documentation. Today, we’re attempting something more advanced: custom formatters.</p>
-<hr />
+<hr>
 <p>The documentations don’t make this abundantly clear, but <a href="https://docs.python.org/3/library/string.html#string-formatting">you can extend <code>format</code></a>. This turns out to be very useful and extremely easy. Two options in particular stand out: <code>format_field</code> and <code>convert_field</code>.</p>
 <h2 id="convert_field"><code>convert_field</code></h2>
 <p>This is responsible for e.g. <code>{0!r}</code>. From experimentation, I think conversion type must be a single letter.</p>
@@ -101,27 +101,27 @@ Three conversion flags are currently supported: <code>'!s'</code> which calls <c
 </code></pre></div>
 </article>
 <section>
-  <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid" /></svg> <a href="https://tobywf.com/tag/python/">Python</a></p>
-  <a href="https://tobywf.com/2015/12/small-differences-on-osx/" class="newer">Newer <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-right-solid" /></svg></a>
-  <a href="https://tobywf.com/2015/12/sane-pluralisation/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid" /></svg> Older</a>
+  <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid"></use></svg> <a href="https://tobywf.com/tag/python/">Python</a></p>
+  <a href="https://tobywf.com/2015/12/small-differences-on-osx/" class="newer">Newer <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-right-solid"></use></svg></a>
+  <a href="https://tobywf.com/2015/12/sane-pluralisation/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid"></use></svg> Older</a>
 </section>
 <!-- content end -->
     <footer>
-      <hr />
+      <hr>
       <p class="center">
         <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=correction&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2015%2F12%2Fcustom-formatters%2F">Corrections?</a>
         <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=feedback&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2015%2F12%2Fcustom-formatters%2F">Feedback?</a>
       </p>
       <p class="inline-block">
-        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#copyright" /></svg> <span class="date cap">MMXII–MMXX</span>
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#copyright"></use></svg> <span class="date cap">MMXII–MMXX</span>
       </p>
       <p class="inline-block">
         <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
-          <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons" /></svg> <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-by" /></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nc-eu" /></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nd" /></svg> 4.0
+          <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons"></use></svg> <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-by"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nc-eu"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nd"></use></svg> 4.0
         </a>
       </p>
       <p>
-        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#child-solid" /></svg> Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a tinkerer, scuba diver, and musician. He posts his personal ramblings here.
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#child-solid"></use></svg> Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a tinkerer, scuba diver, and musician. He posts his personal ramblings here.
       </p>
     </footer>
   </div>

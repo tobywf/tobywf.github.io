@@ -2,20 +2,20 @@
 <html lang="en">
 <head>
   <title>Renaming folders in Git on case insensitive file systems - tobywf</title>
-  <meta charset="utf-8" />
-  <meta name="author" content="Toby Fleming" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="stylesheet" href="https://tobywf.com/theme/main.css" />
-  <link rel="icon" href="https://tobywf.com/theme/favicon.png" />
+  <meta charset="utf-8">
+  <meta name="author" content="Toby Fleming">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css">
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png">
 </head>
 <body>
   <div class="wrapper">
     <nav>
       <ul>
 <!-- breadcrumbs start -->
-<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon" /></a></li>
-<li class="breadcrumb"><a href="https://tobywf.com/2018/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid" /></svg>'18</a></li>
-<li class="breadcrumb"><a href="https://tobywf.com/2018/11/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid" /></svg>Nov</a></li>
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon"></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2018/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>'18</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2018/11/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>Nov</a></li>
 <li class="last"><a href="https://tobywf.com/cv/" class="cap">CV</a></li>
 <!-- breadcrumbs end -->
       </ul>
@@ -24,7 +24,7 @@
 <header class="post-head">
   <h1>Renaming folders in Git on case insensitive file systems</h1>
   <div class="infoline">
-    <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid" /></svg> <span class="date">24 Nov '18</span>
+    <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">24 Nov '18</span>
   </div>
 </header>
 <article>
@@ -50,8 +50,10 @@
 <p>First, it’s clear we need to use git commands to show the paths, not the paths on the file system, i.e. <code>find</code> is out.</p>
 <p><code>git ls-files</code> is okay, but <a href="https://git-scm.com/docs/git-ls-tree"><code>git ls-tree</code></a> works better. Here are the switches:</p>
 <ul>
-<li><a href="https://git-scm.com/docs/git-ls-tree#git-ls-tree--d"><code>-d</code></a>: “Show only the named tree entry itself, not its children.” (i.e. directories)</li>
-<li><a href="https://git-scm.com/docs/git-ls-tree#git-ls-tree--r"><code>-r</code></a>: “Recurse into sub-trees.”</li>
+<li>
+<a href="https://git-scm.com/docs/git-ls-tree#git-ls-tree--d"><code>-d</code></a>: “Show only the named tree entry itself, not its children.” (i.e. directories)</li>
+<li>
+<a href="https://git-scm.com/docs/git-ls-tree#git-ls-tree--r"><code>-r</code></a>: “Recurse into sub-trees.”</li>
 </ul>
 <p><code>--full-tree</code> is also useful, especially for scripts, but I’m going to ignore it.</p>
 <p>Here’s the repo after I’ve added some nested directories for the demo:</p>
@@ -79,9 +81,12 @@
 <p>For further processing, I’m going to use <code>perl</code> instead of <code>awk</code>. It’s more portable (there are several <code>awk</code> variants), and easier to read (crazy, I know).</p>
 <p>Here are the switches (<a href="http://perldoc.perl.org/perlrun.html#Command-Switches">perlrun</a>):</p>
 <ul>
-<li><code>-e commandline</code>: “may be used to enter one line of program. […]”</li>
-<li><code>-Fpattern</code>: “specifies the pattern to split on […]”</li>
-<li><code>-l[octnum]</code>: “enables automatic line-ending processing. […]”, basically strips newlines on input and adds them on output</li>
+<li>
+<code>-e commandline</code>: “may be used to enter one line of program. […]”</li>
+<li>
+<code>-Fpattern</code>: “specifies the pattern to split on […]”</li>
+<li>
+<code>-l[octnum]</code>: “enables automatic line-ending processing. […]”, basically strips newlines on input and adds them on output</li>
 </ul>
 <div class="codehilite"><pre><span></span><code><span class="gp">$</span> git ls-tree -dr HEAD <span class="p">|</span> <span class="se">\</span>
 &gt;   perl -lF<span class="s1">'\t'</span> <span class="se">\</span>
@@ -106,8 +111,10 @@
 
 <p>So now I have only folders with upper case in the names, and the lower case version of that, which is useful for the rename. Using <a href="https://linux.die.net/man/1/xargs"><code>xargs</code></a> to apply two consecutive lines to a command:</p>
 <ul>
-<li><code>-d delim</code>: “Input items are terminated by the specified character. […]”, need to set this to newline otherwise <code>xargs</code> will split on a space also</li>
-<li><code>-L max-lines</code>: “Use at most max-lines nonblank input lines per command line. […]”</li>
+<li>
+<code>-d delim</code>: “Input items are terminated by the specified character. […]”, need to set this to newline otherwise <code>xargs</code> will split on a space also</li>
+<li>
+<code>-L max-lines</code>: “Use at most max-lines nonblank input lines per command line. […]”</li>
 </ul>
 <div class="codehilite"><pre><span></span><code><span class="gp">$</span> git ls-tree -dr HEAD <span class="p">|</span> <span class="se">\</span>
 &gt;   perl -lF<span class="s1">'\t'</span> <span class="se">\</span>
@@ -159,27 +166,27 @@
 </code></pre></div>
 </article>
 <section>
-  <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid" /></svg> <a href="https://tobywf.com/tag/git/">git</a></p>
-  <a href="https://tobywf.com/2019/08/problems-with-python-deps/" class="newer">Newer <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-right-solid" /></svg></a>
-  <a href="https://tobywf.com/2018/11/flask-application-factories-and-blueprints/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid" /></svg> Older</a>
+  <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid"></use></svg> <a href="https://tobywf.com/tag/git/">git</a></p>
+  <a href="https://tobywf.com/2019/08/problems-with-python-deps/" class="newer">Newer <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-right-solid"></use></svg></a>
+  <a href="https://tobywf.com/2018/11/flask-application-factories-and-blueprints/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid"></use></svg> Older</a>
 </section>
 <!-- content end -->
     <footer>
-      <hr />
+      <hr>
       <p class="center">
         <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=correction&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2018%2F11%2Fgit-rename-case-insensitive-file-system%2F">Corrections?</a>
         <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=feedback&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2018%2F11%2Fgit-rename-case-insensitive-file-system%2F">Feedback?</a>
       </p>
       <p class="inline-block">
-        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#copyright" /></svg> <span class="date cap">MMXII–MMXX</span>
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#copyright"></use></svg> <span class="date cap">MMXII–MMXX</span>
       </p>
       <p class="inline-block">
         <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
-          <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons" /></svg> <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-by" /></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nc-eu" /></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nd" /></svg> 4.0
+          <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons"></use></svg> <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-by"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nc-eu"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nd"></use></svg> 4.0
         </a>
       </p>
       <p>
-        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#child-solid" /></svg> Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a tinkerer, scuba diver, and musician. He posts his personal ramblings here.
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#child-solid"></use></svg> Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a tinkerer, scuba diver, and musician. He posts his personal ramblings here.
       </p>
     </footer>
   </div>

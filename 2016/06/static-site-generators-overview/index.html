@@ -2,20 +2,20 @@
 <html lang="en">
 <head>
   <title>An overview of static site generators - tobywf</title>
-  <meta charset="utf-8" />
-  <meta name="author" content="Toby Fleming" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="stylesheet" href="https://tobywf.com/theme/main.css" />
-  <link rel="icon" href="https://tobywf.com/theme/favicon.png" />
+  <meta charset="utf-8">
+  <meta name="author" content="Toby Fleming">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css">
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png">
 </head>
 <body>
   <div class="wrapper">
     <nav>
       <ul>
 <!-- breadcrumbs start -->
-<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon" /></a></li>
-<li class="breadcrumb"><a href="https://tobywf.com/2016/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid" /></svg>'16</a></li>
-<li class="breadcrumb"><a href="https://tobywf.com/2016/06/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid" /></svg>Jun</a></li>
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon"></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2016/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>'16</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2016/06/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>Jun</a></li>
 <li class="last"><a href="https://tobywf.com/cv/" class="cap">CV</a></li>
 <!-- breadcrumbs end -->
       </ul>
@@ -25,7 +25,7 @@
   <h1>An overview of static site generators</h1>
   <h2>and moving to Pelican</h2>
   <div class="infoline">
-    <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid" /></svg> <span class="date">5 Jun '16</span>
+    <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">5 Jun '16</span>
   </div>
 </header>
 <article>
@@ -33,12 +33,18 @@
 <p>But for no particular reason, I decided to switch. I think it’s because I know that maintaining code is always underestimated. But which project to pick?</p>
 <p>The most well-known SSG is <a href="https://jekyllrb.com/">Jekyll</a>, and it’s well thought out. But there’s no way in hell I’m using Ruby; I hate almost everything about Ruby (but that’s for another post - all I’ll say now is that Ruby <a href="http://www.darkridge.com/~jpr5/2012/10/03/ruby-1.8.7-1.9.3-migration/">breaks between minor version numbers</a>). So maybe something Python exists? IMO, SSGs don’t need to be fully featured, but should be hackable.</p>
 <ul>
-<li><a href="https://jekyllrb.com/">Jekyll</a>: Ruby - nope</li>
-<li><a href="https://github.com/spf13/hugo">Hugo</a>: It’s GoLang, it’s fast… I’d rather have simple</li>
-<li><a href="https://github.com/eudicots/Cactus">Cactus</a>: Django templates instead of Jinja2</li>
-<li><a href="https://github.com/hyde/hyde">Hyde</a>: No Python 3 support? Are you serious?</li>
-<li><a href="https://github.com/getnikola/nikola">Nikola</a>: Way to complicated, even though they claim simplicity. Just look at the files in the repo. <a href="https://getnikola.com/handbook.html#supported-input-formats">PHP support</a> - wat? (However, the build system looks seriously good)</li>
-<li><a href="https://github.com/lektor/lektor">Lektor</a>: I generally love anything <a href="https://github.com/mitsuhiko">Armin Ronacher</a> does, but Lektor seems to be focussed more on the content management aspect with an admin interface</li>
+<li>
+<a href="https://jekyllrb.com/">Jekyll</a>: Ruby - nope</li>
+<li>
+<a href="https://github.com/spf13/hugo">Hugo</a>: It’s GoLang, it’s fast… I’d rather have simple</li>
+<li>
+<a href="https://github.com/eudicots/Cactus">Cactus</a>: Django templates instead of Jinja2</li>
+<li>
+<a href="https://github.com/hyde/hyde">Hyde</a>: No Python 3 support? Are you serious?</li>
+<li>
+<a href="https://github.com/getnikola/nikola">Nikola</a>: Way to complicated, even though they claim simplicity. Just look at the files in the repo. <a href="https://getnikola.com/handbook.html#supported-input-formats">PHP support</a> - wat? (However, the build system looks seriously good)</li>
+<li>
+<a href="https://github.com/lektor/lektor">Lektor</a>: I generally love anything <a href="https://github.com/mitsuhiko">Armin Ronacher</a> does, but Lektor seems to be focussed more on the content management aspect with an admin interface</li>
 </ul>
 <p>Finally, I found <a href="https://github.com/getpelican/pelican">Pelican</a>. Python 3, check. Jinja2 templates, check. Great API, check. The migration went well because I was already using a “Jekyll-compatible” markdown format. Attachments are a great way to manage files. The code-base is nice.</p>
 <p>It isn’t completely perfect. Linking to other posts via the slug would be nice, and I’m sure easily doable. The periodic archive generation sucks because it uses the same template for year/month/day and the data that gets passed to those templates is also unstructured. But thanks to the API, I just wrote my own plugin to generate archives just as I want them, in about 50 lines of code.</p>
@@ -46,27 +52,27 @@
 <p>All of that aside, I’m very happy with Pelican, largely due to the hackability. Highly recommended for Pythoneers.</p>
 </article>
 <section>
-  <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid" /></svg> <a href="https://tobywf.com/tag/blog/">blog</a>, <a href="https://tobywf.com/tag/python/">Python</a>, <a href="https://tobywf.com/tag/flask/">Flask</a></p>
-  <a href="https://tobywf.com/2016/06/flask-always-use-application-factories/" class="newer">Newer <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-right-solid" /></svg></a>
-  <a href="https://tobywf.com/2016/04/offline-debian-packages/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid" /></svg> Older</a>
+  <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid"></use></svg> <a href="https://tobywf.com/tag/blog/">blog</a>, <a href="https://tobywf.com/tag/python/">Python</a>, <a href="https://tobywf.com/tag/flask/">Flask</a></p>
+  <a href="https://tobywf.com/2016/06/flask-always-use-application-factories/" class="newer">Newer <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-right-solid"></use></svg></a>
+  <a href="https://tobywf.com/2016/04/offline-debian-packages/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid"></use></svg> Older</a>
 </section>
 <!-- content end -->
     <footer>
-      <hr />
+      <hr>
       <p class="center">
         <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=correction&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2016%2F06%2Fstatic-site-generators-overview%2F">Corrections?</a>
         <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=feedback&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2016%2F06%2Fstatic-site-generators-overview%2F">Feedback?</a>
       </p>
       <p class="inline-block">
-        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#copyright" /></svg> <span class="date cap">MMXII–MMXX</span>
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#copyright"></use></svg> <span class="date cap">MMXII–MMXX</span>
       </p>
       <p class="inline-block">
         <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
-          <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons" /></svg> <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-by" /></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nc-eu" /></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nd" /></svg> 4.0
+          <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons"></use></svg> <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-by"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nc-eu"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nd"></use></svg> 4.0
         </a>
       </p>
       <p>
-        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#child-solid" /></svg> Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a tinkerer, scuba diver, and musician. He posts his personal ramblings here.
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#child-solid"></use></svg> Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a tinkerer, scuba diver, and musician. He posts his personal ramblings here.
       </p>
     </footer>
   </div>

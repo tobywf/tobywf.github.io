@@ -2,20 +2,20 @@
 <html lang="en">
 <head>
   <title>Recording from desktop with ffmpeg and editing with Blender on Ubuntu - tobywf</title>
-  <meta charset="utf-8" />
-  <meta name="author" content="Toby Fleming" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="stylesheet" href="https://tobywf.com/theme/main.css" />
-  <link rel="icon" href="https://tobywf.com/theme/favicon.png" />
+  <meta charset="utf-8">
+  <meta name="author" content="Toby Fleming">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css">
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png">
 </head>
 <body>
   <div class="wrapper">
     <nav>
       <ul>
 <!-- breadcrumbs start -->
-<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon" /></a></li>
-<li class="breadcrumb"><a href="https://tobywf.com/2016/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid" /></svg>'16</a></li>
-<li class="breadcrumb"><a href="https://tobywf.com/2016/03/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid" /></svg>Mar</a></li>
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon"></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2016/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>'16</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2016/03/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>Mar</a></li>
 <li class="last"><a href="https://tobywf.com/cv/" class="cap">CV</a></li>
 <!-- breadcrumbs end -->
       </ul>
@@ -25,7 +25,7 @@
   <h1>Recording from desktop with ffmpeg and editing with Blender on Ubuntu</h1>
   <h2>Serious Linux video editing</h2>
   <div class="infoline">
-    <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid" /></svg> <span class="date">31 Mar '16</span>
+    <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">31 Mar '16</span>
   </div>
 </header>
 <article>
@@ -66,20 +66,32 @@ sudo make install
 
 <p>The various parameters:</p>
 <ul>
-<li><code>-f x11grab</code> sets the input format to be <code>x11grab</code></li>
-<li><code>-video_size &lt;w&gt;x&lt;h&gt;</code> sets the size of the recorded region - in my case 1/4 of a full-HD screen. If you wanted to capture the whole screen but resize it, you would insert a scale output filter</li>
-<li><code>-framerate &lt;rate&gt;</code> sets, you guessed it, the framerate of capture</li>
-<li><code>-i</code> is the “input filename”, in this case display 0, screen 0 of my X11 server (I only have one screen). The optional coordinates after the plus sign specify the x and y offset, in my case skipping the menu bar</li>
-<li><code>-codec:v libx264</code> sets the output video codec to be x264, which is excellent as far as quality vs file size, but also fast (a rare combination)</li>
-<li><code>-qp 0</code> sets x264 to encode losslessly. We want this because we’ll be editing the footage, so we don’t want to compress it multiple times. But honestly, when recording desktop video, there is so little movement, the lossless encoder output isn’t much bigger than the lossy encoder. The lossless option is also hassle free, as you don’t have to dial in the encode quality and worry if the text is legible. I recommend it. If you wanted lossy, use the <code>-crf</code> option</li>
-<li><code>-preset ultrafast</code> tells x264 to haul ass, and use as little resource as possible. For lossless that we’ll also re-encode, this is fine and avoids stuttering during the record</li>
-<li><code>capture.mkv</code> is simply the output filename, in this case I’m using a Matroska container, because they just work</li>
+<li>
+<code>-f x11grab</code> sets the input format to be <code>x11grab</code>
+</li>
+<li>
+<code>-video_size &lt;w&gt;x&lt;h&gt;</code> sets the size of the recorded region - in my case 1/4 of a full-HD screen. If you wanted to capture the whole screen but resize it, you would insert a scale output filter</li>
+<li>
+<code>-framerate &lt;rate&gt;</code> sets, you guessed it, the framerate of capture</li>
+<li>
+<code>-i</code> is the “input filename”, in this case display 0, screen 0 of my X11 server (I only have one screen). The optional coordinates after the plus sign specify the x and y offset, in my case skipping the menu bar</li>
+<li>
+<code>-codec:v libx264</code> sets the output video codec to be x264, which is excellent as far as quality vs file size, but also fast (a rare combination)</li>
+<li>
+<code>-qp 0</code> sets x264 to encode losslessly. We want this because we’ll be editing the footage, so we don’t want to compress it multiple times. But honestly, when recording desktop video, there is so little movement, the lossless encoder output isn’t much bigger than the lossy encoder. The lossless option is also hassle free, as you don’t have to dial in the encode quality and worry if the text is legible. I recommend it. If you wanted lossy, use the <code>-crf</code> option</li>
+<li>
+<code>-preset ultrafast</code> tells x264 to haul ass, and use as little resource as possible. For lossless that we’ll also re-encode, this is fine and avoids stuttering during the record</li>
+<li>
+<code>capture.mkv</code> is simply the output filename, in this case I’m using a Matroska container, because they just work</li>
 </ul>
 <p>If I was outputting a final video, I might use these options instead:</p>
 <ul>
-<li><code>-preset slow</code>: I really don’t know if this makes a difference with lossless, but possibly the encoder will try and find smaller deltas between frames</li>
-<li><code>-tune animation</code>: Again for lossless this might have no effect, but I’m hoping it gives x264 a better initial starting point for optimisation</li>
-<li><code>-pix_fmt yuv420p</code>: Recorded from the desktop, the video will have equal sampling for luminance (Y) and chroma (UV), called 4:4:4. Some players don’t deal with higher chroma sampling, so this sets the sampling to 4:2:0. It’s highly technical, but required to just work(tm). <a href="https://en.wikipedia.org/wiki/YUV">Wikipedia on YUV</a> has more info</li>
+<li>
+<code>-preset slow</code>: I really don’t know if this makes a difference with lossless, but possibly the encoder will try and find smaller deltas between frames</li>
+<li>
+<code>-tune animation</code>: Again for lossless this might have no effect, but I’m hoping it gives x264 a better initial starting point for optimisation</li>
+<li>
+<code>-pix_fmt yuv420p</code>: Recorded from the desktop, the video will have equal sampling for luminance (Y) and chroma (UV), called 4:4:4. Some players don’t deal with higher chroma sampling, so this sets the sampling to 4:2:0. It’s highly technical, but required to just work(tm). <a href="https://en.wikipedia.org/wiki/YUV">Wikipedia on YUV</a> has more info</li>
 </ul>
 <h2 id="editing-with-blender">Editing with Blender</h2>
 <p>Warning: The interface has a steep learning curve. I’ve used Blender for 3D work before, so I’m happy with it. But definitely go check out a tutorial and be prepared to spend a while getting into the swing of things.</p>
@@ -124,27 +136,27 @@ wget <span class="si">${</span><span class="nv">FRAMESERVER</span><span class="s
 <h2 id="fin">Fin</h2>
 </article>
 <section>
-  <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid" /></svg> <a href="https://tobywf.com/tag/linux/">Linux</a></p>
-  <a href="https://tobywf.com/2016/04/sonos-vs-chromecast/" class="newer">Newer <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-right-solid" /></svg></a>
-  <a href="https://tobywf.com/2016/03/awesome-prompts-howto/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid" /></svg> Older</a>
+  <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid"></use></svg> <a href="https://tobywf.com/tag/linux/">Linux</a></p>
+  <a href="https://tobywf.com/2016/04/sonos-vs-chromecast/" class="newer">Newer <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-right-solid"></use></svg></a>
+  <a href="https://tobywf.com/2016/03/awesome-prompts-howto/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid"></use></svg> Older</a>
 </section>
 <!-- content end -->
     <footer>
-      <hr />
+      <hr>
       <p class="center">
         <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=correction&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2016%2F03%2Fffmpeg-recording-blender-editing%2F">Corrections?</a>
         <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=feedback&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2016%2F03%2Fffmpeg-recording-blender-editing%2F">Feedback?</a>
       </p>
       <p class="inline-block">
-        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#copyright" /></svg> <span class="date cap">MMXII–MMXX</span>
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#copyright"></use></svg> <span class="date cap">MMXII–MMXX</span>
       </p>
       <p class="inline-block">
         <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
-          <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons" /></svg> <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-by" /></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nc-eu" /></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nd" /></svg> 4.0
+          <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons"></use></svg> <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-by"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nc-eu"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nd"></use></svg> 4.0
         </a>
       </p>
       <p>
-        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#child-solid" /></svg> Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a tinkerer, scuba diver, and musician. He posts his personal ramblings here.
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#child-solid"></use></svg> Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a tinkerer, scuba diver, and musician. He posts his personal ramblings here.
       </p>
     </footer>
   </div>

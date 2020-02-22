@@ -2,20 +2,20 @@
 <html lang="en">
 <head>
   <title>Beautiful SVG diagrams with TikZ and dvisvgm - tobywf</title>
-  <meta charset="utf-8" />
-  <meta name="author" content="Toby Fleming" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="stylesheet" href="https://tobywf.com/theme/main.css" />
-  <link rel="icon" href="https://tobywf.com/theme/favicon.png" />
+  <meta charset="utf-8">
+  <meta name="author" content="Toby Fleming">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css">
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png">
 </head>
 <body>
   <div class="wrapper">
     <nav>
       <ul>
 <!-- breadcrumbs start -->
-<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon" /></a></li>
-<li class="breadcrumb"><a href="https://tobywf.com/2018/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid" /></svg>'18</a></li>
-<li class="breadcrumb"><a href="https://tobywf.com/2018/01/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid" /></svg>Jan</a></li>
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon"></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2018/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>'18</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2018/01/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>Jan</a></li>
 <li class="last"><a href="https://tobywf.com/cv/" class="cap">CV</a></li>
 <!-- breadcrumbs end -->
       </ul>
@@ -24,7 +24,7 @@
 <header class="post-head">
   <h1>Beautiful SVG diagrams with TikZ and dvisvgm</h1>
   <div class="infoline">
-    <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid" /></svg> <span class="date">28 Jan '18</span>
+    <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">28 Jan '18</span>
   </div>
 </header>
 <article>
@@ -54,7 +54,7 @@
 
 
 <p>If you don’t see any output, dvisvgm can’t find Ghostscript. But if you do, you’re ready.</p>
-<hr />
+<hr>
 <p>Using the <code>standalone</code> class, each TikZ picture is rendered on a separate page, and each page is the size of the TikZ picture. Here’s a basic example:</p>
 <div class="codehilite"><pre><span></span><code><span class="k">\documentclass</span><span class="na">[tikz,margin=5pt]</span><span class="nb">{</span>standalone<span class="nb">}</span>
 <span class="k">\begin</span><span class="nb">{</span>document<span class="nb">}</span>
@@ -66,7 +66,7 @@
 
 
 <p>First, <code>margin=5pt</code> sets a margin, otherwise standalone really does only set the picture size to what is required. And here’s the result, converted to PNG with a border added to emphasise the margin:</p>
-<p><img alt="The rendered TeX file that reads &quot;Hello World&quot;, with a border added afterwards" src="https://tobywf.com/2018/01/beautiful-svg-diagrams-with-tikz-dvisvgm/images/2018-01-28-helloworld.png" /></p>
+<p><img alt='The rendered TeX file that reads "Hello World", with a border added afterwards' src="https://tobywf.com/2018/01/beautiful-svg-diagrams-with-tikz-dvisvgm/images/2018-01-28-helloworld.png"></p>
 <p>However, if you compiled this, you’ll still get a PDF out. To get an SVG, add the <code>dvisvgm</code> option to the document class options. Here’s another example with that:</p>
 <div class="codehilite"><pre><span></span><code><span class="k">\documentclass</span><span class="na">[dvisvgm,tikz]</span><span class="nb">{</span>standalone<span class="nb">}</span>
 <span class="k">\renewcommand</span><span class="nb">{</span><span class="k">\familydefault</span><span class="nb">}{</span><span class="k">\sfdefault</span><span class="nb">}</span>
@@ -94,7 +94,7 @@
 
 <p>The dvisvgm options are important. <code>--clipjoin</code> <a href="http://dvisvgm.bplaced.net/FAQ">prevents clipping issues</a>. <code>--bbox=papersize</code> instructs dvisvgm to use the papersize information in the DVI file. Some other options for <code>--box</code>, <code>dvi</code> and <code>preview</code> do not work reliably when I tried them, especially if your TikZ coordinates can be negative (easy to do). Finally, and this is awesome, since you can have multiple TikZ pictures in one TeX file, <code>--page=1-</code> tells dvisvgm to process all pages, and output them to separate SVG files. Nice.</p>
 <p>And this is the resulting SVG:</p>
-<p><img alt="The example TeX file converted to an SVG file. The content is meaningless" src="https://tobywf.com/2018/01/beautiful-svg-diagrams-with-tikz-dvisvgm/images/2018-01-28-example.svg" /></p>
+<p><img alt="The example TeX file converted to an SVG file. The content is meaningless" src="https://tobywf.com/2018/01/beautiful-svg-diagrams-with-tikz-dvisvgm/images/2018-01-28-example.svg"></p>
 <p>I have performed one extra operation on the file. <a href="https://github.com/svg/svgo">SVGO</a> optimised SVG files by stripping out unnecessary rubbish and greatly reduces the filesize of SVG files. The only downside is you’ll need <code>npm</code> installed. (I hate NPM and Javascript, but SVGO is really the best thing out there to optimise SVG files.)</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$</span> brew install npm
 <span class="gp">$</span> npm install -g svgo
@@ -109,27 +109,27 @@
 <p>And that’s it!</p>
 </article>
 <section>
-  <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid" /></svg> <a href="https://tobywf.com/tag/tex/">TeX</a>, <a href="https://tobywf.com/tag/macos/">macOS</a></p>
-  <a href="https://tobywf.com/2018/06/shucking-8tb-wd-easystores/" class="newer">Newer <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-right-solid" /></svg></a>
-  <a href="https://tobywf.com/2018/01/svg-editors-on-macos/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid" /></svg> Older</a>
+  <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid"></use></svg> <a href="https://tobywf.com/tag/tex/">TeX</a>, <a href="https://tobywf.com/tag/macos/">macOS</a></p>
+  <a href="https://tobywf.com/2018/06/shucking-8tb-wd-easystores/" class="newer">Newer <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-right-solid"></use></svg></a>
+  <a href="https://tobywf.com/2018/01/svg-editors-on-macos/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid"></use></svg> Older</a>
 </section>
 <!-- content end -->
     <footer>
-      <hr />
+      <hr>
       <p class="center">
         <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=correction&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2018%2F01%2Fbeautiful-svg-diagrams-with-tikz-dvisvgm%2F">Corrections?</a>
         <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=feedback&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2018%2F01%2Fbeautiful-svg-diagrams-with-tikz-dvisvgm%2F">Feedback?</a>
       </p>
       <p class="inline-block">
-        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#copyright" /></svg> <span class="date cap">MMXII–MMXX</span>
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#copyright"></use></svg> <span class="date cap">MMXII–MMXX</span>
       </p>
       <p class="inline-block">
         <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
-          <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons" /></svg> <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-by" /></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nc-eu" /></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nd" /></svg> 4.0
+          <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons"></use></svg> <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-by"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nc-eu"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nd"></use></svg> 4.0
         </a>
       </p>
       <p>
-        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#child-solid" /></svg> Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a tinkerer, scuba diver, and musician. He posts his personal ramblings here.
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#child-solid"></use></svg> Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a tinkerer, scuba diver, and musician. He posts his personal ramblings here.
       </p>
     </footer>
   </div>

@@ -2,20 +2,20 @@
 <html lang="en">
 <head>
   <title>Howto round a decimal up or down to the nearest multiple - tobywf</title>
-  <meta charset="utf-8" />
-  <meta name="author" content="Toby Fleming" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="stylesheet" href="https://tobywf.com/theme/main.css" />
-  <link rel="icon" href="https://tobywf.com/theme/favicon.png" />
+  <meta charset="utf-8">
+  <meta name="author" content="Toby Fleming">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css">
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png">
 </head>
 <body>
   <div class="wrapper">
     <nav>
       <ul>
 <!-- breadcrumbs start -->
-<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon" /></a></li>
-<li class="breadcrumb"><a href="https://tobywf.com/2017/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid" /></svg>'17</a></li>
-<li class="breadcrumb"><a href="https://tobywf.com/2017/04/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid" /></svg>Apr</a></li>
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon"></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2017/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>'17</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2017/04/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>Apr</a></li>
 <li class="last"><a href="https://tobywf.com/cv/" class="cap">CV</a></li>
 <!-- breadcrumbs end -->
       </ul>
@@ -24,7 +24,7 @@
 <header class="post-head">
   <h1>Howto round a decimal up or down to the nearest multiple</h1>
   <div class="infoline">
-    <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid" /></svg> <span class="date">10 Apr '17</span>
+    <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">10 Apr '17</span>
   </div>
 </header>
 <article>
@@ -45,14 +45,14 @@
 
 
 <p>Luckily, this isn’t too difficult. But before I show the code, I want to walk through the operations we’ll perform. And don’t worry if maths isn’t your strong suit. In these examples, we’ll round 30 cents (0.3) to the nearest 20 cents (0.2), as indicated by the dotted line. First up, rounding down:</p>
-<p><img alt="Graphical representation of the rounding down maths operations" src="https://tobywf.com/2017/04/howto-round-a-decimal-to-the-nearest-multiple/images/2017-04-10-rounding-down.svg" /></p>
+<p><img alt="Graphical representation of the rounding down maths operations" src="https://tobywf.com/2017/04/howto-round-a-decimal-to-the-nearest-multiple/images/2017-04-10-rounding-down.svg"></p>
 <ol>
 <li>Rescale the number continuum, so that 0.2 is equal to 1, and 0.3 becomes 1.5</li>
 <li>Round down to the nearest integer, so 1.5 becomes 1</li>
 <li>Rescale the number continuum, so that 1 is equal to 0.2, i.e. the original scale has been restored</li>
 </ol>
 <p>Rounding up is pretty much the same:</p>
-<p><img alt="Graphical representation of the rounding up maths operations" src="https://tobywf.com/2017/04/howto-round-a-decimal-to-the-nearest-multiple/images/2017-04-10-rounding-up.svg" /></p>
+<p><img alt="Graphical representation of the rounding up maths operations" src="https://tobywf.com/2017/04/howto-round-a-decimal-to-the-nearest-multiple/images/2017-04-10-rounding-up.svg"></p>
 <ol>
 <li>Rescale the number continuum, so that 0.2 is equal to 1, and 0.3 becomes 1.5</li>
 <li>Round up to the nearest integer, so 1.5 becomes 2</li>
@@ -62,27 +62,27 @@
 <script src="https://gist.github.com/tobywf/b0f67e9e414e41813c1590ed1ea39e2c.js"></script>
 </article>
 <section>
-  <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid" /></svg> <a href="https://tobywf.com/tag/python/">Python</a></p>
-  <a href="https://tobywf.com/2017/04/build-dvisvgm-kpathsea-on-macos/" class="newer">Newer <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-right-solid" /></svg></a>
-  <a href="https://tobywf.com/2017/01/fortran-considerations/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid" /></svg> Older</a>
+  <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid"></use></svg> <a href="https://tobywf.com/tag/python/">Python</a></p>
+  <a href="https://tobywf.com/2017/04/build-dvisvgm-kpathsea-on-macos/" class="newer">Newer <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-right-solid"></use></svg></a>
+  <a href="https://tobywf.com/2017/01/fortran-considerations/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid"></use></svg> Older</a>
 </section>
 <!-- content end -->
     <footer>
-      <hr />
+      <hr>
       <p class="center">
         <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=correction&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2017%2F04%2Fhowto-round-a-decimal-to-the-nearest-multiple%2F">Corrections?</a>
         <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=feedback&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2017%2F04%2Fhowto-round-a-decimal-to-the-nearest-multiple%2F">Feedback?</a>
       </p>
       <p class="inline-block">
-        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#copyright" /></svg> <span class="date cap">MMXII–MMXX</span>
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#copyright"></use></svg> <span class="date cap">MMXII–MMXX</span>
       </p>
       <p class="inline-block">
         <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
-          <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons" /></svg> <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-by" /></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nc-eu" /></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nd" /></svg> 4.0
+          <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons"></use></svg> <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-by"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nc-eu"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nd"></use></svg> 4.0
         </a>
       </p>
       <p>
-        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#child-solid" /></svg> Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a tinkerer, scuba diver, and musician. He posts his personal ramblings here.
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#child-solid"></use></svg> Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a tinkerer, scuba diver, and musician. He posts his personal ramblings here.
       </p>
     </footer>
   </div>

@@ -2,20 +2,20 @@
 <html lang="en">
 <head>
   <title>Fortran considerations - tobywf</title>
-  <meta charset="utf-8" />
-  <meta name="author" content="Toby Fleming" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="stylesheet" href="https://tobywf.com/theme/main.css" />
-  <link rel="icon" href="https://tobywf.com/theme/favicon.png" />
+  <meta charset="utf-8">
+  <meta name="author" content="Toby Fleming">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css">
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png">
 </head>
 <body>
   <div class="wrapper">
     <nav>
       <ul>
 <!-- breadcrumbs start -->
-<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon" /></a></li>
-<li class="breadcrumb"><a href="https://tobywf.com/2017/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid" /></svg>'17</a></li>
-<li class="breadcrumb"><a href="https://tobywf.com/2017/01/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid" /></svg>Jan</a></li>
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon"></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2017/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>'17</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2017/01/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>Jan</a></li>
 <li class="last"><a href="https://tobywf.com/cv/" class="cap">CV</a></li>
 <!-- breadcrumbs end -->
       </ul>
@@ -25,7 +25,7 @@
   <h1>Fortran considerations</h1>
   <h2>Thoughts on the ever-present "Why physicists still use Fortran" debate</h2>
   <div class="infoline">
-    <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid" /></svg> <span class="date">2 Jan '17</span>
+    <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">2 Jan '17</span>
   </div>
 </header>
 <article>
@@ -43,36 +43,36 @@
 <p>Okay, but say you’re good at writing Fortran, or you have to use it. Part of the critique of such an “old” language is implicitly the worry that development practices will also be old.</p>
 <p><em>At the very least, you must be using source code management/version control</em>. SVN is barely acceptable, and you need to make sure it’s backed up. <a href="https://git-scm.com/">git</a> is strongly recommended, simply because it’s so ubiquitous. Yeah it isn’t the easiest but it’s a transferable skill, so worth the time. Put it on your CV or something.</p>
 <p>Code distributed via zip files is bad. Zip files named “code-final.zip”, “code-final-final.zip”, “code-final-1.zip”, etc. are worse. If you are not using SCM, this is a far bigger problem than your choice of language will ever be. Because it’s a fundamental problem about how you go about development. There are no excuses for not using SCM, even if you are the only person (currently) coding on the project. Do not pass Go. Do not collect $200. Use <a href="https://git-scm.com/">git</a>.</p>
-<hr />
+<hr>
 <p>There are other considerations.</p>
 <p>Testing new, unproven code is essential, especially numerical code. How else do you know that it’s working correctly? There are several papers now that have been withdrawn due to bugs in code. But testing frameworks for Fortran are either non-existent or underdeveloped.</p>
 <p>Dependencies and documentation are also important. What if you need to get a undergrad working on the project ASAP? If you are using <code>git</code>, and you must, he/she can clone the repository with all the history. But what about dependencies? Will it even run on their machine. For example, Python lets you specify dependencies via <code>setup.py</code> (or at least <code>requirements.txt</code>), which works more often than not.</p>
 <p>As a final suggestion, please consider open sourcing the code. But this post is long enough as it is, so I’ll write about the benefits of this approach some other time.</p>
-<hr />
+<hr>
 <p><strong>TL;DR</strong>: Please, please use source code management. Always, even with Fortran.</p>
 </article>
 <section>
-  <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid" /></svg> <a href="https://tobywf.com/tag/physics/">physics</a>, <a href="https://tobywf.com/tag/git/">git</a>, <a href="https://tobywf.com/tag/rant/">rant</a></p>
-  <a href="https://tobywf.com/2017/04/howto-round-a-decimal-to-the-nearest-multiple/" class="newer">Newer <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-right-solid" /></svg></a>
-  <a href="https://tobywf.com/2017/01/diskutil/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid" /></svg> Older</a>
+  <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid"></use></svg> <a href="https://tobywf.com/tag/physics/">physics</a>, <a href="https://tobywf.com/tag/git/">git</a>, <a href="https://tobywf.com/tag/rant/">rant</a></p>
+  <a href="https://tobywf.com/2017/04/howto-round-a-decimal-to-the-nearest-multiple/" class="newer">Newer <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-right-solid"></use></svg></a>
+  <a href="https://tobywf.com/2017/01/diskutil/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid"></use></svg> Older</a>
 </section>
 <!-- content end -->
     <footer>
-      <hr />
+      <hr>
       <p class="center">
         <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=correction&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2017%2F01%2Ffortran-considerations%2F">Corrections?</a>
         <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=feedback&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2017%2F01%2Ffortran-considerations%2F">Feedback?</a>
       </p>
       <p class="inline-block">
-        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#copyright" /></svg> <span class="date cap">MMXII–MMXX</span>
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#copyright"></use></svg> <span class="date cap">MMXII–MMXX</span>
       </p>
       <p class="inline-block">
         <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
-          <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons" /></svg> <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-by" /></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nc-eu" /></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nd" /></svg> 4.0
+          <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons"></use></svg> <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-by"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nc-eu"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nd"></use></svg> 4.0
         </a>
       </p>
       <p>
-        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#child-solid" /></svg> Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a tinkerer, scuba diver, and musician. He posts his personal ramblings here.
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#child-solid"></use></svg> Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a tinkerer, scuba diver, and musician. He posts his personal ramblings here.
       </p>
     </footer>
   </div>
