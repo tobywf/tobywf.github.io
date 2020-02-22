@@ -7,11 +7,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="stylesheet" href="https://tobywf.com/theme/main.css">
   <link rel="icon" href="https://tobywf.com/theme/favicon.png">
-<style type="text/css">
-.hidden {
-  display: none;
-}
-</style>
 </head>
 <body>
   <div class="wrapper">
@@ -25,49 +20,12 @@
     </nav>
 <!-- content start -->
 <section>
-  <h2 id="best_of_toggle">Best of (click to show)</h2>
-  <ul class="posts hidden" id="best_of_content">
-    <li class="post-head">
-      <span class="dateline"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> 13 Jan '20</span>
-      <span class="title"><a href="https://tobywf.com/2020/01/talks-i-loved-in-2019/">Talks I watched and loved in 2019</a></span>
-    </li>
-    <li class="post-head">
-      <span class="dateline"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> 21 Dec '19</span>
-      <span class="title"><a href="https://tobywf.com/2019/12/footmouse/">Foot pedal mouse</a></span>
-    </li>
-    <li class="post-head">
-      <span class="dateline"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> 4 Nov '18</span>
-      <span class="title"><a href="https://tobywf.com/2018/11/simple-python-lambda-packaging-guide/">Simple Python Lambda Packaging Guide</a></span>
-    </li>
-    <li class="post-head">
-      <span class="dateline"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> 27 Jan '18</span>
-      <span class="title"><a href="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/">The ultimate git merge vs rebase tutorial</a></span>
-    </li>
-    <li class="post-head">
-      <span class="dateline"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> 2 Jun '17</span>
-      <span class="title"><a href="https://tobywf.com/2017/06/gzip-compression-for-boto3/">gzip compression for S3 uploads with boto3</a></span>
-    </li>
-    <li class="post-head">
-      <span class="dateline"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> 10 Apr '17</span>
-      <span class="title"><a href="https://tobywf.com/2017/04/howto-round-a-decimal-to-the-nearest-multiple/">Howto round a decimal up or down to the nearest multiple</a></span>
-    </li>
-    <li class="post-head">
-      <span class="dateline"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> 21 Aug '16</span>
-      <span class="title"><a href="https://tobywf.com/2016/08/nikita/">Nikita - a story of obsessed developers</a></span>
-    </li>
-    <li class="post-head">
-      <span class="dateline"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> 28 Mar '16</span>
-      <span class="title"><a href="https://tobywf.com/2016/03/gamepad-build-2014/">Gamepad/fightstick build (2014)</a></span>
-    </li>
-    <li class="post-head">
-      <span class="dateline"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> 15 Dec '15</span>
-      <span class="title"><a href="https://tobywf.com/2015/12/sane-pluralisation/">The quest for plural formatting in Python</a></span>
-    </li>
-  </ul>
-</section>
-<section>
   <h2>Recent</h2>
   <ul class="posts">
+    <li class="post-head">
+      <span class="dateline"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#child-solid"></use></svg> Best Of</span>
+      <span class="title"><a href="https://tobywf.com/best-of/">A curated list of the best articles so far...</a></span>
+    </li>
     <li class="post-head">
       <span class="dateline"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> 13 Jan '20</span>
       <span class="title"><a href="https://tobywf.com/2020/01/talks-i-loved-in-2019/">Talks I watched and loved in 2019</a></span>
@@ -160,15 +118,5 @@
       </p>
     </footer>
   </div>
-<script>
-document.addEventListener("DOMContentLoaded", event => {
-  const best_of_toggle = document.getElementById("best_of_toggle");
-  const best_of_content = document.getElementById("best_of_content");
-
-  best_of_toggle.addEventListener("click", event => {
-    best_of_content.classList.toggle("hidden");
-    event.preventDefault();
-  });
-</script>
 </body>
 </html>
