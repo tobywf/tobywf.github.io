@@ -34,7 +34,7 @@ instructions. And when you’re running a mid-2012 Macbook Air, you want all the
 optimisations you can get. <a href="https://www.tensorflow.org/install/install_sources">The TensorFlow installation docs</a>
 are pretty good! This is pretty much a straight crib from the docs. Building
 TensorFlow takes a while though, on my underpowered machine it took over 1.5 hours.</p>
-<div class="codehilite"><pre><span></span>$ brew install bazel
+<div class="codehilite"><pre><span></span><code>$ brew install bazel
 $ mkdir &lt;project&gt;
 $ <span class="nb">cd</span> &lt;project&gt;
 $ virtualenv -p python3 env
@@ -49,28 +49,28 @@ $ bazel build --config<span class="o">=</span>opt //tensorflow/tools/pip_package
 INFO: Elapsed time: <span class="m">5635</span>.340s, Critical Path: <span class="m">4545</span>.85s
 $ bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
 $ pip install /tmp/tensorflow_pkg/tensorflow-1.2.0rc1-cp36-cp36m-macosx_10_12_x86_64.whl
-</pre></div>
+</code></pre></div>
 
 
 <p>Before you test your custom build of TensorFlow, change the directory! If you
 try and run Python from the <code>tensorflow</code> repository, you’ll get a weird error
 when you import TensorFlow (<a href="https://github.com/tensorflow/tensorflow/issues/8107#issuecomment-285843603">StackOverflow</a>):</p>
-<div class="codehilite"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="kn">as</span> <span class="nn">tf</span>
+<div class="codehilite"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
 <span class="gt">Traceback (most recent call last):</span>
   File <span class="nb">"/Users/tobywf/Documents/tensorflow/tensorflow/python/pywrap_tensorflow.py"</span>, line <span class="m">41</span>, in <span class="n">&lt;module&gt;</span>
     <span class="kn">from</span> <span class="nn">tensorflow.python.pywrap_tensorflow_internal</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="gr">ModuleNotFoundError</span>: <span class="n">No module named 'tensorflow.python.pywrap_tensorflow_internal'</span>
 <span class="go">[...]</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>From any other directory, it’ll work fine:</p>
-<div class="codehilite"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="kn">as</span> <span class="nn">tf</span>
+<div class="codehilite"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hello</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">'Hello, TensorFlow!'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">hello</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">hello</span><span class="p">))</span>
 <span class="go">b'Hello, TensorFlow!'</span>
-</pre></div>
+</code></pre></div>
 </article>
 <section>
   <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid" /></svg> <a href="https://tobywf.com/tag/macos/">macOS</a>, <a href="https://tobywf.com/tag/python/">Python</a></p>

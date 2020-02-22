@@ -29,7 +29,7 @@
 </header>
 <article>
 <p>If you want to quickly share a Git repository with someone, you can use <a href="https://git-scm.com/book/en/v2/Git-on-the-Server-Git-Daemon">git daemon</a>:</p>
-<div class="codehilite"><pre><span></span>$ hostname
+<div class="codehilite"><pre><span></span><code>$ hostname
 blah
 $ <span class="nb">cd</span> my_repo/
 $ git daemon <span class="se">\</span>
@@ -39,14 +39,14 @@ $ git daemon <span class="se">\</span>
     --strict-paths <span class="se">\</span>
     --base-path<span class="o">=</span>.git <span class="se">\</span>
     .git/
-</pre></div>
+</code></pre></div>
 
 
 <p>Guests can now clone from you: <code>git clone git://blah/my_repo</code>. Note that this is completely unauthenticated read-only access!</p>
 <p>If you’re lazy like me, you can create an alias so all you have to type is <code>git serve</code> (from the root of the repo):</p>
-<div class="codehilite"><pre><span></span><span class="k">[alias]</span>
+<div class="codehilite"><pre><span></span><code><span class="k">[alias]</span>
     <span class="na">serve</span> <span class="o">=</span> <span class="s">!git daemon --verbose --reuseaddr --export-all --strict-paths --base-path=.git .git/</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>So what do the options mean?</p>
@@ -59,9 +59,9 @@ $ git daemon <span class="se">\</span>
 <li><code>.git/</code> - this is the directory of the bare repo to whitelist/share. In other words, only share the git repository data, not your working directory.</li>
 </ul>
 <p>You might need to punch through your firewall. On Ubuntu, if you are using <code>iptables</code>, this is how you can check if you’ve already added a firewall rule and how to add a firewall exception. I believe this lasts until you restart:</p>
-<div class="codehilite"><pre><span></span>$ sudo iptables -nL <span class="p">|</span> grep <span class="m">9418</span>
+<div class="codehilite"><pre><span></span><code>$ sudo iptables -nL <span class="p">|</span> grep <span class="m">9418</span>
 $ sudo iptables -I INPUT <span class="m">1</span> -p tcp --dport <span class="m">9418</span> -j ACCEPT
-</pre></div>
+</code></pre></div>
 </article>
 <section>
   <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid" /></svg> <a href="https://tobywf.com/tag/git/">git</a>, <a href="https://tobywf.com/tag/linux/">Linux</a></p>

@@ -31,8 +31,8 @@
 <p>The title of this post was originally “the problem with cryptography”, but that’s neither original nor helpful.</p>
 <hr />
 <p>Recently, I was reviewing server provisioning scripts for best practices. One step, for a webserver, was to set up Diffie-Hellman (DH) parameters. Here’s the command:</p>
-<div class="codehilite"><pre><span></span>$ openssl dhparam -out dhparams.pem <span class="m">2048</span>
-</pre></div>
+<div class="codehilite"><pre><span></span><code>$ openssl dhparam -out dhparams.pem <span class="m">2048</span>
+</code></pre></div>
 
 
 <p>I know generating and setting the server to use the parameters is <a href="https://weakdh.org/sysadmin.html">important to avoid things like Logjam</a>, thanks to sites like <a href="https://weakdh.org/">WeakDH</a>. But I’m no cryptographer - I’m not a sysadmin either - so I don’t know why or any specifics.</p>

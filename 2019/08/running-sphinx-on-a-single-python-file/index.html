@@ -31,7 +31,7 @@
 <p>Python’s default and awesome documentation generator is <a href="https://www.sphinx-doc.org">Sphinx</a>. And while it makes sense that Markdown is too limited for great documentation, I find <a href="http://docutils.sourceforge.net/rst.html">reStructuredText</a> to be tricky at times, since I don’t use it that regularly.</p>
 <p>For standalone documents, <a href="http://docutils.sourceforge.net/">Docutils</a> works great, and some Python IDEs have reStructuredText support. Of course, for small projects, a README is probably enough. But it’s undeniable Sphinx’ documentation is beautiful, and having features like autodoc or intersphinx is convenient. Luckily, it’s easy to run Sphinx and autodoc on a single file module. Bit of a niche use-case, I know. Why should small projects not have great documentation?</p>
 <p>As per usually, you start with <code>sphinx-quickstart</code>. To save time, here’s my final <code>conf.py</code> file:</p>
-<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
 <span class="c1"># enable autodoc to load local modules</span>
@@ -46,25 +46,25 @@
 <span class="n">html_theme</span> <span class="o">=</span> <span class="s2">"alabaster"</span>
 <span class="n">html_static_path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"_static"</span><span class="p">]</span>
 <span class="n">intersphinx_mapping</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"python"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"https://docs.python.org/3"</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="s2">"python"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"https://docs.python.org/3"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="p">}</span>
-<span class="n">html_theme_options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"nosidebar"</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
-</pre></div>
+<span class="n">html_theme_options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"nosidebar"</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+</code></pre></div>
 
 
 <p><code>index.rst</code> can also be stripped down completely (it’s the only file you need with autodoc). Assuming the Python file is <code>&lt;project&gt;.py</code>, this works:</p>
-<div class="codehilite"><pre><span></span><span class="gh">&lt;project&gt;</span>
+<div class="codehilite"><pre><span></span><code><span class="gh">&lt;project&gt;</span>
 <span class="gh">=========</span>
 
 <span class="p">..</span> <span class="ow">automodule</span><span class="p">::</span> <span class="nt">&lt;project&gt;</span>
    <span class="nc">:members:</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>Building the documentation works and outputs documentation for a single file:</p>
-<div class="codehilite"><pre><span></span><span class="gp">$</span> sphinx-build -b html . _build
+<div class="codehilite"><pre><span></span><code><span class="gp">$</span> sphinx-build -b html . _build
 <span class="gp">$</span> open _build/index.html
-</pre></div>
+</code></pre></div>
 
 
 <p>By the way, instead of using (the de facto default) <code>html</code> output, <code>singlehtml</code> works great in this case. An example of this is in my repo <a href="https://github.com/tobywf/uuid_conv">uuid_conv</a>.</p>

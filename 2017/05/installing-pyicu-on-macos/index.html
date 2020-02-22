@@ -30,7 +30,7 @@
 <article>
 <p><a href="http://site.icu-project.org/">International Components for Unicode (ICU)</a> is an enterprise library for Unicode support. Being both very enterprise-y and Unicode-y, it is stupidly complex. I hope you’ll never need it, but if you do, luckily there’s a <a href="https://pypi.python.org/pypi/PyICU/">Python library (PyICU)</a> for that. But as it just interfaces with the ICU C library, PyICU can be tricky to install.</p>
 <p>Of course, the first step is to install the ICU C library with <a href="https://brew.sh/">Homebrew</a>. In theory, now PyICU should just install using <code>pip</code>. I found that PyICU didn’t have the correct search paths, and the simplest solution to this is to set some environmental variables to set PyICU on track:</p>
-<div class="codehilite"><pre><span></span>$ brew install icu4c
+<div class="codehilite"><pre><span></span><code>$ brew install icu4c
 <span class="o">[</span>...<span class="o">]</span>
 $ ls /usr/local/Cellar/icu4c/
 <span class="m">58</span>.2
@@ -39,7 +39,7 @@ $ <span class="nb">export</span> <span class="nv">PYICU_INCLUDES</span><span cla
 $ <span class="nb">export</span> <span class="nv">PYICU_LFLAGS</span><span class="o">=</span>-L/usr/local/Cellar/icu4c/58.2/lib
 $ pip install pyicu
 <span class="o">[</span>...<span class="o">]</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>Job done.</p>

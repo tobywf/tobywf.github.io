@@ -59,8 +59,8 @@ isn’t great, and whatever you do, don’t click the <a href="https://gerrit.go
 link. Very confusing.</p>
 <h3 id="deploying-gerrit">Deploying Gerrit</h3>
 <p>Turns out you have to “initialise a site” via:</p>
-<div class="codehilite"><pre><span></span>java -jar gerrit.war init -d &lt;site&gt;
-</pre></div>
+<div class="codehilite"><pre><span></span><code>java -jar gerrit.war init -d <span class="s2">"&lt;site&gt;"</span>
+</code></pre></div>
 
 
 <p>This creates a directory structure similar to the Filesystem Hierarchy Standard
@@ -115,7 +115,7 @@ thing to happen automatically. But again, systemd makes it easy to set the
 instead of 565 for a hack-y script. Granted, the service file is less…
 general? But well worth it for consistency.</p>
 <p><a name="systemd">The service unit configuration, in all its glory:</a></p>
-<div class="codehilite"><pre><span></span><span class="k">[Unit]</span>
+<div class="codehilite"><pre><span></span><code><span class="k">[Unit]</span>
 <span class="na">Description</span><span class="o">=</span><span class="s">Web based code review and project management for Git based projects</span>
 <span class="na">After</span><span class="o">=</span><span class="s">syslog.target network.target remote-fs.target</span>
 
@@ -141,7 +141,7 @@ general? But well worth it for consistency.</p>
 
 <span class="k">[Install]</span>
 <span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
-</pre></div>
+</code></pre></div>
 </article>
 <section>
   <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid" /></svg> <a href="https://tobywf.com/tag/sysadmin/">sysadmin</a>, <a href="https://tobywf.com/tag/ansible/">ansible</a>, <a href="https://tobywf.com/tag/linux/">Linux</a></p>

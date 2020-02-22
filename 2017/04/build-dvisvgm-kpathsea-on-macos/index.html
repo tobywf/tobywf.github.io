@@ -36,11 +36,11 @@
 <p><a href="https://www.tug.org/kpathsea/">Kpathsea</a> “is a library to do path searching”, which basically means it’s like <code>which</code> or <code>locate</code> for TeX. Also, “[k]pathsea is maintained as part of the TeX Live distribution. It has never been distributed as a standalone library, though some distros have deployed it that way.” Turns out those distros probably did that because (AFAIK), TeXLive ships with all the binaries statically linked, i.e. without any libraries in the form of shared objects or dynamic libraries. So if you want to rebuild something that depends on kpathsea, you’d basically have to build the TeX distribution yourself. Which is so very tedious, but TeXLive is <a href="https://www.tug.org/texlive/svn/">open source</a></p>
 <p>In fact, it turns out you can just build kpathsea by itself, as it has no other dependencies. But it isn’t that easy, because nothing in TeX can be easy.</p>
 <p>Kpathsea needs something to base it’s search paths on. And while the <a href="https://www.tug.org/texinfohtml/kpathsea.html#Path-sources">documentation of path sources</a> sounds reasonable, a major pitfall is that most paths are based on a variable called <code>SELFAUTOLOC</code>; this is the (runtime) path of the kpathsea binaries. At least that’s the case when I build it. For MacTeX, not so much:</p>
-<div class="codehilite"><pre><span></span>$ which kpsewhich
+<div class="codehilite"><pre><span></span><code>$ which kpsewhich
 /Library/TeX/texbin/kpsewhich
 $ kpsewhich -var SELFAUTOLOC
 /usr/local/texlive/2016/bin/x86_64-darwin
-</pre></div>
+</code></pre></div>
 
 
 <p>So far, I have not been able to figure out how MacTeX manages to hardcode <code>SELFAUTOLOC</code>. I messed around with it for hours. My final solution is to simply patch the function that returns the executable directory (<code>kpathsea_selfdir</code>) to return a hardcoded path to the TeXLive installation directory. Then you can build kpathsea with no issues, and it will point to all the right locations. And with that built, dvisvgm is also easy to build.</p>

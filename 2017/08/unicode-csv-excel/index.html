@@ -33,16 +33,16 @@
 <p>When you have a terrible program like Excel, it tries to “be helpful” and guess the encoding of a CSV file (and almost always fails). Back in the 90s or 00s, because of all the different encodings this may have been helpful, but today it isn’t. Most of the time, you just want to use UTF-8. While exploring the wonderful world of CSV handling in Excel, I came across a way to write UTF-8 CSV files that Excel would read reliably every time. I thought I’d split it out into it’s own post.</p>
 <p>Let’s take a step back. Unicode has several common encodings, UTF-8, UTF-16, and UTF-32. Because <a href="https://en.wikipedia.org/wiki/Endianness">endianness</a>, UTF-16 and UTF-32 must have a <a href="https://en.wikipedia.org/wiki/Byte_order_mark">byte-order mark (BOM)</a> at the start of a file. Here’s where it gets weird. UTF-8 can also have a BOM, even though it does nothing functionally and isn’t recommended. However, this UTF-8 BOM offers a valuable hint to Excel, and continue to work in Google Sheets, Numbers, and most text editors (even though those don’t need the BOM).</p>
 <p>The UTF-8 BOM is <code>0xEF,0xBB,0xBF</code>, that’s too much hard work to remember. Python - with batteries included - has a handy constant for the BOM:</p>
-<div class="codehilite"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">codecs</span> <span class="kn">import</span> <span class="n">BOM_UTF8</span>
+<div class="codehilite"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">codecs</span> <span class="kn">import</span> <span class="n">BOM_UTF8</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">BOM_UTF8</span>
 <span class="go">b'\xef\xbb\xbf'</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">BOM_UTF8</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'utf-8'</span><span class="p">)</span>
 <span class="go">'\ufeff'</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>But wait! This is effort to add onto every file when saving, and strip out of every file when loading. There must be a better way? Python again delivers. There exists an encoding called <code>utf-8-sig</code>. It will add and strip out the BOM automatically. Additionally, it will read UTF-8 without the BOM just fine:</p>
-<div class="codehilite"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s1">'Hello, world'</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">'utf-8-sig'</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="s1">'Hello, world'</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">'utf-8-sig'</span><span class="p">)</span>
 <span class="go">b'\xef\xbb\xbfHello, world'</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">_</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'utf-8-sig'</span><span class="p">)</span>
 <span class="go">'Hello, world'</span>
@@ -50,7 +50,7 @@
 <span class="go">b'Hello, world'</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">_</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'utf-8-sig'</span><span class="p">)</span>
 <span class="go">'Hello, world'</span>
-</pre></div>
+</code></pre></div>
 
 
 <p><a name="jackpot">Try it out</a> (legacy Python 2 version further down):</p>

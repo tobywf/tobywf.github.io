@@ -38,7 +38,7 @@
 </ul>
 <p>Also, people kept getting the logic wrong. It’s <code>count == 1</code>, not <code>count &gt; 1</code> as it’s ‘zero apples’, not ‘zero apple’ *. (* Not a guarantee. This issue will be back later with a vengeance.)</p>
 <p><em>Voilà, la première tentative</em>:</p>
-<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">string</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">string</span>
 
 <span class="k">class</span> <span class="nc">PluralFormatter</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">Formatter</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">format_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">format_spec</span><span class="p">):</span>
@@ -50,14 +50,14 @@
                 <span class="k">return</span> <span class="n">words</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">format_field</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">format_spec</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>This implementation is okay. It does handle as many plural nouns as you want in a string, not just one. And you could use a lazy version where you just specify the plural ‘s’, but (<em>spoiler alert</em>) you shouldn’t:</p>
-<div class="codehilite"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fmt</span> <span class="o">=</span> <span class="n">PluralFormatter</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">msg</span> <span class="o">=</span> <span class="s1">'{0} {0:plural,bottle,bottles} on the wall'</span>
+<div class="codehilite"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">fmt</span> <span class="o">=</span> <span class="n">PluralFormatter</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">msg</span> <span class="o">=</span> <span class="s1">'</span><span class="si">{0}</span><span class="s1"> {0:plural,bottle,bottles} on the wall'</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">bottle_count</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">99</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">bottle_count</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">bottle_count</span><span class="p">))</span>
 <span class="go">99 bottles on the wall</span>
 <span class="go">3 bottles on the wall</span>
 <span class="go">2 bottles on the wall</span>
@@ -65,13 +65,13 @@
 <span class="go">0 bottles on the wall</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">'apple{0:plural,,s} and pear{1:plural,,s}'</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 <span class="go">'apples and pears'</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>What else is there? Easily translatable, right? Just translate the whole format string! Genius…</p>
-<div class="codehilite"><pre><span></span>EN: '{0} {0:plural,bottle,bottles} on the wall'
-DE: '{0} {0:plural,Flasche,Flaschen} auf der Wand'
-</pre></div>
+<div class="codehilite"><pre><span></span><code><span class="c">EN: '{0} {0:plural,bottle,bottles} on the wall'</span>
+<span class="c">DE: '{0} {0:plural,Flasche,Flaschen} auf der Wand'</span>
+</code></pre></div>
 
 
 <p>… until you get to <a href="https://localization-guide.readthedocs.org/en/latest/l10n/pluralforms.html">non-Germanic languages</a>, where the rule <em>isn’t</em> <code>count == 1</code>. How about Russian: <code>(n%10==1 &amp;&amp; n%100!=11 ? 0 : n%10&gt;=2 &amp;&amp; n%10&lt;=4 &amp;&amp; (n%100&lt;10 || n%100&gt;=20) ? 1 : 2)</code>.</p>
@@ -79,8 +79,8 @@ DE: '{0} {0:plural,Flasche,Flaschen} auf der Wand'
 <hr />
 <p>There are, of course, existing solutions. But the ones I’ve seen feel lacking. Even gettext <a href="https://www.gnu.org/software/gettext/manual/gettext.html#Plural-forms">doesn’t get this quite right</a> in my opinion. But then again, I can barely understand that documentation.</p>
 <p>I think the formatter solution still has the advantage. It’s inherently cleaner than any gettext hack with two messages, and as it has more granular information to work with than most other solutions, it should be able to do better. The current downfall is the pluralisation logic. And while nouns can depend on context, the next thing I’d try is to simply translate the noun separately and on it’s own.</p>
-<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">string</span>
-<span class="kn">from</span> <span class="nn">gettext</span> <span class="k">import</span> <span class="n">ngettext</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">from</span> <span class="nn">gettext</span> <span class="kn">import</span> <span class="n">ngettext</span>
 
 <span class="k">class</span> <span class="nc">PluralFormatter</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">Formatter</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">format_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">format_spec</span><span class="p">):</span>
@@ -89,7 +89,7 @@ DE: '{0} {0:plural,Flasche,Flaschen} auf der Wand'
             <span class="k">return</span> <span class="n">ngettext</span><span class="p">(</span><span class="n">singular</span><span class="p">,</span> <span class="n">plural</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">format_field</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">format_spec</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>Note that this version doesn’t work with the lazy ‘s’, but otherwise we have a winner.</p>

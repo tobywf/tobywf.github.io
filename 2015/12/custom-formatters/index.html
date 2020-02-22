@@ -44,7 +44,7 @@ Three conversion flags are currently supported: <code>'!s'</code> which calls <c
 <p><a href="https://docs.python.org/3/library/string.html#format-string-syntax">Format String Syntax</a></p>
 </blockquote>
 <p>So there you have it. The main use case that I see is if you have an object where you want some custom output associated with it, but you don’t want to (ab)use <code>__str__</code>, <code>__repr__</code>, or <code>__format__</code> or those are all already in use.</p>
-<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">string</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">string</span>
 
 <span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__meaning_of_life__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -56,11 +56,11 @@ Three conversion flags are currently supported: <code>'!s'</code> which calls <c
             <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">__meaning_of_life__</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">convert_field</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">conversion</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>The neat thing is that the coerced value is used for further formatting:</p>
-<div class="codehilite"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fmt</span> <span class="o">=</span> <span class="n">ProfoundFormatter</span><span class="p">()</span>
+<div class="codehilite"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">fmt</span> <span class="o">=</span> <span class="n">ProfoundFormatter</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">foo</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">'{0!m}'</span><span class="p">,</span> <span class="n">foo</span><span class="p">)</span>
 <span class="go">'42'</span>
@@ -68,13 +68,13 @@ Three conversion flags are currently supported: <code>'!s'</code> which calls <c
 <span class="go">'2a'</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">'{0!m:4X}'</span><span class="p">,</span> <span class="n">foo</span><span class="p">)</span>
 <span class="go">'  2A'</span>
-</pre></div>
+</code></pre></div>
 
 
 <h2 id="format_field"><code>format_field</code></h2>
 <p>This one is more straight forward. The format specification is totally arbitrary and can be as long or complex as desired.</p>
 <p>A good example might be for pluralisation. What a coincidence!</p>
-<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">string</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">string</span>
 
 <span class="k">class</span> <span class="nc">PluralFormatter</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">Formatter</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">format_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">format_spec</span><span class="p">):</span>
@@ -86,19 +86,19 @@ Three conversion flags are currently supported: <code>'!s'</code> which calls <c
                 <span class="k">return</span> <span class="n">words</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">format_field</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">format_spec</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
-<div class="codehilite"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fmt</span> <span class="o">=</span> <span class="n">PluralFormatter</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">msg</span> <span class="o">=</span> <span class="s1">'{0} {0:plural,bottle,bottles} on the wall'</span>
+<div class="codehilite"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">fmt</span> <span class="o">=</span> <span class="n">PluralFormatter</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">msg</span> <span class="o">=</span> <span class="s1">'</span><span class="si">{0}</span><span class="s1"> {0:plural,bottle,bottles} on the wall'</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">bottle_count</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">99</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">bottle_count</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">bottle_count</span><span class="p">))</span>
 <span class="go">99 bottles on the wall</span>
 <span class="go">3 bottles on the wall</span>
 <span class="go">2 bottles on the wall</span>
 <span class="go">1 bottle on the wall</span>
 <span class="go">0 bottles on the wall</span>
-</pre></div>
+</code></pre></div>
 </article>
 <section>
   <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid" /></svg> <a href="https://tobywf.com/tag/python/">Python</a></p>
