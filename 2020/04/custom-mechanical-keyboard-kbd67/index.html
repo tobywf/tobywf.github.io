@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Building a custom mechanical keyboard - tobywf</title>
+  <meta charset="utf-8">
+  <meta name="author" content="Toby Fleming">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css">
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png">
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <ul>
+<!-- breadcrumbs start -->
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon"></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2020/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>'20</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2020/04/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>Apr</a></li>
+<li class="last"><a href="https://tobywf.com/cv/" class="cap">CV</a></li>
+<!-- breadcrumbs end -->
+      </ul>
+    </nav>
+<!-- content start -->
+<header class="post-head">
+  <h1>Building a custom mechanical keyboard</h1>
+  <h2>Based on KBDfans' KBD67, QMK, and Matt3o MT3 /dev/tty keycaps</h2>
+  <div class="infoline">
+    <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">4 Apr '20</span>
+  </div>
+</header>
+<article>
+<p><a href="https://tobywf.com/2020/04/custom-mechanical-keyboard-kbd67/images/2020-04-04-complete-keyboard-1.jpg"><img alt="The completed keyboard from a front angle. It shows the different profiles
+and slopes of the different
+rows" src="https://tobywf.com/2020/04/custom-mechanical-keyboard-kbd67/images/thumbs/2020-04-04-complete-keyboard-1.jpg"></a></p>
+<h2 id="parts-list">Parts list</h2>
+<p>Most parts were sourced from the excellent KDBfans. There was a slight
+disruption due to the Coronavirus/COVID-19, but I was more than happy to wait,
+and once that cleared up, they shipped it very quickly. I have added links, and
+highly recommend them.</p>
+<h3 id="keycaps">Keycaps</h3>
+<p>Matt3o MT3 /dev/tty keycaps from <a href="https://drop.com/buy/drop-matt3o-mt3-dev-tty-keycap-set">Drop (formerly Massdrop, login required)</a></p>
+<p>Let’s start with the keycaps, while functionality is the most important part of
+a mechanical keyboard, there’s not too much mystery around good switches and
+other components. The keycaps do play a large role in functionality, too, as
+they often dictate which layout the keyboard can have. I wanted a 65% layout,
+without function keys (F1-F12), but with an arrow cluster.</p>
+<p>I love almost everything about these! The colours, the font, and the shape are
+amazing. The downside (a big one) is they use the relatively obscure Whitefox
+Aria layout, with a gap between the right system keys and the arrow cluster. The
+only other option I could reliably find was the expensive, fully assembled Drop
+keyboard with RGB, which I didn’t want. So far, I do enjoy this layout though,
+so it was worth it.</p>
+<p>I also wish there were some alternative keycap options; I’d like to replace
+caps-lock with control, and escape with back-tick/tilde. Oh well. Seems like the
+new /dev/tty2 caps will offer some alts.</p>
+<p>(You might also want a keycap puller on hand, it’s a good idea.)</p>
+<h3 id="switches">Switches</h3>
+<p><a href="https://kbdfans.com/collections/gateron-swithes">Gateron brown switches</a></p>
+<p>Next most important are the switches, because they’ll impact the feel the most.
+Previously, I’ve had Cherry MX switches. They’re great, and wide-spread, so
+compatibility with other components is good, unlike Topre switches. However,
+there is another option now: Gateron. At first, they seem like direct Cherry
+ripoffs, but they do have a different feel - so it isn’t quite so easy.</p>
+<p>I used to run Cherry MX blues, but the clickiness can be an issue in the office.
+And to be honest, I don’t like the noise they make at home, either. So blues and
+greens are out. The next obvious choice were Cherry MX browns, for me, they
+don’t have enough of a tactile bump. So, for a long time, I thought Cherry MX
+clears would be ideal. Non-clicky like browns, with stiffer actuation (i.e. more
+force to press, so more tactile). But it’s almost impossible to find a non-DIY
+option with these at a reasonable price point.</p>
+<p>With the Gaterons in town, there’s new options. I got <a href="https://www.amazon.com/gp/product/B073XBWK69/">this tester (Amazon
+link)</a>. Immediately, I quite
+liked the Gateron browns. They’re stiffer than Cherry MX browns, not as stiff as
+Cherry MX clears, and tactile enough for me. This is good, since less force than
+the clears should mean not as tired fingers. Bonus: they’re also cheaper;
+although not by much. And just to be clear, I would’ve been more than happy to
+pay for Cherry MX - skimping on switches doesn’t seem wise.</p>
+<p>I also liked the Zealio 65g the most. But are they $50+ better? It’s so hard to
+tell from a tester how a full keyboard will feel. So Gateron brown it is. I got
+the 68 batch, plus 10 extras (just in case - I didn’t need them though).</p>
+<h3 id="pcb-printed-circuit-board">PCB (printed circuit board)</h3>
+<p><a href="https://kbdfans.com/collections/65/products/kbd65-65-custom-mechanical-keyboard-pcb">KBD67 Rev2 65% PCB</a></p>
+<p>It took way too much time to find a PCB that I could reasonably confirm supports
+that rare Whitefox Aria layout. The KBD67 seemed to (luckily, it did). As a
+bonus, it also has USB-C, which I much prefer over micro-USB - easier with
+Macbooks and future-proof. The QMK firmware turned out to be a huge feature,
+too, and I’d recommend looking for PCBs with QMK support.</p>
+<h3 id="case">Case</h3>
+<p><a href="https://kbdfans.com/collections/case/products/tada68-plastic-case">Tada68 plastic case</a></p>
+<p>I got this plastic case, because I wasn’t sure if it would fit the the PCB (the
+KBDfans’ website now confirms it does). I’ll probably go for a higher-quality
+case in future, but for now, it works fine, and for 10 bucks, I can hardly
+complain. The case can also be fairly easily swapped, unlike all the other components.</p>
+<h3 id="plate">Plate</h3>
+<p><a href="https://kbdfans.com/collections/plate/products/65-cnc-aluminum-plate">65% CNC aluminium plate</a></p>
+<p>The plate is listed after the case, since the case might dictate a certain
+plate. Plates are also one of those components with a lot of, erm, subtle
+choices around them. Is a brass plate better than aluminium? Well, you’d have to
+build two keyboards. From what I hear, aluminium is fine, and 65% keyboards
+don’t need quite the same rigidity as a full-size one.</p>
+<h3 id="stabilisers">Stabilisers</h3>
+<p><a href="https://kbdfans.com/collections/keyboard-stabilizer/products/cherry-screw-in-stabilizer">Cherry screw-in stabilisers</a></p>
+<p>Big keys still only use one switch; stabilisers stop them from rocking or
+tilting to one side when you press them unevenly. They are absolutely required.
+I had no idea if these would work or fit the PCB, but they do perfectly! Yay. The screw-in ones
+seem like a good idea over the clip-in ones. I’m not sure if it really matters,
+but the price difference is negligible.</p>
+<h2 id="build">Build</h2>
+<p>Building the keyboard turned out to be easier than expected! Really, it’s just
+quite a bit of soldering, although for a beginner or with an awful soldering
+iron I can see this being a bit of an issue. Gather all the parts (keycap set
+not pictured):</p>
+<p><a href="https://tobywf.com/2020/04/custom-mechanical-keyboard-kbd67/images/2020-04-04-parts.jpg"><img alt="Case, PCB, plate, switches, and stabilisers. Not pictured is the keycap
+set" src="https://tobywf.com/2020/04/custom-mechanical-keyboard-kbd67/images/thumbs/2020-04-04-parts.jpg"></a></p>
+<h3 id="check-if-the-pcb-works">Check if the PCB works</h3>
+<p>I don’t know if this is strictly necessary; but it can’t hurt. Connect the PCB
+to a computer, and bring up an online <a href="https://config.qmk.fm/#/test">key press tester
+(QMK)</a>. Now, using conductive tweezers, probes, or
+jamming a switch in at an angle so it makes good contact, test all the positions.</p>
+<h3 id="installing-the-stabilisers">Installing the stabilisers</h3>
+<p>The first step, believe it or not, is installing the stabilisers. This is
+because the next step will make accessing the holes for the stabilisers almost
+impossible. Stabilisers are weird; it wasn’t obvious to me how they go together.
+Luckily, I found an <a href="https://www.maketecheasier.com/build-custom-mechanical-keyboard-part-ii/">incredibly helpful and detailed
+guide</a>,
+which I followed, and I recommend you do, too - at least for the stabilisers!</p>
+<p>You may need the keycaps for this already, to get a feeling for where the
+stabilisers need to be for certain keys. The PCB supports several layouts, and
+so has many holes for different layouts. Keep this in mind for the next step,
+too. You can always refer back to the keycaps to check. Double check all the
+positions before proceeding, much easier to fix it now.</p>
+<h3 id="plate-and-pcb-assembly">Plate and PCB assembly</h3>
+<p>In my experience, this is the most crucial part of the build. Basically, if the
+switches aren’t flush against the plate and PCB, they won’t be in alignment, and
+when you put the caps on, even a small issue will noticeably tilt them. The caps
+may even rub together! Take your time to get this right.</p>
+<p>Also, some switch positions will depend on your layout. I recommend the
+following approach:</p>
+<ul>
+<li>Pick some keys you definitely know the location of, both on the outside and
+  inside. Escape (top-left) is an obvious choice, G or H (middle), in my case
+  delete (top-right) and the right arrow (bottom-right) also worked.</li>
+<li>Put the switches for these keys into the plate. Make sure they’re all the way
+  in, properly seated</li>
+<li>Now, with the switches in the plate, wrangle the leads into the holes in the PCB</li>
+<li>Ideally, clamp the plate and PCB</li>
+<li>You might want to add more switches at this point</li>
+<li>Start soldering, making sure to leave clean solder joints</li>
+</ul>
+<p><a href="https://tobywf.com/2020/04/custom-mechanical-keyboard-kbd67/images/2020-04-04-plate-assembly.jpg"><img alt="The plate clamped to the PCB, with some switches already
+installed" src="https://tobywf.com/2020/04/custom-mechanical-keyboard-kbd67/images/thumbs/2020-04-04-plate-assembly.jpg"></a></p>
+<p>Go slowly. Make sure each switch you add is properly seated. It’s much easier to
+double-check, than to have to fix it later (desoldering/warming up two leads is
+a pain). Any pattern here should work; going row-by-row probably isn’t a good
+idea. It’s fine to leave the switches for the bigger keys - and therefore more
+tricky - until last. You may have to get out the keycaps again and check,
+although it’s often obvious from the stabiliser positions.</p>
+<p>Eventually, you’ll get all switches soldered. Patience is really key here, and
+the time you put in pays off.</p>
+<p>You can fit the PCB/plate/switch combo into the case or not, but you’ll want to
+connect it to a computer to check the connections. </p>
+<p><a href="https://tobywf.com/2020/04/custom-mechanical-keyboard-kbd67/images/2020-04-04-fully-soldered.jpg"><img alt="All switches soldered, and the PCB/plate assembly in the case connected to a
+computer ready for
+testing" src="https://tobywf.com/2020/04/custom-mechanical-keyboard-kbd67/images/thumbs/2020-04-04-fully-soldered.jpg"></a></p>
+<p>Use an online <a href="https://config.qmk.fm/#/test">key press tester (QMK)</a>, the same
+one if you checked the PCB earlier. Check all the switches work by pressing them
+one by one, and seeing the corresponding presses being registered reliably. Most
+keys should map directly, but don’t worry if some don’t - this may depend on
+your layout, and can be remapped later. For example, with my layout, the delete
+and home keys weren’t quite mapped correctly with the factory firmware. But the
+large majority (especially letters) should.</p>
+<p>If something seems wrong, now is the time to check it out. Key presses not
+registering is usually a bad solder joint, but could be a duff switch, too.
+Unexpected presses are worse, you may have a solder bridge somewhere (something
+connecting where it shouldn’t be), or, worst case, you knocked a diode off
+somewhere. But if you’re careful, this is unlikely to happen.</p>
+<p>Before moving on, you might want to wipe down the PCB with isopropyl alcohol.
+The flux from solder is slightly corrosive, and while it’s usually fine, wiping
+down everything is a good precaution.</p>
+<p>Alright, the hard part is over! Almost out of the woods now. Phew.</p>
+<h3 id="screwing-the-pcb-to-the-case">Screwing the PCB to the case</h3>
+<p>At this point, I’d screw down the PCB, as once the keycaps are installed,
+there’s no access to the screw holes any more.</p>
+<h3 id="installing-the-keycaps">Installing the keycaps</h3>
+<p>Being putting the keycaps on. It isn’t a bad idea to start with the bigger
+keys - the ones with stabilisers - since they have three pegs (one for the
+switch, two for the stabiliser posts). Try and put them on orthogonally/from the
+top so as not to tweak the switches. The caps have a bit of a friction fit with
+the posts, so they don’t fall off, but be as gentile as you can.</p>
+<p><a href="https://tobywf.com/2020/04/custom-mechanical-keyboard-kbd67/images/2020-04-04-keycap-installation-1.jpg"><img alt="Beginning to install the keycaps, starting with keys that need
+stabilisers" src="https://tobywf.com/2020/04/custom-mechanical-keyboard-kbd67/images/thumbs/2020-04-04-keycap-installation-1.jpg"></a></p>
+<p>This is my favourite part, and it usually goes quite quickly.</p>
+<p><a href="https://tobywf.com/2020/04/custom-mechanical-keyboard-kbd67/images/2020-04-04-keycap-installation-2.jpg"><img alt="Most keycaps are installed at this point, with only the rightmost ones
+remaining" src="https://tobywf.com/2020/04/custom-mechanical-keyboard-kbd67/images/thumbs/2020-04-04-keycap-installation-2.jpg"></a></p>
+<p><a href="https://tobywf.com/2020/04/custom-mechanical-keyboard-kbd67/images/2020-04-04-complete-keyboard-1.jpg"><img alt="The completed keyboard from a front angle. It shows the different profiles
+and slopes of the different
+rows" src="https://tobywf.com/2020/04/custom-mechanical-keyboard-kbd67/images/thumbs/2020-04-04-complete-keyboard-1.jpg"></a></p>
+<p><a href="https://tobywf.com/2020/04/custom-mechanical-keyboard-kbd67/images/2020-04-04-complete-keyboard-2.jpg"><img alt="The completed keyboard from a top angle. It shows the layout and the
+beautiful typeface of the
+keys" src="https://tobywf.com/2020/04/custom-mechanical-keyboard-kbd67/images/thumbs/2020-04-04-complete-keyboard-2.jpg"></a></p>
+<h2 id="firmware-remapping-keys">Firmware, remapping keys</h2>
+<p>At this point, the keyboard is largely functional. But I needed to remap some
+keys due to the layout. I also ended up remapping some other keys, including the
+left super/alt (for macOS use), as well as caps-lock to left control, and escape
+to back-tick/tilde (so fn + back-tick = escape). This is all very easy to do
+with the <a href="https://docs.qmk.fm/#/">QMK (quantum mechanical keyboard) firmware</a>.
+They have an <a href="https://config.qmk.fm/#/kbdfans/kbd67/rev2/LAYOUT_65_ansi">online configurator
+tool</a> that’s
+unbelievably easy to use. After selecting the appropriate keyboard
+(<code>kbdfans/kdb67/rev2</code>) and layout (<code>LAYOUT_65_ansi</code>), I could simply drag and
+drop the keys I wanted onto the visual keyboard representation from the palette below:</p>
+<p><a href="https://tobywf.com/2020/04/custom-mechanical-keyboard-kbd67/images/2020-04-04-qmk-config.png"><img alt="The online QMK configurator tool makes key mappings for custom layouts or
+personal preferences
+easy" src="https://tobywf.com/2020/04/custom-mechanical-keyboard-kbd67/images/thumbs/2020-04-04-qmk-config.png"></a></p>
+<p>There’s a bit of subtlety with the function key (FN) and layers. QMK supports
+several layers, but unless you’re an advanced user, you may want to stick to two
+for simplicity. In this case, the first/default layer (0) is usually active, and
+the FN key simply shifts to the second layer (1). In QMK, this is called MO, or
+“momentary turn on layer”.</p>
+<p>This doesn’t need to be overthought, as you can easily change this again later.
+You want to download the <code>keymap.json</code> for future reference. Then, click
+“compile”. This will actually build the firmware online (although this can be
+done locally, too, if you’re more technically inlined). This takes a while, but
+once it’s done, you can download it via the “download firmware” button.</p>
+<p>Next, <a href="https://github.com/qmk/qmk_toolbox/releases">download a release of QMK
+toolbox</a>. This is used to flash the
+firmware onto the keyboard’s micro-controller.</p>
+<p><img alt="A screenshot of the QMK toolbox software after flashing a new firmware to the
+keyboard's
+micro-controller" src="https://tobywf.com/2020/04/custom-mechanical-keyboard-kbd67/images/2020-04-04-qmk-toolbox.png"></p>
+<p>It works like this: Click the “open” button, and load the firmware compiled by
+QMK configurator. There’s no need to select the keyboard in the drop-down below.
+Don’t click the “load” button, either. This simply downloads the default,
+pre-compiled firmware from QMK. Next, I had to set my keyboard into flash mode.
+I did this via the button on the bottom of the PCB; my case has a small cutout
+to allow access. There’s also a key combination to do this, but I can never
+remember it. It should say “DFU device connected”. Now, simply click the “flash”
+button, and the firmware is flashed. After this, it should say “DFU device
+disconnected”, and the keyboard should re-appear.</p>
+<p>It’s that easy! QMK is great. It’s probably a good idea to test the firmware was
+successfully flashed and the mapping is as expected using the keyboard tester
+page again.</p>
+<p>And that’s it. How I build my DIY mechanical keyboard, how easy it was, and how
+you can, too (assuming you can order online and solder). Good luck!</p>
+</article>
+<section>
+  <a href="https://tobywf.com/2020/01/talks-i-loved-in-2019/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid"></use></svg> Older</a>
+</section>
+<!-- content end -->
+    <footer>
+      <hr>
+      <p class="center">
+        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=correction&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2020%2F04%2Fcustom-mechanical-keyboard-kbd67%2F">Corrections?</a>
+        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=feedback&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2020%2F04%2Fcustom-mechanical-keyboard-kbd67%2F">Feedback?</a>
+      </p>
+      <p class="inline-block">
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#copyright"></use></svg> <span class="date cap">MMXII–MMXX</span>
+      </p>
+      <p class="inline-block">
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+          <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons"></use></svg> <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-by"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nc-eu"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nd"></use></svg> 4.0
+        </a>
+      </p>
+      <p>
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#child-solid"></use></svg> Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a tinkerer, scuba diver, and musician. He posts his personal ramblings here.
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
