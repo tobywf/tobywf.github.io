@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Apr '20 - tobywf</title>
+  <title>Extracting Emojis from TTF fonts as PNG files - tobywf</title>
   <meta charset="utf-8">
   <meta name="author" content="Toby Fleming">
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -21,24 +21,33 @@
       </ul>
     </nav>
 <!-- content start -->
+<header class="post-head">
+  <h1>Extracting Emojis from TTF fonts as PNG files</h1>
+  <h2>aka. exploring the wonderful world of TrueType and sbix tables</h2>
+  <div class="infoline">
+    <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">5 Apr '20</span>
+  </div>
+</header>
+<article>
+<p>For certain TrueType fonts, extracting emojis to PNG files is quite easy. This
+is because of something called <a href="https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6sbix.html">the sbix
+table</a>
+contains the emojis as PNG files. Using the
+<a href="https://pypi.org/project/fonttools/">fonttools</a> package and Python, it’s almost trivial:</p>
+<script src="https://gist.github.com/tobywf/6c313982c43da272698375bd1b41617f.js"></script>
+
+<p>This seems to work great for e.g. <code>AppleColorEmoji.ttf</code>. The output is a bit
+obscure, since you have to look it up via Unicode codepoint, but this is just a proof-of-concept.</p>
+</article>
 <section>
-  <ul class="posts">
-    <li class="post-head">
-      <span class="dateline"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> 5 Apr '20</span>
-      <span class="title"><a href="https://tobywf.com/2020/04/extract-emojis-from-ttf-font-png-sbix/">Extracting Emojis from TTF fonts as PNG files</a></span>
-    </li>
-    <li class="post-head">
-      <span class="dateline"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> 4 Apr '20</span>
-      <span class="title"><a href="https://tobywf.com/2020/04/custom-mechanical-keyboard-kbd67/">Building a custom mechanical keyboard</a></span>
-    </li>
-  </ul>
+  <a href="https://tobywf.com/2020/04/custom-mechanical-keyboard-kbd67/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid"></use></svg> Older</a>
 </section>
 <!-- content end -->
     <footer>
       <hr>
       <p class="center">
-        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=correction&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2020%2F04%2F">Corrections?</a>
-        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=feedback&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2020%2F04%2F">Feedback?</a>
+        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=correction&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2020%2F04%2Fextract-emojis-from-ttf-font-png-sbix%2F">Corrections?</a>
+        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=feedback&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2020%2F04%2Fextract-emojis-from-ttf-font-png-sbix%2F">Feedback?</a>
       </p>
       <p class="inline-block">
         <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#copyright"></use></svg> <span class="date cap">MMXII–MMXX</span>
