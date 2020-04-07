@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Apr '20 - tobywf</title>
+  <title>Backup all Gists from GitHub - tobywf</title>
   <meta charset="utf-8">
   <meta name="author" content="Toby Fleming">
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -21,28 +21,43 @@
       </ul>
     </nav>
 <!-- content start -->
+<header class="post-head">
+  <h1>Backup all Gists from GitHub</h1>
+  <div class="infoline">
+    <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">6 Apr '20</span>
+  </div>
+</header>
+<article>
+<p>While GitHub hasn’t ever let me down, it’s always a good idea to have backups of
+any code. So, a quick script to do this for gists.</p>
+<p>You’ll need to set up a <a href="https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line">personal access
+token</a>
+in GitHub first for the script (the scope it needs is “gist”). I’ve done this
+because it’s the right way to do it, and I can’t test username and password,
+since I have two factor authentication (2FA) enabled - you do, too, right?</p>
+<p>The script will pull all gist descriptions, files, and comments, <em>including
+private</em> gists (well, it’d be a bad backup script if it didn’t). This is the structure:</p>
+<div class="codehilite"><pre><span></span><code>.
+├── d7b4378417f4a10a75dd7245ec557240
+│   ├── save-gists.py
+│   └── comments.md
+...
+└── index.md
+</code></pre></div>
+
+
+<p>Naturally, the script is a gist:</p>
+<script src="https://gist.github.com/tobywf/d7b4378417f4a10a75dd7245ec557240.js"></script>
+</article>
 <section>
-  <ul class="posts">
-    <li class="post-head">
-      <span class="dateline"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> 6 Apr '20</span>
-      <span class="title"><a href="https://tobywf.com/2020/04/backup-all-gists-from-github/">Backup all Gists from GitHub</a></span>
-    </li>
-    <li class="post-head">
-      <span class="dateline"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> 5 Apr '20</span>
-      <span class="title"><a href="https://tobywf.com/2020/04/extract-emojis-from-ttf-font-png-sbix/">Extracting Emojis from TTF fonts as PNG files</a></span>
-    </li>
-    <li class="post-head">
-      <span class="dateline"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> 4 Apr '20</span>
-      <span class="title"><a href="https://tobywf.com/2020/04/custom-mechanical-keyboard-kbd67/">Building a custom mechanical keyboard</a></span>
-    </li>
-  </ul>
+  <a href="https://tobywf.com/2020/04/extract-emojis-from-ttf-font-png-sbix/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid"></use></svg> Older</a>
 </section>
 <!-- content end -->
     <footer>
       <hr>
       <p class="center">
-        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=correction&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2020%2F04%2F">Corrections?</a>
-        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=feedback&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2020%2F04%2F">Feedback?</a>
+        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=correction&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2020%2F04%2Fbackup-all-gists-from-github%2F">Corrections?</a>
+        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=feedback&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2020%2F04%2Fbackup-all-gists-from-github%2F">Feedback?</a>
       </p>
       <p class="inline-block">
         <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#copyright"></use></svg> <span class="date cap">MMXII–MMXX</span>
