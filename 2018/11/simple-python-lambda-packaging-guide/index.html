@@ -55,7 +55,6 @@
 <span class="go">docker: Error response from daemon: pull access denied for aws/codebuild/python, repository does not exist or may require 'docker login'.</span>
 </code></pre></div>
 
-
 <p>You have to <a href="https://github.com/aws/aws-codebuild-docker-images">build them yourself</a> (if you’re following along, hold off and read on):</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$</span> git clone https://github.com/aws/aws-codebuild-docker-images.git
 <span class="gp">$</span> <span class="nb">cd</span> aws-codebuild-docker-images/
@@ -65,7 +64,6 @@
     python --version
 <span class="go">Python 3.6.5</span>
 </code></pre></div>
-
 
 <p>For CodeBuild, this image makes perfect sense. And if your use-case is running complex build scripts as part of continuous integration, you may find it appropriate (feel free to skip the next section). I can’t recommend it for this project (long build time<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup>).</p>
 <h2 id="lambda-ci">Lambda CI</h2>
@@ -77,7 +75,6 @@
 <span class="go">[...]</span>
 <span class="go">Python 3.6.1</span>
 </code></pre></div>
-
 
 <p>Honestly, this is a great project, and super easy to use<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup>. ❤️</p>
 <p>(This should work for most cases, because the build image isn’t quite as locked own as the Lambda environment, but if it fails, try the CodeBuild image.)</p>
@@ -99,7 +96,6 @@
 <span class="gp">$</span> rm -rf build/
 </code></pre></div>
 
-
 <p>Now, inside the container. For simplicity, I’m going to mount a directory inside the container. This doesn’t work for remote docker hosts (there are workarounds, using S3, NFS shares, etc). Quickly check the mount works:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$</span> docker run <span class="se">\</span>
     -v <span class="s2">"</span><span class="nv">$PWD</span><span class="s2">"</span>:/var/task <span class="se">\</span>
@@ -108,7 +104,6 @@
     cat requirements.txt
 <span class="go">lxml</span>
 </code></pre></div>
-
 
 <p>Good, let’s go. The only difference is running <code>pip</code> inside the container:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$</span> <span class="nb">echo</span> <span class="s2">"lxml"</span> &gt; requirements.txt
@@ -126,7 +121,6 @@
 <span class="go">Tag: cp36-cp36m-manylinux1_x86_64</span>
 </code></pre></div>
 
-
 <p>Excellent. This time, we get the <code>manylinux</code> flavoured package, which is exactly right.</p>
 <p>Using the CodeBuild image is similar, except by default the container runs in the root folder:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$</span> docker run <span class="se">\</span>
@@ -142,7 +136,6 @@
 <span class="go">Tag: cp36-cp36m-manylinux1_x86_64</span>
 </code></pre></div>
 
-
 <h2 id="conclusion">Conclusion</h2>
 <p>Docker contains provide a simple way to download OS-specific dependencies correctly for Python Lambda functions. You can then use these to package Python Lambda functions correctly on your local machine, or integrate it in your continuous integration/continuous delivery pipeline to ensure you get the right dependencies.</p>
 <p>Do let me know if you found this helpful.</p>
@@ -155,7 +148,6 @@
     lambci/lambda:build-python3.6 <span class="se">\</span>
     pip install -r requirements.txt -t build/
 </code></pre></div>
-
 
 <div class="footnote">
 <hr>

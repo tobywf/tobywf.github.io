@@ -39,7 +39,6 @@
 <div class="codehilite"><pre><span></span><code>sudo apt-get install ffmpeg
 </code></pre></div>
 
-
 <p>Except the <code>ffmpeg</code> version that this installs on my 14.04 Ubuntu wasn’t compiled with <code>x11grab</code> support. You’ll find out if that’s the case when you run the record command further down, if so read on.</p>
 <p>Compiling <code>ffmpeg</code> from source was painless, but took some time and worked the CPU</p>
 <div class="codehilite"><pre><span></span><code>tar -xvf ffmpeg-3.0.1.tar.bz2
@@ -55,14 +54,12 @@ make -j8
 sudo make install
 </code></pre></div>
 
-
 <h2 id="recording-with-ffmpeg">Recording with ffmpeg</h2>
 <p>Recording the desktop is very straight-forward:</p>
 <div class="codehilite"><pre><span></span><code>ffmpeg <span class="se">\</span>
     -f x11grab -video_size 960x540 -framerate <span class="m">30</span> -i :0.0+0,81 <span class="se">\</span>
     -codec:v libx264 -qp <span class="m">0</span> -preset ultrafast capture.mkv
 </code></pre></div>
-
 
 <p>The various parameters:</p>
 <ul>
@@ -105,7 +102,6 @@ sudo make install
     -pix_fmt yuv420p render.mkv
 </code></pre></div>
 
-
 <p>This takes up massive amounts of disk space, and writing so many images out is slow, especially PNG with compression (but otherwise it’d be even bigger). Instead, you can use the frame server to pipe the raw frames directly from Blender to <code>ffmpeg</code> (script slightly modified from <a href="https://wiki.blender.org/index.php/Doc_talk:2.6/Manual/Render/Output/Frameserver">1</a> and <a href="http://peter.schlaile.de/blender/sequencer/frameserver.html">2</a>):</p>
 <div class="codehilite"><pre><span></span><code><span class="ch">#!/bin/sh</span>
 
@@ -130,7 +126,6 @@ sudo make install
 
 wget <span class="si">${</span><span class="nv">FRAMESERVER</span><span class="si">}</span>/close.txt -O - <span class="m">2</span>&gt;/dev/null &gt;/dev/null
 </code></pre></div>
-
 
 <p>As you can see, the <code>ffmpeg</code> options I’ve already used come in handy here. And that’s it, you should have a beautiful rendered and encoded video at the end (although this can take a while, video work is notoriously hard even for a beefy rig).</p>
 <h2 id="fin">Fin</h2>

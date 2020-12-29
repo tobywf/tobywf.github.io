@@ -35,23 +35,19 @@
 <span class="gp">$</span> brew install ghostscript
 </code></pre></div>
 
-
 <p>dvisvgm is installed with MacTeX. In the current version (2.1.3), you also need to tell dvisvgm where to find Ghostscript. I’ve submitted a patch for it to work automatically, but that isn’t in MacTeX yet. To do this, add the following to your <code>.bash_profile</code>:</p>
 <div class="codehilite"><pre><span></span><code><span class="nb">export</span> <span class="nv">LIBGS</span><span class="o">=</span><span class="s2">"</span><span class="k">$(</span>brew --prefix ghostscript<span class="k">)</span><span class="s2">/lib/libgs.9.dylib"</span>
 </code></pre></div>
 
-
 <p>Or, for <a href="https://fishshell.com">Fish shell</a> fans, put this in your <code>~/.config/fish/config.fish</code> file:</p>
 <div class="codehilite"><pre><span></span><code><span class="k">set</span> -x LIBGS <span class="o">(</span>brew --prefix ghostscript<span class="o">)</span>/lib/libgs.9.dylib
 </code></pre></div>
-
 
 <p>Then, make sure dvisvgm finds Ghostscript. You’ll have to make sure your shell reloads the changes to <code>.bash_profile</code>.</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$</span> <span class="nb">source</span> ~/.bash_profile
 <span class="gp">$</span> dvisvgm -l <span class="p">|</span> grep ps
 <span class="go">ps         dvips PostScript specials</span>
 </code></pre></div>
-
 
 <p>If you don’t see any output, dvisvgm can’t find Ghostscript. But if you do, you’re ready.</p>
 <hr>
@@ -63,7 +59,6 @@
 <span class="k">\end</span><span class="nb">{</span>tikzpicture<span class="nb">}</span>
 <span class="k">\end</span><span class="nb">{</span>document<span class="nb">}</span>
 </code></pre></div>
-
 
 <p>First, <code>margin=5pt</code> sets a margin, otherwise standalone really does only set the picture size to what is required. And here’s the result, converted to PNG with a border added to emphasise the margin:</p>
 <p><img alt='The rendered TeX file that reads "Hello World", with a border added afterwards' src="https://tobywf.com/2018/01/beautiful-svg-diagrams-with-tikz-dvisvgm/images/2018-01-28-helloworld.png"></p>
@@ -80,7 +75,6 @@
 <span class="k">\end</span><span class="nb">{</span>document<span class="nb">}</span>
 </code></pre></div>
 
-
 <p>A pitfall is that if you add the <code>dvisvgm</code> option, you lose the ability to make PDF files properly. This isn’t a huge issue, LaTeX packages usually provide a DVI viewer. But if you want PDF files while you’re making the graphics, you can omit the <code>dvisvgm</code> option, and then add it in when you’re ready to make the SVG file. (Of course, if you forget <code>dvisvgm</code> in the options, the output won’t work well with dvisvgm.)</p>
 <p>I’ve also used this to demonstrate how to set the font to sans-serif (<code>\renewcommand{\familydefault}{\sfdefault}</code>), and how to use <code>\useasboundingbox</code> to set the output page size instead of <code>margin</code>. To create the SVG file, first have LaTeX make a DVI file, and then convert it to SVG with dvisvgm:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$</span> latex example.tex
@@ -91,7 +85,6 @@
     example.dvi
 </code></pre></div>
 
-
 <p>The dvisvgm options are important. <code>--clipjoin</code> <a href="http://dvisvgm.bplaced.net/FAQ">prevents clipping issues</a>. <code>--bbox=papersize</code> instructs dvisvgm to use the papersize information in the DVI file. Some other options for <code>--box</code>, <code>dvi</code> and <code>preview</code> do not work reliably when I tried them, especially if your TikZ coordinates can be negative (easy to do). Finally, and this is awesome, since you can have multiple TikZ pictures in one TeX file, <code>--page=1-</code> tells dvisvgm to process all pages, and output them to separate SVG files. Nice.</p>
 <p>And this is the resulting SVG:</p>
 <p><img alt="The example TeX file converted to an SVG file. The content is meaningless" src="https://tobywf.com/2018/01/beautiful-svg-diagrams-with-tikz-dvisvgm/images/2018-01-28-example.svg"></p>
@@ -100,11 +93,9 @@
 <span class="gp">$</span> npm install -g svgo
 </code></pre></div>
 
-
 <p>SVGO has loads of options, too many to specify on the CLI. You can <a href="https://gist.github.com/tobywf/a11ff29e5b9128e04b2e39ea2fb9cee6">download the <code>config.yml</code> file</a> I use, or use <a href="https://jakearchibald.github.io/svgomg/">this SVGO GUI</a> to try them out yourself.</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$</span> svgo --config<span class="o">=</span>config.yml example.svg
 </code></pre></div>
-
 
 <p>And that’s it!</p>
 </article>

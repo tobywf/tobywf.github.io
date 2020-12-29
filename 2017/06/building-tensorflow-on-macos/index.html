@@ -51,7 +51,6 @@ $ bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
 $ pip install /tmp/tensorflow_pkg/tensorflow-1.2.0rc1-cp36-cp36m-macosx_10_12_x86_64.whl
 </code></pre></div>
 
-
 <p>Before you test your custom build of TensorFlow, change the directory! If you
 try and run Python from the <code>tensorflow</code> repository, you’ll get a weird error
 when you import TensorFlow (<a href="https://github.com/tensorflow/tensorflow/issues/8107#issuecomment-285843603">StackOverflow</a>):</p>
@@ -62,7 +61,6 @@ when you import TensorFlow (<a href="https://github.com/tensorflow/tensorflow/is
 <span class="gr">ModuleNotFoundError</span>: <span class="n">No module named 'tensorflow.python.pywrap_tensorflow_internal'</span>
 <span class="go">[...]</span>
 </code></pre></div>
-
 
 <p>From any other directory, it’ll work fine:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>

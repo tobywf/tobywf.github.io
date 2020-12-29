@@ -43,14 +43,12 @@
     <span class="nb">print</span><span class="p">(</span><span class="s2">"local"</span><span class="p">)</span>
 </code></pre></div>
 
-
 <div class="codehilite"><pre><span></span><code><span class="go">Python 3.7.0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">file</span> <span class="kn">import</span> <span class="n">func</span>
 <span class="go">global</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">func</span><span class="p">()</span>
 <span class="go">local</span>
 </code></pre></div>
-
 
 <p>Oops. When I tried to import the function in an interactive session, the <code>print</code> function in the global context is executed. So if the Flask application is initialised outside of a function, it can’t be changed after importing the module (and before, really). If the Flask application is initialised inside a function, it can be customised!</p>
 <p>This function creating the Flask application is called the application factory. (It’s an awful name, but naming stuff is hard. <a href="https://en.wikipedia.org/wiki/Factory_method_pattern">Factory methods</a> are a thing in object-oriented programming, and this is kind of analogous.)</p>
@@ -63,7 +61,6 @@
 <span class="c1"># models.py</span>
 <span class="n">db</span> <span class="o">=</span> <span class="n">SQLAlchemy</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
 </code></pre></div>
-
 
 <p>But if <code>app</code> is created inside a function, how can <code>db</code> use it?</p>
 <p>All extensions include an <code>init_app</code> method for the application factory pattern. It’s going to look more complicated, but it’s worth it:</p>
@@ -78,7 +75,6 @@
 <span class="c1"># models.py</span>
 <span class="n">db</span> <span class="o">=</span> <span class="n">SQLAlchemy</span><span class="p">()</span>
 </code></pre></div>
-
 
 <p>Despite the name, application factories aren’t that complicated, and the documentation has improved significantly since 2016. It’s much easier to start with an application factory than try and reorganise a project later, so I’d recommend it from day one.</p>
 <p>The application factory pattern makes configuration easy, as well as helping to avoid circular imports. Because imports can be performed when the app is created, this is an inversion of the usual import order. Instead of <code>app</code> being imported by everything, everything (extensions, models, views/blueprints) is imported by the factory and bound together. Speaking of blueprints…</p>

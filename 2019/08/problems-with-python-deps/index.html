@@ -42,7 +42,6 @@
 <span class="na">Please activate a compatible Python version.</span>
 </code></pre></div>
 
-
 <p>Yaaaaaassss, I love issue reports for external tooling. User <a href="https://github.com/harrybiddle">harrybiddle</a> sums it up perfectly in his comment:</p>
 <blockquote>
 <p>As a first-time poetry user I ran into exactly this! When you search the documentation and past issues, the answer you always recieve is “just use pyenv”.</p>
@@ -61,7 +60,6 @@
 $ <span class="nb">source</span> env/bin/activate
 $ pip install -e .
 </code></pre></div>
-
 
 <p>Yes, it has some issues with resolving dependencies sometimes. Yes, the <code>requirements.txt</code> are annoying. But at the same time, using <a href="https://pre-commit.com/">pre-commit</a> can abstract dev dependencies away for e.g. linting. It’s simple and it works. I can teach people virtualenv discipline. (I still don’t know how to easily re-create the virtualenv Poetry creates.)</p>
 <p>So I’ll be keeping an eye out on Poetry, but for now, <code>setup.py</code> + <code>pip</code> seems hard to beat.</p>

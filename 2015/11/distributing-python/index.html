@@ -45,7 +45,6 @@
 └── setup.py
 </code></pre></div>
 
-
 <p>For this package, <code>setup.py</code> looks like this:</p>
 <div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/env python</span>
 
@@ -65,13 +64,11 @@
 <span class="p">)</span>
 </code></pre></div>
 
-
 <p><code>package_data</code> is interesting. In this case, I have some Jinja templates that I want my package to use. Usually, I’d get the path from <code>__file__</code> and simply read the file. This doesn’t work so well in an <code>egg</code> or a <code>wheel</code>, because it’s zipped. I could set <code>zip_safe</code> to <code>False</code>, or I simply use <a href="https://pythonhosted.org/setuptools/pkg_resources.html">pkg_resources</a> which provides easy methods to get the contents. Much less of a hack!</p>
 <p><code>entry_points</code> solves a huge problem: How do you deploy a script that uses your package? <em>setuptools</em> makes this simple, just define an entry point (aka. a method) in the package, and <a href="https://pythonhosted.org/setuptools/setuptools.html#automatic-script-creation">the rest is taken care of</a> - even on Windows. I can’t stress how useful this is.</p>
 <p>Now, with the virtual environment activated, I just run</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$</span> python setup.py develop
 </code></pre></div>
-
 
 <p>This gets you an executable in <code>env/bin</code> which calls the entry point. Once I’ve finished developing, to deploy the application, I simply make sure <code>wheel</code> is installed, create a wheel and distribute that:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$</span> pip install wheel
@@ -79,7 +76,6 @@
 <span class="gp">$</span> <span class="nb">cd</span> dist/
 <span class="gp">$</span> python3 -m http.server
 </code></pre></div>
-
 
 <p>It’s really that simple. Yes, I know I’m late to the party. Thanks <em>setuptools</em>.</p>
 </article>

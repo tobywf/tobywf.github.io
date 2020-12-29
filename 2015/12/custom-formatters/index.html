@@ -58,7 +58,6 @@ Three conversion flags are currently supported: <code>'!s'</code> which calls <c
             <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">convert_field</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">conversion</span><span class="p">)</span>
 </code></pre></div>
 
-
 <p>The neat thing is that the coerced value is used for further formatting:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">fmt</span> <span class="o">=</span> <span class="n">ProfoundFormatter</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">foo</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">()</span>
@@ -69,7 +68,6 @@ Three conversion flags are currently supported: <code>'!s'</code> which calls <c
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">'{0!m:4X}'</span><span class="p">,</span> <span class="n">foo</span><span class="p">)</span>
 <span class="go">'  2A'</span>
 </code></pre></div>
-
 
 <h2 id="format_field"><code>format_field</code></h2>
 <p>This one is more straight forward. The format specification is totally arbitrary and can be as long or complex as desired.</p>
@@ -87,7 +85,6 @@ Three conversion flags are currently supported: <code>'!s'</code> which calls <c
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">format_field</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">format_spec</span><span class="p">)</span>
 </code></pre></div>
-
 
 <div class="codehilite"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">fmt</span> <span class="o">=</span> <span class="n">PluralFormatter</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">msg</span> <span class="o">=</span> <span class="s1">'</span><span class="si">{0}</span><span class="s1"> {0:plural,bottle,bottles} on the wall'</span>

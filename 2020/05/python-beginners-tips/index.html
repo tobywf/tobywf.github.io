@@ -60,7 +60,6 @@ check if you have an executable called <code>python3</code>:</p>
 <div class="codehilite"><pre><span></span><code>python3 --version
 </code></pre></div>
 
-
 <p>Although you may need to check specific versions like <code>python3.8</code>, <code>python3.7</code>,
 or <code>python3.6</code>. These binary names are codified in the <a href="https://www.python.org/dev/peps/pep-0394/">Python Enhancement
 Proposal (PEP 394)</a>, although of
@@ -99,7 +98,6 @@ install that via <code>python3-venv</code> first.</p>
 <div class="codehilite"><pre><span></span><code>python3 -m venv env
 </code></pre></div>
 
-
 <p>The <code>env</code> is actually what the directory containing the virtualenv will be
 called. Idiomatically, <a href="https://github.com/github/gitignore/blob/18aa6d83774d514da479d73a4beb864cd4220231/Python.gitignore#L110-L111">it’s usually called <code>env</code> or
 <code>venv</code></a>.
@@ -112,7 +110,6 @@ versions. For e.g. bash, you do this by typing:</p>
 <div class="codehilite"><pre><span></span><code>env/bin/activate.bash
 </code></pre></div>
 
-
 <p>Once activated, your shell usually displays some kind of indication it’s active,
 e.g. by showing <code>(env)</code> in the prompt:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$</span> which python
@@ -122,7 +119,6 @@ e.g. by showing <code>(env)</code> in the prompt:</p>
 <span class="gp gp-VirtualEnv">(env)</span> <span class="gp">$</span> which python
 <span class="go">/home/me/env/bin/python</span>
 </code></pre></div>
-
 
 <p>If you close your terminal, or open a new window or tab, you’ll have to
 re-activate the virtualenv. Also, if you use an IDE, you’ll have to set it to
@@ -134,7 +130,6 @@ PyCharm can also create a virtualenv for you.</p>
 add this to your <code>~/.profile</code>:</p>
 <div class="codehilite"><pre><span></span><code><span class="nb">export</span> <span class="nv">PIP_REQUIRE_VIRTUALENV</span><span class="o">=</span><span class="nb">true</span>
 </code></pre></div>
-
 
 <p><a href="https://docs.python-guide.org/dev/pip-virtualenv/">The Hitchhiker’s Guide to
 Python</a> has more options on
@@ -149,13 +144,11 @@ in that, and then someone else can install them all at once using:</p>
 <div class="codehilite"><pre><span></span><code>pip install -r requirements.txt
 </code></pre></div>
 
-
 <p>In it’s simplest form, it’s just one line per package you’d install via <code>pip
 install</code>, so for example:</p>
 <div class="codehilite"><pre><span></span><code><span class="err">requests</span>
 <span class="err">flask</span>
 </code></pre></div>
-
 
 <p>To install those two packages. It can be more complex, for example you can also
 specify which versions are needed, e.g. if you depend on a minimum version.
@@ -182,13 +175,11 @@ turn into a hassle if you want to share your code.</p>
 <div class="codehilite"><pre><span></span><code>poetry new &lt;project&gt;
 </code></pre></div>
 
-
 <p>Alternatively, you can use <code>poetry init</code> for existing projects.</p>
 <p>It makes managing requirements easy. You just run this command, and it keeps
 track of them for you - no more manually updating <code>requirements.txt</code>:</p>
 <div class="codehilite"><pre><span></span><code>poetry add &lt;cool-library&gt;
 </code></pre></div>
-
 
 <p>It also can keep track of development dependencies, like unit test libraries.
 Usually, this is a right pain requiring a second requirements file, often called
@@ -196,17 +187,14 @@ Usually, this is a right pain requiring a second requirements file, often called
 <div class="codehilite"><pre><span></span><code>poetry add --dev pytest
 </code></pre></div>
 
-
 <p>Installing the virtualenv is also easy:</p>
 <div class="codehilite"><pre><span></span><code>poetry install
 </code></pre></div>
-
 
 <p>This is also what other people can run when they download your project.
 Activating the virtualenv is also easy:</p>
 <div class="codehilite"><pre><span></span><code>poetry shell
 </code></pre></div>
-
 
 <p>As I said, poetry is fairly new, and you’ll have to get used to some terminology
 being different. You no longer need to manually make a virtualenv, the

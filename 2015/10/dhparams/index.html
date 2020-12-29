@@ -34,7 +34,6 @@
 <div class="codehilite"><pre><span></span><code>$ openssl dhparam -out dhparams.pem <span class="m">2048</span>
 </code></pre></div>
 
-
 <p>I know generating and setting the server to use the parameters is <a href="https://weakdh.org/sysadmin.html">important to avoid things like Logjam</a>, thanks to sites like <a href="https://weakdh.org/">WeakDH</a>. But I’m no cryptographer - I’m not a sysadmin either - so I don’t know why or any specifics.</p>
 <p>For example, DH parameters with 1024 bits or less <a href="http://www.theregister.co.uk/2015/10/24/nsa_encryption_hack/">are discouraged since 2005</a>. But that’s a while ago now, are 2048 bit parameters still okay? <a href="https://weakdh.org/">WeakDH</a> and <a href="https://tools.ietf.org/html/rfc7525#section-4.4">RFC 7525</a> say yes. Okay then.</p>
 <p>So are 4096 bit DH parameters better? I don’t know. It’s a given that it’ll take more computation time, but how much? Not being a sysadmin, I can’t test this under realistic conditions. Does it even provide more security? <a href="https://security.stackexchange.com/questions/47204/dh-parameters-recommended-size">Apparently not</a>. But I still have to trust some guy on StackExchange posting around 2014.</p>

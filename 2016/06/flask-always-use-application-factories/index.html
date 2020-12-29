@@ -53,7 +53,6 @@
 <span class="n">app</span> <span class="o">=</span> <span class="n">create_app</span><span class="p">(</span><span class="n">DB_CONN</span><span class="o">=</span><span class="s2">"production"</span><span class="p">)</span> <span class="c1"># now it's initialised</span>
 </code></pre></div>
 
-
 <p>Remember that the factory can provide default configuration values. So the development server script looks roughly like this:</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">example</span> <span class="kn">import</span> <span class="n">create_app</span>
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
@@ -61,12 +60,10 @@
     <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>  <span class="c1"># using the default, debug database connection</span>
 </code></pre></div>
 
-
 <p>But the WSGI script looks like this:</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">example</span> <span class="kn">import</span> <span class="n">create_app</span>
 <span class="n">application</span> <span class="o">=</span> <span class="n">create_app</span><span class="p">(</span><span class="n">DB_CONN</span><span class="o">=</span><span class="s2">"production"</span><span class="p">)</span>
 </code></pre></div>
-
 
 <p>Much less chance of nuking the production database.</p>
 <h3 id="example-2-dependencies">Example 2: Dependencies</h3>
@@ -82,7 +79,6 @@
     <span class="k">pass</span>
 </code></pre></div>
 
-
 <p>When you use an app factory, this won’t work any more. But it does give you the opportunity to express the relationships more clearly:</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># __init__.py</span>
 <span class="k">def</span> <span class="nf">create_app</span><span class="p">():</span>
@@ -97,7 +93,6 @@
 <span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="k">pass</span>
 </code></pre></div>
-
 
 <p>Now the database object lives with the other database functionality, and is only initialised later. It doesn’t seem like much, but suddenly writing blueprints is also easier: If you need anything database related, you only need to import from <code>models.py</code>.</p>
 <p><a href="http://flask.pocoo.org/docs/0.11/blueprints/">Blueprints</a> allow for modular applications, are a great idea, and pretty much the only way to keep the codebase of medium or large applications sane. Using an app factory forces you to use blueprints, this is a good thing (see Google for now, maybe I’ll write about this later).</p>

@@ -90,7 +90,6 @@
 <span class="go">* A</span>
 </code></pre></div>
 
-
 <p><img alt="feature1 was merged into master without a merge commit." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-merge1.svg"></p>
 <p>If there are conflicts, a merge commit is still necessary. Since commits D and E were based on A, but changes to the same lines were made in B and C, we have to resolve this conflict.</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$</span> git merge feature2
@@ -102,7 +101,6 @@
 <span class="go">[master xxxxxx] Merge branch 'feature2'</span>
 </code></pre></div>
 
-
 <p><img alt="Commit D on feature2 conflicted with commits B and C on feature1 and so a merge commit was necessary." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-merge2.svg"></p>
 <p>This seems good, until we look at <code>git log</code>.</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">'%s'</span>
@@ -113,7 +111,6 @@
 <span class="go">B</span>
 <span class="go">A</span>
 </code></pre></div>
-
 
 <p>The linear history is based on the time of the commit, and so we get the order A, B, D, C, E, and M1. Which is correct, but confusing. When using a graph view, things are clearer. But because of the fast-forward behaviour, it looks like commits B and C were always part of master (indicated by the diagonally filled commits). Super confusing - or it will when the feature branch is deleted/never checked out/otherwise missing.</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">'%s'</span> --graph
@@ -127,7 +124,6 @@
 <span class="go">* A</span>
 </code></pre></div>
 
-
 <p>Thanks to the merge commit, we know where commits D and E come from. This is a huge benefit.</p>
 <h3 id="merge-no-fast-forward">Merge, no fast-forward</h3>
 <p>So the solution to the shortcomings of the default merge behaviour is obvious: force every merge to produce a merge commit, and never fast-forward.</p>
@@ -139,7 +135,6 @@
 <span class="go"> 1 file changed, 1 insertion(+), 1 deletion(-)</span>
 </code></pre></div>
 
-
 <p><img alt="feature1, although fast-forward-able, was merged into master with a merge commit." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-no-ff1.svg"></p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$</span> git merge feature2 --no-ff
 <span class="go">Auto-merging src.txt</span>
@@ -149,7 +144,6 @@
 <span class="gp">$</span> <span class="nb">echo</span> <span class="s2">"E"</span> &gt; src.txt <span class="o">&amp;&amp;</span> git add -- src.txt <span class="o">&amp;&amp;</span> git commit --no-edit
 <span class="go">[master xxxxxx] Merge branch 'feature2'</span>
 </code></pre></div>
-
 
 <p><img alt="feature1, was merged into master with a merge commit." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-no-ff2.svg"></p>
 <p>When viewed as a graph, the merge commits indicate clearly when the feature branches were merged in.</p>
@@ -168,7 +162,6 @@
 <span class="go">* A</span>
 </code></pre></div>
 
-
 <p>The linear <code>git log</code> is still ordered by timestamp, and so commits B, C, D, and E are still interleaved.</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">'%s'</span>
 <span class="go">Merge branch 'feature2'</span>
@@ -179,7 +172,6 @@
 <span class="go">B</span>
 <span class="go">A</span>
 </code></pre></div>
-
 
 <p>Using <code>--no-ff</code> is highly recommended. It’s such an improvement, and so prevalent that Github just does <a href="https://help.github.com/articles/about-merge-methods-on-github/">exactly this by default</a>.</p>
 <h3 id="rebase_1">Rebase</h3>
@@ -209,7 +201,6 @@
 <span class="go"> src.txt | 2 +-</span>
 <span class="go"> 1 file changed, 1 insertion(+), 1 deletion(-)</span>
 </code></pre></div>
-
 
 <p><img alt="feature1, was fast-forward merged into master without a merge commit." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-merge1.svg"></p>
 <p>However, now commits D and E clash with the commits on master and will be updated.</p>
@@ -247,7 +238,6 @@
 <span class="go">A (08229ff)</span>
 </code></pre></div>
 
-
 <p><img alt="feature2, was fast-forward merged into master without a merge commit." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-rebase-merge.svg"></p>
 <p>Technically, the second feature branch is no longer the one it was. Unlike when feature1 was rebased, feature2 needed conflict resolution, and commits D and E are actually newly rewritten commits (indicated by an asterisk). You can see above that the commit hashes have changed.</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">'%s'</span> --graph
@@ -257,7 +247,6 @@
 <span class="go">* B</span>
 <span class="go">* A</span>
 </code></pre></div>
-
 
 <p>With rebasing, because of fast-forward merging, the information about which commit was in which branch is lost. Basically, you’d better hope your commits make sense on their own.</p>
 <h2 id="squashing">Squashing</h2>
@@ -285,7 +274,6 @@
 <span class="go"> 1 file changed, 1 insertion(+), 1 deletion(-)</span>
 </code></pre></div>
 
-
 <p><img alt="feature1 and feature2 were squashed into master as a new commit." src="https://tobywf.com/2018/01/the-ultimate-git-merge-vs-rebase-tutorial/images/2018-01-27-gitworkflow-merge-squash.svg"></p>
 <p>The default commit messages are a bit useless when printing the first line, and I recommend writing something about the feature on the first line. But this also results in a clean graph.</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$</span> git log --pretty<span class="o">=</span>format:<span class="s1">'%s'</span> --graph
@@ -293,7 +281,6 @@
 <span class="go">* Squashed commit of the following:</span>
 <span class="go">* A</span>
 </code></pre></div>
-
 
 <p>Note that squashing a branch with only one commit will still produce a new squash commit (as opposed to simply fast-forwarding the commit, so <code>--no-ff</code> is not needed with <code>--squash</code>):</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$</span> git checkout -b feature3
@@ -318,7 +305,6 @@
 <span class="go">Squashed commit of the following:</span>
 <span class="go">A</span>
 </code></pre></div>
-
 
 <h3 id="squash-on-rebase">Squash on rebase</h3>
 <p>(Again, I recommend not to mix rebasing and merging on the same branch, so don’t merge changes into the feature branch and then use this method to squash.)</p>

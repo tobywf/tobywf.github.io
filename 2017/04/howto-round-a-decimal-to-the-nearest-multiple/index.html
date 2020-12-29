@@ -35,14 +35,12 @@
 <span class="go">Decimal('0.3')</span>
 </code></pre></div>
 
-
 <p>What we really want is the number rounded to the nearest multiple:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">round_up</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">'0.3'</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">'0.2'</span><span class="p">))</span>
 <span class="go">Decimal('0.4')</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">round_down</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">'0.3'</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">'0.2'</span><span class="p">))</span>
 <span class="go">Decimal('0.2')</span>
 </code></pre></div>
-
 
 <p>Luckily, this isn’t too difficult. But before I show the code, I want to walk through the operations we’ll perform. And don’t worry if maths isn’t your strong suit. In these examples, we’ll round 30 cents (0.3) to the nearest 20 cents (0.2), as indicated by the dotted line. First up, rounding down:</p>
 <p><img alt="Graphical representation of the rounding down maths operations" src="https://tobywf.com/2017/04/howto-round-a-decimal-to-the-nearest-multiple/images/2017-04-10-rounding-down.svg"></p>

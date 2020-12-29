@@ -36,13 +36,11 @@
 <span class="p">}</span>
 </code></pre></div>
 
-
 <p>Intersphinx will then load <code>https://docs.python.org/3/objects.inv</code>.</p>
 <p>Luckily, Intersphinx provides a convenient method, <a href="https://github.com/sphinx-doc/sphinx/blob/3261b87cf54fbccc9b2a306e032be9941db509cb/sphinx/ext/intersphinx.py#L366"><code>inspect_main</code></a>, to show/dump/browse/inspect an inventory, and an even handier entrypoint under <code>sphinx.ext.intersphinx</code>. There is one caveat; the file must be local. This is easily solved with <code>curl</code> (or <code>wget</code> if you prefer):</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$</span> curl -L https://docs.python.org/3/objects.inv -o python3.inv
 <span class="gp">$</span> python3 -m sphinx.ext.intersphinx python3.inv <span class="p">|</span> less
 </code></pre></div>
-
 
 <p>Naturally, Python’s documentation is extensive, so I would recommend piping to e.g. <code>less</code>.</p>
 <hr>

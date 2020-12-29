@@ -35,7 +35,6 @@
 $ <span class="nv">http_proxy</span><span class="o">=</span>socks://localhost:1080/ apt-get update
 </code></pre></div>
 
-
 <p>Spoiler: This doesn’t work. With <code>-D</code>, SSH acts as a SOCKS proxy, and while there’s speculation that <code>apt</code> supports SOCKS proxies, if you try it out it doesn’t. You can use <code>tsocks</code>, which works well… but how to install it?</p>
 <p>N.B.: If you’re doing this often, you probably want to set up some kind of <a href="https://apt-mirror.github.io/">internal <code>apt</code> mirror</a>, but downloading several GiB is a bit heavy-weight for once or twice. There’s probably also a way to bake packages into an install CD.</p>
 <p>The simplest solution I can come up with is to bootstrap the air-gapped machine with packages downloaded from a VM running the same Debian version.</p>
@@ -81,7 +80,6 @@ tar -cf <span class="s2">"../</span><span class="nv">$tarfile</span><span class=
 rm -r packages/
 <span class="nb">echo</span> <span class="s2">"-&gt; Done"</span>
 </code></pre></div>
-
 
 <p>In my case, I used Python to serve the tarball and <code>wget</code> to download it (<code>curl</code> wasn’t installed). Then, un<code>tar</code> and use <code>dpkg</code> to install. Simple.</p>
 </article>
