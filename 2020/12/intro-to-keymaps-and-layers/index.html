@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Introduction to keymaps and layers - tobywf</title>
+  <meta charset="utf-8">
+  <meta name="author" content="Toby Fleming">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css">
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png">
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <ul>
+<!-- breadcrumbs start -->
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon"></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2020/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>'20</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2020/12/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>Dec</a></li>
+<li class="last"><a href="https://tobywf.com/cv/" class="cap">CV</a></li>
+<!-- breadcrumbs end -->
+      </ul>
+    </nav>
+<!-- content start -->
+<header class="post-head">
+  <h1>Introduction to keymaps and layers</h1>
+  <h2>Keyboard hacks for lazy people with small hands</h2>
+  <div class="infoline">
+    <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">28 Dec '20</span>
+  </div>
+</header>
+<article>
+<p>If you want to build small keyboards with commodity parts, the <em>biggest limiting factor are the physical keys</em>, specifically key caps and switches. You simply can’t make it smaller, tenkeyless keyboards or a Kinesis Advantage are about as “optimal” as possible while exposing all commonly used keys. There’s another, well known workaround: layers.</p>
+<p>A layer simply maps a different set of symbols to the same keys. So you can re-use physical keys, which get around this limitation. Layers can be activated in different ways; the most common one is holding down another key. As a mental model, it’s useful to think of <code>Shift</code> as a layer <sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>. Press it, and you get a different set of symbols (e.g. <code>Shift + a</code> produces <code>A</code>, or more complex, <code>Shift + 4</code> produces <code>$</code>). So you’re already using layers every day.</p>
+<p>Why not use another layer? We’ve already talked about the benefits of being able to re-use keys. The downsides are re-training your brain, not having matching legends on the key caps, and needing to allocate another key for a layer switch. I think the trade-off is worth it, but be aware.</p>
+<p>Let’s say you introduce another key, analogue to <code>Shift</code>. Often, this is called <code>Fn</code>. Now you can do away with more keys. It’s common to do away with the function keys, and for example, map <code>F1</code> to <code>Fn + 1</code>. You can also make combinations that might be difficult to type easier. Layers are pretty much required for 65% keyboards to work, and <a href="https://qmk.fm/">QMK</a> has excellent layer support, for several layers.</p>
+<p>I think this is less interesting for “traditional” keyboards, but more interesting for split keyboards. This is because you can put modifiers on the thumb cluster.</p>
+<p>For example, for an keyboard similar to an ErgoDox/Kinesis Advantage, I’m going to try this keymap:</p>
+<p><a href="http://www.keyboard-layout-editor.com/##@@_y:1&amp;x:2.25&amp;a:0%3B&amp;=%2F@%0A2%0A%0A%0AF2&amp;=%23%0A3%0A%0A%0AF3&amp;=%24%0A4%0A%0A%0AF4&amp;=%25%0A5%0A%0A%0AF5&amp;_x:5.5%3B&amp;=%5E%0A6%0A%0A%0AF6&amp;=%2F&amp;%0A7%0A%0A%0AF7&amp;=*%0A8%0A%0A%0AF8&amp;=(%0A9%0A%0A%0AF9%3B&amp;@_y:-0.75&amp;a:6&amp;w:1.25%3B&amp;=Caps%20Lock&amp;_a:0%3B&amp;=!%0A1%0A%0A%0AF1&amp;_x:13.5%3B&amp;=)%0A0%0A%0A%0AF10&amp;_a:6&amp;w:1.25%3B&amp;=Print%20Screen%3B&amp;@_y:-0.25&amp;x:2.25&amp;a:0&amp;f:6%3B&amp;=W%0A%0A%0A%0A2&amp;=E%0A%0A%0A%0A3&amp;=R%0A%0A%0A%0A4&amp;=T%0A%0A%0A%0A5&amp;_x:5.5%3B&amp;=Y%0A%0A%0A%0A6&amp;=U%0A%0A%0A%0A7&amp;=I%0A%0A%0A%0A8&amp;=O%0A%0A%0A%0A9%3B&amp;@_y:-0.75&amp;f:3&amp;w:1.25%3B&amp;=~%0A%60%0A%0A%0AInsert&amp;_f:6%3B&amp;=Q%0A%0A%0A%0A1&amp;_x:13.5%3B&amp;=P%0A%0A%0A%0A0&amp;_f:3&amp;w:1.25%3B&amp;=%7C%0A%5C%0A%0A%0ADelete%3B&amp;@_y:-0.25&amp;x:2.25&amp;f:6%3B&amp;=S%0A%0A%0A%0A%2F@&amp;=D%0A%0A%0A%0A%23&amp;=F%0A%0A%0A%0A%24&amp;=G%0A%0A%0A%0A%25&amp;_x:5.5%3B&amp;=H%0A%0A%0A%0A%5E&amp;=J%0A%0A%0A%0A%2F&amp;&amp;=K%0A%0A%0A%0A*&amp;=L%0A%0A%0A%0A(%3B&amp;@_y:-0.75&amp;a:6&amp;f:3&amp;w:1.25%3B&amp;=Esc&amp;_a:0&amp;f:6%3B&amp;=A%0A%0A%0A%0A!&amp;_x:13.5&amp;f:3%3B&amp;=%2F:%0A%2F%3B%0A%0A%0A)&amp;_a:4&amp;w:1.25%3B&amp;=%22%0A'%3B&amp;@_y:-0.25&amp;x:2.25&amp;a:0&amp;f:6%3B&amp;=X%0A%0A%0A%0A'&amp;=C%0A%0A%0A%0A%22&amp;=V%0A%0A%0A%0A%2F=&amp;=B%0A%0A%0A%0A+&amp;_x:5.5%3B&amp;=N%0A%0A%0A%0A%7C&amp;=M%0A%0A%0A%0A%5C&amp;_f:3%3B&amp;=%3C%0A,%0A%0A%0A-&amp;=%3E%0A.%0A%0A%0A%2F_%3B&amp;@_y:-0.75&amp;a:6&amp;w:1.25%3B&amp;=Left%20Alt&amp;_a:0&amp;f:6%3B&amp;=Z%0A%0A%0A%0A%60&amp;_x:13.5&amp;f:3%3B&amp;=%3F%0A%2F%2F%0A%0A%0A~&amp;_a:4&amp;w:1.25%3B&amp;=%2F_%0A-%3B&amp;@_y:-0.25&amp;x:2.25&amp;a:0%3B&amp;=Esc%0A~%0A%0A%0AEsc&amp;_a:1&amp;f:5%3B&amp;=%E2%87%A6%0A%0A%0A%0AHome&amp;=%E2%87%A8%0A%0A%0A%0AEnd&amp;_x:7.5%3B&amp;=%E2%87%A7%0A%0A%0A%0APgUp&amp;=%E2%87%A9%0A%0A%0A%0APgDn&amp;_a:0&amp;f:3%3B&amp;=%7B%0A%5B%0A%0A%0AF11%3B&amp;@_y:-0.75&amp;x:1.25%3B&amp;=+%0A%2F=%0A%0A%0ATab&amp;_x:13.5%3B&amp;=%7D%0A%5D%0A%0A%0AF12%3B&amp;@_r:15&amp;rx:5.25&amp;ry:4&amp;x:1.5&amp;a:7%3B&amp;=Ctrl&amp;=OS%3B&amp;@_x:0.5&amp;h:2%3B&amp;=Fn&amp;_h:2%3B&amp;=Left%20Shift&amp;_h:2%3B&amp;=Back%20Space%3B&amp;@_r:-15&amp;rx:12.75&amp;x:-3.5%3B&amp;=OS&amp;=Ctrl%0A%0A%0A%0AAlt%3B&amp;@_x:-3.5&amp;h:2%3B&amp;=Tab&amp;_h:2%3B&amp;=RS%2F%2F%3Cbr%3EEnter&amp;_h:2%3B&amp;=Space%0A%0A%0A%0ABackSp"><img alt="An image of the proposed keymap with the layer annotated in the front legends of the keys" src="https://tobywf.com/2020/12/intro-to-keymaps-and-layers/images/2020-12-28-keyboard-layout.png"></a></p>
+<p><img alt="The default layer of the proposed keymap" src="https://tobywf.com/2020/12/intro-to-keymaps-and-layers/images/2020-12-28-layer-0.png"></p>
+<p><img alt="The alternate layer of the proposed keymap" src="https://tobywf.com/2020/12/intro-to-keymaps-and-layers/images/2020-12-28-layer-1.png"></p>
+<p>Full disclosure, this keymap is still theoretical. It’s based on my experience with a 65% keyboard. I’ll update this post in future when I know more.</p>
+<p>You might notice that this keymap removes the need for the top row, and the outer/pinky columns - the hardest to reach keys. If this works, it will be the basis of a smaller keyboard with less stretching.</p>
+<p>I hope this is a good intro to layers, keymaps, and how to come up with keymaps that make your life easier if you have small hands or are just lazy.</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Because of the way key codes work, this turns out to be wrong on that level. Luckily, you don’t have to think about this, as QMK will largely handle it e.g. if you assign a shifted key in the keymap, QMK will translate and send this as original key + shift. <a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">↩</a></p>
+</li>
+</ol>
+</div>
+</article>
+<section>
+  <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid"></use></svg> <a href="https://tobywf.com/tag/diy/">DIY</a>, <a href="https://tobywf.com/tag/keyboard/">keyboard</a></p>
+  <a href="https://tobywf.com/2020/12/python-is-an-evolutionary-dead-end/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid"></use></svg> Older</a>
+</section>
+<!-- content end -->
+    <footer>
+      <hr>
+      <p class="center">
+        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=correction&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2020%2F12%2Fintro-to-keymaps-and-layers%2F">Corrections?</a>
+        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=feedback&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2020%2F12%2Fintro-to-keymaps-and-layers%2F">Feedback?</a>
+      </p>
+      <p class="inline-block">
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#copyright"></use></svg> <span class="date cap">MMXII–MMXX</span>
+      </p>
+      <p class="inline-block">
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+          <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons"></use></svg> <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-by"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nc-eu"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nd"></use></svg> 4.0
+        </a>
+      </p>
+      <p>
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#child-solid"></use></svg> Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a tinkerer, scuba diver, and musician. He posts his personal ramblings here.
+      </p>
+    </footer>
+  </div>
+</body>
+</html>

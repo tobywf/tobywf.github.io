@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Python is an evolutionary dead end - tobywf</title>
+  <meta charset="utf-8">
+  <meta name="author" content="Toby Fleming">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css">
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png">
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <ul>
+<!-- breadcrumbs start -->
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon"></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2020/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>'20</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2020/12/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>Dec</a></li>
+<li class="last"><a href="https://tobywf.com/cv/" class="cap">CV</a></li>
+<!-- breadcrumbs end -->
+      </ul>
+    </nav>
+<!-- content start -->
+<header class="post-head">
+  <h1>Python is an evolutionary dead end</h1>
+  <div class="infoline">
+    <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">21 Dec '20</span>
+  </div>
+</header>
+<article>
+<p>Is this clickbait? Understand, I love Python, and this isn’t to say Python is dead or you can’t be productive with Python. There’s a lot of lessons to be learned from Python, and I couldn’t have learned them without Python. But I hope to make the case that going forward, we should now know better. Let’s go in heavy…</p>
+<h2 id="are-trade-offs-for-quick-iteration-worth-it">Are trade-offs for quick iteration worth it?</h2>
+<p>Unsurprisingly, and conforming to Betteridge’s law of headlines, the answer is no. But why? There’s nothing wrong with a quick script or a prototype. The problem is where to go from there. No good deed goes unpunished, and successful prototypes get used. You might say this is a good trade-off! But it gets old really quickly having to do the same steps to “productise” a prototype. And the cost of doing it afterwards instead of up-front is disproportionate. Which brings me to the next point.</p>
+<h2 id="static-type-checking-is-a-boon">Static type checking is a boon</h2>
+<p>Run-time type checking sucks for big projects. Period. It can work though, it just needs very diligent programmers. So a common trope is hire better programmers. This is obviously flawed. One reasoning might be this isn’t cost-effective - slightly dehumanising, but ok. No, the reason I find persuasive is I can’t be bothered to be that diligent! It’s a waste of my time, attention, and brain power. Type checking is something that computers are great at, it can be automated very well.</p>
+<p>There is a flip-side, I do think in a dynamic context, you have to think about control flow and data structures a bit more, so they may turn out more simple. With type checking, you can get away with more convoluted, horrible types that still seem workable but probably should’ve been refactored. I don’t think this is reason enough though, when the more common class of errors is typos or misunderstanding.</p>
+<p>So you want static type checking, which is much easier to do from the start. Just add <a href="http://mypy-lang.org/">Mypy</a>, a strict configuration, annotate everything like you would in a static type system, and you’re good to go. Right?</p>
+<h2 id="tribal-knowledge-tooling">Tribal knowledge tooling</h2>
+<p>Setting up a Python project with best practices is now non-trivial. If you know how to do it, the results are quite nice. Currently, my minimum setup is using <a href="https://python-poetry.org/">Poetry</a> for dependency management, <a href="https://black.readthedocs.io/en/stable/">Black</a> for auto-formatting, and the aforementioned <a href="http://mypy-lang.org/">Mypy</a> for static type checking. Maybe some linting. And then you have all these dependencies and configuration files to sort out for e.g. running CI checks.</p>
+<p>But compare this to Rust (or Golang, if you must. I have a strong dislike for it, which I’ll gloss over to not digress too hard). You get this all by default. Ignore the fact that Rust has the borrow-checker, and isn’t garbage collected. Java has a similar problem: Gradle vs Maven, although this debate is kinda settled. No decent/standardised auto-formatting. The point is the tooling!</p>
+<p>Regardless of the results, in some languages you need to know how to do it, and you need to do it every time. It’s tedious. It’s error-prone.</p>
+<p>Is it an unfair comparison? Sure, Python is a much older language. Of course newer languages should’ve learned from these issues. But where does that leave Python?</p>
+<h2 id="is-there-a-way-forward">Is there a way forward?</h2>
+<p>Maybe. Before Python 3, <a href="https://virtualenv.pypa.io/en/latest/">virtualenv</a> was a common requirement. But it got integrated into the standard library as <a href="https://docs.python.org/3/library/venv.html">venv</a>. The same could be done for Poetry, Black, and Mypy in e.g. Python 4. If only it were that easy.</p>
+<p>For Poetry, there’s also <a href="https://pipenv.pypa.io/en/latest/">Pipenv</a>, which is actually under the Python Packaging Authority (PyPA). I now strongly prefer Poetry. But also, <code>pip</code> is being improved, for example with an improved <a href="https://pip.pypa.io/en/latest/user_guide/#changes-to-the-pip-dependency-resolver-in-20-3-2020">dependency resolver</a>. I guess there’s also <a href="https://flit.readthedocs.io/en/latest/">Flit</a> and <a href="https://pypi.org/project/enscons/">Enscons</a> (?).</p>
+<p>For Mypy, there’s Google’s <a href="https://github.com/google/pytype">Pytype</a>, Facebook’s <a href="https://github.com/facebook/pyre-check">Pyre</a>, and Microsoft’s <a href="https://github.com/Microsoft/pyright">Pyright</a>. Oh dear.</p>
+<p>For Black, technically there’s others that nobody uses, like <a href="https://pypi.org/project/autopep8/">autopep8</a> and <a href="https://github.com/google/yapf">yapf</a>. They are effectively dead. But, Black doesn’t sort imports. So you might also need <a href="https://pycqa.github.io/isort/">isort</a> - except it struggles when the tool is installed outside a virtual environment, but dependencies are inside the virtual environment.</p>
+<p>There’s <a href="http://pylint.pycqa.org/en/latest/">Pylint</a>, <a href="https://flake8.pycqa.org/en/latest/">Flake8</a> (somewhat redundant with Black, it wraps PyFlakes, pycodestyle, and McCabe), and more.</p>
+<p>I haven’t even mentioned <a href="https://docs.pytest.org/en/stable/">pytest</a> (highly recommended) over the standard library’s <a href="https://docs.python.org/3/library/unittest.html">unittest</a>, and I’m sure I’ve forgotten others.</p>
+<p>What a mess.</p>
+<h2 id="is-there-any-hope">Is there any hope?</h2>
+<p>Maybe. Black is now the de-facto auto-formatter. This is because it is opinionated. I still have to occasionally lay out why consistency is more important than the exact rules a codebase previously had but were unenforced, but most devs just get it.</p>
+<p>I’d also call the <code>pyproject.toml</code> format a success (see <a href="https://www.python.org/dev/peps/pep-0518/">PEP 518</a> and related <a href="https://www.python.org/dev/peps/pep-0517/">PEP 517</a>). Many tools already support it or are moving to support it. But you only really get the full benefit when using a tool like Poetry, and all other tooling uses it (rather than <code>setup.cfg</code> or custom dot files).</p>
+<p>But on a whole, I’m not optimistic. Black is a miracle, and only because the previous tools were a lot worse. There was a void to fill. Python 4 probably can’t be too opinionated (for other reasons, too, you don’t want a reputation of breaking every major version).</p>
+<h2 id="comparing-apples-to-oranges">Comparing apples to oranges</h2>
+<p>Do I wish there was a garbage-collected Rust? Yeah. Do I wish there was a Rust REPL, or other prototyping tools like <a href="https://ipython.org/">IPython</a> or <a href="https://jupyter.org/">Jupyter Notebook</a>? You bet. Do I miss a robust, feature-complete standard library where I don’t have to pull in a <a href="https://crates.io/crates/zip">crate for ZIP files</a> that produces opaque errors that e.g. don’t include the filename that wasn’t found? Oh, and <a href="https://github.com/rust-lang/rust/issues/53487">backtraces</a> for errors?</p>
+<p>Do I wish I could statically compile Python into a stand-alone executable? Absolutely. And have a way to type-check incoming JSON like <a href="https://serde.rs/">serde</a> does/having something like serde at all in Python? 100% percent. Enums/algebraic data types (ADTs)?</p>
+<h2 id="closing">Closing</h2>
+<blockquote>
+<p>You can’t always get what you want / But if you try sometimes / Well, you might find / You get what you need</p>
+<p>Some rando Brits</p>
+</blockquote>
+<p>In 2020/2021, what I need looks more like Rust and less like Python to me. It just isn’t fun to program any more in Python. But it is in Rust. And a big part of that is tooling.</p>
+</article>
+<section>
+  <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid"></use></svg> <a href="https://tobywf.com/tag/python/">Python</a>, <a href="https://tobywf.com/tag/rust/">Rust</a></p>
+  <a href="https://tobywf.com/2020/12/intro-to-keymaps-and-layers/" class="newer">Newer <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-right-solid"></use></svg></a>
+  <a href="https://tobywf.com/2020/08/add-local-podcasts-macos-iphone/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid"></use></svg> Older</a>
+</section>
+<!-- content end -->
+    <footer>
+      <hr>
+      <p class="center">
+        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=correction&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2020%2F12%2Fpython-is-an-evolutionary-dead-end%2F">Corrections?</a>
+        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=feedback&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2020%2F12%2Fpython-is-an-evolutionary-dead-end%2F">Feedback?</a>
+      </p>
+      <p class="inline-block">
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#copyright"></use></svg> <span class="date cap">MMXII–MMXX</span>
+      </p>
+      <p class="inline-block">
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+          <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons"></use></svg> <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-by"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nc-eu"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nd"></use></svg> 4.0
+        </a>
+      </p>
+      <p>
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#child-solid"></use></svg> Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a tinkerer, scuba diver, and musician. He posts his personal ramblings here.
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
