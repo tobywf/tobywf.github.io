@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>GitHub Copilot’s chilling effects on Open Source - tobywf</title>
+  <meta charset="utf-8">
+  <meta name="author" content="Toby Fleming">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css">
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png">
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <ul>
+<!-- breadcrumbs start -->
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon"></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2021/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>'21</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2021/07/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>Jul</a></li>
+<li class="last"><a href="https://tobywf.com/cv/" class="cap">CV</a></li>
+<!-- breadcrumbs end -->
+      </ul>
+    </nav>
+<!-- content start -->
+<header class="post-head">
+  <h1>GitHub Copilot’s chilling effects on Open Source</h1>
+  <h2>(Software engineering and machine learning ethics)</h2>
+  <div class="infoline">
+    <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">5 Jul '21</span>
+  </div>
+</header>
+<article>
+<p><a href="https://copilot.github.com/">GitHub has launched Copilot</a>, “your AI pair programmer”:</p>
+<blockquote>
+<p>Trained on billions of lines of public code, GitHub Copilot puts the knowledge you need at your fingertips, saving you time and helping you stay focused.</p>
+<p><a href="https://copilot.github.com/">GitHub Copilot</a> landing page</p>
+</blockquote>
+<p>There is discussion <a href="https://juliareda.eu/2021/07/github-copilot-is-not-infringing-your-copyright/">if Copilot is or isn’t infringing copyright</a> (<a href="https://news.ycombinator.com/item?id=27736650">HackerNews</a>). Although this is a discussion that has to happen sometime, I’m no copyright expert. The legal system does not always work as expected. Laws take years or decades to catch up. To me, this is the wrong discussion.</p>
+<p>The discussion should be around ethics. GitHub themselves somewhat acknowledge something like this tangentially in the “Responsible AI” section of their FAQ (I would link to it, but there doesn’t seem any way to).</p>
+<p>Apparently, the “frequently asked” questions around “responsible AI” are:</p>
+<ul>
+<li>“Can GitHub Copilot introduce insecure code in its suggestions?”</li>
+<li>“Does GitHub Copilot produce offensive outputs?”</li>
+<li>“How will advanced code generation tools like GitHub Copilot affect developer jobs?”</li>
+</ul>
+<p>Ignoring the bile-inducing corporate/PR doublespeak:</p>
+<ul>
+<li>Unsurprisingly, the answer is <a href="https://jakearchibald.com/2021/encoding-data-for-post-requests/">yes, Copilot can introduce bad code</a> which may be insecure. In any case, it’s a black box, you’ll never know for sure.</li>
+<li>Unsurprisingly, the answer is <a href="https://twitter.com/mitsuhiko/status/1410886329924194309">yes, Copilot produces offensive outputs</a>, at least if swearing is offensive to you. In any case, it’s a black box, you’ll never know for sure.</li>
+<li>Who knows? <del>In any case, it’s a black box, you’ll never know for sure.</del> In any case, it isn’t our problem as long as we make money!</li>
+</ul>
+<p>Ok, let’s look at the “frequently asked” questions around the “training set”:</p>
+<ul>
+<li>“Why was GitHub Copilot trained on data from publicly available sources?”</li>
+</ul>
+<blockquote>
+<p>Training machine learning models on publicly available data is considered fair use across the machine learning community.</p>
+<p><a href="https://copilot.github.com/">GitHub Copilot</a> landing page</p>
+</blockquote>
+<p>Forgive me if I don’t hold the “machine learning community” in a high regard, but this doesn’t sound promising. Even <a href="https://en.wikipedia.org/wiki/Machine_learning#Ethics">Wikipedia has a section on machine learning ethics</a>, and, umm, it isn’t great.</p>
+<p>So we note nowhere does GitHub discuss “Should we do this?”, “Is it ethical to rip off other people’s code without credit or attribution, and avoid giving back?”, and “What are the effects of our attempt to make money, no matter what the cost?”. (I’m biased, whatever.)</p>
+<h2 id="so-is-it-ethical-to-rip-off-other-peoples-code-without-credit-or-attribution-and-avoid-giving-back">So, is it ethical to rip off other people’s code without credit or attribution, and avoid giving back?</h2>
+<p>Most “public code” - whatever that means - has licenses. Ignoring the legal implications, and a lot of people do not mind people copying code, but would at least like to be credited or attributed. Some people have other opinions or ideologies. <a href="https://choosealicense.com/">choosealicense.com</a>, a page provided by GitHub, acknowledges this is a reason people choose certain licenses:</p>
+<blockquote>
+<p>I care about sharing improvements.</p>
+<p><a href="https://choosealicense.com/">choosealicense.com</a>, one of the options for the prompt “Which of the following best describes your situation?”</p>
+</blockquote>
+<p>As a side note, the page footer says “Curated with ❤️ by GitHub, Inc. and You!” - or not, because we’ll trample on your wishes if we can make money.</p>
+<p>Hey, and look at this: even <a href="https://choosealicense.com/licenses/mit/">the MIT License</a> requires “the above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.” Now you can of course argue about “substantial portions”, the point is one of the most lenient licenses has the concept of “we’d like it if you say where this comes from” (at least, that’s how I read it).</p>
+<p>It’s good to be nice. Once I was porting some code from C to Python (I think) and reached out to the original developer asking if they’d be okay with this. Not because the license required me to, simply out of courtesy. Maybe the author didn’t want a “fork” in a more popular language? Maybe they wanted some input as to where the repo is hosted? The point is software development is collaborative - even a one-person project is once it’s out in the world.</p>
+<h2 id="effects-on-open-source-and-machine-learning">Effects on open source and machine learning</h2>
+<p>Of course, not everybody will see Copilot being an affront to open source. Or it might take a while.</p>
+<p>In the meantime, migrating from GitHub isn’t hard. I think that’s a natural first step. <a href="https://gitea.io/">Gitea</a> exists, and apparently <a href="https://jpmens.net/2019/04/15/i-mirror-my-github-repositories-to-gitea/">it isn’t difficult to mirror repos from GitHub to Gitea</a>. <a href="https://about.gitlab.com/">GitLab</a> exists, and <a href="https://docs.gitlab.com/ee/user/project/import/github.html">it’s trivial to import projects from GitHub to GitLab</a>. Turns out their moat isn’t so big, at least for me. But it isn’t even clear that switching to another provider will make code “safe” from being plagiarized by Copilot.</p>
+<p>GitHub is playing a dangerous game, with chilling effects in the entire software industry. They clearly think they’re going to “win”, but what does that look like? Is Copilot worth the risk? It doesn’t matter, you can’t close Pandora’s box.</p>
+<p>Here’s the billion dollar question: Are people going to think long and hard before open-sourcing something now? I know I will. Maybe people will even take down code. After all, it might be too late for the Copilot issue, but not for future “AI” crap.</p>
+<p>Sadly, this short-term and selfish thinking exactly what you expect from a US corporation. And it’s incompatible with open source, or at least my view of it.</p>
+<p>At the same time, they also risk having a precedent set against the flimsy “fair use” argument. And personally, I can’t wait to see a license that forbids using code with machine learning/AI. If I’m able to, I’ll re-license in a heartbeat.</p>
+<p>If you’re an open source developer, I hope you’ll think a bit about what Copilot means for the open source community. Maybe consider migrating away from GitHub. And I’d love to see a broader discussion on ethics in our field.</p>
+</article>
+<section>
+  <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid"></use></svg> <a href="https://tobywf.com/tag/git/">git</a>, <a href="https://tobywf.com/tag/rant/">rant</a></p>
+  <a href="https://tobywf.com/2021/02/python-ext-asan/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid"></use></svg> Older</a>
+</section>
+<!-- content end -->
+    <footer>
+      <hr>
+      <p class="center">
+        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=correction&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2021%2F07%2Fcopilot-chilling-effects-and-ethics%2F">Corrections?</a>
+        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=feedback&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2021%2F07%2Fcopilot-chilling-effects-and-ethics%2F">Feedback?</a>
+      </p>
+      <p class="inline-block">
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#copyright"></use></svg> <span class="date cap">MMXII–MMXXI</span>
+      </p>
+      <p class="inline-block">
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+          <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons"></use></svg> <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-by"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nc-eu"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nd"></use></svg> 4.0
+        </a>
+      </p>
+      <p>
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#child-solid"></use></svg> Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a tinkerer, scuba diver, and musician. He posts his personal ramblings here.
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
