@@ -22,7 +22,7 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>gzip compression for S3 uploads with boto3</h1>
+  <h1>gzip compression for S3 uploads with boto3</h1>
   <div class="infoline">
     <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">2 Jun '17</span>
   </div>
@@ -30,19 +30,20 @@
 <article>
 <p><a href="https://boto3.readthedocs.io/en/latest/">boto3</a> doesn’t do compressed
 uploading, probably because  S3 is pretty cheap, and in most cases it’s simply
-not worth the effort.</p>
+not worth the effort.</p>
 <p>But for text files, compression can be over 10x (e.g. uncompressed 50MiB,
 compressed 5MiB). And if you allow downloads from S3, and you use gzip,
 browsers can uncompress the file automatically on download. This is awesome if
 you have e.g. the sales team download a huge CSV file! (To get this to work,
-you’ll need to set the correct content type. Browsers care about that, boto3 doesn’t.)</p>
+you’ll need to set the correct content type. Browsers care about that, boto3
+doesn’t.)</p>
 <p>Sadly, Python’s <a href="https://docs.python.org/3/library/gzip.html">gzip library</a>
 is a bit confusing to use. Also, you need to know the final file size to upload
-files to S3. So the compression needs to be performed in advance.</p>
+files to S3. So the compression needs to be performed in advance.</p>
 <p>For well-compressible files, I compress them in memory, but for truly large
 files, you can pass in e.g. a
 <a href="https://docs.python.org/3/library/tempfile.html#tempfile.TemporaryFile">TemporaryFile</a>
-to allow better scaling. See for yourself:</p>
+to allow better scaling. See for yourself:</p>
 <script src="https://gist.github.com/tobywf/079b36898d39eeb1824977c6c2f6d51e.js"></script>
 </article>
 <section>

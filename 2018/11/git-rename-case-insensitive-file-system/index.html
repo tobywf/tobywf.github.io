@@ -22,14 +22,14 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Renaming folders in Git on case insensitive file systems</h1>
+  <h1>Renaming folders in Git on case insensitive file systems</h1>
   <div class="infoline">
     <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">24 Nov '18</span>
   </div>
 </header>
 <article>
-<p>(<a href="#tldr">Skip to the TL;DR</a> if you’re in a hurry)</p>
-<p>It’s best not to use git on a case insensitive file system. But hindsight is 20/20, and here I am, with a messed up repo:</p>
+<p>(<a href="#tldr">Skip to the TL;DR</a> if you’re in a hurry)</p>
+<p>It’s best not to use git on a case insensitive file system. But hindsight is 20/20, and here I am, with a messed up repo:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>ls -1
 <span class="go">A Space</span>
 <span class="go">Upper</span>
@@ -45,17 +45,17 @@
 <span class="go">lower/.gitkeep</span>
 </code></pre></div>
 
-<p>Oh no, git hasn’t picked up the rename, since it knows the file system is case insensitive. (In the example, it’s easy to fix, when I hit the issue, there were ~80 directories.)</p>
-<p>First, it’s clear we need to use git commands to show the paths, not the paths on the file system, i.e. <code>find</code> is out.</p>
-<p><code>git ls-files</code> is okay, but <a href="https://git-scm.com/docs/git-ls-tree"><code>git ls-tree</code></a> works better. Here are the switches:</p>
+<p>Oh no, git hasn’t picked up the rename, since it knows the file system is case insensitive. (In the example, it’s easy to fix, when I hit the issue, there were ~80 directories.)</p>
+<p>First, it’s clear we need to use git commands to show the paths, not the paths on the file system, i.e. <code>find</code> is out.</p>
+<p><code>git ls-files</code> is okay, but <a href="https://git-scm.com/docs/git-ls-tree"><code>git ls-tree</code></a> works better. Here are the switches:</p>
 <ul>
 <li>
-<a href="https://git-scm.com/docs/git-ls-tree#git-ls-tree--d"><code>-d</code></a>: “Show only the named tree entry itself, not its children.” (i.e. directories)</li>
+<a href="https://git-scm.com/docs/git-ls-tree#git-ls-tree--d"><code>-d</code></a>: “Show only the named tree entry itself, not its children.” (i.e. directories)</li>
 <li>
-<a href="https://git-scm.com/docs/git-ls-tree#git-ls-tree--r"><code>-r</code></a>: “Recurse into sub-trees.”</li>
+<a href="https://git-scm.com/docs/git-ls-tree#git-ls-tree--r"><code>-r</code></a>: “Recurse into sub-trees.”</li>
 </ul>
-<p><code>--full-tree</code> is also useful, especially for scripts, but I’m going to ignore it.</p>
-<p>Here’s the repo after I’ve added some nested directories for the demo:</p>
+<p><code>--full-tree</code> is also useful, especially for scripts, but I’m going to ignore it.</p>
+<p>Here’s the repo after I’ve added some nested directories for the demo:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>git ls-tree -dr HEAD
 <span class="go">040000 tree d564d0bc3dd917926892c55e3706cc116d5b165e    A Space</span>
 <span class="go">040000 tree d564d0bc3dd917926892c55e3706cc116d5b165e    Upper</span>
@@ -75,15 +75,15 @@
 <span class="go">nested/lower</span>
 </code></pre></div>
 
-<p>For further processing, I’m going to use <code>perl</code> instead of <code>awk</code>. It’s more portable (there are several <code>awk</code> variants), and easier to read (crazy, I know).</p>
+<p>For further processing, I’m going to use <code>perl</code> instead of <code>awk</code>. It’s more portable (there are several <code>awk</code> variants), and easier to read (crazy, I know).</p>
 <p>Here are the switches (<a href="http://perldoc.perl.org/perlrun.html#Command-Switches">perlrun</a>):</p>
 <ul>
 <li>
-<code>-e commandline</code>: “may be used to enter one line of program. […]”</li>
+<code>-e commandline</code>: “may be used to enter one line of program. […]”</li>
 <li>
-<code>-Fpattern</code>: “specifies the pattern to split on […]”</li>
+<code>-Fpattern</code>: “specifies the pattern to split on […]”</li>
 <li>
-<code>-l[octnum]</code>: “enables automatic line-ending processing. […]”, basically strips newlines on input and adds them on output</li>
+<code>-l[octnum]</code>: “enables automatic line-ending processing. […]”, basically strips newlines on input and adds them on output</li>
 </ul>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>git ls-tree -dr HEAD <span class="p">|</span> <span class="se">\</span>
 <span class="gp">&gt; </span>  perl -lF<span class="s1">'\t'</span> <span class="se">\</span>
@@ -105,12 +105,12 @@
 <span class="go">nested/upper</span>
 </code></pre></div>
 
-<p>So now I have only folders with upper case in the names, and the lower case version of that, which is useful for the rename. Using <a href="https://linux.die.net/man/1/xargs"><code>xargs</code></a> to apply two consecutive lines to a command:</p>
+<p>So now I have only folders with upper case in the names, and the lower case version of that, which is useful for the rename. Using <a href="https://linux.die.net/man/1/xargs"><code>xargs</code></a> to apply two consecutive lines to a command:</p>
 <ul>
 <li>
-<code>-d delim</code>: “Input items are terminated by the specified character. […]”, need to set this to newline otherwise <code>xargs</code> will split on a space also</li>
+<code>-d delim</code>: “Input items are terminated by the specified character. […]”, need to set this to newline otherwise <code>xargs</code> will split on a space also</li>
 <li>
-<code>-L max-lines</code>: “Use at most max-lines nonblank input lines per command line. […]”</li>
+<code>-L max-lines</code>: “Use at most max-lines nonblank input lines per command line. […]”</li>
 </ul>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>git ls-tree -dr HEAD <span class="p">|</span> <span class="se">\</span>
 <span class="gp">&gt; </span>  perl -lF<span class="s1">'\t'</span> <span class="se">\</span>
@@ -121,8 +121,8 @@
 <span class="go">"nested/Upper" "nested/upper"</span>
 </code></pre></div>
 
-<p>Good to see spaces aren’t an issue.</p>
-<p>To avoid the error <code>fatal: renaming 'foldername' failed: Invalid argument</code>, I’m going to use a temporary directory for the rename (<a href="https://stackoverflow.com/questions/11183788/in-a-git-repository-how-to-properly-rename-a-directory">via stackoverflow</a>). It’s a good idea to check if you already have a directory called <code>temp</code>, and use a different name if required.</p>
+<p>Good to see spaces aren’t an issue.</p>
+<p>To avoid the error <code>fatal: renaming 'foldername' failed: Invalid argument</code>, I’m going to use a temporary directory for the rename (<a href="https://stackoverflow.com/questions/11183788/in-a-git-repository-how-to-properly-rename-a-directory">via stackoverflow</a>). It’s a good idea to check if you already have a directory called <code>temp</code>, and use a different name if required.</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>git ls-tree -dr HEAD <span class="p">|</span> cut -f2
 <span class="go">A Space</span>
 <span class="go">Upper</span>
@@ -150,7 +150,7 @@
 <span class="go">upper</span>
 </code></pre></div>
 
-<p>Boom, done.</p>
+<p>Boom, done.</p>
 <h2 id="tldr">TL;DR</h2>
 <div class="codehilite"><pre><span></span><code><span class="go">git ls-tree -dr HEAD | \</span>
 <span class="go">  perl -lF'\t' \</span>

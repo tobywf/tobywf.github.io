@@ -22,7 +22,7 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Quick and dirty git server</h1>
+  <h1>Quick and dirty git server</h1>
   <div class="infoline">
     <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">2 Nov '16</span>
   </div>
@@ -41,28 +41,28 @@
     .git/
 </code></pre></div>
 
-<p>Guests can now clone from you: <code>git clone git://blah/my_repo</code>. Note that this is completely unauthenticated read-only access!</p>
-<p>If you’re lazy like me, you can create an alias so all you have to type is <code>git serve</code> (from the root of the repo):</p>
+<p>Guests can now clone from you: <code>git clone git://blah/my_repo</code>. Note that this is completely unauthenticated read-only access!</p>
+<p>If you’re lazy like me, you can create an alias so all you have to type is <code>git serve</code> (from the root of the repo):</p>
 <div class="codehilite"><pre><span></span><code><span class="k">[alias]</span><span class="w"></span>
 <span class="w">    </span><span class="na">serve</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">!git daemon --verbose --reuseaddr --export-all --strict-paths --base-path=.git .git/</span><span class="w"></span>
 </code></pre></div>
 
-<p>So what do the options mean?</p>
+<p>So what do the options mean?</p>
 <ul>
 <li>
-<code>--verbose</code> prints all connection attempts to stdout.</li>
+<code>--verbose</code> prints all connection attempts to stdout.</li>
 <li>
-<code>--reuseaddr</code> stops old connections from causing issues when restarting the server.</li>
+<code>--reuseaddr</code> stops old connections from causing issues when restarting the server.</li>
 <li>
 <code>--export-all</code> means <code>git deamon</code> will allow pulling from repositories without a <code>git-daemon-export-ok</code> file.</li>
 <li>
-<code>--strict-paths</code> isn’t so important for single-repo sharing, but avoids oversharing issues if you accidentally run the daemon from the wrong directory.</li>
+<code>--strict-paths</code> isn’t so important for single-repo sharing, but avoids oversharing issues if you accidentally run the daemon from the wrong directory.</li>
 <li>
-<code>--base-path=.git</code> remaps the path so guests don’t need to know where the repo is hosted on your machine, only the repo name.</li>
+<code>--base-path=.git</code> remaps the path so guests don’t need to know where the repo is hosted on your machine, only the repo name.</li>
 <li>
-<code>.git/</code> - this is the directory of the bare repo to whitelist/share. In other words, only share the git repository data, not your working directory.</li>
+<code>.git/</code> - this is the directory of the bare repo to whitelist/share. In other words, only share the git repository data, not your working directory.</li>
 </ul>
-<p>You might need to punch through your firewall. On Ubuntu, if you are using <code>iptables</code>, this is how you can check if you’ve already added a firewall rule and how to add a firewall exception. I believe this lasts until you restart:</p>
+<p>You might need to punch through your firewall. On Ubuntu, if you are using <code>iptables</code>, this is how you can check if you’ve already added a firewall rule and how to add a firewall exception. I believe this lasts until you restart:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>sudo iptables -nL <span class="p">|</span> grep <span class="m">9418</span>
 <span class="gp">$ </span>sudo iptables -I INPUT <span class="m">1</span> -p tcp --dport <span class="m">9418</span> -j ACCEPT
 </code></pre></div>

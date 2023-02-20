@@ -22,18 +22,18 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Using a virtual environment for system tools</h1>
+  <h1>Using a virtual environment for system tools</h1>
   <div class="infoline">
     <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">19 Nov '15</span> — last updated <span class="date">11 Jan '16</span>
   </div>
 </header>
 <article>
-<p>Update: You’ll probably want to use the <a href="https://github.com/mitsuhiko/pipsi">pip script installer aka. pipsi</a> instead of this method, although pipsi does have some drawbacks.</p>
+<p>Update: You’ll probably want to use the <a href="https://github.com/mitsuhiko/pipsi">pip script installer aka. pipsi</a> instead of this method, although pipsi does have some drawbacks.</p>
 <p>In line with <a href="https://tobywf.com/2015/11/distributing-python/">the post from yesterday</a>, I thought I’d share a nifty trick that I’ve been using for a while. I set up a virtual environment in my home directory, and symlink the applications to <code>/usr/local/bin/</code>.</p>
-<p>Actually, that’s a lie. I’m lazy, so I add the <code>bin/</code> directory to <code>$PATH</code>. <strong>Warning</strong>: If you do this, you need to make absolutely sure that you set the order to match the behaviour you want. “Unexpected” things happen if you add it to the front of <code>$PATH</code> and you then forget that <code>pip</code> and <code>python</code> now constantly point to the virtualenv. But maybe, that’s what you want? It actually works fine (not a guarantee :P).</p>
-<p>There is a drawback: If installed via a package manager, tools will get updated via that method also. With a virtualenv, you have to remember to update it yourself.</p>
-<p>Total separation from the OS is a pretty big bonus though. It’s easy to install specific versions, and if I update or mess with the site packages, nothing the system relies on will fall over. Since I found myself not using the tools in the long term LTS repositories because they’re out of date, this works well for me.</p>
-<p>(Now you can also see why making projects into wheels is so useful: clean installation in any virtualenv.)</p>
+<p>Actually, that’s a lie. I’m lazy, so I add the <code>bin/</code> directory to <code>$PATH</code>. <strong>Warning</strong>: If you do this, you need to make absolutely sure that you set the order to match the behaviour you want. “Unexpected” things happen if you add it to the front of <code>$PATH</code> and you then forget that <code>pip</code> and <code>python</code> now constantly point to the virtualenv. But maybe, that’s what you want? It actually works fine (not a guarantee :P).</p>
+<p>There is a drawback: If installed via a package manager, tools will get updated via that method also. With a virtualenv, you have to remember to update it yourself.</p>
+<p>Total separation from the OS is a pretty big bonus though. It’s easy to install specific versions, and if I update or mess with the site packages, nothing the system relies on will fall over. Since I found myself not using the tools in the long term LTS repositories because they’re out of date, this works well for me.</p>
+<p>(Now you can also see why making projects into wheels is so useful: clean installation in any virtualenv.)</p>
 </article>
 <section>
   <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid"></use></svg> <a href="https://tobywf.com/tag/python/">Python</a></p>

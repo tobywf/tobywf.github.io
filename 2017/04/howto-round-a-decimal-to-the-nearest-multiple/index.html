@@ -22,41 +22,41 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Howto round a decimal up or down to the nearest multiple</h1>
+  <h1>Howto round a decimal up or down to the nearest multiple</h1>
   <div class="infoline">
     <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">10 Apr '17</span>
   </div>
 </header>
 <article>
-<p><a href="https://gist.github.com/tobywf/b0f67e9e414e41813c1590ed1ea39e2c">Take me to the code, dammit</a>. (I strongly recommend you look at the explanation. But then I would say that.)</p>
-<p>Say you live in a country without 1, 5, or 10 cent coins (or the monetary equivalent), and you need to round a <a href="https://docs.python.org/3/library/decimal.html"><code>Decimal</code></a> number to 20 or 25 cents. Unfortunately, the <a href="https://docs.python.org/3/library/decimal.html#decimal.Decimal.quantize"><code>quantize</code></a> method will only round your number to the argument’s exponent:</p>
+<p><a href="https://gist.github.com/tobywf/b0f67e9e414e41813c1590ed1ea39e2c">Take me to the code, dammit</a>. (I strongly recommend you look at the explanation. But then I would say that.)</p>
+<p>Say you live in a country without 1, 5, or 10 cent coins (or the monetary equivalent), and you need to round a <a href="https://docs.python.org/3/library/decimal.html"><code>Decimal</code></a> number to 20 or 25 cents. Unfortunately, the <a href="https://docs.python.org/3/library/decimal.html#decimal.Decimal.quantize"><code>quantize</code></a> method will only round your number to the argument’s exponent:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Decimal</span><span class="p">(</span><span class="s1">'0.3'</span><span class="p">)</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">'0.2'</span><span class="p">))</span>
 <span class="go">Decimal('0.3')</span>
 </code></pre></div>
 
-<p>What we really want is the number rounded to the nearest multiple:</p>
+<p>What we really want is the number rounded to the nearest multiple:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">round_up</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">'0.3'</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">'0.2'</span><span class="p">))</span>
 <span class="go">Decimal('0.4')</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">round_down</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">'0.3'</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">'0.2'</span><span class="p">))</span>
 <span class="go">Decimal('0.2')</span>
 </code></pre></div>
 
-<p>Luckily, this isn’t too difficult. But before I show the code, I want to walk through the operations we’ll perform. And don’t worry if maths isn’t your strong suit. In these examples, we’ll round 30 cents (0.3) to the nearest 20 cents (0.2), as indicated by the dotted line. First up, rounding down:</p>
+<p>Luckily, this isn’t too difficult. But before I show the code, I want to walk through the operations we’ll perform. And don’t worry if maths isn’t your strong suit. In these examples, we’ll round 30 cents (0.3) to the nearest 20 cents (0.2), as indicated by the dotted line. First up, rounding down:</p>
 <p><img alt="Graphical representation of the rounding down maths operations" src="https://tobywf.com/2017/04/howto-round-a-decimal-to-the-nearest-multiple/images/2017-04-10-rounding-down.svg"></p>
 <ol>
-<li>Rescale the number continuum, so that 0.2 is equal to 1, and 0.3 becomes 1.5</li>
-<li>Round down to the nearest integer, so 1.5 becomes 1</li>
-<li>Rescale the number continuum, so that 1 is equal to 0.2, i.e. the original scale has been restored</li>
+<li>Rescale the number continuum, so that 0.2 is equal to 1, and 0.3 becomes 1.5</li>
+<li>Round down to the nearest integer, so 1.5 becomes 1</li>
+<li>Rescale the number continuum, so that 1 is equal to 0.2, i.e. the original scale has been restored</li>
 </ol>
-<p>Rounding up is pretty much the same:</p>
+<p>Rounding up is pretty much the same:</p>
 <p><img alt="Graphical representation of the rounding up maths operations" src="https://tobywf.com/2017/04/howto-round-a-decimal-to-the-nearest-multiple/images/2017-04-10-rounding-up.svg"></p>
 <ol>
-<li>Rescale the number continuum, so that 0.2 is equal to 1, and 0.3 becomes 1.5</li>
-<li>Round up to the nearest integer, so 1.5 becomes 2</li>
-<li>Rescale the number continuum, so that 1 is equal to 0.2, i.e. the original scale has been restored</li>
+<li>Rescale the number continuum, so that 0.2 is equal to 1, and 0.3 becomes 1.5</li>
+<li>Round up to the nearest integer, so 1.5 becomes 2</li>
+<li>Rescale the number continuum, so that 1 is equal to 0.2, i.e. the original scale has been restored</li>
 </ol>
-<p>Finally, here’s the code. It even has unit tests, which probe the behaviour over various precision levels, exponents and values.</p>
+<p>Finally, here’s the code. It even has unit tests, which probe the behaviour over various precision levels, exponents and values.</p>
 <script src="https://gist.github.com/tobywf/b0f67e9e414e41813c1590ed1ea39e2c.js"></script>
 </article>
 <section>

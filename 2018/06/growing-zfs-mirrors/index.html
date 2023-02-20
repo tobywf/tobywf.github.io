@@ -22,18 +22,18 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Growing ZFS mirrors</h1>
+  <h1>Growing ZFS mirrors</h1>
   <div class="infoline">
     <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">30 Jun '18</span>
   </div>
 </header>
 <article>
-<p>I have long contended that for small, home NAS systems, <a href="https://tobywf.com/2016/01/home-nas-build-guide/">mirrors are the way to go</a>. You don’t have to calculate how much parity you need, similarly, the backup size is also obvious. It costs less upfront, you only need two disks. And because you only need two disks, you can get the biggest disks you can afford, which usually have excellent GB/cent cost ratios.</p>
-<p>Finally, you can grow mirrors! As long as your storage needs don’t outstrip storage space growth, you can grow your mirrors very economically. Case in point, I was running a 2TB mirror which was getting close to 80% full. I was able to buy 8TB disks <a href="https://tobywf.com/2018/06/shucking-8tb-wd-easystores/">very cheaply</a>, and grow my mirror to 8TB.</p>
-<p>First things first, <strong>don’t be an idiot</strong>, this guide is how to modify storage. Triple check everything, and make sure you have backups. This guide also assumes the disks are blank, i.e. unformatted.</p>
-<h2 id="step-1-install-new-drive">Step 1: Install new drive</h2>
-<p>I had no spare bays/SATA connections, but if you did, you could potentially do this in a more safer way by adding the new disks to a mirror to create a 3 or 4-way mirror, and then pulling the old disks out.</p>
-<p>I had to do it more riskily by degrading the mirror. First, I powered down the NAS. Then I replaced one of the old disks in the mirror with a new one and powered up again. First, let’s check the right disk was pulled:</p>
+<p>I have long contended that for small, home NAS systems, <a href="https://tobywf.com/2016/01/home-nas-build-guide/">mirrors are the way to go</a>. You don’t have to calculate how much parity you need, similarly, the backup size is also obvious. It costs less upfront, you only need two disks. And because you only need two disks, you can get the biggest disks you can afford, which usually have excellent GB/cent cost ratios.</p>
+<p>Finally, you can grow mirrors! As long as your storage needs don’t outstrip storage space growth, you can grow your mirrors very economically. Case in point, I was running a 2TB mirror which was getting close to 80% full. I was able to buy 8TB disks <a href="https://tobywf.com/2018/06/shucking-8tb-wd-easystores/">very cheaply</a>, and grow my mirror to 8TB.</p>
+<p>First things first, <strong>don’t be an idiot</strong>, this guide is how to modify storage. Triple check everything, and make sure you have backups. This guide also assumes the disks are blank, i.e. unformatted.</p>
+<h2 id="step-1-install-new-drive">Step 1: Install new drive</h2>
+<p>I had no spare bays/SATA connections, but if you did, you could potentially do this in a more safer way by adding the new disks to a mirror to create a 3 or 4-way mirror, and then pulling the old disks out.</p>
+<p>I had to do it more riskily by degrading the mirror. First, I powered down the NAS. Then I replaced one of the old disks in the mirror with a new one and powered up again. First, let’s check the right disk was pulled:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>zpool status pool
 <span class="go">  pool: pool</span>
 <span class="go"> state: DEGRADED</span>
@@ -53,7 +53,7 @@
 <span class="go">errors: No known data errors</span>
 </code></pre></div>
 
-<p>As expected, the mirror is degraded. So, now to figure out which drive is the new drive:</p>
+<p>As expected, the mirror is degraded. So, now to figure out which drive is the new drive:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>ls -1 /dev/ada*
 <span class="go">/dev/ada0</span>
 <span class="go">/dev/ada1</span>
@@ -66,7 +66,7 @@
 </code></pre></div>
 
 <p>What’s going on? Well, drives are mounted in <code>/dev</code> and receive a name, e.g. <code>ada1</code>. The partitions are also mounted as <code>/dev/ada1p1</code> and <code>/dev/ada1p2</code>. So it’s already pretty obvious that the new drive is <code>ada0</code>.</p>
-<p>Just to check, we’ll look at the labels and partitions. BSD labels drives with UUIDs, since the name assigned in <code>/dev</code> is basically random, and drives could get reassigned on start-up.</p>
+<p>Just to check, we’ll look at the labels and partitions. BSD labels drives with UUIDs, since the name assigned in <code>/dev</code> is basically random, and drives could get reassigned on start-up.</p>
 <div class="codehilite"><pre><span></span><code>$ glabel status
                                       Name  Status  Components
 gptid/23edea4a-1742-11e8-b551-28924a390410     N/A  da0p1
@@ -89,14 +89,14 @@ $ glabel list <span class="p">|</span> grep ada0
 $
 </code></pre></div>
 
-<p>Ignore <code>da0</code>, it is the OS USB disk. The blank disk is <code>ada0</code>, it has no labels or partition map.</p>
-<h2 id="step-2-create-gpt-partition-map">Step 2: Create GPT partition map</h2>
-<p>Create the partition map on the new disk:</p>
+<p>Ignore <code>da0</code>, it is the OS USB disk. The blank disk is <code>ada0</code>, it has no labels or partition map.</p>
+<h2 id="step-2-create-gpt-partition-map">Step 2: Create GPT partition map</h2>
+<p>Create the partition map on the new disk:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>sudo gpart create -s gpt ada0
 <span class="go">ada0 created</span>
 </code></pre></div>
 
-<p>Now re-create partitions similar to the other disk in the mirror. My distro FreeNAS allocates a bit of swap space on all drives, so we want to replicate that. Get the parameters for <code>gpart add</code> from <code>gpart list</code>, <code>-t</code> is the type, <code>-b</code> is the the starting offset, <code>-i</code> is the index, and <code>-s</code> is the size. I don’t know why FreeNAS sets a starting offset for the swap partition, but whatever.</p>
+<p>Now re-create partitions similar to the other disk in the mirror. My distro FreeNAS allocates a bit of swap space on all drives, so we want to replicate that. Get the parameters for <code>gpart add</code> from <code>gpart list</code>, <code>-t</code> is the type, <code>-b</code> is the the starting offset, <code>-i</code> is the index, and <code>-s</code> is the size. I don’t know why FreeNAS sets a starting offset for the swap partition, but whatever.</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>gpart show ada0
 <span class="go">=&gt;         40  15628053088  ada0  GPT  (7.3T)</span>
 <span class="go">           40  15628053088        - free -  (7.3T)</span>
@@ -166,8 +166,8 @@ $
 <span class="go">  3907029120           8        - free -  (4.0K)</span>
 </code></pre></div>
 
-<h2 id="step-3-add-the-new-diskpartition-to-the-mirror">Step 3: Add the new disk/partition to the mirror</h2>
-<p>Now that the disk has a label/UUID, it’s time to stop referring to it as <code>ada0</code> where possible.</p>
+<h2 id="step-3-add-the-new-diskpartition-to-the-mirror">Step 3: Add the new disk/partition to the mirror</h2>
+<p>Now that the disk has a label/UUID, it’s time to stop referring to it as <code>ada0</code> where possible.</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>glabel status
 <span class="go">                                      Name  Status  Components</span>
 <span class="go">gptid/23edea4a-1742-11e8-b551-28924a390410     N/A  da0p1</span>
@@ -226,10 +226,10 @@ $
 <span class="go">errors: No known data errors</span>
 </code></pre></div>
 
-<h2 id="step-4-wait">Step 4: Wait</h2>
-<p>Resilvering takes time.</p>
-<h2 id="step-5-repeat-with-the-other-drive-in-the-mirror">Step 5: Repeat with the other drive in the mirror</h2>
-<p>And please make sure you pull the right drive!</p>
+<h2 id="step-4-wait">Step 4: Wait</h2>
+<p>Resilvering takes time.</p>
+<h2 id="step-5-repeat-with-the-other-drive-in-the-mirror">Step 5: Repeat with the other drive in the mirror</h2>
+<p>And please make sure you pull the right drive!</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>zpool status pool
 <span class="go">  pool: pool</span>
 <span class="go"> state: DEGRADED</span>
@@ -271,7 +271,7 @@ $
 <span class="go">errors: No known data errors</span>
 </code></pre></div>
 
-<h2 id="step-6-detach-old-disks-and-watch-the-mirror-grow">Step 6: Detach old disks and watch the mirror grow</h2>
+<h2 id="step-6-detach-old-disks-and-watch-the-mirror-grow">Step 6: Detach old disks and watch the mirror grow</h2>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>sudo zpool detach pool <span class="m">11300205822825511459</span>
 <span class="gp">$ </span>zpool status pool <span class="p">|</span> grep <span class="s1">'state:'</span>
 <span class="go"> state: DEGRADED</span>
@@ -295,7 +295,7 @@ $
 <span class="go">freenas-boot  7.44G</span>
 </code></pre></div>
 
-<p>Job done.</p>
+<p>Job done.</p>
 </article>
 <section>
   <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid"></use></svg> <a href="https://tobywf.com/tag/zfs/">ZFS</a>, <a href="https://tobywf.com/tag/freenas/">FreeNAS</a>, <a href="https://tobywf.com/tag/nas/">NAS</a>, <a href="https://tobywf.com/tag/storage/">storage</a>, <a href="https://tobywf.com/tag/bsd/">BSD</a></p>

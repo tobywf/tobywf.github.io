@@ -22,7 +22,7 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Extracting Emojis from TTF fonts as PNG files</h1>
+  <h1>Extracting Emojis from TTF fonts as PNG files</h1>
   <h2>aka. exploring the wonderful world of TrueType and sbix tables</h2>
   <div class="infoline">
     <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">5 Apr '20</span>
@@ -33,11 +33,13 @@
 is because of something called <a href="https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6sbix.html">the sbix
 table</a>
 contains the emojis as PNG files. Using the
-<a href="https://pypi.org/project/fonttools/">fonttools</a> package and Python, it’s almost trivial:</p>
+<a href="https://pypi.org/project/fonttools/">fonttools</a> package and Python, it’s almost
+trivial:</p>
 <script src="https://gist.github.com/tobywf/6c313982c43da272698375bd1b41617f.js"></script>
 
 <p>This seems to work great for e.g. <code>AppleColorEmoji.ttf</code>. The output is a bit
-obscure, since you have to look it up via Unicode codepoint, but this is just a proof-of-concept.</p>
+obscure, since you have to look it up via Unicode codepoint, but this is just a
+proof-of-concept.</p>
 </article>
 <section>
   <a href="https://tobywf.com/2020/04/backup-all-gists-from-github/" class="newer">Newer <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-right-solid"></use></svg></a>

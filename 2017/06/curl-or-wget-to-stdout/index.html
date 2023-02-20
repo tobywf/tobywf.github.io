@@ -22,14 +22,14 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>curl or wget to stdout</h1>
+  <h1>curl or wget to stdout</h1>
   <div class="infoline">
     <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">11 Jun '17</span>
   </div>
 </header>
 <article>
 <p>I’m used to having <code>curl</code> available on machines, but occasionally there’s only
-<code>wget</code> installed. These two commands do the same thing:</p>
+<code>wget</code> installed. These two commands do the same thing:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>curl -sL <span class="nv">$URL</span> &gt; blah
 <span class="gp">$ </span>wget -qO - <span class="nv">$URL</span> &gt; blah
 </code></pre></div>

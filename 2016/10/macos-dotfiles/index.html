@@ -22,7 +22,7 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>My dotfiles updated for macOS Sierra (10.12)</h1>
+  <h1>My dotfiles updated for macOS Sierra (10.12)</h1>
   <div class="infoline">
     <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">15 Oct '16</span>
   </div>
@@ -31,39 +31,40 @@
 <p>To skip the waffle, <a href="https://github.com/tobywf/dotfiles">go straight to the dotfiles</a>.</p>
 <hr>
 <p>Previously, I had tried to use Ansible to maintain my dotfiles over both
-OSX and Linux machines. It was however very tedious keeping everything in sync.</p>
+OSX and Linux machines. It was however very tedious keeping everything in
+sync.</p>
 <p>Then I found out how to use <a href="https://developer.atlassian.com/blog/2016/02/best-way-to-store-dotfiles-git-bare-repo/">a bare git repo</a> to maintain dotfiles. I find this
 approach ingenious, as there is no symlinking or any other shenanigans. Just
 edit the dotfiles as normal, and git will track the changes. The fact that
 it’s a bare repo means you can put it anywhere, which means you can version the
-whole of <code>$HOME</code>, but you don’t get messy nested git repos.</p>
+whole of <code>$HOME</code>, but you don’t get messy nested git repos.</p>
 <p>The (small) downside is you have to specify the location of the bare repo for
 each operation. The solution is an alias for your favourite shell. I chose to
 make a new alias/command called <code>dot</code>.</p>
 <p>I’m currently not using any Linux machines, but I do look forward to playing
-with different branches for different OSes.</p>
+with different branches for different OSes.</p>
 <p>The heavy lifting is done by <a href="http://brew.sh/">Homebrew</a> and a <a href="https://github.com/tobywf/dotfiles/blob/master/.config/Brewfile">Brewfile</a>. To be honest, Homebrew is what makes Apple machines
 competitive developer machines for me. (The hardware also doesn’t hurt. I’m
-looking at you Lenovo, and you Linux graphics drivers.)</p>
+looking at you Lenovo, and you Linux graphics drivers.)</p>
 <p>I try to follow the freedesktop.org <a href="https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html">XDG Base Directory Specification</a> as
 closely as possible even on macOS, just to make those Linux transitions easier.
 I also thing the XDG directory structure is really good for backing up and I
-hate dotfile clutter in my home directory.</p>
+hate dotfile clutter in my home directory.</p>
 <hr>
 <p>There is some other cleverness, e.g. the way I back up sensitive files that
 you don’t want in a repository. There’s a backup and bootstrap script. The
 backup script creates a tarball that contains all SSH keys and things like that.
 The tarball is then used to bootstrap the restore. As it contains all SSH keys,
 the chicken and the egg problem is solved and I can pull things from Github or
-other sources.</p>
-<p>I copy the tarball with a USB stick. Hardly high-tech, but it works.</p>
+other sources.</p>
+<p>I copy the tarball with a USB stick. Hardly high-tech, but it works.</p>
 <p>Sadly, due to the Mac App Store settings some software up automatically isn’t
 possible. I have no way of backing up the licenses, but I’m considering
-re-buying some of the software outside the App Store to make this less annoying.</p>
+re-buying some of the software outside the App Store to make this less annoying.</p>
 <p>Finally, I have a 2FA hardware key that I’m setting up. I’ll need to figure out
-which parts of the setup procedure change when using it.</p>
+which parts of the setup procedure change when using it.</p>
 <p>I hope <a href="https://github.com/tobywf/dotfiles">you find the dotfiles useful</a>.
-They’re MIT licensed, so you should be able to use them anywhere including work.</p>
+They’re MIT licensed, so you should be able to use them anywhere including work.</p>
 <p>(I have modified Mathias Bynens’ <a href="https://github.com/mathiasbynens/dotfiles/blob/master/.macos">legendary macOS defaults script</a> to suit my needs, which <a href="https://github.com/mathiasbynens/dotfiles">is also MIT licensed</a>.)</p>
 <p>Enjoy!</p>
 </article>

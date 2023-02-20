@@ -22,18 +22,18 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>AWS Lambda: Code Storage Limit Exceeded</h1>
+  <h1>AWS Lambda: Code Storage Limit Exceeded</h1>
   <div class="infoline">
     <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">7 Sep '17</span>
   </div>
 </header>
 <article>
 <p>You’re deploying a new version of some <a href="https://aws.amazon.com/lambda/">AWS Lambda functions</a>,
-and then you get a very cryptic error from CloudFormation: “Code Storage Limit Exceeded”.</p>
+and then you get a very cryptic error from CloudFormation: “Code Storage Limit Exceeded”.</p>
 <p><img alt='CloudFormation showing "Code Storage Limit Exceeded" error messages' src="https://tobywf.com/2017/09/aws-lambda-code-storage-limit-exceeded/images/2017-09-07-aws-lambda-code-storage-limit-exceeded.png"></p>
-<p>Not only does this make the deployment fail, but it also prevents rolling back.</p>
+<p>Not only does this make the deployment fail, but it also prevents rolling back.</p>
 <p>So what’s going on? Most likely you’ve hit the <a href="http://docs.aws.amazon.com/lambda/latest/dg/limits.html#limits-list">75 GiB code storage limit</a>; the AWS Lambda dashboard should be displaying a
-warning to confirm this.</p>
+warning to confirm this.</p>
 <p>How is this possible? Well, Lambda functions have
 versions. And when you deploy a Lambda function, it creates a new version.
 You may not know this, because it’s simply called <code>$LATEST</code>. Also, AWS
@@ -43,7 +43,7 @@ doesn’t call it “version” in the GUI, but <a href="http://docs.aws.amazon.
 versions. However, doing this in the web UI is extremely tedious. So here’s a
 script to delete all the versions except <code>$LATEST</code>. Don’t use it if you have
 published any other versions/aliases, and - as always - this is an example
-script with no warranty.</p>
+script with no warranty.</p>
 <script src="https://gist.github.com/tobywf/6eb494f4b46cef367540074512161334.js"></script>
 </article>
 <section>

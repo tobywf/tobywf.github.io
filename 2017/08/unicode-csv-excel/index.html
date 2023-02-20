@@ -22,7 +22,7 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Excel compatible Unicode CSV files from Python</h1>
+  <h1>Excel compatible Unicode CSV files from Python</h1>
   <h2>Finally, I can use emojis in comma separated value (CSV) files!</h2>
   <div class="infoline">
     <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">18 Aug '17</span>
@@ -30,9 +30,9 @@
 </header>
 <article>
 <p>(<a href="#jackpot">Jump straight to the code</a>).</p>
-<p>When you have a terrible program like Excel, it tries to “be helpful” and guess the encoding of a CSV file (and almost always fails). Back in the 90s or 00s, because of all the different encodings this may have been helpful, but today it isn’t. Most of the time, you just want to use UTF-8. While exploring the wonderful world of CSV handling in Excel, I came across a way to write UTF-8 CSV files that Excel would read reliably every time. I thought I’d split it out into it’s own post.</p>
-<p>Let’s take a step back. Unicode has several common encodings, UTF-8, UTF-16, and UTF-32. Because <a href="https://en.wikipedia.org/wiki/Endianness">endianness</a>, UTF-16 and UTF-32 must have a <a href="https://en.wikipedia.org/wiki/Byte_order_mark">byte-order mark (BOM)</a> at the start of a file. Here’s where it gets weird. UTF-8 can also have a BOM, even though it does nothing functionally and isn’t recommended. However, this UTF-8 BOM offers a valuable hint to Excel, and continue to work in Google Sheets, Numbers, and most text editors (even though those don’t need the BOM).</p>
-<p>The UTF-8 BOM is <code>0xEF,0xBB,0xBF</code>, that’s too much hard work to remember. Python - with batteries included - has a handy constant for the BOM:</p>
+<p>When you have a terrible program like Excel, it tries to “be helpful” and guess the encoding of a CSV file (and almost always fails). Back in the 90s or 00s, because of all the different encodings this may have been helpful, but today it isn’t. Most of the time, you just want to use UTF-8. While exploring the wonderful world of CSV handling in Excel, I came across a way to write UTF-8 CSV files that Excel would read reliably every time. I thought I’d split it out into it’s own post.</p>
+<p>Let’s take a step back. Unicode has several common encodings, UTF-8, UTF-16, and UTF-32. Because <a href="https://en.wikipedia.org/wiki/Endianness">endianness</a>, UTF-16 and UTF-32 must have a <a href="https://en.wikipedia.org/wiki/Byte_order_mark">byte-order mark (BOM)</a> at the start of a file. Here’s where it gets weird. UTF-8 can also have a BOM, even though it does nothing functionally and isn’t recommended. However, this UTF-8 BOM offers a valuable hint to Excel, and continue to work in Google Sheets, Numbers, and most text editors (even though those don’t need the BOM).</p>
+<p>The UTF-8 BOM is <code>0xEF,0xBB,0xBF</code>, that’s too much hard work to remember. Python - with batteries included - has a handy constant for the BOM:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">codecs</span> <span class="kn">import</span> <span class="n">BOM_UTF8</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">BOM_UTF8</span>
 <span class="go">b'\xef\xbb\xbf'</span>
@@ -40,7 +40,7 @@
 <span class="go">'\ufeff'</span>
 </code></pre></div>
 
-<p>But wait! This is effort to add onto every file when saving, and strip out of every file when loading. There must be a better way? Python again delivers. There exists an encoding called <code>utf-8-sig</code>. It will add and strip out the BOM automatically. Additionally, it will read UTF-8 without the BOM just fine:</p>
+<p>But wait! This is effort to add onto every file when saving, and strip out of every file when loading. There must be a better way? Python again delivers. There exists an encoding called <code>utf-8-sig</code>. It will add and strip out the BOM automatically. Additionally, it will read UTF-8 without the BOM just fine:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="s1">'Hello, world'</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">'utf-8-sig'</span><span class="p">)</span>
 <span class="go">b'\xef\xbb\xbfHello, world'</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">_</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'utf-8-sig'</span><span class="p">)</span>
@@ -51,16 +51,16 @@
 <span class="go">'Hello, world'</span>
 </code></pre></div>
 
-<p><a name="jackpot">Try it out</a> (legacy Python 2 version further down):</p>
+<p><a name="jackpot">Try it out</a> (legacy Python 2 version further down):</p>
 <script src="https://gist.github.com/tobywf/3773a7dc896f780c2216c8f8afbe62fc.js"></script>
 
-<p>Oh Python ❤️ how easy you make things.</p>
+<p>Oh Python ❤️ how easy you make things.</p>
 <hr>
-<p>And the legacy Python version:</p>
+<p>And the legacy Python version:</p>
 <script src="https://gist.github.com/tobywf/5be49947253abf1c0cd56d27568d4ad7.js"></script>
 
 <p>If you’re still using Python 2 and want to write Unicode CSVs, I strongly recommend you use <a href="https://pypi.python.org/pypi/backports.csv"><code>backports.csv</code></a>. Do <strong>not</strong> use <a href="https://github.com/jdunck/python-unicodecsv"><code>unicodecsv</code></a>, even though it seems like it’s easier to use. It doesn’t force you to think as clearly about encoding as <code>backports.csv</code>, and consequently, migrating away from <code>unicodecsv</code> is a pain (if you’ll ever do it, and then you’ll have two different ways of generating CSVs). Don’t kick the can down the road, just fix it properly and use <a href="https://pypi.python.org/pypi/backports.csv"><code>backports.csv</code></a>!</p>
-<p>The code above code will also run unmodified in Python 3 (if you have <code>backports.csv</code> installed). And as you can see, the first four lines are the only thing that changes, so dropping from <code>backports.csv</code> to Python 3’s <a href="https://docs.python.org/3/library/csv.html">CSV module</a> is completely trivial.</p>
+<p>The code above code will also run unmodified in Python 3 (if you have <code>backports.csv</code> installed). And as you can see, the first four lines are the only thing that changes, so dropping from <code>backports.csv</code> to Python 3’s <a href="https://docs.python.org/3/library/csv.html">CSV module</a> is completely trivial.</p>
 </article>
 <section>
   <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid"></use></svg> <a href="https://tobywf.com/tag/macos/">macOS</a>, <a href="https://tobywf.com/tag/python/">Python</a>, <a href="https://tobywf.com/tag/csv/">CSV</a></p>

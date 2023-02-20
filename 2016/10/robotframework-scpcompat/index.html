@@ -22,7 +22,7 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>RobotFramework SSHLibrary-compatible SCP library</h1>
+  <h1>RobotFramework SSHLibrary-compatible SCP library</h1>
   <div class="infoline">
     <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">14 Oct '16</span>
   </div>
@@ -35,18 +35,18 @@ which is a SCP library for <a href="http://robotframework.org/">RobotFramework</
 However, the keywords it provides clash with the Robot <a href="http://robotframework.org/SSHLibrary/latest/SSHLibrary.html">SSH library</a>. This makes using both of them at the same time very tedious.
 Worse, the SCP library manages connections itself and separately - but the
 underlying SSH Python module, <a href="http://www.paramiko.org/">paramiko</a>, is the same
-for both SSH and SCP!</p>
+for both SSH and SCP!</p>
 <p>In contrast, <code>scpcompat</code> hooks into the SSH library and uses the current
 connection. This also means that none of it’s keywords clash. You can see
 SSHLibrary and my SCPLibrary working hand in hand <a href="https://github.com/tobywf/robotframework-scpcompat/blob/master/example.robot">in this example</a>.</p>
 <p>Note that <code>robotframework-scpcompat</code> and  <code>robotframework-scplibrary</code> shouldn’t
 be installed at the same time, in fact they will clash. Both use the
-<a href="https://pypi.python.org/pypi/scp">scp</a> Python module, so functionality is on par.</p>
+<a href="https://pypi.python.org/pypi/scp">scp</a> Python module, so functionality is on par.</p>
 <p>Finally, why bother with SCP at all? The SSH library can do SFTP, surely that’s
 good enough. Turns out that <a href="https://github.com/robotframework/SSHLibrary/issues/113">SFTP can be horribly slow</a>,
 although this <a href="https://github.com/paramiko/paramiko/issues/175">seems to be fixed in paramiko</a>.
-Still though, SCP is simpler and generally still faster.</p>
-<p>I hope this helps. If you have any issues or requests, <a href="https://github.com/tobywf/robotframework-scpcompat">head to the repo</a> and I’ll see what I can do.</p>
+Still though, SCP is simpler and generally still faster.</p>
+<p>I hope this helps. If you have any issues or requests, <a href="https://github.com/tobywf/robotframework-scpcompat">head to the repo</a> and I’ll see what I can do.</p>
 </article>
 <section>
   <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid"></use></svg> <a href="https://tobywf.com/tag/python/">Python</a>, <a href="https://tobywf.com/tag/sysadmin/">sysadmin</a>, <a href="https://tobywf.com/tag/testing/">testing</a></p>

@@ -22,40 +22,40 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Simple Python Lambda Packaging Guide</h1>
+  <h1>Simple Python Lambda Packaging Guide</h1>
   <div class="infoline">
     <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">4 Nov '18</span> — last updated <span class="date">24 Nov '18</span>
   </div>
 </header>
 <article>
-<p>(<a href="#tldr">Skip to the TL;DR</a> if you’re in a hurry)</p>
-<p>I currently work for AWS (neither for Lambda team nor the CodeBuild team). This is a personal project on my personal website, and the motivation for this was completely unrelated to work.</p>
-<p><a href="http://veekaybee.github.io/2018/09/24/the-case-of-the-broken-lambda/">Vicki Boykis wrote an awesome post</a> about someone struggling with Python Lambda function packaging. They <a href="http://veekaybee.github.io/2018/09/24/the-case-of-the-broken-lambda/#how-the-error-was-fixed">ended up rewriting it in Java</a> 😥. So I thought I’d write up the simplest workflow I can think of, and tried to keep it short by just focussing on the dependency downloading step, which is where real-world packaging can differ from the documentation.</p>
-<p><a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=feedback&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2018%2F11%2Fsimple-python-lambda-packaging-guide%2F">Feedback</a> is welcome, especially if you’re a Python novice - this is attempt 2, and hopefully clearer now.</p>
-<h2 id="try-the-simplest-thing-first">Try the simplest thing first</h2>
-<p>Packaging a Python Lambda function/ “serverless application” is easy. You just <a href="https://docs.aws.amazon.com/lambda/latest/dg/lambda-python-how-to-create-deployment-package.html">follow the documentation</a> or <a href="https://docs.aws.amazon.com/lambda/latest/dg/with-s3-example-deployment-pkg.html#with-s3-example-deployment-pkg-python">even an example project</a>, which boils down to <code>pip install &amp;&amp; zip</code>. Right?</p>
-<p>Haha, jk!</p>
-<p>So why do the docs say this? Well, for many cases it is that easy. To explain why and when it breaks, we need to know a bit about Python packages and packaging.</p>
-<p>Often, a Python package is just Python code. This works fine. But the most commonly used Python runtime, CPython, <a href="https://docs.python.org/3.6/extending/extending.html">allows C extensions</a>. This is where things go wrong. C needs to be compiled, and that depends on the target system.</p>
-<p>Lambda functions run in a Linux environment. So if you are packaging Python Lambdas on a non-compatible system (e.g. macOS or Windows) and one or more of the direct or indirect dependency includes a C extension, it breaks. There are quite a few packages that use C extensions, such as <a href="https://pypi.org/project/lxml/">lxml</a>, <a href="https://pypi.org/project/cryptography/">cryptography</a>, <a href="https://pypi.org/project/Pillow/">pillow</a>, <a href="https://pypi.org/project/numpy/">numpy</a>, <a href="https://pypi.org/project/psycopg2/">psycopg2</a>, <a href="https://pypi.org/project/pycrypto/">pycrypto</a>, and more.</p>
-<p>To be completely fair, this is not a Python issue, it’s a deployment issue.</p>
-<h2 id="and-then-the-next-simplest-thing">And then the next simplest thing</h2>
+<p>(<a href="#tldr">Skip to the TL;DR</a> if you’re in a hurry)</p>
+<p>I currently work for AWS (neither for Lambda team nor the CodeBuild team). This is a personal project on my personal website, and the motivation for this was completely unrelated to work.</p>
+<p><a href="http://veekaybee.github.io/2018/09/24/the-case-of-the-broken-lambda/">Vicki Boykis wrote an awesome post</a> about someone struggling with Python Lambda function packaging. They <a href="http://veekaybee.github.io/2018/09/24/the-case-of-the-broken-lambda/#how-the-error-was-fixed">ended up rewriting it in Java</a> 😥. So I thought I’d write up the simplest workflow I can think of, and tried to keep it short by just focussing on the dependency downloading step, which is where real-world packaging can differ from the documentation.</p>
+<p><a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=feedback&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2018%2F11%2Fsimple-python-lambda-packaging-guide%2F">Feedback</a> is welcome, especially if you’re a Python novice - this is attempt 2, and hopefully clearer now.</p>
+<h2 id="try-the-simplest-thing-first">Try the simplest thing first</h2>
+<p>Packaging a Python Lambda function/ “serverless application” is easy. You just <a href="https://docs.aws.amazon.com/lambda/latest/dg/lambda-python-how-to-create-deployment-package.html">follow the documentation</a> or <a href="https://docs.aws.amazon.com/lambda/latest/dg/with-s3-example-deployment-pkg.html#with-s3-example-deployment-pkg-python">even an example project</a>, which boils down to <code>pip install &amp;&amp; zip</code>. Right?</p>
+<p>Haha, jk!</p>
+<p>So why do the docs say this? Well, for many cases it is that easy. To explain why and when it breaks, we need to know a bit about Python packages and packaging.</p>
+<p>Often, a Python package is just Python code. This works fine. But the most commonly used Python runtime, CPython, <a href="https://docs.python.org/3.6/extending/extending.html">allows C extensions</a>. This is where things go wrong. C needs to be compiled, and that depends on the target system.</p>
+<p>Lambda functions run in a Linux environment. So if you are packaging Python Lambdas on a non-compatible system (e.g. macOS or Windows) and one or more of the direct or indirect dependency includes a C extension, it breaks. There are quite a few packages that use C extensions, such as <a href="https://pypi.org/project/lxml/">lxml</a>, <a href="https://pypi.org/project/cryptography/">cryptography</a>, <a href="https://pypi.org/project/Pillow/">pillow</a>, <a href="https://pypi.org/project/numpy/">numpy</a>, <a href="https://pypi.org/project/psycopg2/">psycopg2</a>, <a href="https://pypi.org/project/pycrypto/">pycrypto</a>, and more.</p>
+<p>To be completely fair, this is not a Python issue, it’s a deployment issue.</p>
+<h2 id="and-then-the-next-simplest-thing">And then the next simplest thing</h2>
 <p>Why bother <a href="https://docs.aws.amazon.com/lambda/latest/dg/lambda-python-how-to-create-deployment-package.html">creating a deployment package</a> at all? Can’t the Lambda just run <code>pip install</code>?</p>
-<p>It’s an interesting thought. But <code>pip</code> is meant for humans on a CLI, and is very slow, especially without a cache. The start-up time would be awful. And Lambdas are a limited environment to run functions. While you can run <code>pip</code>, don’t expect to find a compiler or the headers necessary for building C extensions <sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>. (This is also a deal breaker for a packaging Lambda/ “packaging-as-a-service”, which I also tried.)</p>
-<h2 id="and-the-next">And the next…</h2>
-<p>While <a href="https://github.com/Miserlou/lambda-packages">pre-compiled Python packages for Lambda</a> are nice idea for beginners, I rejected them because of some drawbacks. You no longer control your own dependencies. It’s hard to integrate into a development workflow or continuous integration pipeline. Last but not least, if you need a package which isn’t provided, it still breaks.</p>
-<h2 id="and-the-next_1">And the next?</h2>
-<p>I wouldn’t call Docker simple. Despite the hype, it does solve packaging and deployment issues well by providing a system that’s independent from the underlying host system.</p>
-<p>I’m assuming Python 3.6; although this method can work with the legacy Python 2.7 version.</p>
-<h2 id="aws-codebuild">AWS CodeBuild</h2>
-<p>AWS has a service for building artefacts called <a href="https://aws.amazon.com/codebuild/">AWS CodeBuild</a>. It’s instructive to see <a href="https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-available.html">what Docker images they provide</a>. For example, <code>aws/codebuild/python:3.6.5</code> seems to track the Python Lambda runtime. It uses Ubuntu 14.04 as the base! Very interesting, either the Lambda runtime is based on Ubuntu, or Ubuntu is <strong>close enough</strong> to the Lambda runtime for build artefacts.</p>
-<p>Even though CodeBuild’s <a href="https://github.com/aws/aws-codebuild-docker-images/blob/master/ubuntu/python/3.6.5/Dockerfile">Dockerfile are open source</a>, they haven’t uploaded the images, so Docker can’t pull them:</p>
+<p>It’s an interesting thought. But <code>pip</code> is meant for humans on a CLI, and is very slow, especially without a cache. The start-up time would be awful. And Lambdas are a limited environment to run functions. While you can run <code>pip</code>, don’t expect to find a compiler or the headers necessary for building C extensions <sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>. (This is also a deal breaker for a packaging Lambda/ “packaging-as-a-service”, which I also tried.)</p>
+<h2 id="and-the-next">And the next…</h2>
+<p>While <a href="https://github.com/Miserlou/lambda-packages">pre-compiled Python packages for Lambda</a> are nice idea for beginners, I rejected them because of some drawbacks. You no longer control your own dependencies. It’s hard to integrate into a development workflow or continuous integration pipeline. Last but not least, if you need a package which isn’t provided, it still breaks.</p>
+<h2 id="and-the-next_1">And the next?</h2>
+<p>I wouldn’t call Docker simple. Despite the hype, it does solve packaging and deployment issues well by providing a system that’s independent from the underlying host system.</p>
+<p>I’m assuming Python 3.6; although this method can work with the legacy Python 2.7 version.</p>
+<h2 id="aws-codebuild">AWS CodeBuild</h2>
+<p>AWS has a service for building artefacts called <a href="https://aws.amazon.com/codebuild/">AWS CodeBuild</a>. It’s instructive to see <a href="https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-available.html">what Docker images they provide</a>. For example, <code>aws/codebuild/python:3.6.5</code> seems to track the Python Lambda runtime. It uses Ubuntu 14.04 as the base! Very interesting, either the Lambda runtime is based on Ubuntu, or Ubuntu is <strong>close enough</strong> to the Lambda runtime for build artefacts.</p>
+<p>Even though CodeBuild’s <a href="https://github.com/aws/aws-codebuild-docker-images/blob/master/ubuntu/python/3.6.5/Dockerfile">Dockerfile are open source</a>, they haven’t uploaded the images, so Docker can’t pull them:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>docker run --rm aws/codebuild/python:3.6.5 env
 <span class="go">Unable to find image 'aws/codebuild/python:3.6.5' locally</span>
 <span class="go">docker: Error response from daemon: pull access denied for aws/codebuild/python, repository does not exist or may require 'docker login'.</span>
 </code></pre></div>
 
-<p>You have to <a href="https://github.com/aws/aws-codebuild-docker-images">build them yourself</a> (if you’re following along, hold off and read on):</p>
+<p>You have to <a href="https://github.com/aws/aws-codebuild-docker-images">build them yourself</a> (if you’re following along, hold off and read on):</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>git clone https://github.com/aws/aws-codebuild-docker-images.git
 <span class="gp">$ </span><span class="nb">cd</span> aws-codebuild-docker-images/
 <span class="gp">$ </span>docker build ubuntu/python/3.6.5/ <span class="se">\</span>
@@ -66,9 +66,9 @@
 </code></pre></div>
 
 <p>For CodeBuild, this image makes perfect sense. And if your use-case is running complex build scripts as part of continuous integration, you may find it appropriate (feel free to skip the next section). I can’t recommend it for this project (long build time<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup>).</p>
-<h2 id="lambda-ci">Lambda CI</h2>
-<p><a href="https://github.com/awslabs/aws-sam-cli">AWS SAM CLI</a> “is a CLI tool for local development and testing of Serverless applications”. So far I love the local testing functionality, although I’ve used <a href="https://serverless.com/">Serverless</a> more.</p>
-<p>As with CodeBuild, the point here is not to get you to use a specific tool. Instead, open source is great for learning from other software engineers. The SAM CLI can run Lambda functions locally - how do they do this? With the open source <a href="https://github.com/lambci/docker-lambda">Lambda CI Docker images</a>, “Docker images and test runners that replicate the live AWS Lambda environment”. Bingo! There are even <a href="https://github.com/lambci/docker-lambda#build-examples">build images</a> for this exact purpose!</p>
+<h2 id="lambda-ci">Lambda CI</h2>
+<p><a href="https://github.com/awslabs/aws-sam-cli">AWS SAM CLI</a> “is a CLI tool for local development and testing of Serverless applications”. So far I love the local testing functionality, although I’ve used <a href="https://serverless.com/">Serverless</a> more.</p>
+<p>As with CodeBuild, the point here is not to get you to use a specific tool. Instead, open source is great for learning from other software engineers. The SAM CLI can run Lambda functions locally - how do they do this? With the open source <a href="https://github.com/lambci/docker-lambda">Lambda CI Docker images</a>, “Docker images and test runners that replicate the live AWS Lambda environment”. Bingo! There are even <a href="https://github.com/lambci/docker-lambda#build-examples">build images</a> for this exact purpose!</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>docker run --rm lambci/lambda:build-python3.6 python --version
 <span class="go">Unable to find image 'lambci/lambda:build-python3.6' locally</span>
 <span class="go">build-python3.6: Pulling from lambci/lambda</span>
@@ -76,10 +76,10 @@
 <span class="go">Python 3.6.1</span>
 </code></pre></div>
 
-<p>Honestly, this is a great project, and super easy to use<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup>. ❤️</p>
-<p>(This should work for most cases, because the build image isn’t quite as locked own as the Lambda environment, but if it fails, try the CodeBuild image.)</p>
-<h2 id="building-inside-a-docker-container">Building inside a Docker container</h2>
-<p>First, let’s install the dependencies locally, to have a baseline on how it should look. I’m building on macOS, and you can see I get the macOS specific package:</p>
+<p>Honestly, this is a great project, and super easy to use<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup>. ❤️</p>
+<p>(This should work for most cases, because the build image isn’t quite as locked own as the Lambda environment, but if it fails, try the CodeBuild image.)</p>
+<h2 id="building-inside-a-docker-container">Building inside a Docker container</h2>
+<p>First, let’s install the dependencies locally, to have a baseline on how it should look. I’m building on macOS, and you can see I get the macOS specific package:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span><span class="nb">echo</span> <span class="s2">"lxml"</span> &gt; requirements.txt
 <span class="gp">$ </span>mkdir build
 <span class="gp">$ </span>pip3 install -r requirements.txt -t build/
@@ -96,7 +96,7 @@
 <span class="gp">$ </span>rm -rf build/
 </code></pre></div>
 
-<p>Now, inside the container. For simplicity, I’m going to mount a directory inside the container. This doesn’t work for remote docker hosts (there are workarounds, using S3, NFS shares, etc). Quickly check the mount works:</p>
+<p>Now, inside the container. For simplicity, I’m going to mount a directory inside the container. This doesn’t work for remote docker hosts (there are workarounds, using S3, NFS shares, etc). Quickly check the mount works:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>docker run <span class="se">\</span>
     -v <span class="s2">"</span><span class="nv">$PWD</span><span class="s2">"</span>:/var/task <span class="se">\</span>
     --rm <span class="se">\</span>
@@ -105,7 +105,7 @@
 <span class="go">lxml</span>
 </code></pre></div>
 
-<p>Good, let’s go. The only difference is running <code>pip</code> inside the container:</p>
+<p>Good, let’s go. The only difference is running <code>pip</code> inside the container:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span><span class="nb">echo</span> <span class="s2">"lxml"</span> &gt; requirements.txt
 <span class="gp">$ </span>mkdir build
 <span class="gp">$ </span>docker run <span class="se">\</span>
@@ -121,8 +121,8 @@
 <span class="go">Tag: cp36-cp36m-manylinux1_x86_64</span>
 </code></pre></div>
 
-<p>Excellent. This time, we get the <code>manylinux</code> flavoured package, which is exactly right.</p>
-<p>Using the CodeBuild image is similar, except by default the container runs in the root folder:</p>
+<p>Excellent. This time, we get the <code>manylinux</code> flavoured package, which is exactly right.</p>
+<p>Using the CodeBuild image is similar, except by default the container runs in the root folder:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>docker run <span class="se">\</span>
     -v <span class="s2">"</span><span class="nv">$PWD</span><span class="s2">"</span>:/var/task <span class="se">\</span>
     --rm <span class="se">\</span>
@@ -137,8 +137,8 @@
 </code></pre></div>
 
 <h2 id="conclusion">Conclusion</h2>
-<p>Docker contains provide a simple way to download OS-specific dependencies correctly for Python Lambda functions. You can then use these to package Python Lambda functions correctly on your local machine, or integrate it in your continuous integration/continuous delivery pipeline to ensure you get the right dependencies.</p>
-<p>Do let me know if you found this helpful.</p>
+<p>Docker contains provide a simple way to download OS-specific dependencies correctly for Python Lambda functions. You can then use these to package Python Lambda functions correctly on your local machine, or integrate it in your continuous integration/continuous delivery pipeline to ensure you get the right dependencies.</p>
+<p>Do let me know if you found this helpful.</p>
 <h2 id="tldr">TL;DR</h2>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span><span class="nb">echo</span> <span class="s2">"lxml"</span> &gt; requirements.txt
 <span class="gp">$ </span>mkdir build

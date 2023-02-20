@@ -22,29 +22,29 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>How to choose Diffie-Hellman (DH) parameters</h1>
+  <h1>How to choose Diffie-Hellman (DH) parameters</h1>
   <div class="infoline">
     <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">24 Oct '15</span>
   </div>
 </header>
 <article>
-<p>The title of this post was originally “the problem with cryptography”, but that’s neither original nor helpful.</p>
+<p>The title of this post was originally “the problem with cryptography”, but that’s neither original nor helpful.</p>
 <hr>
-<p>Recently, I was reviewing server provisioning scripts for best practices. One step, for a webserver, was to set up Diffie-Hellman (DH) parameters. Here’s the command:</p>
+<p>Recently, I was reviewing server provisioning scripts for best practices. One step, for a webserver, was to set up Diffie-Hellman (DH) parameters. Here’s the command:</p>
 <div class="codehilite"><pre><span></span><code>$ openssl dhparam -out dhparams.pem <span class="m">2048</span>
 </code></pre></div>
 
-<p>I know generating and setting the server to use the parameters is <a href="https://weakdh.org/sysadmin.html">important to avoid things like Logjam</a>, thanks to sites like <a href="https://weakdh.org/">WeakDH</a>. But I’m no cryptographer - I’m not a sysadmin either - so I don’t know why or any specifics.</p>
-<p>For example, DH parameters with 1024 bits or less <a href="http://www.theregister.co.uk/2015/10/24/nsa_encryption_hack/">are discouraged since 2005</a>. But that’s a while ago now, are 2048 bit parameters still okay? <a href="https://weakdh.org/">WeakDH</a> and <a href="https://tools.ietf.org/html/rfc7525#section-4.4">RFC 7525</a> say yes. Okay then.</p>
-<p>So are 4096 bit DH parameters better? I don’t know. It’s a given that it’ll take more computation time, but how much? Not being a sysadmin, I can’t test this under realistic conditions. Does it even provide more security? <a href="https://security.stackexchange.com/questions/47204/dh-parameters-recommended-size">Apparently not</a>. But I still have to trust some guy on StackExchange posting around 2014.</p>
-<p>Finally, I think <a href="https://crypto.stackexchange.com/questions/12223/how-should-i-manage-diffie-hellman-parameters-on-a-web-server">this StackExchange post</a> confirms that you don’t gain anything from periodically regenerating the DH parameters. It’s hard to tell though. From what I understand, this is because even if you capture several DH exchanges, this doesn’t make guessing the underlying DH parameters any easier than having one DH exchange.</p>
-<p>So let’s recap:</p>
+<p>I know generating and setting the server to use the parameters is <a href="https://weakdh.org/sysadmin.html">important to avoid things like Logjam</a>, thanks to sites like <a href="https://weakdh.org/">WeakDH</a>. But I’m no cryptographer - I’m not a sysadmin either - so I don’t know why or any specifics.</p>
+<p>For example, DH parameters with 1024 bits or less <a href="http://www.theregister.co.uk/2015/10/24/nsa_encryption_hack/">are discouraged since 2005</a>. But that’s a while ago now, are 2048 bit parameters still okay? <a href="https://weakdh.org/">WeakDH</a> and <a href="https://tools.ietf.org/html/rfc7525#section-4.4">RFC 7525</a> say yes. Okay then.</p>
+<p>So are 4096 bit DH parameters better? I don’t know. It’s a given that it’ll take more computation time, but how much? Not being a sysadmin, I can’t test this under realistic conditions. Does it even provide more security? <a href="https://security.stackexchange.com/questions/47204/dh-parameters-recommended-size">Apparently not</a>. But I still have to trust some guy on StackExchange posting around 2014.</p>
+<p>Finally, I think <a href="https://crypto.stackexchange.com/questions/12223/how-should-i-manage-diffie-hellman-parameters-on-a-web-server">this StackExchange post</a> confirms that you don’t gain anything from periodically regenerating the DH parameters. It’s hard to tell though. From what I understand, this is because even if you capture several DH exchanges, this doesn’t make guessing the underlying DH parameters any easier than having one DH exchange.</p>
+<p>So let’s recap:</p>
 <ul>
-<li>Use Diffie-Hellman parameters with at least 1024 bits, 2048 is better</li>
-<li>4096 bits does nothing except generate more heat… probably</li>
-<li>You don’t need to re-generate Diffie-Hellman parameters… probably</li>
-<li>Cryptography is hard, so leave that to the experts</li>
-<li>Setting up cryptography is still too hard for me (but I don’t know if that’s generalizable)</li>
+<li>Use Diffie-Hellman parameters with at least 1024 bits, 2048 is better</li>
+<li>4096 bits does nothing except generate more heat… probably</li>
+<li>You don’t need to re-generate Diffie-Hellman parameters… probably</li>
+<li>Cryptography is hard, so leave that to the experts</li>
+<li>Setting up cryptography is still too hard for me (but I don’t know if that’s generalizable)</li>
 </ul>
 </article>
 <section>

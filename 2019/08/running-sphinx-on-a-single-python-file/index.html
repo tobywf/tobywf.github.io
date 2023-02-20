@@ -22,14 +22,14 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Running Sphinx on a single Python file</h1>
+  <h1>Running Sphinx on a single Python file</h1>
   <div class="infoline">
     <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">31 Aug '19</span>
   </div>
 </header>
 <article>
-<p>Python’s default and awesome documentation generator is <a href="https://www.sphinx-doc.org">Sphinx</a>. And while it makes sense that Markdown is too limited for great documentation, I find <a href="http://docutils.sourceforge.net/rst.html">reStructuredText</a> to be tricky at times, since I don’t use it that regularly.</p>
-<p>For standalone documents, <a href="http://docutils.sourceforge.net/">Docutils</a> works great, and some Python IDEs have reStructuredText support. Of course, for small projects, a README is probably enough. But it’s undeniable Sphinx’ documentation is beautiful, and having features like autodoc or intersphinx is convenient. Luckily, it’s easy to run Sphinx and autodoc on a single file module. Bit of a niche use-case, I know. Why should small projects not have great documentation?</p>
+<p>Python’s default and awesome documentation generator is <a href="https://www.sphinx-doc.org">Sphinx</a>. And while it makes sense that Markdown is too limited for great documentation, I find <a href="http://docutils.sourceforge.net/rst.html">reStructuredText</a> to be tricky at times, since I don’t use it that regularly.</p>
+<p>For standalone documents, <a href="http://docutils.sourceforge.net/">Docutils</a> works great, and some Python IDEs have reStructuredText support. Of course, for small projects, a README is probably enough. But it’s undeniable Sphinx’ documentation is beautiful, and having features like autodoc or intersphinx is convenient. Luckily, it’s easy to run Sphinx and autodoc on a single file module. Bit of a niche use-case, I know. Why should small projects not have great documentation?</p>
 <p>As per usually, you start with <code>sphinx-quickstart</code>. To save time, here’s my final <code>conf.py</code> file:</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
@@ -51,7 +51,7 @@
 <span class="n">html_theme_options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"nosidebar"</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
 </code></pre></div>
 
-<p><code>index.rst</code> can also be stripped down completely (it’s the only file you need with autodoc). Assuming the Python file is <code>&lt;project&gt;.py</code>, this works:</p>
+<p><code>index.rst</code> can also be stripped down completely (it’s the only file you need with autodoc). Assuming the Python file is <code>&lt;project&gt;.py</code>, this works:</p>
 <div class="codehilite"><pre><span></span><code><span class="gh">&lt;project&gt;</span>
 <span class="gh">=========</span>
 
@@ -59,7 +59,7 @@
    <span class="nc">:members:</span>
 </code></pre></div>
 
-<p>Building the documentation works and outputs documentation for a single file:</p>
+<p>Building the documentation works and outputs documentation for a single file:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>sphinx-build -b html . _build
 <span class="gp">$ </span>open _build/index.html
 </code></pre></div>

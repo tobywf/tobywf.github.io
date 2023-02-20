@@ -22,7 +22,7 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>FastMail custom domain with Cloudflare DNS</h1>
+  <h1>FastMail custom domain with Cloudflare DNS</h1>
   <div class="infoline">
     <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">13 Oct '18</span>
   </div>
@@ -30,10 +30,10 @@
 <article>
 <p><a href="https://www.fastmail.com/help/receive/domains-setup-mxonly.html">Setting up FastMail with a custom domain is easy</a>. However, there is <a href="https://support.cloudflare.com/hc/en-us/articles/200168696-How-do-I-add-DKIM-records-">one pitfall when using CloudFlare</a>:</p>
 <blockquote>
-<p>Some services require additional CNAME records for DKIM verification. CNAME DKIM records should be gray clouded; otherwise, the record value won’t be available and verification will fail.</p>
-<p><a href="https://support.cloudflare.com/hc/en-us/articles/200168696-How-do-I-add-DKIM-records-">CloudFlare Support</a></p>
+<p>Some services require additional CNAME records for DKIM verification. CNAME DKIM records should be gray clouded; otherwise, the record value won’t be available and verification will fail.</p>
+<p><a href="https://support.cloudflare.com/hc/en-us/articles/200168696-How-do-I-add-DKIM-records-">CloudFlare Support</a></p>
 </blockquote>
-<p>So it’s important to “click the cloud next to each record” to turn CloudFlare off (grey icon):</p>
+<p>So it’s important to “click the cloud next to each record” to turn CloudFlare off (grey icon):</p>
 <p><img alt="A screenshot showing grey clouded CNAME DKIM records" src="https://tobywf.com/2018/10/fastmail-and-cloudflare-dns/images/2018-10-13-fastmail-and-cloudflare-dns.png"></p>
 </article>
 <section>

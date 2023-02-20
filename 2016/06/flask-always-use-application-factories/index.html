@@ -22,7 +22,7 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Flask web dev: Always use application factories</h1>
+  <h1>Flask web dev: Always use application factories</h1>
   <h2>Flask web development tip number 1</h2>
   <div class="infoline">
     <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">18 Jun '16</span>
@@ -31,19 +31,19 @@
 <article>
 <p>Hey there! Over two years later, I’ve made a (hopefully improved) <a href="https://tobywf.com/2018/11/flask-application-factories-and-blueprints/">post about application factories and blueprints</a>.</p>
 <hr>
-<p><a href="http://flask.pocoo.org/">Flask is a web microframework</a> for Python. It’s small, but because it’s so easy to understand it’s also <a href="http://flask.pocoo.org/extensions/">extremely extensible</a>. No more bloat.</p>
-<p>I’m hoping to share some tips from developing and deploying several large Flask applications, some which aren’t obvious from the documentation.</p>
-<h2 id="tip-1-always-use-an-application-factory">Tip 1: Always use an application factory</h2>
-<p>The documentation does go over <a href="http://flask.pocoo.org/docs/0.11/patterns/appfactories/">application factories</a>, but completely glosses over most benefits.</p>
-<p>App factories have a pretentious name, but basically they wrap the initialisation of the application in a method. Sounds like the obvious way to do it, but many Flask examples put the init code inside the module so that when you import the module the application is initialised. This sounds easier, but actually makes it harder in the long run, when you want to control initialisation.</p>
-<p>TL;DR: Application factories get you:</p>
+<p><a href="http://flask.pocoo.org/">Flask is a web microframework</a> for Python. It’s small, but because it’s so easy to understand it’s also <a href="http://flask.pocoo.org/extensions/">extremely extensible</a>. No more bloat.</p>
+<p>I’m hoping to share some tips from developing and deploying several large Flask applications, some which aren’t obvious from the documentation.</p>
+<h2 id="tip-1-always-use-an-application-factory">Tip 1: Always use an application factory</h2>
+<p>The documentation does go over <a href="http://flask.pocoo.org/docs/0.11/patterns/appfactories/">application factories</a>, but completely glosses over most benefits.</p>
+<p>App factories have a pretentious name, but basically they wrap the initialisation of the application in a method. Sounds like the obvious way to do it, but many Flask examples put the init code inside the module so that when you import the module the application is initialised. This sounds easier, but actually makes it harder in the long run, when you want to control initialisation.</p>
+<p>TL;DR: Application factories get you:</p>
 <ol>
-<li><strong>Easier deployment</strong></li>
-<li><strong>Clearer dependencies</strong></li>
+<li><strong>Easier deployment</strong></li>
+<li><strong>Clearer dependencies</strong></li>
 <li><strong>Testing</strong></li>
 </ol>
-<h3 id="example-1-deployment">Example 1: Deployment</h3>
-<p>Your production application <em>will</em> have a different configuration than the debug one. One (terrible) solution is “intelligent” configuration files that use environmental variables or hostnames, and it usually goes wrong. With an app factory, you can easily tell it which config to use:</p>
+<h3 id="example-1-deployment">Example 1: Deployment</h3>
+<p>Your production application <em>will</em> have a different configuration than the debug one. One (terrible) solution is “intelligent” configuration files that use environmental variables or hostnames, and it usually goes wrong. With an app factory, you can easily tell it which config to use:</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">example</span> <span class="kn">import</span> <span class="n">app</span>
 <span class="c1"># app is already initialised</span>
 <span class="c1"># can't change the config or database connection</span>
@@ -53,21 +53,21 @@
 <span class="n">app</span> <span class="o">=</span> <span class="n">create_app</span><span class="p">(</span><span class="n">DB_CONN</span><span class="o">=</span><span class="s2">"production"</span><span class="p">)</span> <span class="c1"># now it's initialised</span>
 </code></pre></div>
 
-<p>Remember that the factory can provide default configuration values. So the development server script looks roughly like this:</p>
+<p>Remember that the factory can provide default configuration values. So the development server script looks roughly like this:</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">example</span> <span class="kn">import</span> <span class="n">create_app</span>
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
     <span class="n">app</span> <span class="o">=</span> <span class="n">create_app</span><span class="p">()</span>
     <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>  <span class="c1"># using the default, debug database connection</span>
 </code></pre></div>
 
-<p>But the WSGI script looks like this:</p>
+<p>But the WSGI script looks like this:</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">example</span> <span class="kn">import</span> <span class="n">create_app</span>
 <span class="n">application</span> <span class="o">=</span> <span class="n">create_app</span><span class="p">(</span><span class="n">DB_CONN</span><span class="o">=</span><span class="s2">"production"</span><span class="p">)</span>
 </code></pre></div>
 
-<p>Much less chance of nuking the production database.</p>
-<h3 id="example-2-dependencies">Example 2: Dependencies</h3>
-<p>By not having an initialised application to import, you have to be much more clear about dependencies. This is a good thing, especially if you want your application to grow. Personally, I find it demystifies relationships and avoids circular import hell. People are put off by late initialisation, but it’s really easy. For example, when you use <a href="http://www.sqlalchemy.org/">SQLAlchemy</a>, you need a database object:</p>
+<p>Much less chance of nuking the production database.</p>
+<h3 id="example-2-dependencies">Example 2: Dependencies</h3>
+<p>By not having an initialised application to import, you have to be much more clear about dependencies. This is a good thing, especially if you want your application to grow. Personally, I find it demystifies relationships and avoids circular import hell. People are put off by late initialisation, but it’s really easy. For example, when you use <a href="http://www.sqlalchemy.org/">SQLAlchemy</a>, you need a database object:</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># __init__.py</span>
 <span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="n">db</span> <span class="o">=</span> <span class="n">SQLAlchemy</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
@@ -79,7 +79,7 @@
     <span class="k">pass</span>
 </code></pre></div>
 
-<p>When you use an app factory, this won’t work any more. But it does give you the opportunity to express the relationships more clearly:</p>
+<p>When you use an app factory, this won’t work any more. But it does give you the opportunity to express the relationships more clearly:</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># __init__.py</span>
 <span class="k">def</span> <span class="nf">create_app</span><span class="p">():</span>
     <span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -95,11 +95,11 @@
 </code></pre></div>
 
 <p>Now the database object lives with the other database functionality, and is only initialised later. It doesn’t seem like much, but suddenly writing blueprints is also easier: If you need anything database related, you only need to import from <code>models.py</code>.</p>
-<p><a href="http://flask.pocoo.org/docs/0.11/blueprints/">Blueprints</a> allow for modular applications, are a great idea, and pretty much the only way to keep the codebase of medium or large applications sane. Using an app factory forces you to use blueprints, this is a good thing (see Google for now, maybe I’ll write about this later).</p>
-<h3 id="example-3-testing">Example 3: Testing</h3>
-<p>Really, this is just example 1 again.</p>
+<p><a href="http://flask.pocoo.org/docs/0.11/blueprints/">Blueprints</a> allow for modular applications, are a great idea, and pretty much the only way to keep the codebase of medium or large applications sane. Using an app factory forces you to use blueprints, this is a good thing (see Google for now, maybe I’ll write about this later).</p>
+<h3 id="example-3-testing">Example 3: Testing</h3>
+<p>Really, this is just example 1 again.</p>
 <hr>
-<p>Good luck with Flask!</p>
+<p>Good luck with Flask!</p>
 </article>
 <section>
   <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid"></use></svg> <a href="https://tobywf.com/tag/python/">Python</a>, <a href="https://tobywf.com/tag/flask/">Flask</a>, <a href="https://tobywf.com/tag/sqlalchemy/">SQLAlchemy</a></p>

@@ -22,29 +22,29 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Show/dump/browse/inspect an Intersphinx inventory</h1>
+  <h1>Show/dump/browse/inspect an Intersphinx inventory</h1>
   <div class="infoline">
     <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">30 Aug '19</span>
   </div>
 </header>
 <article>
 <p><a href="https://www.sphinx-doc.org/en/master/usage/extensions/intersphinx.html">Intersphinx</a> is a great extension to Python’s default (and awesome) <a href="https://www.sphinx-doc.org">Sphinx</a> documentation generator. It allows you to link to other project’s documentation, including <a href="https://docs.python.org/3/">Python’s official documentation</a>.</p>
-<p>Sometimes, it’s rather tricky to figure out what reference exactly needs to be used.</p>
-<p>Under the hood, Intersphinx uses compressed inventory files (<code>*.inv</code>, which are zip files in disguise). For example, Python’s official documentation is <code>https://docs.python.org/3/</code>, and that’s what you would put in your Sphinx <code>conf.py</code> configuration file:</p>
+<p>Sometimes, it’s rather tricky to figure out what reference exactly needs to be used.</p>
+<p>Under the hood, Intersphinx uses compressed inventory files (<code>*.inv</code>, which are zip files in disguise). For example, Python’s official documentation is <code>https://docs.python.org/3/</code>, and that’s what you would put in your Sphinx <code>conf.py</code> configuration file:</p>
 <div class="codehilite"><pre><span></span><code><span class="n">intersphinx_mapping</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">"python"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"https://docs.python.org/3"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
 <span class="p">}</span>
 </code></pre></div>
 
 <p>Intersphinx will then load <code>https://docs.python.org/3/objects.inv</code>.</p>
-<p>Luckily, Intersphinx provides a convenient method, <a href="https://github.com/sphinx-doc/sphinx/blob/3261b87cf54fbccc9b2a306e032be9941db509cb/sphinx/ext/intersphinx.py#L366"><code>inspect_main</code></a>, to show/dump/browse/inspect an inventory, and an even handier entrypoint under <code>sphinx.ext.intersphinx</code>. There is one caveat; the file must be local. This is easily solved with <code>curl</code> (or <code>wget</code> if you prefer):</p>
+<p>Luckily, Intersphinx provides a convenient method, <a href="https://github.com/sphinx-doc/sphinx/blob/3261b87cf54fbccc9b2a306e032be9941db509cb/sphinx/ext/intersphinx.py#L366"><code>inspect_main</code></a>, to show/dump/browse/inspect an inventory, and an even handier entrypoint under <code>sphinx.ext.intersphinx</code>. There is one caveat; the file must be local. This is easily solved with <code>curl</code> (or <code>wget</code> if you prefer):</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>curl -L https://docs.python.org/3/objects.inv -o python3.inv
 <span class="gp">$ </span>python3 -m sphinx.ext.intersphinx python3.inv <span class="p">|</span> less
 </code></pre></div>
 
 <p>Naturally, Python’s documentation is extensive, so I would recommend piping to e.g. <code>less</code>.</p>
 <hr>
-<p>One more thing to remember is <a href="http://www.sphinx-doc.org/en/master/usage/restructuredtext/domains.html">Sphinx domains</a> are tricky. The <a href="http://www.sphinx-doc.org/en/master/usage/restructuredtext/domains.html#directive-py:method">domain names</a> - e.g. <code>py:method</code> - are not the same as the <a href="http://www.sphinx-doc.org/en/master/usage/restructuredtext/domains.html#cross-referencing-python-objects">cross reference names</a> - e.g. <code>py:meth</code>. With that in mind, I was able to find and link to Python’s documentation quickly.</p>
+<p>One more thing to remember is <a href="http://www.sphinx-doc.org/en/master/usage/restructuredtext/domains.html">Sphinx domains</a> are tricky. The <a href="http://www.sphinx-doc.org/en/master/usage/restructuredtext/domains.html#directive-py:method">domain names</a> - e.g. <code>py:method</code> - are not the same as the <a href="http://www.sphinx-doc.org/en/master/usage/restructuredtext/domains.html#cross-referencing-python-objects">cross reference names</a> - e.g. <code>py:meth</code>. With that in mind, I was able to find and link to Python’s documentation quickly.</p>
 </article>
 <section>
   <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid"></use></svg> <a href="https://tobywf.com/tag/python/">Python</a></p>

@@ -22,26 +22,26 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Flask web dev: Embrace SQLite</h1>
+  <h1>Flask web dev: Embrace SQLite</h1>
   <h2>Flask web development tip number 3</h2>
   <div class="infoline">
     <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">18 Jun '16</span> — last updated <span class="date">30 Jun '16</span>
   </div>
 </header>
 <article>
-<p><a href="http://flask.pocoo.org/">Flask is a web microframework</a> for Python. It’s small, but because it’s so easy to understand it’s also <a href="http://flask.pocoo.org/extensions/">extremely extensible</a>. No more bloat.</p>
-<p>I’m hoping to share some tips from developing and deploying several large Flask applications, some which aren’t obvious from the documentation.</p>
-<h2 id="tip-3-embrace-sqlite">Tip 3: Embrace SQLite</h2>
-<p><a href="https://www.sqlite.org/">SQLite</a> is ubiquitous. It’s zero-configuration. There’s no server to get hacked.</p>
+<p><a href="http://flask.pocoo.org/">Flask is a web microframework</a> for Python. It’s small, but because it’s so easy to understand it’s also <a href="http://flask.pocoo.org/extensions/">extremely extensible</a>. No more bloat.</p>
+<p>I’m hoping to share some tips from developing and deploying several large Flask applications, some which aren’t obvious from the documentation.</p>
+<h2 id="tip-3-embrace-sqlite">Tip 3: Embrace SQLite</h2>
+<p><a href="https://www.sqlite.org/">SQLite</a> is ubiquitous. It’s zero-configuration. There’s no server to get hacked.</p>
 <ul>
-<li>Especially for development, a dev SQLite database will do the job</li>
-<li>SQLite <a href="https://www.sqlite.org/whentouse.html">is fine to use in production</a>, especially for <a href="http://beets.io/blog/sqlite-performance.html">read-intensive workloads</a>
+<li>Especially for development, a dev SQLite database will do the job</li>
+<li>SQLite <a href="https://www.sqlite.org/whentouse.html">is fine to use in production</a>, especially for <a href="http://beets.io/blog/sqlite-performance.html">read-intensive workloads</a>
 </li>
 </ul>
-<p>You don’t need a big SQL server (e.g. PostgreSQL, MySQL) until you’re big. And since <a href="https://tobywf.com/2016/06/flask-mvc-simplicity-with-sqlalchemy/">you’re using SQLAlchemy (right?)</a>, migrating to something bigger isn’t an issue. What are you waiting for? 100k more users? Just use SQLite.</p>
-<p>Update: It has been put to me that you should use the same database in production and development. In principle, I think this is a good idea. However, if this isn’t possible, your integration tests should catch any issues, right?</p>
+<p>You don’t need a big SQL server (e.g. PostgreSQL, MySQL) until you’re big. And since <a href="https://tobywf.com/2016/06/flask-mvc-simplicity-with-sqlalchemy/">you’re using SQLAlchemy (right?)</a>, migrating to something bigger isn’t an issue. What are you waiting for? 100k more users? Just use SQLite.</p>
+<p>Update: It has been put to me that you should use the same database in production and development. In principle, I think this is a good idea. However, if this isn’t possible, your integration tests should catch any issues, right?</p>
 <hr>
-<p>Good luck with Flask!</p>
+<p>Good luck with Flask!</p>
 </article>
 <section>
   <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid"></use></svg> <a href="https://tobywf.com/tag/python/">Python</a>, <a href="https://tobywf.com/tag/flask/">Flask</a>, <a href="https://tobywf.com/tag/sqlalchemy/">SQLAlchemy</a></p>

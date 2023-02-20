@@ -22,38 +22,39 @@
     </nav>
 <!-- content start -->
 <header class="post-head">
-  <h1>Some Python beginner’s tips</h1>
+  <h1>Some Python beginner’s tips</h1>
   <div class="infoline">
     <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">25 May '20</span>
   </div>
 </header>
 <article>
 <p>I love Python. And Python’s ecosystem is great. But starting Python can be
-rocky. So here’s some random miscellaneous tips I remember getting people set up.</p>
+rocky. So here’s some random miscellaneous tips I remember getting people set
+up.</p>
 <p>In general, <a href="https://docs.python-guide.org/">The Hitchhiker’s Guide to Python</a>
-is a great resource.</p>
+is a great resource.</p>
 <h2 id="tldr">TL;DR</h2>
 <ul>
-<li>Use Python 3.8, 3.7, or 3.6 if you must. Don’t use anything below 3.6</li>
-<li>Know what <a href="https://pypi.org/">PyPI</a> is</li>
-<li>Always use virtual environments…</li>
-<li>… but you don’t need to install <code>virtualenv</code>, as Python 3 has <code>venv</code> built in</li>
+<li>Use Python 3.8, 3.7, or 3.6 if you must. Don’t use anything below 3.6</li>
+<li>Know what <a href="https://pypi.org/">PyPI</a> is</li>
+<li>Always use virtual environments…</li>
+<li>… but you don’t need to install <code>virtualenv</code>, as Python 3 has <code>venv</code> built in</li>
 <li>Also, there are other options of managing virtual environments, like <code>poetry</code>
   or <code>pipenv</code>
 </li>
-<li>Consider setting <code>PIP_REQUIRE_VIRTUALENV</code> in your <code>.profile</code> or equivalent</li>
+<li>Consider setting <code>PIP_REQUIRE_VIRTUALENV</code> in your <code>.profile</code> or equivalent</li>
 <li>Consider using <a href="https://python-poetry.org/">poetry</a>, but only if you like it
-  and it makes sense to you. It’s completely fine not to use it, too</li>
+  and it makes sense to you. It’s completely fine not to use it, too</li>
 <li>
 <a href="https://www.djangoproject.com/">Django</a> is great, but very complex. Unless
   you know you’ll need the features Django offers, it’s easier to start with
   <a href="https://flask.palletsprojects.com">Flask</a>
 </li>
 </ul>
-<h2 id="use-a-recent-python-3-version">Use a recent Python 3 version</h2>
+<h2 id="use-a-recent-python-3-version">Use a recent Python 3 version</h2>
 <p><a href="https://devguide.python.org/devcycle/#end-of-life-branches">Python 2 is dead</a>.
 If you start off with Python 2 now, you are setting yourself up for a hard time
-in the future. Give yourself a fighting chance and use Python 3.</p>
+in the future. Give yourself a fighting chance and use Python 3.</p>
 <p>Many systems still come with Python 2, this is okay. You can run both Python 2
 and Python 3. To check if you have Python 3 installed, you can usually just
 check if you have an executable called <code>python3</code>:</p>
@@ -64,37 +65,38 @@ check if you have an executable called <code>python3</code>:</p>
 or <code>python3.6</code>. These binary names are codified in the <a href="https://www.python.org/dev/peps/pep-0394/">Python Enhancement
 Proposal (PEP 394)</a>, although of
 course <a href="https://www.python.org/dev/peps/pep-0397/">Windows doesn’t behave</a>. In
-general, using Windows will be more painful.</p>
+general, using Windows will be more painful.</p>
 <p>Python 3.8 is very stable. Don’t run anything below 3.6, and newer is better.
 You’ll miss out on some neat, new features that can make life easier if you
-aren’t running 3.7 or 3.8.</p>
-<h2 id="a-quick-note-on-pypi">A quick note on PyPI</h2>
+aren’t running 3.7 or 3.8.</p>
+<h2 id="a-quick-note-on-pypi">A quick note on PyPI</h2>
 <p>The <a href="https://pypi.org/">Python Package Index</a>, or PyPI for short, is where you
 can easily download packages to use in your project. We’ll go over the tools
-that make this easy, but you should know what PyPI is.</p>
-<h2 id="understanding-virtual-environments">Understanding virtual environments</h2>
+that make this easy, but you should know what PyPI is.</p>
+<h2 id="understanding-virtual-environments">Understanding virtual environments</h2>
 <p>I wish I didn’t have to explain this, but virtual environments are pretty much
-required in practice, so here we go. Stick with me.</p>
-<h3 id="why-do-i-need-a-virtual-environment">Why do I need a virtual environment?</h3>
+required in practice, so here we go. Stick with me.</p>
+<h3 id="why-do-i-need-a-virtual-environment">Why do I need a virtual environment?</h3>
 <p>In theory, it should be as simple as <code>pip install &lt;cool-library&gt;</code>. But will this
 use Python 2 or Python 3? If you’re clever, you might try and use <code>pip3 install
-&lt;cool-library&gt;</code> (if your system provides this command). This is only slightly better.</p>
+&lt;cool-library&gt;</code> (if your system provides this command). This is only slightly
+better.</p>
 <p>Unfortunately, <code>pip</code> installs packages into your global, system-wide Python
 installation. But this can very easily break other installed stuff. Fixing this
-is a major headache; it isn’t worth it.</p>
+is a major headache; it isn’t worth it.</p>
 <p>To be fair, Python does have a good solution - a virtual environment aka.
-virtualenv. There require a bit more setup, but are totally worth it.</p>
+virtualenv. There require a bit more setup, but are totally worth it.</p>
 <p>Virtual environments set up a separate environment that keeps stuff away from
 your global Python installation, and is easy to wipe away. This means it’s no
-big deal if stuff gets messed up.</p>
-<h3 id="virtualenv-and-venv">virtualenv and venv</h3>
+big deal if stuff gets messed up.</p>
+<h3 id="virtualenv-and-venv">virtualenv and venv</h3>
 <p>TL;DR: Don’t install <code>virtualenv</code>, e.g. via <code>pip install virtualenv</code>. Use
 <code>venv</code>!</p>
 <p>There is an old package that is called <code>virtualenv</code>, but in Python 3, it’s
 unnecessary to install. Python 3 comes with it’s own virtualenv utility, which
 works fine. Although on e.g. Ubuntu, for some dumb reason, you’ll have to
 install that via <code>python3-venv</code> first.</p>
-<p>This is how you create a virtual environment:</p>
+<p>This is how you create a virtual environment:</p>
 <div class="codehilite"><pre><span></span><code>python3 -m venv env
 </code></pre></div>
 
@@ -106,12 +108,12 @@ Pick one of these, many tools will auto-detect them (like that default Python
 because it’s a bit less confusing than two <code>venv</code>.</p>
 <p>Unfortunately, before you can use the virtualenv, you have to “activate” it.
 This basically sets things like <code>python</code> or <code>pip</code> to point to the virtualenv
-versions. For e.g. bash, you do this by typing:</p>
+versions. For e.g. bash, you do this by typing:</p>
 <div class="codehilite"><pre><span></span><code>env/bin/activate.bash
 </code></pre></div>
 
 <p>Once activated, your shell usually displays some kind of indication it’s active,
-e.g. by showing <code>(env)</code> in the prompt:</p>
+e.g. by showing <code>(env)</code> in the prompt:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>which python
 <span class="go">/usr/bin/python</span>
 <span class="gp">$ </span>python3 -m venv env
@@ -125,7 +127,7 @@ re-activate the virtualenv. Also, if you use an IDE, you’ll have to set it to
 use the virtualenv, too. Here’s how to do that in
 <a href="https://www.jetbrains.com/help/pycharm/creating-virtual-environment.html">PyCharm</a>
 and <a href="https://code.visualstudio.com/docs/python/environments">VSCode</a>. I believe
-PyCharm can also create a virtualenv for you.</p>
+PyCharm can also create a virtualenv for you.</p>
 <p>Finally, consider setting <code>PIP_REQUIRE_VIRTUALENV</code> to <code>true</code>. With bash, you’d
 add this to your <code>~/.profile</code>:</p>
 <div class="codehilite"><pre><span></span><code><span class="nb">export</span> <span class="nv">PIP_REQUIRE_VIRTUALENV</span><span class="o">=</span><span class="nb">true</span>
@@ -133,19 +135,19 @@ add this to your <code>~/.profile</code>:</p>
 
 <p><a href="https://docs.python-guide.org/dev/pip-virtualenv/">The Hitchhiker’s Guide to
 Python</a> has more options on
-how to set this up on e.g. Windows.</p>
+how to set this up on e.g. Windows.</p>
 <p>As the name suggests, this will save you from accidentally running <code>pip install</code>
 without a virtualenv activated, and so prevent you from messing up the system
-installation. It has saved me many times.</p>
+installation. It has saved me many times.</p>
 <h3 id="requirementstxt">requirements.txt</h3>
 <p>To allow other people to create a virtualenv to match yours, the common way of
 doing this is using a file called <code>requirements.txt</code>. You put your requirements
-in that, and then someone else can install them all at once using:</p>
+in that, and then someone else can install them all at once using:</p>
 <div class="codehilite"><pre><span></span><code>pip install -r requirements.txt
 </code></pre></div>
 
 <p>In it’s simplest form, it’s just one line per package you’d install via <code>pip
-install</code>, so for example:</p>
+install</code>, so for example:</p>
 <div class="codehilite"><pre><span></span><code>requests
 flask
 </code></pre></div>
@@ -153,12 +155,12 @@ flask
 <p>To install those two packages. It can be more complex, for example you can also
 specify which versions are needed, e.g. if you depend on a minimum version.
 Keeping a <code>requirements.txt</code> file from the start is a good idea, but also
-tedious (although maybe less tedious than figuring it out later).</p>
-<h3 id="alternatives-to-venv-pipenv-poetry">Alternatives to venv (pipenv, poetry)</h3>
+tedious (although maybe less tedious than figuring it out later).</p>
+<h3 id="alternatives-to-venv-pipenv-poetry">Alternatives to venv (pipenv, poetry)</h3>
 <p>These alternatives make managing a virtualenv easier, but also bring more
 complexity. I believe understanding <code>venv</code> is important, and hiding it only
 hurts Python beginners in the long run. It’s an important part of Python, even
-if it is unfortunate. That said, managing virtualenvs and requirements is tedious.</p>
+if it is unfortunate. That said, managing virtualenvs and requirements is tedious.</p>
 <h4 id="pipenv">pipenv</h4>
 <p>The author of “The Hitchhiker’s Guide to Python” also wrote <code>pipenv</code>, which
 explains why he pushes it so hard. This post isn’t the place to go into detail,
@@ -167,15 +169,15 @@ also tedious - the reason I don’t like <code>pipenv</code> is mundane: you <a 
 Python 3.x or
 higher</a>,
 you have to pick exactly one. For some scenarios, this is fine, but it can also
-turn into a hassle if you want to share your code.</p>
+turn into a hassle if you want to share your code.</p>
 <p>TL;DR: I would avoid <code>pipenv</code>.</p>
 <h4 id="poetry">poetry</h4>
-<p><a href="https://python-poetry.org/">Poetry</a> is a fairly new project, but does everything right - for me.</p>
-<p>It’s easy to set up, this will create a new folder for you project:</p>
+<p><a href="https://python-poetry.org/">Poetry</a> is a fairly new project, but does everything right - for me.</p>
+<p>It’s easy to set up, this will create a new folder for you project:</p>
 <div class="codehilite"><pre><span></span><code>poetry new &lt;project&gt;
 </code></pre></div>
 
-<p>Alternatively, you can use <code>poetry init</code> for existing projects.</p>
+<p>Alternatively, you can use <code>poetry init</code> for existing projects.</p>
 <p>It makes managing requirements easy. You just run this command, and it keeps
 track of them for you - no more manually updating <code>requirements.txt</code>:</p>
 <div class="codehilite"><pre><span></span><code>poetry add &lt;cool-library&gt;
@@ -183,16 +185,16 @@ track of them for you - no more manually updating <code>requirements.txt</code>:
 
 <p>It also can keep track of development dependencies, like unit test libraries.
 Usually, this is a right pain requiring a second requirements file, often called
-<code>requirements-dev.txt</code>, but with poetry, it’s simply:</p>
+<code>requirements-dev.txt</code>, but with poetry, it’s simply:</p>
 <div class="codehilite"><pre><span></span><code>poetry add --dev pytest
 </code></pre></div>
 
-<p>Installing the virtualenv is also easy:</p>
+<p>Installing the virtualenv is also easy:</p>
 <div class="codehilite"><pre><span></span><code>poetry install
 </code></pre></div>
 
 <p>This is also what other people can run when they download your project.
-Activating the virtualenv is also easy:</p>
+Activating the virtualenv is also easy:</p>
 <div class="codehilite"><pre><span></span><code>poetry shell
 </code></pre></div>
 
@@ -201,21 +203,21 @@ being different. You no longer need to manually make a virtualenv, the
 <code>pyproject.toml</code> file replaces <code>setup.py</code>, <code>setup.cfg</code>, and <code>requirements.txt</code>.
 But poetry does simplify workflows, including building artefacts or publishing
 your project to PyPI. I’m 100% happy with it, and can easily recommend it, even
-for beginners.</p>
+for beginners.</p>
 <h2 id="django">Django</h2>
 <p><a href="https://www.djangoproject.com/">Django</a> is a great - if not the greatest - web
 framework, with loads of features. But it crushes even advanced Python users
 with a lot of complexity and Django-specific knowledge. Unless you are using
 Django in a professional (i.e. paid), customer-facing project, or you know you
-absolutely need many of the features Django offers, other options are available.</p>
+absolutely need many of the features Django offers, other options are available.</p>
 <p><a href="https://flask.palletsprojects.com/">Flask</a> is also great, but very different.
 It’s a “micro”-framework, so the way you get more features is by using add-ons.
 This means it’s relatively simple, although you’ll have to slowly add things,
 and not all add-ons are as good. But it grows with you, and the templating
-engine is easily the best there is.</p>
+engine is easily the best there is.</p>
 <p>Flask makes projects fun, and so increases your change of success. I have
 written many an internal tool in Flask. It’s quick to get started, quick to get
-working, and quick to deploy. It’s a real joy. Flask is surprisingly capable.</p>
+working, and quick to deploy. It’s a real joy. Flask is surprisingly capable.</p>
 <p>And should you need to, it isn’t too horrible to port Flask projects to Django.
 They share a lot of DNA. I’m not going to pretend it’s easy. But getting a proof
 of concept running in Flask is a lot easier, and a trade-off I would make. If
@@ -223,10 +225,10 @@ you ever find yourself in the situation of having to port to Django, that’s a
 success already in my books. Make no mistake, Flask is very capable and
 shouldn’t be seen as less professional. But there’s no denying Django offers
 more for e.g. big e-commerce projects, or when you need some CRM aspects for
-business reasons.</p>
+business reasons.</p>
 <hr>
 <p>I hope this helps you get started with Python, or helps you tame some Python
-projects you had lying around!</p>
+projects you had lying around!</p>
 </article>
 <section>
   <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid"></use></svg> <a href="https://tobywf.com/tag/python/">Python</a></p>
