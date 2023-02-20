@@ -40,13 +40,13 @@ is a great resource.</p>
 <li>Always use virtual environments…</li>
 <li>… but you don’t need to install <code>virtualenv</code>, as Python 3 has <code>venv</code> built in</li>
 <li>Also, there are other options of managing virtual environments, like <code>poetry</code>
-  or <code>pipenv</code></li>
+or <code>pipenv</code></li>
 <li>Consider setting <code>PIP_REQUIRE_VIRTUALENV</code> in your <code>.profile</code> or equivalent</li>
 <li>Consider using <a href="https://python-poetry.org/">poetry</a>, but only if you like it
-  and it makes sense to you. It’s completely fine not to use it, too</li>
+and it makes sense to you. It’s completely fine not to use it, too</li>
 <li><a href="https://www.djangoproject.com/">Django</a> is great, but very complex. Unless
-  you know you’ll need the features Django offers, it’s easier to start with
-  <a href="https://flask.palletsprojects.com">Flask</a></li>
+you know you’ll need the features Django offers, it’s easier to start with
+<a href="https://flask.palletsprojects.com">Flask</a></li>
 </ul>
 <h2 id="use-a-recent-python-3-version">Use a recent Python 3 version</h2>
 <p><a href="https://devguide.python.org/devcycle/#end-of-life-branches">Python 2 is dead</a>.
@@ -75,8 +75,7 @@ that make this easy, but you should know what PyPI is.</p>
 required in practice, so here we go. Stick with me.</p>
 <h3 id="why-do-i-need-a-virtual-environment">Why do I need a virtual environment?</h3>
 <p>In theory, it should be as simple as <code>pip install &lt;cool-library&gt;</code>. But will this
-use Python 2 or Python 3? If you’re clever, you might try and use <code>pip3 install
-&lt;cool-library&gt;</code> (if your system provides this command). This is only slightly
+use Python 2 or Python 3? If you’re clever, you might try and use <code>pip3 install &lt;cool-library&gt;</code> (if your system provides this command). This is only slightly
 better.</p>
 <p>Unfortunately, <code>pip</code> installs packages into your global, system-wide Python
 installation. But this can very easily break other installed stuff. Fixing this
@@ -143,8 +142,7 @@ in that, and then someone else can install them all at once using:</p>
 <div class="codehilite"><pre><span></span><code>pip install -r requirements.txt
 </code></pre></div>
 
-<p>In it’s simplest form, it’s just one line per package you’d install via <code>pip
-install</code>, so for example:</p>
+<p>In it’s simplest form, it’s just one line per package you’d install via <code>pip install</code>, so for example:</p>
 <div class="codehilite"><pre><span></span><code>requests
 flask
 </code></pre></div>
