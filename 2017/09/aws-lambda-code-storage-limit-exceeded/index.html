@@ -30,7 +30,7 @@
 <article>
 <p>You’re deploying a new version of some <a href="https://aws.amazon.com/lambda/">AWS Lambda functions</a>,
 and then you get a very cryptic error from CloudFormation: “Code Storage Limit Exceeded”.</p>
-<p><img alt='CloudFormation showing "Code Storage Limit Exceeded" error messages' src="https://tobywf.com/2017/09/aws-lambda-code-storage-limit-exceeded/images/2017-09-07-aws-lambda-code-storage-limit-exceeded.png"></p>
+<p><img alt="CloudFormation showing “Code Storage Limit Exceeded” error messages" src="https://tobywf.com/2017/09/aws-lambda-code-storage-limit-exceeded/images/2017-09-07-aws-lambda-code-storage-limit-exceeded.png"></p>
 <p>Not only does this make the deployment fail, but it also prevents rolling back.</p>
 <p>So what’s going on? Most likely you’ve hit the <a href="http://docs.aws.amazon.com/lambda/latest/dg/limits.html#limits-list">75 GiB code storage limit</a>; the AWS Lambda dashboard should be displaying a
 warning to confirm this.</p>

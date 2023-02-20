@@ -61,7 +61,7 @@
 </code></pre></div>
 
 <p>First, <code>margin=5pt</code> sets a margin, otherwise standalone really does only set the picture size to what is required. And here’s the result, converted to PNG with a border added to emphasise the margin:</p>
-<p><img alt='The rendered TeX file that reads "Hello World", with a border added afterwards' src="https://tobywf.com/2018/01/beautiful-svg-diagrams-with-tikz-dvisvgm/images/2018-01-28-helloworld.png"></p>
+<p><img alt="The rendered TeX file that reads “Hello World”, with a border added afterwards" src="https://tobywf.com/2018/01/beautiful-svg-diagrams-with-tikz-dvisvgm/images/2018-01-28-helloworld.png"></p>
 <p>However, if you compiled this, you’ll still get a PDF out. To get an SVG, add the <code>dvisvgm</code> option to the document class options. Here’s another example with that:</p>
 <div class="codehilite"><pre><span></span><code><span class="k">\documentclass</span><span class="na">[dvisvgm,tikz]</span><span class="nb">{</span>standalone<span class="nb">}</span>
 <span class="k">\renewcommand</span><span class="nb">{</span><span class="k">\familydefault</span><span class="nb">}{</span><span class="k">\sfdefault</span><span class="nb">}</span>
