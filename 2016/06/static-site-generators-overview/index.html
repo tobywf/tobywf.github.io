@@ -33,18 +33,12 @@
 <p>But for no particular reason, I decided to switch. I think it’s because I know that maintaining code is always underestimated. But which project to pick?</p>
 <p>The most well-known SSG is <a href="https://jekyllrb.com/">Jekyll</a>, and it’s well thought out. But there’s no way in hell I’m using Ruby; I hate almost everything about Ruby (but that’s for another post - all I’ll say now is that Ruby <a href="http://www.darkridge.com/~jpr5/2012/10/03/ruby-1.8.7-1.9.3-migration/">breaks between minor version numbers</a>). So maybe something Python exists? IMO, SSGs don’t need to be fully featured, but should be hackable.</p>
 <ul>
-<li>
-<a href="https://jekyllrb.com/">Jekyll</a>: Ruby - nope</li>
-<li>
-<a href="https://github.com/spf13/hugo">Hugo</a>: It’s GoLang, it’s fast… I’d rather have simple</li>
-<li>
-<a href="https://github.com/eudicots/Cactus">Cactus</a>: Django templates instead of Jinja2</li>
-<li>
-<a href="https://github.com/hyde/hyde">Hyde</a>: No Python 3 support? Are you serious?</li>
-<li>
-<a href="https://github.com/getnikola/nikola">Nikola</a>: Way to complicated, even though they claim simplicity. Just look at the files in the repo. <a href="https://getnikola.com/handbook.html#supported-input-formats">PHP support</a> - wat? (However, the build system looks seriously good)</li>
-<li>
-<a href="https://github.com/lektor/lektor">Lektor</a>: I generally love anything <a href="https://github.com/mitsuhiko">Armin Ronacher</a> does, but Lektor seems to be focussed more on the content management aspect with an admin interface</li>
+<li><a href="https://jekyllrb.com/">Jekyll</a>: Ruby - nope</li>
+<li><a href="https://github.com/spf13/hugo">Hugo</a>: It’s GoLang, it’s fast… I’d rather have simple</li>
+<li><a href="https://github.com/eudicots/Cactus">Cactus</a>: Django templates instead of Jinja2</li>
+<li><a href="https://github.com/hyde/hyde">Hyde</a>: No Python 3 support? Are you serious?</li>
+<li><a href="https://github.com/getnikola/nikola">Nikola</a>: Way to complicated, even though they claim simplicity. Just look at the files in the repo. <a href="https://getnikola.com/handbook.html#supported-input-formats">PHP support</a> - wat? (However, the build system looks seriously good)</li>
+<li><a href="https://github.com/lektor/lektor">Lektor</a>: I generally love anything <a href="https://github.com/mitsuhiko">Armin Ronacher</a> does, but Lektor seems to be focussed more on the content management aspect with an admin interface</li>
 </ul>
 <p>Finally, I found <a href="https://github.com/getpelican/pelican">Pelican</a>. Python 3, check. Jinja2 templates, check. Great API, check. The migration went well because I was already using a “Jekyll-compatible” markdown format. Attachments are a great way to manage files. The code-base is nice.</p>
 <p>It isn’t completely perfect. Linking to other posts via the slug would be nice, and I’m sure easily doable. The periodic archive generation sucks because it uses the same template for year/month/day and the data that gets passed to those templates is also unstructured. But thanks to the API, I just wrote my own plugin to generate archives just as I want them, in about 50 lines of code.</p>

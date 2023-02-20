@@ -35,8 +35,7 @@
 <p><a href="https://www.sqlite.org/">SQLite</a> is ubiquitous. It’s zero-configuration. There’s no server to get hacked.</p>
 <ul>
 <li>Especially for development, a dev SQLite database will do the job</li>
-<li>SQLite <a href="https://www.sqlite.org/whentouse.html">is fine to use in production</a>, especially for <a href="http://beets.io/blog/sqlite-performance.html">read-intensive workloads</a>
-</li>
+<li>SQLite <a href="https://www.sqlite.org/whentouse.html">is fine to use in production</a>, especially for <a href="http://beets.io/blog/sqlite-performance.html">read-intensive workloads</a></li>
 </ul>
 <p>You don’t need a big SQL server (e.g. PostgreSQL, MySQL) until you’re big. And since <a href="https://tobywf.com/2016/06/flask-mvc-simplicity-with-sqlalchemy/">you’re using SQLAlchemy (right?)</a>, migrating to something bigger isn’t an issue. What are you waiting for? 100k more users? Just use SQLite.</p>
 <p>Update: It has been put to me that you should use the same database in production and development. In principle, I think this is a good idea. However, if this isn’t possible, your integration tests should catch any issues, right?</p>

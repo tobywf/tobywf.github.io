@@ -142,16 +142,12 @@ hi/lo: ^          ^, mid = 5, index(5) = 2
 <div class="footnote">
 <hr>
 <ol>
-<li id="fn:1">
-<p>There are several other ways to output assembly from a go program:</p>
+<li id="fn:1"><p>There are several other ways to output assembly from a go program:</p>
 <ul>
-<li>
-<code>go tool compile -S [-N] nikita.go &gt; nikita.s</code> - This produces some weird output. <code>-N</code> for unoptimised.</li>
-<li>
-<code>go tool objdump $GOPATH/bin/nikita &gt; nikita.s</code> - The same as <code>compile</code>, but with all the statically linked stuff.</li>
+<li><code>go tool compile -S [-N] nikita.go &gt; nikita.s</code> - This produces some weird output. <code>-N</code> for unoptimised.</li>
+<li><code>go tool objdump $GOPATH/bin/nikita &gt; nikita.s</code> - The same as <code>compile</code>, but with all the statically linked stuff.</li>
 </ul>
-<p>I prefer the <code>objdump -S $GOPATH/bin/nikita</code> route. <a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">↩</a></p>
-</li>
+<p>I prefer the <code>objdump -S $GOPATH/bin/nikita</code> route. <a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">↩</a></p></li>
 </ol>
 </div>
 </article>

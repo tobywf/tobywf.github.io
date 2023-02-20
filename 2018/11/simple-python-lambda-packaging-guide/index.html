@@ -152,15 +152,9 @@
 <div class="footnote">
 <hr>
 <ol>
-<li id="fn:1">
-<p>Pedantically speaking, Python also has <a href="https://www.python.org/dev/peps/pep-0427/">binary packaging via wheels</a>, which allows shipping pre-compiled C extensions for common platforms. This means it’s quicker to install, and you don’t necessarily need a compiler installed - a huge usability win. If all Python extensions provided Lambda-compatible wheels, conceivably running <code>pip install</code> could work. But it doesn’t, I’ve tried. I think because the Lambda environment is so locked down, <code>pip</code> gets confused and can’t figure out the Linux variant, and if it’s <a href="https://github.com/pypa/manylinux">manylinux</a> compatible. And so it falls back to building from source. <a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">↩</a></p>
-</li>
-<li id="fn:2">
-<p>Even on a beefy Code i7 Macbook Pro, it took just under nine minutes to build this (excluding pulling base images), which is kinda outrageous for local development. The CodeBuild <a href="https://github.com/aws/aws-codebuild-docker-images/blob/master/ubuntu/python/3.6.5/Dockerfile">Dockerfile</a> is also large, and installs things like mono. So it’s a bad fit for local development, unless you have a Docker repository which you can pull this image from. <a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">↩</a></p>
-</li>
-<li id="fn:3">
-<p>Infrastructure work is rarely sexy, but all the “10x developers” I know are infrastructure/ “devops” people, because they enable other teams to be several times more productive. Hi James! <a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">↩</a></p>
-</li>
+<li id="fn:1"><p>Pedantically speaking, Python also has <a href="https://www.python.org/dev/peps/pep-0427/">binary packaging via wheels</a>, which allows shipping pre-compiled C extensions for common platforms. This means it’s quicker to install, and you don’t necessarily need a compiler installed - a huge usability win. If all Python extensions provided Lambda-compatible wheels, conceivably running <code>pip install</code> could work. But it doesn’t, I’ve tried. I think because the Lambda environment is so locked down, <code>pip</code> gets confused and can’t figure out the Linux variant, and if it’s <a href="https://github.com/pypa/manylinux">manylinux</a> compatible. And so it falls back to building from source. <a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">↩</a></p></li>
+<li id="fn:2"><p>Even on a beefy Code i7 Macbook Pro, it took just under nine minutes to build this (excluding pulling base images), which is kinda outrageous for local development. The CodeBuild <a href="https://github.com/aws/aws-codebuild-docker-images/blob/master/ubuntu/python/3.6.5/Dockerfile">Dockerfile</a> is also large, and installs things like mono. So it’s a bad fit for local development, unless you have a Docker repository which you can pull this image from. <a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">↩</a></p></li>
+<li id="fn:3"><p>Infrastructure work is rarely sexy, but all the “10x developers” I know are infrastructure/ “devops” people, because they enable other teams to be several times more productive. Hi James! <a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">↩</a></p></li>
 </ol>
 </div>
 </article>
