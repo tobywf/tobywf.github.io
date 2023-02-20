@@ -31,8 +31,8 @@
 <p>Air-gapped systems are great for security, but a huge pain to manage. I recently set up a server that - while not strictly air-gapped - was on a subnet without internet access. The initial server was installed using a Debian network install image, because who wants to download 3 DVDs to get outdated packages? Besides, I like servers with minimal bloat.</p>
 <p>The <a href="https://www.debian.org/CD/netinst/">netinst page</a> isn’t joking when it says that the ISO “contains just the minimal amount of software to start the installation and fetch the remaining packages over the Internet.”. Not even an SSH server is installed. So let’s get some packages on this machine.</p>
 <p>Various sites will tell you to use dynamic port forwarding with SSH:</p>
-<div class="codehilite"><pre><span></span><code>$ ssh -ND <span class="m">1080</span> &lt;user&gt;@&lt;remote&gt;
-$ <span class="nv">http_proxy</span><span class="o">=</span>socks://localhost:1080/ apt-get update
+<div class="codehilite"><pre><span></span><code><span class="gp">$ </span>ssh -ND <span class="m">1080</span> &lt;user&gt;@&lt;remote&gt;
+<span class="gp">$ </span><span class="nv">http_proxy</span><span class="o">=</span>socks://localhost:1080/ apt-get update
 </code></pre></div>
 
 <p>Spoiler: This doesn’t work. With <code>-D</code>, SSH acts as a SOCKS proxy, and while there’s speculation that <code>apt</code> supports SOCKS proxies, if you try it out it doesn’t. You can use <code>tsocks</code>, which works well… but how to install it?</p>

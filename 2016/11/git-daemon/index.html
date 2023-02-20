@@ -29,10 +29,10 @@
 </header>
 <article>
 <p>If you want to quickly share a Git repository with someone, you can use <a href="https://git-scm.com/book/en/v2/Git-on-the-Server-Git-Daemon">git daemon</a>:</p>
-<div class="codehilite"><pre><span></span><code>$ hostname
-blah
-$ <span class="nb">cd</span> my_repo/
-$ git daemon <span class="se">\</span>
+<div class="codehilite"><pre><span></span><code><span class="gp">$ </span>hostname
+<span class="go">blah</span>
+<span class="gp">$ </span><span class="nb">cd</span> my_repo/
+<span class="gp">$ </span>git daemon <span class="se">\</span>
     --verbose <span class="se">\</span>
     --reuseaddr <span class="se">\</span>
     --export-all <span class="se">\</span>
@@ -63,8 +63,8 @@ $ git daemon <span class="se">\</span>
 <code>.git/</code> - this is the directory of the bare repo to whitelist/share. In other words, only share the git repository data, not your working directory.</li>
 </ul>
 <p>You might need to punch through your firewall. On Ubuntu, if you are using <code>iptables</code>, this is how you can check if you’ve already added a firewall rule and how to add a firewall exception. I believe this lasts until you restart:</p>
-<div class="codehilite"><pre><span></span><code>$ sudo iptables -nL <span class="p">|</span> grep <span class="m">9418</span>
-$ sudo iptables -I INPUT <span class="m">1</span> -p tcp --dport <span class="m">9418</span> -j ACCEPT
+<div class="codehilite"><pre><span></span><code><span class="gp">$ </span>sudo iptables -nL <span class="p">|</span> grep <span class="m">9418</span>
+<span class="gp">$ </span>sudo iptables -I INPUT <span class="m">1</span> -p tcp --dport <span class="m">9418</span> -j ACCEPT
 </code></pre></div>
 </article>
 <section>

@@ -107,10 +107,10 @@ hi/lo: ^          ^, mid = 5, index(5) = 2
 
 <p>This does make sense if the problem is I/O bound. I also put this into Joe’s go program. Surprisingly, the go version was quicker than Manuel’s C version! Now that’s interesting.</p>
 <p>By using <code>gcc -O3</code>, I managed to shave a few milliseconds off. Then I used <code>clang</code>, which I prefer because the assembly output is much cleaner. The <code>clang -O3</code> version was also faster than <code>gcc -O3</code> - llvm is simply better at rearranging the code at a higher level. <code>clang</code> can output the assembly directly. For comparing it with the go version, <code>objdump</code> works on both. <sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup></p>
-<div class="codehilite"><pre><span></span><code>$ clang -O3 -S -masm<span class="o">=</span>intel nikita.c -o nikita.s
-<span class="c1"># or</span>
-$ clang -O3 -Wall -Wextra nikita.c -o nikita
-$ objdump -M intel -S nikita &gt; nikita.s
+<div class="codehilite"><pre><span></span><code><span class="gp">$ </span>clang -O3 -S -masm<span class="o">=</span>intel nikita.c -o nikita.s
+<span class="gp"># </span>or
+<span class="gp">$ </span>clang -O3 -Wall -Wextra nikita.c -o nikita
+<span class="gp">$ </span>objdump -M intel -S nikita &gt; nikita.s
 </code></pre></div>
 
 <p>Let’s see what we have:</p>

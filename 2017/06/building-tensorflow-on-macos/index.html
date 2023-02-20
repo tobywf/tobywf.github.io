@@ -34,21 +34,21 @@ instructions. And when you’re running a mid-2012 Macbook Air, you want all the
 optimisations you can get. <a href="https://www.tensorflow.org/install/install_sources">The TensorFlow installation docs</a>
 are pretty good! This is pretty much a straight crib from the docs. Building
 TensorFlow takes a while though, on my underpowered machine it took over 1.5 hours.</p>
-<div class="codehilite"><pre><span></span><code>$ brew install bazel
-$ mkdir &lt;project&gt;
-$ <span class="nb">cd</span> &lt;project&gt;
-$ virtualenv -p python3 env
-$ <span class="nb">source</span> env/bin/activate
-$ pip install six wheel numpy
-$ <span class="nb">cd</span> ..
-$ git clone --depth <span class="m">1</span> <span class="o">[</span>--branch r1.0<span class="o">]</span> https://github.com/tensorflow/tensorflow
-$ <span class="nb">cd</span> tensorflow
-$ ./configure
-$ bazel build --config<span class="o">=</span>opt //tensorflow/tools/pip_package:build_pip_package
-<span class="o">[</span>...<span class="o">]</span>
-INFO: Elapsed time: <span class="m">5635</span>.340s, Critical Path: <span class="m">4545</span>.85s
-$ bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
-$ pip install /tmp/tensorflow_pkg/tensorflow-1.2.0rc1-cp36-cp36m-macosx_10_12_x86_64.whl
+<div class="codehilite"><pre><span></span><code><span class="gp">$ </span>brew install bazel
+<span class="gp">$ </span>mkdir &lt;project&gt;
+<span class="gp">$ </span><span class="nb">cd</span> &lt;project&gt;
+<span class="gp">$ </span>virtualenv -p python3 env
+<span class="gp">$ </span><span class="nb">source</span> env/bin/activate
+<span class="gp">$ </span>pip install six wheel numpy
+<span class="gp">$ </span><span class="nb">cd</span> ..
+<span class="gp">$ </span>git clone --depth <span class="m">1</span> <span class="o">[</span>--branch r1.0<span class="o">]</span> https://github.com/tensorflow/tensorflow
+<span class="gp">$ </span><span class="nb">cd</span> tensorflow
+<span class="gp">$ </span>./configure
+<span class="gp">$ </span>bazel build --config<span class="o">=</span>opt //tensorflow/tools/pip_package:build_pip_package
+<span class="go">[...]</span>
+<span class="go">INFO: Elapsed time: 5635.340s, Critical Path: 4545.85s</span>
+<span class="gp">$ </span>bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
+<span class="gp">$ </span>pip install /tmp/tensorflow_pkg/tensorflow-1.2.0rc1-cp36-cp36m-macosx_10_12_x86_64.whl
 </code></pre></div>
 
 <p>Before you test your custom build of TensorFlow, change the directory! If you
