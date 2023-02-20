@@ -48,9 +48,9 @@ $ <span class="nv">http_proxy</span><span class="o">=</span>socks://localhost:10
 <span class="nv">count</span><span class="o">=</span><span class="m">0</span>
 
 <span class="nb">echo</span> <span class="s2">"-&gt; Gathering dependencies"</span>
-<span class="k">for</span> i in <span class="sb">`</span>seq <span class="m">1</span> <span class="m">10</span><span class="sb">`</span>
+<span class="k">for</span> i <span class="k">in</span> <span class="sb">`</span>seq <span class="m">1</span> <span class="m">10</span><span class="sb">`</span>
 <span class="k">do</span>
-  <span class="k">for</span> pkg in <span class="s2">"</span><span class="nv">$deps</span><span class="s2">"</span>
+  <span class="k">for</span> pkg <span class="k">in</span> <span class="s2">"</span><span class="nv">$deps</span><span class="s2">"</span>
   <span class="k">do</span>
     <span class="nv">deps</span><span class="o">+=</span><span class="s1">$'\n'</span>
     <span class="nv">deps</span><span class="o">+=</span><span class="k">$(</span>apt-cache depends -i <span class="nv">$pkg</span> <span class="p">|</span> <span class="se">\</span>
@@ -69,7 +69,7 @@ $ <span class="nv">http_proxy</span><span class="o">=</span>socks://localhost:10
 <span class="nb">echo</span> <span class="s2">"-&gt; Downloading packages"</span>
 mkdir packages
 <span class="nb">pushd</span> packages &gt;/dev/null
-<span class="k">for</span> pkg in <span class="s2">"</span><span class="nv">$deps</span><span class="s2">"</span>
+<span class="k">for</span> pkg <span class="k">in</span> <span class="s2">"</span><span class="nv">$deps</span><span class="s2">"</span>
 <span class="k">do</span>
   apt-get download <span class="nv">$pkg</span>
 <span class="k">done</span>

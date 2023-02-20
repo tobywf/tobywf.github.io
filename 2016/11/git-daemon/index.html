@@ -43,8 +43,8 @@ $ git daemon <span class="se">\</span>
 
 <p>Guests can now clone from you: <code>git clone git://blah/my_repo</code>. Note that this is completely unauthenticated read-only access!</p>
 <p>If you’re lazy like me, you can create an alias so all you have to type is <code>git serve</code> (from the root of the repo):</p>
-<div class="codehilite"><pre><span></span><code><span class="k">[alias]</span>
-    <span class="na">serve</span> <span class="o">=</span> <span class="s">!git daemon --verbose --reuseaddr --export-all --strict-paths --base-path=.git .git/</span>
+<div class="codehilite"><pre><span></span><code><span class="k">[alias]</span><span class="w"></span>
+<span class="w">    </span><span class="na">serve</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">!git daemon --verbose --reuseaddr --export-all --strict-paths --base-path=.git .git/</span><span class="w"></span>
 </code></pre></div>
 
 <p>So what do the options mean?</p>

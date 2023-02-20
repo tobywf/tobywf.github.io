@@ -114,32 +114,32 @@ thing to happen automatically. But again, systemd makes it easy to set the
 instead of 565 for a hack-y script. Granted, the service file is less…
 general? But well worth it for consistency.</p>
 <p><a name="systemd">The service unit configuration, in all its glory:</a></p>
-<div class="codehilite"><pre><span></span><code><span class="k">[Unit]</span>
-<span class="na">Description</span><span class="o">=</span><span class="s">Web based code review and project management for Git based projects</span>
-<span class="na">After</span><span class="o">=</span><span class="s">syslog.target network.target remote-fs.target</span>
+<div class="codehilite"><pre><span></span><code><span class="k">[Unit]</span><span class="w"></span>
+<span class="na">Description</span><span class="o">=</span><span class="s">Web based code review and project management for Git based projects</span><span class="w"></span>
+<span class="na">After</span><span class="o">=</span><span class="s">syslog.target network.target remote-fs.target</span><span class="w"></span>
 
-<span class="k">[Service]</span>
-<span class="na">Type</span><span class="o">=</span><span class="s">simple</span>
-<span class="na">User</span><span class="o">=</span><span class="s">{{ gerrit_user }}</span>
-<span class="na">ExecStart</span><span class="o">=</span><span class="s">/usr/bin/java -DGerritCodeReview=1 -jar {{ gerrit_home }}/bin/gerrit.war daemon -d {{ gerrit_home }}</span>
-<span class="na">ExecStop</span><span class="o">=</span><span class="s">/bin/kill -s SIGINT $MAINPID</span>
-<span class="c1"># stupid java exit codes</span>
-<span class="na">SuccessExitStatus</span><span class="o">=</span><span class="s">130 SIGINT</span>
-<span class="na">SuccessExitStatus</span><span class="o">=</span><span class="s">143 SIGTERM</span>
+<span class="k">[Service]</span><span class="w"></span>
+<span class="na">Type</span><span class="o">=</span><span class="s">simple</span><span class="w"></span>
+<span class="na">User</span><span class="o">=</span><span class="s">{{ gerrit_user }}</span><span class="w"></span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/usr/bin/java -DGerritCodeReview=1 -jar {{ gerrit_home }}/bin/gerrit.war daemon -d {{ gerrit_home }}</span><span class="w"></span>
+<span class="na">ExecStop</span><span class="o">=</span><span class="s">/bin/kill -s SIGINT $MAINPID</span><span class="w"></span>
+<span class="c1"># stupid java exit codes</span><span class="w"></span>
+<span class="na">SuccessExitStatus</span><span class="o">=</span><span class="s">130 SIGINT</span><span class="w"></span>
+<span class="na">SuccessExitStatus</span><span class="o">=</span><span class="s">143 SIGTERM</span><span class="w"></span>
 
-<span class="c1"># default gerrit ulimits set by the init.d script... your choice</span>
-<span class="na">LimitCORE</span><span class="o">=</span><span class="s">0</span>
-<span class="na">LimitDATA</span><span class="o">=</span><span class="s">unlimited</span>
-<span class="na">LimitFSIZE</span><span class="o">=</span><span class="s">unlimited</span>
-<span class="na">LimitRSS</span><span class="o">=</span><span class="s">unlimited</span>
-<span class="c1"># NOFILE :  GERRIT_FDS, determined by "core.packedGitOpenFiles" in the script</span>
-<span class="na">LimitNOFILE</span><span class="o">=</span><span class="s">1024</span>
-<span class="na">LimitCPU</span><span class="o">=</span><span class="s">unlimited</span>
-<span class="na">LimitAS</span><span class="o">=</span><span class="s">unlimited</span>
-<span class="na">LimitLOCKS</span><span class="o">=</span><span class="s">unlimited</span>
+<span class="c1"># default gerrit ulimits set by the init.d script... your choice</span><span class="w"></span>
+<span class="na">LimitCORE</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
+<span class="na">LimitDATA</span><span class="o">=</span><span class="s">unlimited</span><span class="w"></span>
+<span class="na">LimitFSIZE</span><span class="o">=</span><span class="s">unlimited</span><span class="w"></span>
+<span class="na">LimitRSS</span><span class="o">=</span><span class="s">unlimited</span><span class="w"></span>
+<span class="c1"># NOFILE :  GERRIT_FDS, determined by "core.packedGitOpenFiles" in the script</span><span class="w"></span>
+<span class="na">LimitNOFILE</span><span class="o">=</span><span class="s">1024</span><span class="w"></span>
+<span class="na">LimitCPU</span><span class="o">=</span><span class="s">unlimited</span><span class="w"></span>
+<span class="na">LimitAS</span><span class="o">=</span><span class="s">unlimited</span><span class="w"></span>
+<span class="na">LimitLOCKS</span><span class="o">=</span><span class="s">unlimited</span><span class="w"></span>
 
-<span class="k">[Install]</span>
-<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
+<span class="k">[Install]</span><span class="w"></span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span><span class="w"></span>
 </code></pre></div>
 </article>
 <section>

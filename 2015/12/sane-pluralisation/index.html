@@ -67,8 +67,8 @@
 </code></pre></div>
 
 <p>What else is there? Easily translatable, right? Just translate the whole format string! Genius…</p>
-<div class="codehilite"><pre><span></span><code><span class="c">EN: '{0} {0:plural,bottle,bottles} on the wall'</span>
-<span class="c">DE: '{0} {0:plural,Flasche,Flaschen} auf der Wand'</span>
+<div class="codehilite"><pre><span></span><code>EN: '{0} {0:plural,bottle,bottles} on the wall'
+DE: '{0} {0:plural,Flasche,Flaschen} auf der Wand'
 </code></pre></div>
 
 <p>… until you get to <a href="https://localization-guide.readthedocs.org/en/latest/l10n/pluralforms.html">non-Germanic languages</a>, where the rule <em>isn’t</em> <code>count == 1</code>. How about Russian: <code>(n%10==1 &amp;&amp; n%100!=11 ? 0 : n%10&gt;=2 &amp;&amp; n%10&lt;=4 &amp;&amp; (n%100&lt;10 || n%100&gt;=20) ? 1 : 2)</code>.</p>

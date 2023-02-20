@@ -36,10 +36,10 @@
 <p>Ah, <a href="https://poetry.eustace.io/">Poetry</a>. I was put off by the flashy website, but did eventually try it. <a href="https://diymag.com/2017/06/06/looking-back-on-the-streets-a-grand-dont-come-for-free"><em>It was supposed to be so easy</em></a>.</p>
 <p>So it’s 2019, Python 2 is almost EOL. Yet Poetry refused to use Python 3 on my system. See issues <a href="https://github.com/sdispater/poetry/issues/522">#522</a> and <a href="https://github.com/sdispater/poetry/issues/721">#721</a>. The TL;DR is, if you aren’t using <a href="https://github.com/pyenv/pyenv">pyenv</a>, you’re stuffed. And I’m not, because I don’t like messing with my Python versions. Whatever Python 3 Homebrew provides is fine, the CI will test the rest. My collaborators might not be, either. And I don’t expect it, <code>pyenv</code> isn’t “simple” (maybe simpler). Oh, did they mention <code>pyenv</code> doesn’t work on Windows?</p>
 <p>Basically, if you use the default install method, which is the equivalent of <code>curl ... | bash</code>, it installs to Python 2. But even if you force it to use Python 3, it doesn’t work. Taking a step back, <a href="https://www.python.org/dev/peps/pep-0394/">PEP 394</a> is “The <code>python</code> Command on Unix-Like Systems”, and specifies <code>python2</code> and <code>python3</code> for the respective versions. But Poetry will always use just <code>python</code>, even if you ask for Python 3 in <code>pyproject.toml</code>:</p>
-<div class="codehilite"><pre><span></span><code><span class="k">[RuntimeError]</span>
-<span class="na">The current Python version (2.7.15) is not</span>
-<span class="na">supported by the project (^3.6)</span>
-<span class="na">Please activate a compatible Python version.</span>
+<div class="codehilite"><pre><span></span><code><span class="k">[RuntimeError]</span><span class="w"></span>
+<span class="na">The current Python version (2.7.15) is not</span><span class="w"></span>
+<span class="na">supported by the project (^3.6)</span><span class="w"></span>
+<span class="na">Please activate a compatible Python version.</span><span class="w"></span>
 </code></pre></div>
 
 <p>Yaaaaaassss, I love issue reports for external tooling. User <a href="https://github.com/harrybiddle">harrybiddle</a> sums it up perfectly in his comment:</p>

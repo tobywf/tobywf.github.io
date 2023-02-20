@@ -94,15 +94,15 @@ hi/lo: ^          ^, mid = 5, index(5) = 2
 </code></pre></div>
 
 <p>At this point, Manuel moved to C and Joe moved to Golang. Both of these will execute faster than Python (but take longer to write). Manuel found out the biggest speed-up came from implementing your own <code>atoi</code>, which is super simplistic because the input is very limited. I implemented it like this:</p>
-<div class="codehilite"><pre><span></span><code><span class="kt">uint64_t</span> <span class="nf">_atoi</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kt">uint64_t</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">getchar</span><span class="p">();</span>
-    <span class="k">while</span> <span class="p">(</span><span class="n">b</span> <span class="o">!=</span> <span class="sc">' '</span> <span class="o">&amp;&amp;</span> <span class="n">b</span> <span class="o">!=</span> <span class="sc">'\n'</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">num</span> <span class="o">=</span> <span class="n">num</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="sc">'0'</span><span class="p">);</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="n">getchar</span><span class="p">();</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="n">num</span><span class="p">;</span>
-<span class="p">}</span>
+<div class="codehilite"><pre><span></span><code><span class="kt">uint64_t</span><span class="w"> </span><span class="nf">_atoi</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getchar</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">b</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">' '</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">'\n'</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">b</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="sc">'0'</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getchar</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">num</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 <p>This does make sense if the problem is I/O bound. I also put this into Joe’s go program. Surprisingly, the go version was quicker than Manuel’s C version! Now that’s interesting.</p>
@@ -114,26 +114,26 @@ $ objdump -M intel -S nikita &gt; nikita.s
 </code></pre></div>
 
 <p>Let’s see what we have:</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">; Intel-syntax 64-bit assembly</span>
-<span class="c1">; prologue omitted</span>
-  <span class="nf">xor</span> <span class="nb">ebx</span><span class="p">,</span> <span class="nb">ebx</span>              <span class="c1">; uint64_t num = 0; *</span>
-  <span class="nf">jmp</span> <span class="nv">getchar</span>               <span class="c1">; goto getchar;</span>
-  <span class="nf">.align</span>  <span class="mi">4</span><span class="p">,</span> <span class="mh">0x90</span>           <span class="c1">; 6 bytes of nop padding for alignment</span>
-<span class="nl">loop_start:</span>                 <span class="c1">; do {</span>
-  <span class="nf">lea</span> <span class="nb">rcx</span><span class="p">,</span> <span class="p">[</span><span class="nb">rbx</span><span class="o">+</span><span class="mi">4</span><span class="o">*</span><span class="nb">rbx</span><span class="p">]</span>      <span class="c1">;   tmp = num + num * 4 = num * 5;</span>
-  <span class="nf">cdqe</span>                      <span class="c1">;   b = (uint64_t)b;</span>
-  <span class="nf">lea</span> <span class="nb">rbx</span><span class="p">,</span> <span class="p">[</span><span class="nb">rax</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="nb">rcx</span><span class="o">-</span><span class="mi">48</span><span class="p">]</span>   <span class="c1">;   num = tmp * 2 + b - '0';</span>
-<span class="c1">; so the last 3 lines are:   num = num * 10 + (uint64_t)b - '0';</span>
-<span class="nl">getchar:</span>
-  <span class="nf">call</span>    <span class="nv">_getchar</span>          <span class="c1">;   b = getchar();</span>
-<span class="c1">; return value is in rax, but since it's an int use eax.</span>
-  <span class="nf">cmp</span> <span class="nb">eax</span><span class="p">,</span> <span class="mi">10</span>               <span class="c1">;   if (b == '\n')</span>
-  <span class="nf">je</span>  <span class="nv">loop_end</span>              <span class="c1">;     break;</span>
-  <span class="nf">cmp</span> <span class="nb">eax</span><span class="p">,</span> <span class="mi">32</span>               <span class="c1">; } while (b != ' ')</span>
-  <span class="nf">jne</span> <span class="nv">loop_start</span>
-<span class="nl">loop_end:</span>
-  <span class="nf">mov</span> <span class="nb">rax</span><span class="p">,</span> <span class="nb">rbx</span>              <span class="c1">; return num;</span>
-<span class="c1">; epilogue omitted</span>
+<div class="codehilite"><pre><span></span><code><span class="c1">; Intel-syntax 64-bit assembly</span><span class="w"></span>
+<span class="c1">; prologue omitted</span><span class="w"></span>
+<span class="w">  </span><span class="nf">xor</span><span class="w"> </span><span class="nb">ebx</span><span class="p">,</span><span class="w"> </span><span class="nb">ebx</span><span class="w">              </span><span class="c1">; uint64_t num = 0; *</span><span class="w"></span>
+<span class="w">  </span><span class="nf">jmp</span><span class="w"> </span><span class="nv">getchar</span><span class="w">               </span><span class="c1">; goto getchar;</span><span class="w"></span>
+<span class="w">  </span><span class="nf">.align</span><span class="w">  </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mh">0x90</span><span class="w">           </span><span class="c1">; 6 bytes of nop padding for alignment</span><span class="w"></span>
+<span class="nl">loop_start:</span><span class="w">                 </span><span class="c1">; do {</span><span class="w"></span>
+<span class="w">  </span><span class="nf">lea</span><span class="w"> </span><span class="nb">rcx</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nb">rbx</span><span class="o">+</span><span class="mi">4</span><span class="o">*</span><span class="nb">rbx</span><span class="p">]</span><span class="w">      </span><span class="c1">;   tmp = num + num * 4 = num * 5;</span><span class="w"></span>
+<span class="w">  </span><span class="nf">cdqe</span><span class="w">                      </span><span class="c1">;   b = (uint64_t)b;</span><span class="w"></span>
+<span class="w">  </span><span class="nf">lea</span><span class="w"> </span><span class="nb">rbx</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nb">rax</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="nb">rcx</span><span class="o">-</span><span class="mi">48</span><span class="p">]</span><span class="w">   </span><span class="c1">;   num = tmp * 2 + b - '0';</span><span class="w"></span>
+<span class="c1">; so the last 3 lines are:   num = num * 10 + (uint64_t)b - '0';</span><span class="w"></span>
+<span class="nl">getchar:</span><span class="w"></span>
+<span class="w">  </span><span class="nf">call</span><span class="w">    </span><span class="nv">_getchar</span><span class="w">          </span><span class="c1">;   b = getchar();</span><span class="w"></span>
+<span class="c1">; return value is in rax, but since it's an int use eax.</span><span class="w"></span>
+<span class="w">  </span><span class="nf">cmp</span><span class="w"> </span><span class="nb">eax</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="w">               </span><span class="c1">;   if (b == '\n')</span><span class="w"></span>
+<span class="w">  </span><span class="nf">je</span><span class="w">  </span><span class="nv">loop_end</span><span class="w">              </span><span class="c1">;     break;</span><span class="w"></span>
+<span class="w">  </span><span class="nf">cmp</span><span class="w"> </span><span class="nb">eax</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="w">               </span><span class="c1">; } while (b != ' ')</span><span class="w"></span>
+<span class="w">  </span><span class="nf">jne</span><span class="w"> </span><span class="nv">loop_start</span><span class="w"></span>
+<span class="nl">loop_end:</span><span class="w"></span>
+<span class="w">  </span><span class="nf">mov</span><span class="w"> </span><span class="nb">rax</span><span class="p">,</span><span class="w"> </span><span class="nb">rbx</span><span class="w">              </span><span class="c1">; return num;</span><span class="w"></span>
+<span class="c1">; epilogue omitted</span><span class="w"></span>
 </code></pre></div>
 
 <p>* for amd64, zeroing the 32-bit register implicitly zeros the top 32-bits. Doing this as a 32-bit op takes one less byte than the corresponding 64-bit op: <code>48 31 db  xor  rbx,rbx</code> vs <code>31 db  xor  ebx,ebx</code>.</p>

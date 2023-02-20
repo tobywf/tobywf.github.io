@@ -65,7 +65,7 @@
 <p>But if <code>app</code> is created inside a function, how can <code>db</code> use it?</p>
 <p>All extensions include an <code>init_app</code> method for the application factory pattern. It’s going to look more complicated, but it’s worth it:</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># __init__.py</span>
-<span class="k">def</span> <span class="nf">create_app</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">create_app</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
     <span class="c1"># configuration of app here, can use `debug`, yay!</span>
     <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">db</span>

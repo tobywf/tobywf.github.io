@@ -50,17 +50,17 @@
 <h2 id="aws-codebuild">AWS CodeBuild</h2>
 <p>AWS has a service for building artefacts called <a href="https://aws.amazon.com/codebuild/">AWS CodeBuild</a>. It’s instructive to see <a href="https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-available.html">what Docker images they provide</a>. For example, <code>aws/codebuild/python:3.6.5</code> seems to track the Python Lambda runtime. It uses Ubuntu 14.04 as the base! Very interesting, either the Lambda runtime is based on Ubuntu, or Ubuntu is <strong>close enough</strong> to the Lambda runtime for build artefacts.</p>
 <p>Even though CodeBuild’s <a href="https://github.com/aws/aws-codebuild-docker-images/blob/master/ubuntu/python/3.6.5/Dockerfile">Dockerfile are open source</a>, they haven’t uploaded the images, so Docker can’t pull them:</p>
-<div class="codehilite"><pre><span></span><code><span class="gp">$</span> docker run --rm aws/codebuild/python:3.6.5 env
+<div class="codehilite"><pre><span></span><code><span class="gp">$ </span>docker run --rm aws/codebuild/python:3.6.5 env
 <span class="go">Unable to find image 'aws/codebuild/python:3.6.5' locally</span>
 <span class="go">docker: Error response from daemon: pull access denied for aws/codebuild/python, repository does not exist or may require 'docker login'.</span>
 </code></pre></div>
 
 <p>You have to <a href="https://github.com/aws/aws-codebuild-docker-images">build them yourself</a> (if you’re following along, hold off and read on):</p>
-<div class="codehilite"><pre><span></span><code><span class="gp">$</span> git clone https://github.com/aws/aws-codebuild-docker-images.git
-<span class="gp">$</span> <span class="nb">cd</span> aws-codebuild-docker-images/
-<span class="gp">$</span> docker build ubuntu/python/3.6.5/ <span class="se">\</span>
+<div class="codehilite"><pre><span></span><code><span class="gp">$ </span>git clone https://github.com/aws/aws-codebuild-docker-images.git
+<span class="gp">$ </span><span class="nb">cd</span> aws-codebuild-docker-images/
+<span class="gp">$ </span>docker build ubuntu/python/3.6.5/ <span class="se">\</span>
     --tag aws/codebuild/python:3.6.5
-<span class="gp">$</span> docker run --rm aws/codebuild/python:3.6.5 <span class="se">\</span>
+<span class="gp">$ </span>docker run --rm aws/codebuild/python:3.6.5 <span class="se">\</span>
     python --version
 <span class="go">Python 3.6.5</span>
 </code></pre></div>
@@ -69,7 +69,7 @@
 <h2 id="lambda-ci">Lambda CI</h2>
 <p><a href="https://github.com/awslabs/aws-sam-cli">AWS SAM CLI</a> “is a CLI tool for local development and testing of Serverless applications”. So far I love the local testing functionality, although I’ve used <a href="https://serverless.com/">Serverless</a> more.</p>
 <p>As with CodeBuild, the point here is not to get you to use a specific tool. Instead, open source is great for learning from other software engineers. The SAM CLI can run Lambda functions locally - how do they do this? With the open source <a href="https://github.com/lambci/docker-lambda">Lambda CI Docker images</a>, “Docker images and test runners that replicate the live AWS Lambda environment”. Bingo! There are even <a href="https://github.com/lambci/docker-lambda#build-examples">build images</a> for this exact purpose!</p>
-<div class="codehilite"><pre><span></span><code><span class="gp">$</span> docker run --rm lambci/lambda:build-python3.6 python --version
+<div class="codehilite"><pre><span></span><code><span class="gp">$ </span>docker run --rm lambci/lambda:build-python3.6 python --version
 <span class="go">Unable to find image 'lambci/lambda:build-python3.6' locally</span>
 <span class="go">build-python3.6: Pulling from lambci/lambda</span>
 <span class="go">[...]</span>
@@ -80,24 +80,24 @@
 <p>(This should work for most cases, because the build image isn’t quite as locked own as the Lambda environment, but if it fails, try the CodeBuild image.)</p>
 <h2 id="building-inside-a-docker-container">Building inside a Docker container</h2>
 <p>First, let’s install the dependencies locally, to have a baseline on how it should look. I’m building on macOS, and you can see I get the macOS specific package:</p>
-<div class="codehilite"><pre><span></span><code><span class="gp">$</span> <span class="nb">echo</span> <span class="s2">"lxml"</span> &gt; requirements.txt
-<span class="gp">$</span> mkdir build
-<span class="gp">$</span> pip3 install -r requirements.txt -t build/
+<div class="codehilite"><pre><span></span><code><span class="gp">$ </span><span class="nb">echo</span> <span class="s2">"lxml"</span> &gt; requirements.txt
+<span class="gp">$ </span>mkdir build
+<span class="gp">$ </span>pip3 install -r requirements.txt -t build/
 <span class="go">Collecting lxml (from -r requirements.txt (line 1))</span>
 <span class="go">  Downloading https://files.pythonhosted.org/packages/e4/e4/75453295abd6dcd8f7b48c1eb092ce2c23c34ae08ca7acc8c42de35a5a78/lxml-4.2.5-cp36-cp36m-macosx_10_6_intel.macosx_10_9_intel.macosx_10_9_x86_64.macosx_10_10_intel.macosx_10_10_x86_64.whl (8.7MB)</span>
 <span class="go">Installing collected packages: lxml</span>
 <span class="go">Successfully installed lxml-4.2.5</span>
-<span class="gp">$</span> grep <span class="s1">'Tag'</span> build/lxml-*.dist-info/WHEEL
+<span class="gp">$ </span>grep <span class="s1">'Tag'</span> build/lxml-*.dist-info/WHEEL
 <span class="go">Tag: cp36-cp36m-macosx_10_6_intel</span>
 <span class="go">Tag: cp36-cp36m-macosx_10_9_intel</span>
 <span class="go">Tag: cp36-cp36m-macosx_10_9_x86_64</span>
 <span class="go">Tag: cp36-cp36m-macosx_10_10_intel</span>
 <span class="go">Tag: cp36-cp36m-macosx_10_10_x86_64</span>
-<span class="gp">$</span> rm -rf build/
+<span class="gp">$ </span>rm -rf build/
 </code></pre></div>
 
 <p>Now, inside the container. For simplicity, I’m going to mount a directory inside the container. This doesn’t work for remote docker hosts (there are workarounds, using S3, NFS shares, etc). Quickly check the mount works:</p>
-<div class="codehilite"><pre><span></span><code><span class="gp">$</span> docker run <span class="se">\</span>
+<div class="codehilite"><pre><span></span><code><span class="gp">$ </span>docker run <span class="se">\</span>
     -v <span class="s2">"</span><span class="nv">$PWD</span><span class="s2">"</span>:/var/task <span class="se">\</span>
     --rm <span class="se">\</span>
     lambci/lambda:build-python3.6 <span class="se">\</span>
@@ -106,9 +106,9 @@
 </code></pre></div>
 
 <p>Good, let’s go. The only difference is running <code>pip</code> inside the container:</p>
-<div class="codehilite"><pre><span></span><code><span class="gp">$</span> <span class="nb">echo</span> <span class="s2">"lxml"</span> &gt; requirements.txt
-<span class="gp">$</span> mkdir build
-<span class="gp">$</span> docker run <span class="se">\</span>
+<div class="codehilite"><pre><span></span><code><span class="gp">$ </span><span class="nb">echo</span> <span class="s2">"lxml"</span> &gt; requirements.txt
+<span class="gp">$ </span>mkdir build
+<span class="gp">$ </span>docker run <span class="se">\</span>
     -v <span class="s2">"</span><span class="nv">$PWD</span><span class="s2">"</span>:/var/task <span class="se">\</span>
     --rm <span class="se">\</span>
     lambci/lambda:build-python3.6 <span class="se">\</span>
@@ -117,13 +117,13 @@
 <span class="go">  Downloading https://files.pythonhosted.org/packages/03/a4/9eea8035fc7c7670e5eab97f34ff2ef0ddd78a491bf96df5accedb0e63f5/lxml-4.2.5-cp36-cp36m-manylinux1_x86_64.whl (5.8MB)</span>
 <span class="go">Installing collected packages: lxml</span>
 <span class="go">Successfully installed lxml-4.2.5</span>
-<span class="gp">$</span> grep <span class="s1">'Tag'</span> build/lxml-*.dist-info/WHEEL
+<span class="gp">$ </span>grep <span class="s1">'Tag'</span> build/lxml-*.dist-info/WHEEL
 <span class="go">Tag: cp36-cp36m-manylinux1_x86_64</span>
 </code></pre></div>
 
 <p>Excellent. This time, we get the <code>manylinux</code> flavoured package, which is exactly right.</p>
 <p>Using the CodeBuild image is similar, except by default the container runs in the root folder:</p>
-<div class="codehilite"><pre><span></span><code><span class="gp">$</span> docker run <span class="se">\</span>
+<div class="codehilite"><pre><span></span><code><span class="gp">$ </span>docker run <span class="se">\</span>
     -v <span class="s2">"</span><span class="nv">$PWD</span><span class="s2">"</span>:/var/task <span class="se">\</span>
     --rm <span class="se">\</span>
     aws/codebuild/python:3.6.5 <span class="se">\</span>
@@ -132,7 +132,7 @@
 <span class="go">  Downloading https://files.pythonhosted.org/packages/03/a4/9eea8035fc7c7670e5eab97f34ff2ef0ddd78a491bf96df5accedb0e63f5/lxml-4.2.5-cp36-cp36m-manylinux1_x86_64.whl (5.8MB)</span>
 <span class="go">Installing collected packages: lxml</span>
 <span class="go">Successfully installed lxml-4.2.5</span>
-<span class="gp">$</span> grep <span class="s1">'Tag'</span> build/lxml-*.dist-info/WHEEL
+<span class="gp">$ </span>grep <span class="s1">'Tag'</span> build/lxml-*.dist-info/WHEEL
 <span class="go">Tag: cp36-cp36m-manylinux1_x86_64</span>
 </code></pre></div>
 
@@ -140,9 +140,9 @@
 <p>Docker contains provide a simple way to download OS-specific dependencies correctly for Python Lambda functions. You can then use these to package Python Lambda functions correctly on your local machine, or integrate it in your continuous integration/continuous delivery pipeline to ensure you get the right dependencies.</p>
 <p>Do let me know if you found this helpful.</p>
 <h2 id="tldr">TL;DR</h2>
-<div class="codehilite"><pre><span></span><code><span class="gp">$</span> <span class="nb">echo</span> <span class="s2">"lxml"</span> &gt; requirements.txt
-<span class="gp">$</span> mkdir build
-<span class="gp">$</span> docker run <span class="se">\</span>
+<div class="codehilite"><pre><span></span><code><span class="gp">$ </span><span class="nb">echo</span> <span class="s2">"lxml"</span> &gt; requirements.txt
+<span class="gp">$ </span>mkdir build
+<span class="gp">$ </span>docker run <span class="se">\</span>
     -v <span class="s2">"</span><span class="nv">$PWD</span><span class="s2">"</span>:/var/task <span class="se">\</span>
     --rm <span class="se">\</span>
     lambci/lambda:build-python3.6 <span class="se">\</span>
