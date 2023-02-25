@@ -33,32 +33,32 @@ with a Master Boot Record. This is incredibly annoying. But the CLI will.</p>
 <p>Warning: There is no confirmation, no “are you sure?” prompts. <code>diskutil</code> will
 mess your disks up, zero fucks given. You need to double and triple check the
 commands you issue. That is all.</p>
-<div class="codehilite"><pre><span></span><code>$ diskutil list
-/dev/disk0 <span class="o">(</span>internal, physical<span class="o">)</span>:
-   <span class="c1">#:                       TYPE NAME         \</span>
+<div class="codehilite"><pre><span></span><code><span class="gp">$ </span>diskutil list
+<span class="go">/dev/disk0 (internal, physical):</span>
+<span class="gp">   #</span>:                       TYPE NAME         <span class="se">\</span>
      SIZE       IDENTIFIER
-   <span class="m">0</span>:      GUID_partition_scheme              <span class="se">\</span>
-    *121.3 GB   disk0
-   <span class="m">1</span>:                        EFI EFI          <span class="se">\</span>
-     <span class="m">209</span>.7 MB   disk0s1
-   <span class="m">2</span>:          Apple_CoreStorage XXX          <span class="se">\</span>
-     <span class="m">120</span>.5 GB   disk0s2
-   <span class="m">3</span>:                 Apple_Boot Recovery HD  <span class="se">\</span>
-     <span class="m">650</span>.0 MB   disk0s3
+<span class="go">   0:      GUID_partition_scheme              \</span>
+<span class="go">    *121.3 GB   disk0</span>
+<span class="go">   1:                        EFI EFI          \</span>
+<span class="go">     209.7 MB   disk0s1</span>
+<span class="go">   2:          Apple_CoreStorage XXX          \</span>
+<span class="go">     120.5 GB   disk0s2</span>
+<span class="go">   3:                 Apple_Boot Recovery HD  \</span>
+<span class="go">     650.0 MB   disk0s3</span>
 
-<span class="o">[</span>...<span class="o">]</span>
+<span class="go">[...]</span>
 
-/dev/disk2 <span class="o">(</span>external, physical<span class="o">)</span>:
-   <span class="c1">#:                       TYPE NAME         \</span>
+<span class="go">/dev/disk2 (external, physical):</span>
+<span class="gp">   #</span>:                       TYPE NAME         <span class="se">\</span>
      SIZE       IDENTIFIER
-   <span class="m">0</span>:      GUID_partition_scheme              <span class="se">\</span>
-    *2.0 TB     disk2
-   <span class="m">1</span>:                        EFI EFI          <span class="se">\</span>
-     <span class="m">209</span>.7 MB   disk2s1
-   <span class="m">2</span>:                  Apple_HFS one          <span class="se">\</span>
-     <span class="m">1</span>.8 TB     disk2s2
-   <span class="m">3</span>:                  Apple_HFS two          <span class="se">\</span>
-     <span class="m">249</span>.7 GB   disk2s3
+<span class="go">   0:      GUID_partition_scheme              \</span>
+<span class="go">    *2.0 TB     disk2</span>
+<span class="go">   1:                        EFI EFI          \</span>
+<span class="go">     209.7 MB   disk2s1</span>
+<span class="go">   2:                  Apple_HFS one          \</span>
+<span class="go">     1.8 TB     disk2s2</span>
+<span class="go">   3:                  Apple_HFS two          \</span>
+<span class="go">     249.7 GB   disk2s3</span>
 </code></pre></div>
 
 <p>This command will be your friend, a lifesaver. Learn to love it. It shows the

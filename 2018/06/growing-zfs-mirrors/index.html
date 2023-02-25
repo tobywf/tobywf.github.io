@@ -67,26 +67,26 @@
 
 <p>What’s going on? Well, drives are mounted in <code>/dev</code> and receive a name, e.g. <code>ada1</code>. The partitions are also mounted as <code>/dev/ada1p1</code> and <code>/dev/ada1p2</code>. So it’s already pretty obvious that the new drive is <code>ada0</code>.</p>
 <p>Just to check, we’ll look at the labels and partitions. BSD labels drives with UUIDs, since the name assigned in <code>/dev</code> is basically random, and drives could get reassigned on start-up.</p>
-<div class="codehilite"><pre><span></span><code>$ glabel status
-                                      Name  Status  Components
-gptid/23edea4a-1742-11e8-b551-28924a390410     N/A  da0p1
-gptid/d9ae78ea-178c-11e8-9b2e-28924a390410     N/A  ada1p2
-gptid/d98b522f-178c-11e8-9b2e-28924a390410     N/A  ada1p1
+<div class="codehilite"><pre><span></span><code><span class="gp">$ </span>glabel status
+<span class="go">                                      Name  Status  Components</span>
+<span class="go">gptid/23edea4a-1742-11e8-b551-28924a390410     N/A  da0p1</span>
+<span class="go">gptid/d9ae78ea-178c-11e8-9b2e-28924a390410     N/A  ada1p2</span>
+<span class="go">gptid/d98b522f-178c-11e8-9b2e-28924a390410     N/A  ada1p1</span>
 
-$ gpart <span class="nv">show</span>
-<span class="o">=</span>&gt;      <span class="m">40</span>  <span class="m">15663024</span>  da0  GPT  <span class="o">(</span><span class="m">7</span>.5G<span class="o">)</span>
-        <span class="m">40</span>      <span class="m">1024</span>    <span class="m">1</span>  bios-boot  <span class="o">(</span>512K<span class="o">)</span>
-      <span class="m">1064</span>  <span class="m">15661992</span>    <span class="m">2</span>  freebsd-zfs  <span class="o">(</span><span class="m">7</span>.5G<span class="o">)</span>
-  <span class="m">15663056</span>         <span class="m">8</span>       - free -  <span class="o">(</span><span class="m">4</span>.0K<span class="o">)</span>
+<span class="gp">$ </span>gpart show
+<span class="go">=&gt;      40  15663024  da0  GPT  (7.5G)</span>
+<span class="go">        40      1024    1  bios-boot  (512K)</span>
+<span class="go">      1064  15661992    2  freebsd-zfs  (7.5G)</span>
+<span class="go">  15663056         8       - free -  (4.0K)</span>
 
-<span class="o">=</span>&gt;        <span class="m">40</span>  <span class="m">3907029088</span>  ada1  GPT  <span class="o">(</span><span class="m">1</span>.8T<span class="o">)</span>
-          <span class="m">40</span>          <span class="m">88</span>        - free -  <span class="o">(</span>44K<span class="o">)</span>
-         <span class="m">128</span>     <span class="m">4194304</span>     <span class="m">1</span>  freebsd-swap  <span class="o">(</span><span class="m">2</span>.0G<span class="o">)</span>
-     <span class="m">4194432</span>  <span class="m">3902834688</span>     <span class="m">2</span>  freebsd-zfs  <span class="o">(</span><span class="m">1</span>.8T<span class="o">)</span>
-  <span class="m">3907029120</span>           <span class="m">8</span>        - free -  <span class="o">(</span><span class="m">4</span>.0K<span class="o">)</span>
+<span class="go">=&gt;        40  3907029088  ada1  GPT  (1.8T)</span>
+<span class="go">          40          88        - free -  (44K)</span>
+<span class="go">         128     4194304     1  freebsd-swap  (2.0G)</span>
+<span class="go">     4194432  3902834688     2  freebsd-zfs  (1.8T)</span>
+<span class="go">  3907029120           8        - free -  (4.0K)</span>
 
-$ glabel list <span class="p">|</span> grep ada0
-$
+<span class="gp">$ </span>glabel list <span class="p">|</span> grep ada0
+<span class="gp">$</span>
 </code></pre></div>
 
 <p>Ignore <code>da0</code>, it is the OS USB disk. The blank disk is <code>ada0</code>, it has no labels or partition map.</p>
