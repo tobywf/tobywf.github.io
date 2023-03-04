@@ -11,7 +11,7 @@ html,
 nav,
 p,
 section {
-    background: transparent;
+    background: rgba(0,0,0,0);
     border: 0 none;
     padding: 0;
     margin: 0;
@@ -21,10 +21,10 @@ section {
     -webkit-font-smoothing: antialiased;
 }
 body {
-    font-family: "Merriweather", Georgia, serif;
+    font-family: "Merriweather",Georgia,serif;
     font-weight: 300;
-    background: #FEFEFE;
-    color: #2C3E50;
+    background: #fefefe;
+    color: #2c3e50;
     text-align: left;
     vertical-align: baseline;
     padding: 1em;
@@ -33,7 +33,7 @@ body {
 .pre-tables table td,
 code,
 pre {
-    font-family: "Source Code Pro", monospace !important;
+    font-family: "Source Code Pro",monospace !important;
     font-weight: 400 !important;
 }
 b {
@@ -68,7 +68,7 @@ b {
     height: 2em;
 }
 svg {
-    background-color: transparent;
+    background-color: rgba(0,0,0,0);
     fill: currentColor;
     width: 1em;
     height: 1em;
@@ -79,29 +79,29 @@ a {
 }
 a:link,
 nav a:visited {
-    color: #3498DB;
-    border-bottom: 1px dotted #BDC3C7;
+    color: #3498db;
+    border-bottom: 1px dotted #bdc3c7;
 }
 a:link svg,
 nav a:visited svg {
-    fill: #3498DB;
+    fill: #3498db;
 }
 a:visited {
-    color: #8E44AD;
+    color: #8e44ad;
 }
 a:visited svg {
-    fill: #8E44AD;
+    fill: #8e44ad;
 }
 a:link:hover,
 a:visited:hover {
-    color: #D35400;
+    color: #d35400;
 }
 a:link:hover svg,
 a:visited:hover svg {
-    fill: #D35400;
+    fill: #d35400;
 }
 footer {
-    font-family: "Montserrat", "Gill Sans", sans-serif;
+    font-family: "Montserrat","Gill Sans",sans-serif;
     font-weight: 400;
     margin-top: 6em;
 }
@@ -113,12 +113,12 @@ footer p+p {
 }
 footer a:link,
 footer a:visited {
-    color: #2C3E50;
+    color: #2c3e50;
     border-bottom: none;
 }
 footer a:link svg,
 footer a:visited svg {
-    fill: #2C3E50;
+    fill: #2c3e50;
 }
 header h1 {
     font-size: 1.5em;
@@ -154,7 +154,7 @@ header h1 {
     }
 }
 nav {
-    font-family: "Montserrat", "Gill Sans", sans-serif;
+    font-family: "Montserrat","Gill Sans",sans-serif;
     font-weight: 400;
 }
 nav ul {
@@ -182,7 +182,7 @@ ul.posts li {
 }
 .post-head .dateline,
 .post-head .infoline {
-    font-family: "Montserrat", "Gill Sans", sans-serif;
+    font-family: "Montserrat","Gill Sans",sans-serif;
     font-weight: 400;
     font-size: 0.8em;
 }
@@ -197,8 +197,8 @@ ul.posts li {
     width: 100%;
     height: 0;
     margin-left: 1%;
-    content: "\a0";
-    border-top: 1px dotted #BDC3C7;
+    content: " ";
+    border-top: 1px dotted #bdc3c7;
 }
 .post-head .title {
     display: block;
@@ -235,8 +235,8 @@ hr {
     margin: 2em auto 1em;
     padding: 0;
     border: none;
-    border-top: medium double #34495E;
-    color: #34495E;
+    border-top: medium double #34495e;
+    color: #34495e;
     text-align: center;
     position: relative;
 }
@@ -244,11 +244,11 @@ hr:after {
     content: "";
     display: inline-block;
     position: relative;
-    top: -0.7em;
+    top: -.7em;
     padding: 0 0.25em;
     width: 1em;
     height: 1em;
-    background: #FEFEFE center url("symbols.svg#hand-peace-view") no-repeat;
+    background: #fefefe center url("symbols.svg#hand-peace-view") no-repeat;
 }
 article {
     line-height: 1.8;
@@ -256,7 +256,7 @@ article {
     padding-top: 2em;
 }
 article h1 {
-    font-size: 2.0em;
+    font-size: 2em;
 }
 article h2 {
     font-size: 1.5em;
@@ -267,7 +267,7 @@ article h3 {
 article h1,
 article h2,
 article h3 {
-    font-family: "Montserrat", "Gill Sans", sans-serif;
+    font-family: "Montserrat","Gill Sans",sans-serif;
     font-weight: 400;
     margin: 1em 0;
 }
@@ -280,8 +280,8 @@ a > code,
 li > code,
 p > code {
     border-radius: 3px;
-    border: 1px solid #BDC3C7;
-    background-color: #ECF0F1;
+    border: 1px solid #bdc3c7;
+    background-color: #ecf0f1;
     padding: 0 0.2em;
 }
 table {
@@ -289,7 +289,7 @@ table {
     word-break: normal;
     word-break: keep-all;
     border-spacing: 0;
-    border: 1px solid #BDC3C7;
+    border: 1px solid #bdc3c7;
     border-radius: 3px;
 }
 table th {
@@ -301,7 +301,7 @@ table th {
 }
 table th,
 table tr:nth-child(2n) {
-    background-color: #ECF0F1;
+    background-color: #ecf0f1;
 }
 blockquote {
     margin: 1em 0;
@@ -320,7 +320,7 @@ blockquote > :last-child {
     text-align: right;
 }
 blockquote > :last-child:before {
-    content: "\2014";
+    content: "—";
 }
 .codehilite {
     margin: 1em 0;
@@ -332,31 +332,31 @@ pre {
     line-height: 125%;
 }
 td.linenos .normal {
-    color: #666666;
-    background-color: transparent;
+    color: #666;
+    background-color: rgba(0,0,0,0);
     padding-left: 5px;
     padding-right: 5px;
 }
 span.linenos {
-    color: #666666;
-    background-color: transparent;
+    color: #666;
+    background-color: rgba(0,0,0,0);
     padding-left: 5px;
     padding-right: 5px;
 }
 td.linenos .special {
-    color: #000000;
+    color: #000;
     background-color: #ffffc0;
     padding-left: 5px;
     padding-right: 5px;
 }
 span.linenos.special {
-    color: #000000;
+    color: #000;
     background-color: #ffffc0;
     padding-left: 5px;
     padding-right: 5px;
 }
 .codehilite pre .hll {
-    background-color: #ffffcc;
+    background-color: #ffc;
 }
 .codehilite pre {
     background: #f0f0f0;
@@ -366,14 +366,14 @@ span.linenos.special {
     font-style: italic;
 }
 .codehilite pre .err {
-    border: 1px solid #FF0000;
+    border: 1px solid red;
 }
 .codehilite pre .k {
     color: #007020;
     font-weight: bold;
 }
 .codehilite pre .o {
-    color: #666666;
+    color: #666;
 }
 .codehilite pre .ch {
     color: #60a0b0;
@@ -399,23 +399,23 @@ span.linenos.special {
     background-color: #fff0f0;
 }
 .codehilite pre .gd {
-    color: #A00000;
+    color: #a00000;
 }
 .codehilite pre .ge {
     font-style: italic;
 }
 .codehilite pre .gr {
-    color: #FF0000;
+    color: red;
 }
 .codehilite pre .gh {
-    color: #000080;
+    color: navy;
     font-weight: bold;
 }
 .codehilite pre .gi {
-    color: #00A000;
+    color: #00a000;
 }
 .codehilite pre .go {
-    color: #888888;
+    color: #888;
 }
 .codehilite pre .gp {
     color: #c65d09;
@@ -425,11 +425,11 @@ span.linenos.special {
     font-weight: bold;
 }
 .codehilite pre .gu {
-    color: #800080;
+    color: purple;
     font-weight: bold;
 }
 .codehilite pre .gt {
-    color: #0044DD;
+    color: #04d;
 }
 .codehilite pre .kc {
     color: #007020;
@@ -473,7 +473,7 @@ span.linenos.special {
     color: #60add5;
 }
 .codehilite pre .nd {
-    color: #555555;
+    color: #555;
     font-weight: bold;
 }
 .codehilite pre .ni {
@@ -506,7 +506,7 @@ span.linenos.special {
     font-weight: bold;
 }
 .codehilite pre .w {
-    color: #bbbbbb;
+    color: #bbb;
 }
 .codehilite pre .mb {
     color: #40a070;
