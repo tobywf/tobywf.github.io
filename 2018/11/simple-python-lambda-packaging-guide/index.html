@@ -41,7 +41,7 @@
 <p>To be completely fair, this is not a Python issue, it’s a deployment issue.</p>
 <h2 id="and-then-the-next-simplest-thing">And then the next simplest thing</h2>
 <p>Why bother <a href="https://docs.aws.amazon.com/lambda/latest/dg/lambda-python-how-to-create-deployment-package.html">creating a deployment package</a> at all? Can’t the Lambda just run <code>pip install</code>?</p>
-<p>It’s an interesting thought. But <code>pip</code> is meant for humans on a CLI, and is very slow, especially without a cache. The start-up time would be awful. And Lambdas are a limited environment to run functions. While you can run <code>pip</code>, don’t expect to find a compiler or the headers necessary for building C extensions <sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>. (This is also a deal breaker for a packaging Lambda/ “packaging-as-a-service”, which I also tried.)</p>
+<p>It’s an interesting thought. But <code>pip</code> is meant for humans on a CLI, and is very slow, especially without a cache. The start-up time would be awful. And Lambdas are a limited environment to run functions. While you can run <code>pip</code>, don’t expect to find a compiler or the headers necessary for building C extensions <sup id="fnref:1"><a class="footnote-ref" href="#fndef:1">1</a></sup>. (This is also a deal breaker for a packaging Lambda/ “packaging-as-a-service”, which I also tried.)</p>
 <h2 id="and-the-next">And the next…</h2>
 <p>While <a href="https://github.com/Miserlou/lambda-packages">pre-compiled Python packages for Lambda</a> are nice idea for beginners, I rejected them because of some drawbacks. You no longer control your own dependencies. It’s hard to integrate into a development workflow or continuous integration pipeline. Last but not least, if you need a package which isn’t provided, it still breaks.</p>
 <h2 id="and-the-next_1">And the next?</h2>
@@ -65,7 +65,7 @@
 <span class="go">Python 3.6.5</span>
 </code></pre></div>
 
-<p>For CodeBuild, this image makes perfect sense. And if your use-case is running complex build scripts as part of continuous integration, you may find it appropriate (feel free to skip the next section). I can’t recommend it for this project (long build time<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup>).</p>
+<p>For CodeBuild, this image makes perfect sense. And if your use-case is running complex build scripts as part of continuous integration, you may find it appropriate (feel free to skip the next section). I can’t recommend it for this project (long build time<sup id="fnref:2"><a class="footnote-ref" href="#fndef:2">2</a></sup>).</p>
 <h2 id="lambda-ci">Lambda CI</h2>
 <p><a href="https://github.com/awslabs/aws-sam-cli">AWS SAM CLI</a> “is a CLI tool for local development and testing of Serverless applications”. So far I love the local testing functionality, although I’ve used <a href="https://serverless.com/">Serverless</a> more.</p>
 <p>As with CodeBuild, the point here is not to get you to use a specific tool. Instead, open source is great for learning from other software engineers. The SAM CLI can run Lambda functions locally - how do they do this? With the open source <a href="https://github.com/lambci/docker-lambda">Lambda CI Docker images</a>, “Docker images and test runners that replicate the live AWS Lambda environment”. Bingo! There are even <a href="https://github.com/lambci/docker-lambda#build-examples">build images</a> for this exact purpose!</p>
@@ -76,7 +76,7 @@
 <span class="go">Python 3.6.1</span>
 </code></pre></div>
 
-<p>Honestly, this is a great project, and super easy to use<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup>. ❤️</p>
+<p>Honestly, this is a great project, and super easy to use<sup id="fnref:3"><a class="footnote-ref" href="#fndef:3">3</a></sup>. ❤️</p>
 <p>(This should work for most cases, because the build image isn’t quite as locked own as the Lambda environment, but if it fails, try the CodeBuild image.)</p>
 <h2 id="building-inside-a-docker-container">Building inside a Docker container</h2>
 <p>First, let’s install the dependencies locally, to have a baseline on how it should look. I’m building on macOS, and you can see I get the macOS specific package:</p>
@@ -149,13 +149,12 @@
     pip install -r requirements.txt -t build/
 </code></pre></div>
 
-<div class="footnote">
+<div class="footnotes">
 <hr>
-<ol>
-<li id="fn:1"><p>Pedantically speaking, Python also has <a href="https://www.python.org/dev/peps/pep-0427/">binary packaging via wheels</a>, which allows shipping pre-compiled C extensions for common platforms. This means it’s quicker to install, and you don’t necessarily need a compiler installed - a huge usability win. If all Python extensions provided Lambda-compatible wheels, conceivably running <code>pip install</code> could work. But it doesn’t, I’ve tried. I think because the Lambda environment is so locked down, <code>pip</code> gets confused and can’t figure out the Linux variant, and if it’s <a href="https://github.com/pypa/manylinux">manylinux</a> compatible. And so it falls back to building from source. <a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">↩</a></p></li>
-<li id="fn:2"><p>Even on a beefy Code i7 Macbook Pro, it took just under nine minutes to build this (excluding pulling base images), which is kinda outrageous for local development. The CodeBuild <a href="https://github.com/aws/aws-codebuild-docker-images/blob/master/ubuntu/python/3.6.5/Dockerfile">Dockerfile</a> is also large, and installs things like mono. So it’s a bad fit for local development, unless you have a Docker repository which you can pull this image from. <a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">↩</a></p></li>
-<li id="fn:3"><p>Infrastructure work is rarely sexy, but all the “10x developers” I know are infrastructure/ “devops” people, because they enable other teams to be several times more productive. Hi James! <a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">↩</a></p></li>
-</ol>
+
+<div class="footnote-item"><span id="fndef:1" class="footnote-name">[<span>1</span>]</span><p>Pedantically speaking, Python also has <a href="https://www.python.org/dev/peps/pep-0427/">binary packaging via wheels</a>, which allows shipping pre-compiled C extensions for common platforms. This means it’s quicker to install, and you don’t necessarily need a compiler installed - a huge usability win. If all Python extensions provided Lambda-compatible wheels, conceivably running <code>pip install</code> could work. But it doesn’t, I’ve tried. I think because the Lambda environment is so locked down, <code>pip</code> gets confused and can’t figure out the Linux variant, and if it’s <a href="https://github.com/pypa/manylinux">manylinux</a> compatible. And so it falls back to building from source. <a class="footnote-backref" href="#fnref:1" title="Jump back to footnote '1' in the text">↩</a></p></div>
+<div class="footnote-item"><span id="fndef:2" class="footnote-name">[<span>2</span>]</span><p>Even on a beefy Code i7 Macbook Pro, it took just under nine minutes to build this (excluding pulling base images), which is kinda outrageous for local development. The CodeBuild <a href="https://github.com/aws/aws-codebuild-docker-images/blob/master/ubuntu/python/3.6.5/Dockerfile">Dockerfile</a> is also large, and installs things like mono. So it’s a bad fit for local development, unless you have a Docker repository which you can pull this image from. <a class="footnote-backref" href="#fnref:2" title="Jump back to footnote '2' in the text">↩</a></p></div>
+<div class="footnote-item"><span id="fndef:3" class="footnote-name">[<span>3</span>]</span><p>Infrastructure work is rarely sexy, but all the “10x developers” I know are infrastructure/ “devops” people, because they enable other teams to be several times more productive. Hi James! <a class="footnote-backref" href="#fnref:3" title="Jump back to footnote '3' in the text">↩</a></p></div>
 </div>
 </article>
 <section>

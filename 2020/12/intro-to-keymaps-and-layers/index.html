@@ -30,7 +30,7 @@
 </header>
 <article>
 <p>If you want to build small keyboards with commodity parts, the <em>biggest limiting factor are the physical keys</em>, specifically key caps and switches. You simply can’t make it smaller, tenkeyless keyboards or a Kinesis Advantage are about as “optimal” as possible while exposing all commonly used keys. There’s another, well known workaround: layers.</p>
-<p>A layer simply maps a different set of symbols to the same keys. So you can re-use physical keys, which get around this limitation. Layers can be activated in different ways; the most common one is holding down another key. As a mental model, it’s useful to think of <code>Shift</code> as a layer <sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>. Press it, and you get a different set of symbols (e.g. <code>Shift + a</code> produces <code>A</code>, or more complex, <code>Shift + 4</code> produces <code>$</code>). So you’re already using layers every day.</p>
+<p>A layer simply maps a different set of symbols to the same keys. So you can re-use physical keys, which get around this limitation. Layers can be activated in different ways; the most common one is holding down another key. As a mental model, it’s useful to think of <code>Shift</code> as a layer <sup id="fnref:1"><a class="footnote-ref" href="#fndef:1">1</a></sup>. Press it, and you get a different set of symbols (e.g. <code>Shift + a</code> produces <code>A</code>, or more complex, <code>Shift + 4</code> produces <code>$</code>). So you’re already using layers every day.</p>
 <p>Why not use another layer? We’ve already talked about the benefits of being able to re-use keys. The downsides are re-training your brain, not having matching legends on the key caps, and needing to allocate another key for a layer switch. I think the trade-off is worth it, but be aware.</p>
 <p>Let’s say you introduce another key, analogue to <code>Shift</code>. Often, this is called <code>Fn</code>. Now you can do away with more keys. It’s common to do away with the function keys, and for example, map <code>F1</code> to <code>Fn + 1</code>. You can also make combinations that might be difficult to type easier. Layers are pretty much required for 65% keyboards to work, and <a href="https://qmk.fm/">QMK</a> has excellent layer support, for several layers.</p>
 <p>I think this is less interesting for “traditional” keyboards, but more interesting for split keyboards. This is because you can put modifiers on the thumb cluster.</p>
@@ -41,11 +41,10 @@
 <p>Full disclosure, this keymap is still theoretical. It’s based on my experience with a 65% keyboard. I’ll update this post in future when I know more.</p>
 <p>You might notice that this keymap removes the need for the top row, and the outer/pinky columns - the hardest to reach keys. If this works, it will be the basis of a smaller keyboard with less stretching.</p>
 <p>I hope this is a good intro to layers, keymaps, and how to come up with keymaps that make your life easier if you have small hands or are just lazy.</p>
-<div class="footnote">
+<div class="footnotes">
 <hr>
-<ol>
-<li id="fn:1"><p>Because of the way key codes work, this turns out to be wrong on that level. Luckily, you don’t have to think about this, as QMK will largely handle it e.g. if you assign a shifted key in the keymap, QMK will translate and send this as original key + shift. <a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">↩</a></p></li>
-</ol>
+
+<div class="footnote-item"><span id="fndef:1" class="footnote-name">[<span>1</span>]</span><p>Because of the way key codes work, this turns out to be wrong on that level. Luckily, you don’t have to think about this, as QMK will largely handle it e.g. if you assign a shifted key in the keymap, QMK will translate and send this as original key + shift. <a class="footnote-backref" href="#fnref:1" title="Jump back to footnote '1' in the text">↩</a></p></div>
 </div>
 </article>
 <section>

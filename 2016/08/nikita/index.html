@@ -106,7 +106,7 @@ hi/lo: ^          ^, mid = 5, index(5) = 2
 </code></pre></div>
 
 <p>This does make sense if the problem is I/O bound. I also put this into Joe’s go program. Surprisingly, the go version was quicker than Manuel’s C version! Now that’s interesting.</p>
-<p>By using <code>gcc -O3</code>, I managed to shave a few milliseconds off. Then I used <code>clang</code>, which I prefer because the assembly output is much cleaner. The <code>clang -O3</code> version was also faster than <code>gcc -O3</code> - llvm is simply better at rearranging the code at a higher level. <code>clang</code> can output the assembly directly. For comparing it with the go version, <code>objdump</code> works on both. <sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup></p>
+<p>By using <code>gcc -O3</code>, I managed to shave a few milliseconds off. Then I used <code>clang</code>, which I prefer because the assembly output is much cleaner. The <code>clang -O3</code> version was also faster than <code>gcc -O3</code> - llvm is simply better at rearranging the code at a higher level. <code>clang</code> can output the assembly directly. For comparing it with the go version, <code>objdump</code> works on both. <sup id="fnref:1"><a class="footnote-ref" href="#fndef:1">1</a></sup></p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>clang -O3 -S -masm<span class="o">=</span>intel nikita.c -o nikita.s
 <span class="gp"># </span>or
 <span class="gp">$ </span>clang -O3 -Wall -Wextra nikita.c -o nikita
@@ -139,16 +139,15 @@ hi/lo: ^          ^, mid = 5, index(5) = 2
 <p>* for amd64, zeroing the 32-bit register implicitly zeros the top 32-bits. Doing this as a 32-bit op takes one less byte than the corresponding 64-bit op: <code>48 31 db  xor  rbx,rbx</code> vs <code>31 db  xor  ebx,ebx</code>.</p>
 <p>Pretty tight - not much optimisation there, except for <code>getchar</code>. I tried using <code>fread</code> on <code>stdin</code> instead, but that was about the same as <code>getchar</code>. In the go disassembly, I didn’t find either <code>getchar</code> or <code>fread</code>, but I did find <code>mmap</code>! Aha, so that’s how the go version is faster.</p>
 <p>Using <a href="http://linux.die.net/man/2/mmap">mmap</a>, the C version was now 3x as fast as the go version. Now we could all get on with our lives. Nikita, it’s been fun!</p>
-<div class="footnote">
+<div class="footnotes">
 <hr>
-<ol>
-<li id="fn:1"><p>There are several other ways to output assembly from a go program:</p>
+
+<div class="footnote-item"><span id="fndef:1" class="footnote-name">[<span>1</span>]</span><p>There are several other ways to output assembly from a go program:</p>
 <ul>
 <li><code>go tool compile -S [-N] nikita.go &gt; nikita.s</code> - This produces some weird output. <code>-N</code> for unoptimised.</li>
 <li><code>go tool objdump $GOPATH/bin/nikita &gt; nikita.s</code> - The same as <code>compile</code>, but with all the statically linked stuff.</li>
 </ul>
-<p>I prefer the <code>objdump -S $GOPATH/bin/nikita</code> route. <a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">↩</a></p></li>
-</ol>
+<p>I prefer the <code>objdump -S $GOPATH/bin/nikita</code> route. <a class="footnote-backref" href="#fnref:1" title="Jump back to footnote '1' in the text">↩</a></p></div>
 </div>
 </article>
 <section>
