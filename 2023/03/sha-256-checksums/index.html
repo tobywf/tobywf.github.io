@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>SHA-256 checksum generation and verification on various platforms - tobywf</title>
+  <meta charset="utf-8">
+  <meta name="author" content="Toby Fleming">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css">
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png">
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <ul>
+<!-- breadcrumbs start -->
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon"></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2023/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>'23</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2023/03/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>Mar</a></li>
+<li class="last"><a href="https://tobywf.com/cv/" class="cap">CV</a></li>
+<!-- breadcrumbs end -->
+      </ul>
+    </nav>
+<!-- content start -->
+<header class="post-head">
+  <h1>SHA-256 checksum generation and verification on various platforms</h1>
+  <div class="infoline">
+    <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">22 Mar '23</span>
+  </div>
+</header>
+<article>
+<p>I recently had to transfer many files to my NAS using questionable hardware like USB sticks, SD cards, and external hard drives. Having done this before, naturally I wanted to get hashes of all the files to check the integrity. It’s surprising how many errors can occur in a few gigabytes. This turned out to be a bit of a mission.</p>
+<div class="toc">
+<ul>
+<li><a href="#sha256-file-hash-format">SHA256 file hash format</a></li>
+<li><a href="#sorting-sha256-file-hashes">Sorting SHA256 file hashes</a></li>
+<li><a href="#checking-sha256-file-hashes">Checking SHA256 file hashes</a><ul>
+<li><a href="#linux">Linux</a></li>
+<li><a href="#truenasfreebsd">TrueNAS/FreeBSD</a></li>
+<li><a href="#macos">macOS</a></li>
+<li><a href="#windows">Windows</a></li>
+</ul></li>
+<li><a href="#generating-sha256-file-hashes">Generating SHA256 file hashes</a><ul>
+<li><a href="#linux_1">Linux</a></li>
+<li><a href="#truenasfreebsd_1">TrueNAS/FreeBSD</a></li>
+<li><a href="#macos_1">macOS</a></li>
+<li><a href="#windows_1">Windows</a></li>
+</ul></li>
+<li><a href="#unicode-normalization">Unicode normalization</a></li>
+<li><a href="#converting-sha256-file-hashes-from-windows-to-everything-else">Converting SHA256 file hashes from Windows to everything else</a></li>
+<li><a href="#tangent-rant-about-shasumsha256sum">Tangent: Rant about shasum/sha256sum</a></li>
+</ul>
+</div>
+<p>Note to self: FreeNAS has been renamed TrueNAS for a while now.</p>
+<h2 id="sha256-file-hash-format">SHA256 file hash format</h2>
+<p>All sane operating systems easily support generating and checking SHA256 file hashes. The hashes and file names are stored line-by-line in a file, e.g. this example <code>sha256.txt</code> (hashes truncated for brevity):</p>
+<div class="codehilite"><pre><span></span><code>7cb19e63686...  Foo/important_document1.txt
+ee0a07210ad...  Foo/important_document2.txt
+</code></pre></div>
+
+<h2 id="sorting-sha256-file-hashes">Sorting SHA256 file hashes</h2>
+<p>In a file of hashes, the order of the lines don’t matter. After all, they’re just lines of hashes and file names. But it can be useful to sort them by file name for manual review or comparison/diffing. (Note that the <code>find</code> command does not guarantee the files be returned alphabetically, and it’s quicker to sort them afterwards.)</p>
+<div class="codehilite"><pre><span></span><code>sort -k2 sha256.txt &gt; sha256-sorted.txt
+</code></pre></div>
+
+<p>This sorts each line in a file by key #2, i.e. the file name.</p>
+<h2 id="checking-sha256-file-hashes">Checking SHA256 file hashes</h2>
+<h3 id="linux">Linux</h3>
+<div class="codehilite"><pre><span></span><code>sha256sum --check sha256.txt
+</code></pre></div>
+
+<h3 id="truenasfreebsd">TrueNAS/FreeBSD</h3>
+<div class="codehilite"><pre><span></span><code>shasum -a <span class="m">256</span> -c sha256.txt
+</code></pre></div>
+
+<h3 id="macos">macOS</h3>
+<p>macOS has <code>shasum</code> (<code>/usr/bin/shasum</code>), and so is the same as FreeBSD:</p>
+<div class="codehilite"><pre><span></span><code>shasum -a <span class="m">256</span> -c sha256.txt
+</code></pre></div>
+
+<p>Or, if GNU coreutils are installed, <code>sha256sum</code> or the prefixed version <code>gsha256sum</code> can be used, as with Linux:</p>
+<div class="codehilite"><pre><span></span><code>gsha256sum --check sha256.txt
+</code></pre></div>
+
+<h3 id="windows">Windows</h3>
+<p>Nope, sorry. Maybe you could massage the data into a catalog file (.cat) and use <a href="https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/test-filecatalog"><code>Test-FileCatalog</code></a>.</p>
+<h2 id="generating-sha256-file-hashes">Generating SHA256 file hashes</h2>
+<h3 id="linux_1">Linux</h3>
+<div class="codehilite"><pre><span></span><code>find <span class="s2">"&lt;dir&gt;/"</span> -type f -exec sha256sum <span class="s1">'{}'</span> <span class="se">\;</span> &gt; sha256.txt
+</code></pre></div>
+
+<h3 id="truenasfreebsd_1">TrueNAS/FreeBSD</h3>
+<div class="codehilite"><pre><span></span><code>find <span class="s2">"&lt;dir&gt;/"</span> -type f -exec shasum -a <span class="m">256</span> <span class="s1">'{}'</span> <span class="se">\;</span> &gt; sha256.txt
+</code></pre></div>
+
+<h3 id="macos_1">macOS</h3>
+<p>Note: On macOS, and unlike Linux or FreeBSD, when using <code>find</code> it is useful to ensure the directory name <em>doesn’t</em> include a trailing slash. Otherwise, the path names result in a double slash:</p>
+<div class="codehilite"><pre><span></span><code><span class="gp">$ </span>find <span class="s2">"&lt;dir&gt;/"</span> -type f
+<span class="go">&lt;dir&gt;//&lt;file&gt;</span>
+<span class="gp">$ </span>find <span class="s2">"&lt;dir&gt;"</span> -type f
+<span class="go">&lt;dir&gt;/&lt;file&gt;</span>
+</code></pre></div>
+
+<p>This is rather annoying, as auto-completing a directory name will include the trailing slash. However, I don’t think this actually makes a difference. It’s purely for aesthetic purposes, or might be useful when comparing generated hash files manually.</p>
+<p>macOS has <code>shasum</code> (<code>/usr/bin/shasum</code>), and so is the same as FreeBSD:</p>
+<div class="codehilite"><pre><span></span><code>find <span class="s2">"&lt;dir&gt;"</span> -type f -exec sha256sum <span class="s1">'{}'</span> <span class="se">\;</span> &gt; sha256.txt
+</code></pre></div>
+
+<p>Or, if GNU coreutils are installed, <code>sha256sum</code> or the prefixed version <code>gsha256sum</code> can be used, as with Linux:</p>
+<div class="codehilite"><pre><span></span><code>find <span class="s2">"&lt;dir&gt;"</span> -type f -exec gsha256sum <span class="s1">'{}'</span> <span class="se">\;</span> &gt; sha256.txt
+</code></pre></div>
+
+<h3 id="windows_1">Windows</h3>
+<p>With Powershell, this isn’t <em>too</em> painful. One option is <a href="https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-childitem"><code>Get-ChildItem</code></a> + <a href="https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/get-filehash"><code>Get-FileHash</code></a> + <a href="https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/export-csv"><code>Export-Csv</code></a>. <code>Export-Csv</code> is probably the easiest option to avoid truncating the filepath (!), as e.g. <a href="https://superuser.com/questions/1049531/how-to-fix-truncated-powershell-output-even-when-ive-specified-width-300">redirection or piping to <code>Out-File</code> would</a>.</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">Get-ChildItem</span> <span class="o">-File</span> <span class="n">-Recurse</span> <span class="n">-Path</span> <span class="s2">"D:\Foo"</span> <span class="p">|</span>
+<span class="nb">Get-FileHash</span> <span class="p">|</span>
+<span class="nb">Export-Csv</span> <span class="n">-Path</span> <span class="s2">"hashes.csv"</span> <span class="n">-Encoding</span> <span class="s2">"UTF8NoBOM"</span> <span class="n">-NoTypeInformation</span>
+</code></pre></div>
+
+<blockquote>
+<p>By default, the <code>Get-FileHash</code> cmdlet uses the SHA256 algorithm, although any hash algorithm that is supported by the target operating system can be used.</p>
+<p><a href="https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/get-filehash"><code>Get-FileHash</code></a> reference</p>
+</blockquote>
+<p>I also believe <code>Get-FileHash</code> does the right thing and calculates the hash of the files in binary, and not in some weird text mode (more on this later).</p>
+<p>Another option is <a href="https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/new-filecatalog"><code>New-FileCatalog</code></a>.</p>
+<p>In any case, the output file will need to be massaged into a format compatible with <code>shasum</code>/<code>sha256sum</code>. It might be possible to do this in Powershell…? But even all the Powershell snippets I found to turn an absolute path (returned by <code>Get-ChildItem</code>) into a relative path were horrible. And also, Windows paths. So, Python. But first…</p>
+<h2 id="unicode-normalization">Unicode normalization</h2>
+<p>A very real problem is Unicode normalization (normalisation). For example, the German character <code>ä</code> can be encoded as <code>\xc3\xa4</code> (normal form C, NFC) or <code>a\xcc\x88</code> (normal form D, NFD).</p>
+<ul>
+<li>The CSV file from Windows was NFC, and <a href="https://learn.microsoft.com/en-us/windows/win32/intl/using-unicode-normalization-to-represent-strings">“form C” is “generally” the preferred form in Windows-land</a>.</li>
+<li>macOS generally uses NFD.</li>
+<li>Linux and BSD don’t really care, as with POSIX, file names and paths are just a bag of bytes.</li>
+<li>ZFS, and therefore TrueNAS is generally set up to be POSIX compatible, but can be set up to require valid UTF-8 file names and paths, as well as perform normalisation. You’ll know if you set this up.</li>
+</ul>
+<p>Depending on the combination of where the SHA256 file hashes were generated, and where they are checked, and if you had any non-ASCII file names, it may be required to convert between forms. You can convert between these forms using either Python, or a command-line utility.</p>
+<div class="codehilite"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">unicodedata</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unicodedata</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="s1">'NFC'</span><span class="p">,</span> <span class="s1">'ä'</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">'utf-8'</span><span class="p">)</span>
+<span class="go">b'\xc3\xa4'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unicodedata</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="s1">'NFD'</span><span class="p">,</span> <span class="s1">'ä'</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">'utf-8'</span><span class="p">)</span>
+<span class="go">b'a\xcc\x88'</span>
+</code></pre></div>
+
+<p>For the command-line utility, I recommend <code>uconv</code> from ICU:</p>
+<div class="codehilite"><pre><span></span><code><span class="gp">$ </span><span class="nb">echo</span> -n <span class="s1">'ä'</span> <span class="p">|</span> uconv -x any-nfc <span class="p">|</span> hexdump -e <span class="s1">'16/1 "%02x " "\n"'</span>
+<span class="go">c3 a4</span>
+<span class="gp">$ </span><span class="nb">echo</span> -n <span class="s1">'ä'</span> <span class="p">|</span> uconv -x any-nfd <span class="p">|</span> hexdump -e <span class="s1">'16/1 "%02x " "\n"'</span>
+<span class="go">61 cc 88</span>
+</code></pre></div>
+
+<p>It can be applied to an entire file:</p>
+<div class="codehilite"><pre><span></span><code>uconv -x any-nfc --output <span class="s2">"sha256-conv.txt"</span> <span class="s2">"sha256.txt"</span>
+</code></pre></div>
+
+<h2 id="converting-sha256-file-hashes-from-windows-to-everything-else">Converting SHA256 file hashes from Windows to everything else</h2>
+<p>We want to go from</p>
+<div class="codehilite"><pre><span></span><code>"SHA256","7CB19E6368...","D:\Foo\important_document.txt"
+</code></pre></div>
+
+<p>to</p>
+<div class="codehilite"><pre><span></span><code>7cb19e63686...  Foo/important_document.txt
+</code></pre></div>
+
+<p>(Hashes truncated for brevity)</p>
+<p>There are 3 or 4 steps:</p>
+<ol>
+<li>Parse the CSV file, skip header if needed</li>
+<li>Convert the SHA256 hash to lower-case (might as well)</li>
+<li>Convert the path from a Windows absolute path to a POSIX relative path</li>
+<li>Normalise Unicode if needed</li>
+</ol>
+<p>Also note that because Windows is a great product and operating system, if you did not use the encoding “UTF8NoBOM”, it <em>might</em> prepends a byte sequence to the CSV file called a Byte Order Marker (BOM). This is useless for UTF-8. In this case, you should pass the <code>encoding='utf_8_sig'</code> option to <code>open()</code> so that Python can read the file, like so:</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">open</span><span class="p">(</span><span class="s2">"hashes.csv"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf_8_sig"</span><span class="p">)</span>
+</code></pre></div>
+
+<p>So finally, the full script:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span><span class="p">,</span> <span class="n">PureWindowsPath</span><span class="p">,</span> <span class="n">PurePosixPath</span>
+
+<span class="c1"># change this to your base path</span>
+<span class="n">BASE_PATH</span> <span class="o">=</span> <span class="n">PureWindowsPath</span><span class="p">(</span><span class="s1">'D:/'</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">convert_row</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+    <span class="n">hash_algo</span><span class="p">,</span> <span class="nb">hash</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="n">row</span>
+    <span class="c1"># check the algorithm is as expected</span>
+    <span class="k">assert</span> <span class="n">hash_algo</span> <span class="o">==</span> <span class="s1">'SHA256'</span><span class="p">,</span> <span class="n">row</span>
+    <span class="c1"># hash outputted by `shasum`/`sha256sum` is lowercase</span>
+    <span class="nb">hash</span> <span class="o">=</span> <span class="nb">hash</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="c1"># strip BASE_PATH and convert to POSIX</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">PureWindowsPath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">BASE_PATH</span><span class="p">)</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
+    <span class="c1"># if needed, perform Unicode normalization here</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="nb">hash</span><span class="si">}</span><span class="s1">  </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="se">\n</span><span class="s1">'</span>
+
+<span class="c1"># use `encoding='utf_8_sig'` if needed</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">'hashes.csv'</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">''</span><span class="p">)</span> <span class="k">as</span> <span class="n">csvfile</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="s1">'sha256.txt'</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">csvfile</span><span class="p">)</span>
+    <span class="c1"># skip header</span>
+    <span class="n">_header</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">convert_row</span><span class="p">(</span><span class="n">row</span><span class="p">))</span>
+</code></pre></div>
+
+<p>That’s pretty much it. Fin.</p>
+<hr>
+<h2 id="tangent-rant-about-shasumsha256sum">Tangent: Rant about shasum/sha256sum</h2>
+<p>Lest it be said that I’m biased towards POSIX… well, I am. But both <code>shasum</code> and <code>sha256sum</code> have some, err, interesting options.</p>
+<div class="codehilite"><pre><span></span><code><span class="gp">$ </span>shasum --help
+<span class="go">Usage: shasum [OPTION]... [FILE]...</span>
+<span class="go">Print or check SHA checksums.</span>
+<span class="go">With no FILE, or when FILE is -, read standard input.</span>
+
+<span class="go">  -a, --algorithm   1 (default), 224, 256, 384, 512, 512224, 512256</span>
+<span class="go">  -b, --binary      read in binary mode</span>
+<span class="go">  -c, --check       read SHA sums from the FILEs and check them</span>
+<span class="go">      --tag         create a BSD-style checksum</span>
+<span class="go">  -t, --text        read in text mode (default)</span>
+<span class="go">  -U, --UNIVERSAL   read in Universal Newlines mode</span>
+<span class="go">                        produces same digest on Windows/Unix/Mac</span>
+<span class="go">  -0, --01          read in BITS mode</span>
+<span class="go">                        ASCII '0' interpreted as 0-bit,</span>
+<span class="go">                        ASCII '1' interpreted as 1-bit,</span>
+<span class="go">                        all other characters ignored</span>
+
+<span class="go">The following five options are useful only when verifying checksums:</span>
+<span class="go">      --ignore-missing  don't fail or report status for missing files</span>
+<span class="go">  -q, --quiet           don't print OK for each successfully verified file</span>
+<span class="go">  -s, --status          don't output anything, status code shows success</span>
+<span class="go">      --strict          exit non-zero for improperly formatted checksum lines</span>
+<span class="go">  -w, --warn            warn about improperly formatted checksum lines</span>
+
+<span class="go">[...]</span>
+</code></pre></div>
+
+<p>Some questions:</p>
+<ol>
+<li>Do I need to specify <code>--binary</code> if <code>--text</code> is the default? Why is text mode the default? What does this even do?</li>
+<li>Without <code>--status</code>, does <code>shasum</code> not return with a non-zero status code on error?</li>
+<li>Do I need to specify <code>--warn</code> or <code>--strict</code>? What’s the default here? Silence? I could see <code>--warn</code> being useful if you know there’s a malformed line or so. I would hope the default is a printed warning, and a non-zero status code, but not to abort checking other files.</li>
+</ol>
+<p>Let’s see if <code>sha256sum</code> is any better.</p>
+<div class="codehilite"><pre><span></span><code><span class="gp">$ </span>sha256sum --help
+<span class="go">Usage: sha256sum [OPTION]... [FILE]...</span>
+<span class="go">Print or check SHA256 (256-bit) checksums.</span>
+
+<span class="go">With no FILE, or when FILE is -, read standard input.</span>
+
+<span class="go">  -b, --binary         read in binary mode</span>
+<span class="go">  -c, --check          read SHA256 sums from the FILEs and check them</span>
+<span class="go">      --tag            create a BSD-style checksum</span>
+<span class="go">  -t, --text           read in text mode (default)</span>
+<span class="go">  -z, --zero           end each output line with NUL, not newline,</span>
+<span class="go">                       and disable file name escaping</span>
+
+<span class="go">The following five options are useful only when verifying checksums:</span>
+<span class="go">      --ignore-missing  don't fail or report status for missing files</span>
+<span class="go">      --quiet          don't print OK for each successfully verified file</span>
+<span class="go">      --status         don't output anything, status code shows success</span>
+<span class="go">      --strict         exit non-zero for improperly formatted checksum lines</span>
+<span class="go">  -w, --warn           warn about improperly formatted checksum lines</span>
+
+<span class="go">[...]</span>
+<span class="go">Note: There is no difference between binary mode and text mode on GNU systems.</span>
+<span class="go">[...]</span>
+</code></pre></div>
+
+<p>Well, apart from the misaligned table, at least this makes it clear that <code>-b/--binary</code> is not needed on UNIX systems. <code>sha256sum</code> flags are the same as <a href="https://www.gnu.org/software/coreutils/manual/html_node/md5sum-invocation.html"><code>md5sum</code></a>, and the online documentation is much more in depth, but still doesn’t completely explain the options.</p>
+</article>
+<section>
+  <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid"></use></svg> <a href="https://tobywf.com/tag/freenas/">FreeNAS</a>, <a href="https://tobywf.com/tag/truenas/">TrueNAS</a>, <a href="https://tobywf.com/tag/linux/">Linux</a>, <a href="https://tobywf.com/tag/mac/">Mac</a>, <a href="https://tobywf.com/tag/macos/">macOS</a>, <a href="https://tobywf.com/tag/nas/">NAS</a>, <a href="https://tobywf.com/tag/storage/">storage</a>, <a href="https://tobywf.com/tag/zfs/">ZFS</a></p>
+  <a href="https://tobywf.com/2021/07/copilot-chilling-effects-and-ethics/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid"></use></svg> Older</a>
+</section>
+<!-- content end -->
+    <footer>
+      <hr>
+      <p class="center">
+        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=correction&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2023%2F03%2Fsha-256-checksums%2F">Corrections?</a>
+        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=feedback&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2023%2F03%2Fsha-256-checksums%2F">Feedback?</a>
+      </p>
+      <p class="inline-block">
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#copyright"></use></svg> <span class="date cap">MMXII–MMXXIII</span>
+      </p>
+      <p class="inline-block">
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+          <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons"></use></svg> <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-by"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nc-eu"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nd"></use></svg> 4.0
+        </a>
+      </p>
+      <p>
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#child-solid"></use></svg> Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a tinkerer, scuba diver, and musician. He posts his personal ramblings here.
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
