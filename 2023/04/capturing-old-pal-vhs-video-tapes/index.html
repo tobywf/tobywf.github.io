@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Capturing old PAL VHS video tapes - tobywf</title>
+  <meta charset="utf-8">
+  <meta name="author" content="Toby Fleming">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css">
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png">
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <ul>
+<!-- breadcrumbs start -->
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon"></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2023/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>'23</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2023/04/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>Apr</a></li>
+<li class="last"><a href="https://tobywf.com/cv/" class="cap">CV</a></li>
+<!-- breadcrumbs end -->
+      </ul>
+    </nav>
+<!-- content start -->
+<header class="post-head">
+  <h1>Capturing old PAL VHS video tapes</h1>
+  <div class="infoline">
+    <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">2 Apr '23</span>
+  </div>
+</header>
+<article>
+<p>(Yes, I know VHS is Video Home System so VHS video tape is redundant, and also that they’re actually videocassettes.)</p>
+<p>Long, long time ago, video came on tapes. Mainly VHS tapes. Unfortunately, VHS tapes degrade. My parents have several VHS tapes of our family, specifically the small VHS-C tapes used in camcorders. Something had to be done before they become unreadable.</p>
+<p>I’m not the first person to want to do this. In fact, there’s many. For example, <a href="https://www.youtube.com/watch?v=foLPX4YTwHk">Linus Tech Tips “I Thought My Childhood was LOST”</a>. The problem with these guides are they can get pretty hung up on quality. Always remember that something is better than nothing.</p>
+<p>Naturally, <a href="https://www.youtube.com/watch?v=ZC5Zr3NC2PY">Technology Connections “The Best Easy Way to Capture Analog Video (it’s a little weird)”</a> has a simple approach, although on the Linus Tech Tips’ video he does comment</p>
+<blockquote>
+<p>Thanks for the shoutout!</p>
+<p>One thing I wish I could go back in time and change for my video was the capture thingy. I could never figure out how to get it to not cut the input audio level dramatically, so all my captures require a lot more work in the end than I’d like. But I was looking for something I could leave in a media center - if I were to remake that video I’d probably suggest a capture card and using OBS over the janky Amazon whatever I used!</p>
+<p><a href="https://www.youtube.com/watch?v=foLPX4YTwHk">@TechnologyConnections</a></p>
+</blockquote>
+<p>Needless to say, this is a good approach without breaking the bank, and only requires four devices:</p>
+<ol>
+<li>a VCR</li>
+<li>an analog video to HDMI converter</li>
+<li>a HDMI capture device</li>
+<li>a computer</li>
+</ol>
+<p>However, there’s a lot of details to go over.</p>
+<div class="toc">
+<ul>
+<li><a href="#vcr-considerations">VCR considerations</a></li>
+<li><a href="#videohdmi-capture-hardware">Video/HDMI capture hardware</a></li>
+<li><a href="#pal-to-hdmi-hardware">PAL to HDMI hardware</a></li>
+<li><a href="#firewireieee-1394dv-converter-hardware">FireWire/IEEE 1394/DV converter hardware</a></li>
+<li><a href="#video-capture-software">Video capture software</a></li>
+</ul>
+</div>
+<h2 id="vcr-considerations">VCR considerations</h2>
+<p>In every case, a VCR is required. I don’t know much about VCR quality, and supply is pretty limited. I.e. VCRs are expensive on eBay. Ask around if you can borrow one, or hit up second-hand shops or flea markets if you can.</p>
+<p>My tip: if you can, <strong>get a VCR where the OSD (on-screen display) can be disabled</strong>.</p>
+<p>Why is this important? Well, most VCRs overlay information on the video output. For example, symbols to let you know the tape is playing, or tracking information. For long VHS tapes or VHS tapes with an intro, this is less of a problem. But it’s especially important for VHS-C tapes, as often the camcorder begin recording immediately. For capturing video, being able to get clean video out of the VCR is great. If not, don’t worry - anything is better than nothing.</p>
+<h2 id="videohdmi-capture-hardware">Video/HDMI capture hardware</h2>
+<p>The basic premise of Technology Connections’ solution is to convert the analog video signal outputted by the VCR to HDMI, and then capture the HDMI using an HDMI USB capture card (or a PCIe capture card if you already have one). The recording is done using <a href="https://obsproject.com/">OBS Studio (Open Broadcaster Software)</a>, as it is often vastly superior to the software supplied with capture cards (if any).</p>
+<p>The good news is that HDMI USB capture cards are now readily available. They are often used for streaming game consoles or capturing video from nice cameras that significantly outperform even expensive webcams (like DSLR cameras). You can get extremely cheap HDMI USB capture cards for $20 USB or less. These are… fine. They are USB 2.0, and so have resolution and framerate restrictions that simply don’t matter for VHS capture. But worse, they compress the video stream using MJPEG. This compression is absolutely noticeable, especially on low resolution video.</p>
+<p>If you can bear the cost, Elgato’s Cam Link 4K capture device is a great device. On sale, it can be had for around $100 USD, or used for $90 USD or less. It is absolutely worth the price, as - as far as I can tell - no compression is applied.</p>
+<p>There is another, more deluxe option. Some capture cards have HDMI pass-through. If you choose this option, you can also review the footage on a TV, or even watch it while capturing. Since you will be capturing the video in real-time, this can be a nice option to do with parents or family.</p>
+<h2 id="pal-to-hdmi-hardware">PAL to HDMI hardware</h2>
+<p>Note: Many/all? of the capture solutions stretch video from 4:3 to 16:9. This can easily be fixed by the capture/recording software, with basically no quality loss.</p>
+<p>The basic RCA to HDMI converter of Technology Connections’ solution is fine for NTSC video. There are many, many of them available. They’re all pretty similar, although some have the switch and USB power port on the HDMI output side. And although many of the converters look the same, they sometimes use different chips internally. I’ll be exploring this in a future article. This is an example RCA/AV to HDMI converter I acquired:</p>
+<p><a href="https://tobywf.com/2023/04/capturing-old-pal-vhs-video-tapes/images/2023-04-02-av2hdmi.jpg"><img alt="Picture of an RCA/AV to HDMI converter, with detailed breakouts of the RCA jacks at the front, the HDMI port at the back, as well as the mini-A USB power port and the 720p/1080p selector switch on the side." src="https://tobywf.com/2023/04/capturing-old-pal-vhs-video-tapes/images/thumbs/2023-04-02-av2hdmi.jpg"></a></p>
+<p>As can be seen from the image, the only setting is whether the converter upscales the image to 720p or 1080p.</p>
+<p>And it works great for NTSC video. Does this converter handle PAL? Yes and no. The product description says it does support PAL, and this isn’t wrong. It decodes PAL video fine. However, all of these converters can only output at 60Hz. And to be fair, this is clearly mentioned in the product description. This means that internally the video is converted from 50Hz to 60Hz. Not ideal.</p>
+<p>The other downside is that most PAL VCRs have SCART sockets. And while SCART also transmits composite video signals like RCA, potentially it also supports RGB, S-Video, and YPbPr signals if the VCR also supports these. Ideally, I wanted to make use of at least S-Video. I’m not sure if I actually accomplished this, but this did lead me to search for SCART to HDMI converters.</p>
+<p>Of course, SCART to HDMI converters exists. Most of them still only have a 720p or 1080p toggle, and are therefore basically no better than the RCA version. They use the same chips as the RCA to HDMI converters, and only hook up the composite lines of the SCART socket.</p>
+<p>Luckily, I did find a device from a manufacturer named “Mcbazel”, the “Scart Hdmi to Hdmi Video Converter Box”:</p>
+<p><a href="https://tobywf.com/2023/04/capturing-old-pal-vhs-video-tapes/images/2023-04-02-mcbazel-front.jpg"><img alt="Picture of front of the Mcbazel converter box, with HDMI input, SCART input, and DC 5V input" src="https://tobywf.com/2023/04/capturing-old-pal-vhs-video-tapes/images/thumbs/2023-04-02-mcbazel-front.jpg"></a></p>
+<p><a href="https://tobywf.com/2023/04/capturing-old-pal-vhs-video-tapes/images/2023-04-02-mcbazel-back.jpg"><img alt="Picture of back of the Mcbazel converter box, with a power LED, HDMI output, audio 3.5mm output, audio coaxial output, SCART/HD switch, 720p/1080p switch, and PAL/NTSC switch" src="https://tobywf.com/2023/04/capturing-old-pal-vhs-video-tapes/images/thumbs/2023-04-02-mcbazel-back.jpg"></a></p>
+<p><a href="https://tobywf.com/2023/04/capturing-old-pal-vhs-video-tapes/images/2023-04-02-mcbazel-connectors.jpg"><img alt="Schematic of all inputs and outputs on the front and back of the Mcbazel converter box, as described in the previous pictures." src="https://tobywf.com/2023/04/capturing-old-pal-vhs-video-tapes/images/thumbs/2023-04-02-mcbazel-connectors.jpg"></a></p>
+<p>Crucially, note the PAL/NTSC switch. I bought this device for around $30 USD, and for that price, it is an absolute steal. It’s much, much more complex internally than any other cheap converter I have. I highly recommend this device, so much so that I will include Amazon links here: <a href="https://www.amazon.com/dp/B00MUNIVRO">Mcbazel Scart Hdmi to Hdmi Video Converter Box (Amazon US)</a> and <a href="https://www.amazon.de/dp/B078PCGRZC/">Mcbazel SCART + HDMI to HDMI converter (Amazon DE)</a> (these are not affiliate links). At the time of writing, these were $30 USD (excluding tax) and €31 EUR (including tax) respectively.</p>
+<p>Note that the DC 5V input is a 5.5 mm (outer) x 2.1 mm (inner) barrel plug (aka. coaxial power connector, barrel connector, concentric barrel connector, tip connector). The inner connection is positive, and the outer connection is negative, as is common. The length of the connector on the power supply is about 11 mm, however a length of 10 mm also works. This means you can buy a USB to barrel plug should you want to use a quality power supply, instead of the included one of dubious quality (it isn’t UL listed).</p>
+<h2 id="firewireieee-1394dv-converter-hardware">FireWire/IEEE 1394/DV converter hardware</h2>
+<p>There exist DV FireWire converters:</p>
+<ul>
+<li>Canopus ADVC-100 / ADVC-110 / ADVC-300 (NTSC and PAL?)</li>
+<li>Sony DVMC-DA2 (NTSC only?)</li>
+</ul>
+<p>The upside of all these is that they have S-Video in, and do the analog-to-digital conversion. The downside is that DV has compression applied. This is a big problem, as there is no way to bypass or undo this. But just how bad is this solution?</p>
+<p>The other big problem is that no modern computers have FireWire/IEEE 1394. For example, on a new Mac, you’ll need:</p>
+<ul>
+<li>A FireWire 400 4-conductor to FireWire 800 9-conductor cable (~$15 USD)</li>
+<li>Apple Thunderbolt to FireWire Adapter ($29 USD)</li>
+<li>Thunderbolt 3 (USB-C) to Thunderbolt 2 Adapter ($49 USD)</li>
+</ul>
+<p>That’s $93 USD (without tax)! But it works. And it also works for Windows laptops with Thunderbolt 3. For Windows desktops, there also exist FireWire PCIe cards, for ~$45 USD. It might work? That’s still ~$60 USD. So anywhere from $60 - $100 USD (without tax) just for the connections, and then likely $100+ USD (without tax) for the converter itself.</p>
+<p>To me, DV doesn’t make sense at all, unless you also need to transfer video from a DV camcorder. Then, you may want to invest in the cables to avoid re-encoding the video (as a DV transfer is lossless, except for the already applied compression). Otherwise, any workflow using HDMI to USB makes more sense.</p>
+<h2 id="video-capture-software">Video capture software</h2>
+<p>The recording is done using <a href="https://obsproject.com/">OBS Studio (Open Broadcaster Software)</a>, as it is often vastly superior to the software supplied with capture cards (if any).</p>
+<p>As noted above, the capture solutions stretch video from 4:3 to 16:9. This can easily be fixed in OBS Studio.</p>
+<p>I captured my footage in 720p. This is 1280x720 pixels for the 16:9 HDMI signal. 720p is more than the analog resolution of both NTSC (480i) and PAL (576i). In principle, there is no point capturing at a higher detail than the original video. In practice, if your AV to HDMI converter already converts to 720p, you might as well use this signal. Also, it’s much nicer to view the 720p video afterwards.</p>
+<p>Since I was recording PAL, I set the video FPS to 50Hz. From my testing, this is actually necessary. PAL’s framerate is nominally 25Hz for progressive video, but VHS tapes will be interlaced, with half a frame at 50Hz. The AV to HDMI converter already does okay deinterlacing, and spits out a 50Hz or 60Hz signal. So, to capture all of the data, record at that framerate. The file size difference between 25Hz and 50Hz was pretty small.</p>
+<p>In OBS, I set both the base (canvas) resolution and the output (scaled) resolution to 960x720 pixels. This restores the 4:3 aspect ratio (1280 * (9/16) * (4/3) = 960). I then resized the input video source to fill the canvas.</p>
+<p>For the recording, I used x264 with a reasonable quality (I forget the exact settings).</p>
+<p>Finally, OBS has a very nice feature called “Output Timer” (in the “Tools” menu). If you aren’t watching the video as it is being recorded, it’s possible to forget to stop it. The output timer can be set for half an hour longer than the tape, to give a buffer, but avoids recording hours of blank screen. Removing the blank video at the end is a pretty trivial editing option.</p>
+</article>
+<section>
+  <a href="https://tobywf.com/2023/03/sha-256-checksums/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid"></use></svg> Older</a>
+</section>
+<!-- content end -->
+    <footer>
+      <hr>
+      <p class="center">
+        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=correction&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2023%2F04%2Fcapturing-old-pal-vhs-video-tapes%2F">Corrections?</a>
+        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=feedback&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2023%2F04%2Fcapturing-old-pal-vhs-video-tapes%2F">Feedback?</a>
+      </p>
+      <p class="inline-block">
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#copyright"></use></svg> <span class="date cap">MMXII–MMXXIII</span>
+      </p>
+      <p class="inline-block">
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+          <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons"></use></svg> <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-by"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nc-eu"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nd"></use></svg> 4.0
+        </a>
+      </p>
+      <p>
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#child-solid"></use></svg> Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a tinkerer, scuba diver, and musician. He posts his personal ramblings here.
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
