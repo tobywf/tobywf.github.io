@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 700 320" version="1.1" xmlns="http://www.w3.org/2000/svg" style="stroke:black;stroke-width:2px;fill:none;stroke-linecap:square;">
+<path d="M560,160L590,160"/>
+<path d="M560,160L560,170"/>
+<path d="M560,160L560,170"/>
+<path d="M590,160L597,160"/>
+<path d="M599,160L599,178L627,160L599,142L599,160M602,162.5L612,162.5L612,157.5M617,157.5L607,157.5L607,162.5M627,160C627,158.453 628.197,157.146 629.739,157.011C631.378,156.868 632.845,158.099 632.989,159.739C632.996,159.825 633,159.913 633,160C633,161.547 631.803,162.854 630.261,162.989C628.622,163.132 627.155,161.901 627.011,160.261C627.004,160.175 627,160.087 627,160"/>
+<path d="M635,160L660,160"/>
+<path d="M560,130L560,160"/>
+<path d="M460,130L460,160"/>
+<path d="M460,130L560,130"/>
+<path d="M517,122L517,138M517,130L502,138L502,122L517,130"/>
+<path d="M460,220L560,220"/>
+<path d="M560,160L560,186"/>
+<path d="M560,194L560,220"/>
+<path d="M546,186L574,186"/>
+<path d="M546,194L574,194"/>
+<path d="M460,160L490,160"/>
+<path d="M530,160L560,160"/>
+<rect x="490" y="152" width="40" height="16" style="stroke-linecap:butt;"/>
+<path d="M460,60L460,75"/>
+<path d="M460,115L460,130"/>
+<rect x="452" y="75" width="16" height="40" style="stroke-linecap:butt;"/>
+<path d="M660,160L667,160"/>
+<circle cx="670" cy="160" r="3" style="stroke-linecap:butt;"/>
+<path d="M460,160L460,176"/>
+<path d="M460,204L460,220"/>
+<circle cx="460" cy="179" r="3" style="stroke-linecap:butt;"/>
+<circle cx="460" cy="201" r="3" style="stroke-linecap:butt;"/>
+<path d="M458,182L452,199"/>
+<path d="M455,50L465,50L460,40L455,50Z"/>
+<path d="M460,50L460,60"/>
+<path d="M460,220L460,272"/>
+<path d="M452,272L468,272L460,280L452,272Z"/>
+<path d="M360,130L360,160"/>
+<path d="M260,130L260,160"/>
+<path d="M260,130L360,130"/>
+<path d="M317,122L317,138M317,130L302,138L302,122L317,130"/>
+<path d="M260,220L360,220"/>
+<path d="M360,160L360,186"/>
+<path d="M360,194L360,220"/>
+<path d="M346,186L374,186"/>
+<path d="M346,194L374,194"/>
+<path d="M260,160L290,160"/>
+<path d="M330,160L360,160"/>
+<rect x="290" y="152" width="40" height="16" style="stroke-linecap:butt;"/>
+<path d="M260,60L260,75"/>
+<path d="M260,115L260,130"/>
+<rect x="252" y="75" width="16" height="40" style="stroke-linecap:butt;"/>
+<path d="M360,160L407,160"/>
+<circle cx="410" cy="160" r="3" style="stroke-linecap:butt;"/>
+<path d="M260,160L260,176"/>
+<path d="M260,204L260,220"/>
+<circle cx="260" cy="179" r="3" style="stroke-linecap:butt;"/>
+<circle cx="260" cy="201" r="3" style="stroke-linecap:butt;"/>
+<path d="M258,182L252,199"/>
+<path d="M255,50L265,50L260,40L255,50Z"/>
+<path d="M260,50L260,60"/>
+<path d="M260,220L260,272"/>
+<path d="M252,272L268,272L260,280L252,272Z"/>
+<path d="M60,220L160,220"/>
+<path d="M160,160L160,186"/>
+<path d="M160,194L160,220"/>
+<path d="M146,186L174,186"/>
+<path d="M146,194L174,194"/>
+<path d="M60,160L90,160"/>
+<path d="M130,160L160,160"/>
+<rect x="90" y="152" width="40" height="16" style="stroke-linecap:butt;"/>
+<path d="M60,60L60,90"/>
+<path d="M60,130L60,160"/>
+<rect x="52" y="90" width="16" height="40" style="stroke-linecap:butt;"/>
+<path d="M160,160L207,160"/>
+<circle cx="210" cy="160" r="3" style="stroke-linecap:butt;"/>
+<path d="M60,160L60,176"/>
+<path d="M60,204L60,220"/>
+<circle cx="60" cy="179" r="3" style="stroke-linecap:butt;"/>
+<circle cx="60" cy="201" r="3" style="stroke-linecap:butt;"/>
+<path d="M58,182L52,199"/>
+<path d="M55,50L65,50L60,40L55,50Z"/>
+<path d="M60,50L60,60"/>
+<path d="M60,220L60,272"/>
+<path d="M52,272L68,272L60,280L52,272Z"/>
+<circle cx="560" cy="160" r="2" style="stroke-linecap:butt;"/>
+<circle cx="460" cy="130" r="2" style="stroke-linecap:butt;"/>
+<circle cx="460" cy="160" r="2" style="stroke-linecap:butt;"/>
+<circle cx="460" cy="220" r="2" style="stroke-linecap:butt;"/>
+<circle cx="360" cy="160" r="2" style="stroke-linecap:butt;"/>
+<circle cx="260" cy="130" r="2" style="stroke-linecap:butt;"/>
+<circle cx="260" cy="160" r="2" style="stroke-linecap:butt;"/>
+<circle cx="260" cy="220" r="2" style="stroke-linecap:butt;"/>
+<circle cx="60" cy="220" r="2" style="stroke-linecap:butt;"/>
+<circle cx="160" cy="160" r="2" style="stroke-linecap:butt;"/>
+<circle cx="60" cy="160" r="2" style="stroke-linecap:butt;"/>
+</svg>

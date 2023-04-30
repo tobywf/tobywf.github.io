@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 700 320" version="1.1" xmlns="http://www.w3.org/2000/svg" style="stroke:black;stroke-width:2px;fill:none;stroke-linecap:square;">
+<path d="M460,60L460,90"/>
+<path d="M460,130L460,160"/>
+<rect x="452" y="90" width="16" height="40"/>
+<path d="M460,160L557,160"/>
+<circle cx="560" cy="160" r="3"/>
+<path d="M460,160L460,171"/>
+<path d="M460,199L460,210"/>
+<circle cx="460" cy="174" r="3"/>
+<circle cx="460" cy="196" r="3"/>
+<path d="M458,177L452,194"/>
+<path d="M455,50L465,50L460,40L455,50Z"/>
+<path d="M460,50L460,60"/>
+<path d="M460,210L460,262"/>
+<path d="M452,262L468,262L460,270L452,262Z"/>
+<path d="M260,160L357,160"/>
+<circle cx="360" cy="160" r="3"/>
+<path d="M260,160L260,171"/>
+<path d="M260,199L260,210"/>
+<circle cx="260" cy="174" r="3"/>
+<circle cx="260" cy="196" r="3"/>
+<path d="M258,177L252,194"/>
+<path d="M255,50L265,50L260,40L255,50Z"/>
+<path d="M260,50L260,60"/>
+<path d="M260,210L260,262"/>
+<path d="M252,262L268,262L260,270L252,262Z"/>
+<path d="M60,60L60,160"/>
+<path d="M60,160L157,160"/>
+<circle cx="160" cy="160" r="3"/>
+<path d="M60,160L60,176"/>
+<path d="M60,204L60,220"/>
+<circle cx="60" cy="179" r="3"/>
+<circle cx="60" cy="201" r="3"/>
+<path d="M58,182L52,199"/>
+<path d="M55,50L65,50L60,40L55,50Z"/>
+<path d="M60,50L60,60"/>
+<path d="M60,220L60,272"/>
+<path d="M52,272L68,272L60,280L52,272Z"/>
+<circle cx="460" cy="160" r="2"/>
+<circle cx="60" cy="160" r="2"/>
+</svg>

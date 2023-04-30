@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Debouncing switches - tobywf</title>
+  <meta charset="utf-8">
+  <meta name="author" content="Toby Fleming">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css">
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png">
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <ul>
+<!-- breadcrumbs start -->
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon"></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2023/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>'23</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2023/04/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>Apr</a></li>
+<li class="last"><a href="https://tobywf.com/cv/" class="cap">CV</a></li>
+<!-- breadcrumbs end -->
+      </ul>
+    </nav>
+<!-- content start -->
+<header class="post-head">
+  <h1>Debouncing switches</h1>
+  <div class="infoline">
+    <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">29 Apr '23</span>
+  </div>
+</header>
+<article>
+<p>So you/I want to debounce a switch? How hard could it be?</p>
+<p>Note: I’m not very good with electronics.</p>
+<div class="toc">
+<ul>
+<li><a href="#switch-basics">Switch basics</a></li>
+<li><a href="#hardware-debouncing">Hardware debouncing</a><ul>
+<li><a href="#spdt-switches">SPDT switches</a></li>
+<li><a href="#spst-switches">SPST switches</a></li>
+</ul></li>
+<li><a href="#software-debouncing">Software debouncing</a><ul>
+<li><a href="#timer-based-wait-stabilisation">Timer-based wait stabilisation</a></li>
+<li><a href="#timer-based-shift-register">Timer-based shift register</a><ul>
+<li><a href="#single-edge-detection">Single edge detection</a></li>
+<li><a href="#debouncing-both-edge-transitions">Debouncing both edge transitions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="switch-basics">Switch basics</h2>
+<p>A reminder of the most basic switch circuit: A <a href="https://en.wikipedia.org/wiki/Pull-up_resistor">pull-up resistor</a> is needed (or pull-down).</p>
+<p><a href="https://tobywf.com/2023/04/debouncing-switches/images/2023-04-29-debounce-01.svg"><img alt="Three circuit diagrams of switch configurations. In all diagrams, the switch is connected to the negative/ground rail, and the output is considered to be on the positive side. In the first, there is a direct connection between the switch and the positive rail. In the second, there is no connection between the switch and the positive rail. In the third, there is a pull-up resistor between the switch and the positive rail." src="https://tobywf.com/2023/04/debouncing-switches/images/2023-04-29-debounce-01.svg"></a></p>
+<p>Consider diagram 1, where the switch is directly connected to the positive rail. When the switch is open, the output is directly connected to the positive rail. When the switch is closed, it shorts the positive rail to the ground rail. Oops!</p>
+<p>Consider diagram 2, where the switch is not connected to the positive rail. When the switch is closed, the output is directly connected to the negative/ground rail. When the switch is open, the output is floating. Oops!</p>
+<p>Consider diagram 3, where the switch is connected to the positive rail with a pull-up resistor. When the switch is open, the output is pulled up to the positive rail. When the switch is closed, the output is directly connected to the ground rail. Only in this case is the input well-behaved (assuming the switch is ideal).</p>
+<p>Microcontroller (MCU) inputs often have internal, configurable pull-up resistors (e.g. Arduino). This takes the place of the explicit pull-up resistor in the diagram. (Otherwise, <a href="https://learn.adafruit.com/make-it-switch/if-your-microcontroller-doesn-t-have-internal-resistors">10k is a good value</a> for the resistor.)</p>
+<p>Note that this also the reason for the switch to pull the output to ground. This seems weird, since in the open position the signal will be high, and in the closed position the signal will be low. It’s easy to imagine the alternative scenario where the positive and negative rails are inverted, so that in the open position the signal will be low, and in the closed position the signal will be high. However, while MCU inputs often have pull-up resistors, it’s rarer for them to have pull-down resistors (e.g. Arduino doesn’t).</p>
+<p>In reality, <a href="https://en.wikipedia.org/wiki/Switch#Contact_bounce">switch contacts “bounce”</a>. That is when they make mechanical connection, the contacts physically bounce against each other. The result is an imperfect connection for a few milliseconds. This can be a problem when reading the switch state, as it might be read in the middle of a bounce. This can be okay. For example, if the switch state is simply begin reported, it might just be wrong for a few milliseconds. Usually though, switches are used to trigger actions or decisions, either when the switch goes from open to closed or from closed to open. This needs a clean transition, otherwise an action could be repeated very quickly multiple times. Achieving this is called “debouncing”.</p>
+<p>This problem is as old as switches and digital logic. There have been many articles written about this problem, most famously Jack Ganssle’s “A Guide to Debouncing”. <a href="http://www.ganssle.com/debouncing.htm">A Guide to Debouncing Part 1</a> “describes the problem of debouncing and gives emperical [sic] data”, <a href="http://www.ganssle.com/debouncing-pt2.htm">A Guide to Debouncing Part 2</a> “shows, first, hardware solutions and then software debouncing code”.</p>
+<p>However, I’ve found Max Maxfield’s <a href="https://www.eejournal.com/article/ultimate-guide-to-switch-debounce-part-3/">Ultimate Guide to Switch Debounce</a> to be excellent. Specifically <a href="https://www.eejournal.com/article/ultimate-guide-to-switch-debounce-part-2/">part 2 for SPDT switches</a> and <a href="https://www.eejournal.com/article/ultimate-guide-to-switch-debounce-part-3/">part 3 for SPST switches</a>.</p>
+<p>Let’s discuss hardware debouncing first.</p>
+<h2 id="hardware-debouncing">Hardware debouncing</h2>
+<h3 id="spdt-switches">SPDT switches</h3>
+<p>Some switches are single pole, double throw (SPDT) switches. This means the switch has both normally open (NO) and normally closed (NC) outputs. One example might be microswitches used in arcade joysticks or buttons. In this case, a “simple” hardware debounce option is a set-reset latch, explained in the articles above. A set-reset latch is also called SR latch or R-S latch, aka. bistable latch.</p>
+<p>Why does this work? For two reasons.</p>
+<p>First, SPDT switches - unless they are very weird - mechanically don’t connect both the NO and NC outputs to the common at the same time. Bouncing means that both outputs may be not connected, either connected to common, but never both connected to common. Assuming switching to low/ground with pull-ups, both outputs may be pulled to high, or either low, but never both low. Assuming switching to high with pull-downs, both outputs may be pulled to low/ground, or either high, but never both high.</p>
+<p>Second, the latch. NAND SR latches are active low. They have no change when both inputs are high, and set/reset when either input is low. Both inputs low is invalid. NOR SR latches are active high. They have no change when both inputs are low, and set/reset when either input his high. Both inputs high is invalid.</p>
+<p>Both NOR and NAND SR latches are handled in detail in the excellent video <a href="https://www.youtube.com/watch?v=-aQH0ybMd3U&amp;list=PLTd6ceoshpreKyY55hA4vpzAUv9hSut1H&amp;index=1">Latches and Flip-Flops 1 - The SR Latch</a> by <a href="https://www.youtube.com/@ComputerScienceLessons">Computer Science</a>.</p>
+<p>Per switch, this requires:</p>
+<ul>
+<li>Three wires, for both the NO/NC outputs and the common, instead of two wires for SPST switches.</li>
+<li>Two pull-up/pull-down resistors. The MCU pull-up resistors can’t be used, since they must be on the latch inputs.</li>
+<li>Either two NAND or two NOR gates per switch; alternatively an SR latch IC.</li>
+<li>A bunch of soldering on protoboard.</li>
+</ul>
+<p>Especially the three wires/two signal wires per switch can be surprisingly tedious. The upside is a fast and flawless debounce.</p>
+<p>Luckily, quad NAND/NOR gate logic ICs are very commonly available, and largely suited to the task.</p>
+<p>There are two common families for logic ICs, <a href="https://en.wikipedia.org/wiki/4000-series_integrated_circuits">4000-series ICs</a> and <a href="https://en.wikipedia.org/wiki/7400-series_integrated_circuits">7400-series ICs</a>. For 3.3V or 5V circuits, the HC 7400-series ICs are well-suited. Compared to 7400-series ICs, 4000-series ICs support higher input voltages but have slower propagation delays. For switch debouncing, either is likely fine. When looking for 7400-series ICs, “HC” or high-speed CMOS is generally suitable, so 74HC* part numbers. Look for these ICs:</p>
+<ul>
+<li>CD4001/4001: quad NOR gates</li>
+<li>CD4011/4011: quad NAND gates</li>
+<li>74HC00/SN74HC00: quad NAND gates</li>
+<li>74HC02/SN74HC02: quad NOR gates</li>
+</ul>
+<p><a href="https://www.ti.com/product/SN74HC00">SN74HC00 indicates Texas Instruments</a>, <a href="https://www.onsemi.com/pdf/datasheet/mc74hc00a-d.pdf">MC74HC00 indicating Onsemi</a> or M74HC00 indicating ST Microelectronics as the manufacturer. NXP/Nexperia seems <a href="https://assets.nexperia.com/documents/data-sheet/74HC_HCT00.pdf">to use just 74HC00</a>. Careful, these part numbers are also used by clones. Sometimes, for ICs in a DIP package the “N” suffix is used; 74HC00N, SN74HC00N, etc.</p>
+<p>There exist also SR latch ICs. At the time of writing, Digikey lists 48 SR latches. Most only have Q outputs, which is fine. By changing which IC inputs (S/R) the switch contacts (NO/NC) are connected to, the IC output (Q) can be chosen as desired. Basically no 7400-series HC SR latch ICs are available for reputable sources nowadays.</p>
+<ul>
+<li>CD4043*/4043: quad NOR SR latch</li>
+<li>CD4044*/4044: quad NAND SR latch</li>
+<li>MC14043: quad NOR SR latch</li>
+<li>MC14044: quad NAND SR latch</li>
+<li>74HC279: quad NAND SR latch? Careful, avoid e.g. 74LS279 and similar unless they suit your application.</li>
+</ul>
+<p>For a high-quality arcade stick, fight stick, or controller, where the part cost is already high and signal integrity is desired, this can be a great solution. Unfortunately, many Sanwa-style arcade joysticks using a PCB don’t break out both the NC and NO terminals…</p>
+<h3 id="spst-switches">SPST switches</h3>
+<p>For single pole, single throw switches, the above solution isn’t possible.</p>
+<p><a href="https://tobywf.com/2023/04/debouncing-switches/images/2023-04-29-debounce-02.svg"><img alt="Three circuit diagrams of debounce configurations. In all diagrams, the switch is connected to the negative/ground rail, and to the positive rail via a pull-up resistor. A resistor and capacitor form a resistor-capacitor (RC) network on the switch output. This is the first diagram. In the second diagram, a diode is placed in parallel with the RC resistor. In the third diagram, a Schmitt trigger is added after the RC network." src="https://tobywf.com/2023/04/debouncing-switches/images/2023-04-29-debounce-02.svg"></a></p>
+<p>The simplest solution (diagram 1) requires:</p>
+<ul>
+<li>Two wires, but ok, it’s a switch.</li>
+<li>One pull-up resistor (R1). The MCU pull-up resistor can’t be used, as the pull-up must be before the RC network. (Note: some versions have the pull-up resistor after the RC network. <a href="https://electronics.stackexchange.com/questions/232505/switch-debounce-topology-for-rotary-encoder">Discussed here</a>. Avoid unless you’re sure.)</li>
+<li>One resistor (R2) and one capacitor (R2) for the RC network.</li>
+</ul>
+<p>The values for the resistors and capacitor need to be chosen somewhat carefully, as described in the articles above. The capacitor is always discharged via R2. A diode can be added (diagram 2) to ensure the capacitor is only charged via R1, instead of R1 + R2.</p>
+<p>The final improvement in diagram 3 is adding a Schmitt trigger buffer. This ensures that the output is always high or low, and not in an indeterminate state while the capacitor is charging/discharging.</p>
+<p>Note that usually, an inverting Schmitt trigger is used. In this application where the logic level is high when the switch is open and low when the switch is closed (before the buffer), an inverting Schmitt trigger is quite nice, since the output will be inverted. Non-inverting Schmitt trigger ICs are also a lot less commonly available. Thankfully, Max Maxfield actually tells us why inverting Schmitt triggers are the usual choice:</p>
+<blockquote>
+<p>In reality, it would be more common to use an inverting Schmitt trigger buffer, because inverting functions are faster than their non-inverting counterparts.</p>
+<p><a href="https://www.eejournal.com/article/ultimate-guide-to-switch-debounce-part-3/">Max Maxfield, “Ultimate Guide to Switch Debounce” part 3</a></p>
+</blockquote>
+<p>Anyway, the deluxe version requires:</p>
+<ul>
+<li>Two wires, but ok, it’s a switch.</li>
+<li>One pull-up resistor (R1).</li>
+<li>One resistor (R2) and one capacitor (R2) for the RC network.</li>
+<li>An inverting Schmitt trigger IC. Hex buffers are available, look for 74HC14 / SN74HC14.</li>
+</ul>
+<p>The hex IC is nice, supporting 6 switches per IC. Consult the data sheet for how to terminate unused inputs and outputs. TI’s SN74HC14 data sheet states that “unused inputs must be terminated to either VCC or ground”, “unused outputs can be left floating”, and “do not connect outputs directly to VCC or ground”. They also recommend a 0.1uF decoupling cap between the ground/Vcc rails. The NXP/Nexperia data sheet is less helpful.</p>
+<p>All of this seems like a lot of work though. And this is why hardware debouncing is largely not done for MCU applications. Because the input can also be debounced in software.</p>
+<h2 id="software-debouncing">Software debouncing</h2>
+<h3 id="timer-based-wait-stabilisation">Timer-based wait stabilisation</h3>
+<p>The timer-based solution is described in <a href="https://learn.adafruit.com/make-it-switch/debouncing">Adafruit’s make it switch debouncing</a> article. The CircuitPython example is pretty obvious how this works:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">if</span> <span class="n">switch</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>  <span class="o">//</span> <span class="n">wait</span> <span class="mi">50</span> <span class="n">ms</span> <span class="n">see</span> <span class="k">if</span> <span class="n">switch</span> <span class="ow">is</span> <span class="n">still</span> <span class="n">on</span>
+    <span class="k">if</span> <span class="n">switch</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+        <span class="c1"># ok, it's really pressed</span>
+</code></pre></div>
+
+<p>50 milliseconds seems like long enough to wait. This also means there is a 50ms delay until a press is registered.</p>
+<h3 id="timer-based-shift-register">Timer-based shift register</h3>
+<h4 id="single-edge-detection">Single edge detection</h4>
+<p>Spread all over the internet, and in Jack Ganssle’s article is code like this:</p>
+<div class="codehilite"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="nf">debounce_pin</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">digitalRead</span><span class="p">(</span><span class="n">PIN</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mh">0xfe00</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">0xff00</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<p>I will explain the constants <code>0xfe00</code> and <code>0xff00</code> shortly. Let’s drop them for now; the second constant becomes <code>0x8000</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="nf">debounce_pin</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">digitalRead</span><span class="p">(</span><span class="n">PIN</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">0x8000</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<p>The read value is slowly shifted into <code>state</code>. Let’s examine the code:</p>
+<ul>
+<li>While <code>digitalRead</code> consistently returns low/0, <code>state</code> converges on <code>0x0000</code></li>
+<li>While <code>digitalRead</code> consistently returns high/1, <code>state</code> converges on <code>0xffff</code></li>
+</ul>
+<p>For the condition of <code>state == 0x8000</code> to be true, <code>digitalRead</code> must have returned high/1, followed by 15 low/0.</p>
+<p>So, the code detects either:</p>
+<ul>
+<li>The falling edge/deactivation of a switch or button that is active high</li>
+<li>The rising edge/activation of a switch or button that is active low</li>
+</ul>
+<p>(Invert <code>digitalRead</code> if the opposite behaviour is required.)</p>
+<p>To be effective, this code must also be called periodically, e.g. every 5ms.</p>
+<p>It’s now easy to see that the constant <code>0xfe00</code> or similar values (e.g. <code>0xe000</code>) basically limits the shift register’s length. It can be generically calculated as:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">// For example, debounce_pin is called every 5ms, and</span>
+<span class="c1">// the total debounce time is desired to be 50ms.</span>
+<span class="c1">// WARNING: bits must be &lt;= 16</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">DEBOUNCE_DESIRED_BITS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"></span>
+<span class="k">const</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">DEBOUNCE_MASK</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xffff</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">DEBOUNCE_DESIRED_BITS</span><span class="p">;</span><span class="w"></span>
+<span class="k">const</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">DEBOUNCE_COND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xffff</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="p">(</span><span class="n">DEBOUNCE_DESIRED_BITS</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="nf">debounce_pin</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">digitalRead</span><span class="p">(</span><span class="n">PIN</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">DEBOUNCE_MASK</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">DEBOUNCE_COND</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<p>The combination of <code>0xe000</code> and <code>0xf000</code> gives an effective shift register length of 13 bits, the combination of <code>0xfe00</code> and <code>0xff00</code> a length of 9 bits.</p>
+<p>A different condition could be chosen. Or even a different mask:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">// For example, debounce_pin is called every 5ms, and</span>
+<span class="c1">// the total debounce time is desired to be 45ms.</span>
+<span class="c1">// WARNING: bits must be &lt;= 16</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">DEBOUNCE_DESIRED_BITS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">9</span><span class="p">;</span><span class="w"></span>
+<span class="k">const</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">DEBOUNCE_MASK</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">DEBOUNCE_DESIRED_BITS</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="k">const</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">DEBOUNCE_COND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="p">(</span><span class="n">DEBOUNCE_DESIRED_BITS</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">));</span><span class="w"></span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="nf">debounce_pin</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">state</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">digitalRead</span><span class="p">(</span><span class="n">PIN</span><span class="p">))</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">DEBOUNCE_MASK</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">DEBOUNCE_COND</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<p>The condition is now obvious. For 9 bits in length, the 9th bit is set (8 shift because zero-based).</p>
+<p>This can be simplified further. For example, if the function can be called every 5ms, and a debounce time of 40ms is sufficient (usually is):</p>
+<div class="codehilite"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="nf">debounce_pin</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">digitalRead</span><span class="p">(</span><span class="n">PIN</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">7</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<p>This can be a good solution for detecting one edge, but not both.</p>
+<h4 id="debouncing-both-edge-transitions">Debouncing both edge transitions</h4>
+<p>Maybe something like this:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">_PinState</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">pin</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">state</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">output</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"> </span><span class="n">PinState</span><span class="p">;</span><span class="w"></span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">debounce_pin</span><span class="p">(</span><span class="n">PinState</span><span class="o">*</span><span class="w"> </span><span class="n">pin</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">pin</span><span class="o">-&gt;</span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pin</span><span class="o">-&gt;</span><span class="n">state</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">digitalRead</span><span class="p">(</span><span class="n">pin</span><span class="o">-&gt;</span><span class="n">pin</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pin</span><span class="o">-&gt;</span><span class="n">state</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">0xff</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">pin</span><span class="o">-&gt;</span><span class="n">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">HIGH</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pin</span><span class="o">-&gt;</span><span class="n">state</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">0x00</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">pin</span><span class="o">-&gt;</span><span class="n">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LOW</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">PinState</span><span class="w"> </span><span class="n">pin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="n">pin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MY_PIN</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="n">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LOW</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// call `debounce_pin(&amp;pin);` in timer interrupt every 5ms</span>
+<span class="w">    </span><span class="c1">// use `pin.output` in the code, e.g. for reporting via USB?</span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+</article>
+<section>
+  <a href="https://tobywf.com/2023/04/capturing-old-pal-vhs-video-tapes/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid"></use></svg> Older</a>
+</section>
+<!-- content end -->
+    <footer>
+      <hr>
+      <p class="center">
+        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=correction&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2023%2F04%2Fdebouncing-switches%2F">Corrections?</a>
+        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=feedback&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2023%2F04%2Fdebouncing-switches%2F">Feedback?</a>
+      </p>
+      <p class="inline-block">
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#copyright"></use></svg> <span class="date cap">MMXII–MMXXIII</span>
+      </p>
+      <p class="inline-block">
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+          <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons"></use></svg> <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-by"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nc-eu"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nd"></use></svg> 4.0
+        </a>
+      </p>
+      <p>
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#child-solid"></use></svg> Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a tinkerer, scuba diver, and musician. He posts his personal ramblings here.
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
