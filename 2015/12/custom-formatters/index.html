@@ -40,7 +40,7 @@
 <blockquote>
 <p>The conversion field causes a type coercion before formatting.
 […]
-Three conversion flags are currently supported: <code>'!s'</code> which calls <code>str()</code> on the value, <code>'!r'</code> which calls <code>repr()</code> and <code>'!a'</code> which calls <code>ascii()</code>.</p>
+Three conversion flags are currently supported: <code>&#39;!s&#39;</code> which calls <code>str()</code> on the value, <code>&#39;!r&#39;</code> which calls <code>repr()</code> and <code>&#39;!a&#39;</code> which calls <code>ascii()</code>.</p>
 <p><a href="https://docs.python.org/3/library/string.html#format-string-syntax">Format String Syntax</a></p>
 </blockquote>
 <p>So there you have it. The main use case that I see is if you have an object where you want some custom output associated with it, but you don’t want to (ab)use <code>__str__</code>, <code>__repr__</code>, or <code>__format__</code> or those are all already in use.</p>

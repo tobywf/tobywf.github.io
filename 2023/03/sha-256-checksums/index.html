@@ -167,7 +167,7 @@ ee0a07210ad...  Foo/important_document2.txt
 <li>Convert the path from a Windows absolute path to a POSIX relative path</li>
 <li>Normalise Unicode if needed</li>
 </ol>
-<p>Also note that because Windows is a great product and operating system, if you did not use the encoding “UTF8NoBOM”, it <em>might</em> prepends a byte sequence to the CSV file called a Byte Order Marker (BOM). This is useless for UTF-8. In this case, you should pass the <code>encoding='utf_8_sig'</code> option to <code>open()</code> so that Python can read the file, like so:</p>
+<p>Also note that because Windows is a great product and operating system, if you did not use the encoding “UTF8NoBOM”, it <em>might</em> prepends a byte sequence to the CSV file called a Byte Order Marker (BOM). This is useless for UTF-8. In this case, you should pass the <code>encoding=&#39;utf_8_sig&#39;</code> option to <code>open()</code> so that Python can read the file, like so:</p>
 <div class="codehilite"><pre><span></span><code><span class="nb">open</span><span class="p">(</span><span class="s2">"hashes.csv"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf_8_sig"</span><span class="p">)</span>
 </code></pre></div>
 
