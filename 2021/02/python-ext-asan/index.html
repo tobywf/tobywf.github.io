@@ -38,32 +38,32 @@ env/bin/python setup.py develop
 </code></pre></div>
 
 <p>These steps are also performed by <code>make</code> or <code>make install</code> if you prefer. Next, test the module can be imported. You want to see an ASan failure (which is good, it proves it’s working), not a <code>ModuleNotFoundError</code>.</p>
-<div class="codehilite"><pre><span></span><code>env/bin/python -c <span class="s1">'import asan'</span>
+<div class="codehilite"><pre><span></span><code>env/bin/python -c <span class="s1">&#39;import asan&#39;</span>
 </code></pre></div>
 
 <p>The next steps are different on Linux and macOS; pick the relevant section for your environment. If you’re on Windows, may I suggest a virtual machine or WSL?</p>
 <h3 id="linux">Linux</h3>
 <p>On Linux, this produced something like:</p>
-<div class="codehilite"><pre><span></span><code><span class="gp">$ </span>env/bin/python -c <span class="s1">'import asan'</span>
+<div class="codehilite"><pre><span></span><code><span class="gp">$ </span>env/bin/python -c <span class="s1">&#39;import asan&#39;</span>
 <span class="go">ImportError: libclang_rt.asan-x86_64.so: cannot open shared object file: No such file or directory</span>
 </code></pre></div>
 
 <p>I preloaded the runtime, but you may want to hold off running this. First, check the path, it may be different. Also, the LSan is turned on by default on Linux, so you will get a lot of spew. Python (seems?) to leak a lot of objects.</p>
 <div class="codehilite"><pre><span></span><code><span class="nv">LD_PRELOAD</span><span class="o">=</span>/usr/local/lib/clang/11.0.0/lib/linux/libclang_rt.asan-x86_64.so <span class="se">\</span>
-  env/bin/python -c <span class="s1">'import asan'</span>
+  env/bin/python -c <span class="s1">&#39;import asan&#39;</span>
 </code></pre></div>
 
 <p>Turn off the LSan (again, check the path to the runtime), you should get a clean run:</p>
 <div class="codehilite"><pre><span></span><code><span class="nv">LD_PRELOAD</span><span class="o">=</span>/usr/local/lib/clang/11.0.0/lib/linux/libclang_rt.asan-x86_64.so <span class="se">\</span>
   <span class="nv">ASAN_OPTIONS</span><span class="o">=</span><span class="nv">detect_leaks</span><span class="o">=</span><span class="m">0</span> <span class="se">\</span>
-  env/bin/python -c <span class="s1">'import asan'</span>
+  env/bin/python -c <span class="s1">&#39;import asan&#39;</span>
 </code></pre></div>
 
 <p>You could also try and suppress the spurious LSan detections. But I’ve found this to be difficult. An example file is provided called <code>lsan-suppr.txt</code>, this is intended for macOS (the function names seem to be slightly different).</p>
 <p>I’m going to omit the options going forward, to reduce clutter and because they are different on macOS.</p>
 <h3 id="macos">macOS</h3>
 <p>On macOS, this produces something like:</p>
-<div class="codehilite"><pre><span></span><code><span class="gp">$ </span>env/bin/python -c <span class="s1">'import asan'</span>
+<div class="codehilite"><pre><span></span><code><span class="gp">$ </span>env/bin/python -c <span class="s1">&#39;import asan&#39;</span>
 <span class="go">==91213==ERROR: Interceptors are not working. This may be because AddressSanitizer is loaded too late (e.g. via dlopen). Please launch the executable with:</span>
 <span class="go">DYLD_INSERT_LIBRARIES=/Library/Developer/CommandLineTools/usr/lib/clang/11.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib</span>
 <span class="go">"interceptors not installed" &amp;&amp; 0Abort trap: 6</span>
@@ -71,7 +71,7 @@ env/bin/python setup.py develop
 
 <p>You can also see that this is using the default/Apple clang. Let’s do what the rather helpful error message says:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span><span class="nv">DYLD_INSERT_LIBRARIES</span><span class="o">=</span>/Library/Developer/CommandLineTools/usr/lib/clang/11.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib <span class="se">\</span>
-<span class="gp">&gt; </span>  env/bin/python -c <span class="s1">'import asan'</span>
+<span class="gp">&gt; </span>  env/bin/python -c <span class="s1">&#39;import asan&#39;</span>
 <span class="go">==92278==ERROR: Interceptors are not working. This may be because AddressSanitizer is loaded too late (e.g. via dlopen). Please launch the executable with:</span>
 <span class="go">DYLD_INSERT_LIBRARIES=/Library/Developer/CommandLineTools/usr/lib/clang/11.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib</span>
 <span class="go">"interceptors not installed" &amp;&amp; 0Abort trap: 6</span>
@@ -86,13 +86,13 @@ env/bin/python setup.py develop
 </ul>
 <p>Run it with <code>python3 fix-macos.py</code>. Now, when the command is run:</p>
 <div class="codehilite"><pre><span></span><code><span class="nv">DYLD_INSERT_LIBRARIES</span><span class="o">=</span>/Library/Developer/CommandLineTools/usr/lib/clang/11.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib <span class="se">\</span>
-  env/bin/python -c <span class="s1">'import asan'</span>
+  env/bin/python -c <span class="s1">&#39;import asan&#39;</span>
 </code></pre></div>
 
 <p>You should get a clean execution. Unlike on Linux, leak detection/LSan is not enabled by default. You can try and turn it on:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span><span class="nv">DYLD_INSERT_LIBRARIES</span><span class="o">=</span>/Library/Developer/CommandLineTools/usr/lib/clang/11.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib <span class="se">\</span>
 <span class="gp">&gt; </span>  <span class="nv">ASAN_OPTIONS</span><span class="o">=</span><span class="nv">detect_leaks</span><span class="o">=</span><span class="m">1</span> <span class="se">\</span>
-<span class="gp">&gt; </span>  env/bin/python -c <span class="s1">'import asan'</span>
+<span class="gp">&gt; </span>  env/bin/python -c <span class="s1">&#39;import asan&#39;</span>
 <span class="go">==92353==AddressSanitizer: detect_leaks is not supported on this platform.</span>
 <span class="go">Abort trap: 6</span>
 </code></pre></div>
@@ -106,7 +106,7 @@ because macOS already provides this software and installing another version in
 parallel can cause all kinds of trouble.
 
 If you need to have llvm first in your PATH, run:
-  echo 'set -g fish_user_paths "/usr/local/opt/llvm/bin" $fish_user_paths' &gt;&gt; ~/.config/fish/config.fish
+  echo &#39;set -g fish_user_paths "/usr/local/opt/llvm/bin" $fish_user_paths&#39; &gt;&gt; ~/.config/fish/config.fish
 
 For compilers to find llvm you may need to set:
   set -gx LDFLAGS "-L/usr/local/opt/llvm/lib"
@@ -126,20 +126,20 @@ For compilers to find llvm you may need to set:
 <p>Importantly, you must also use that runtime. Test that it works:</p>
 <div class="codehilite"><pre><span></span><code><span class="nv">DYLD_INSERT_LIBRARIES</span><span class="o">=</span>/usr/local/Cellar/llvm/11.0.1/lib/clang/11.0.1/lib/darwin/libclang_rt.asan_osx_dynamic.dylib <span class="se">\</span>
   <span class="nv">ASAN_OPTIONS</span><span class="o">=</span><span class="nv">detect_leaks</span><span class="o">=</span><span class="m">1</span> <span class="se">\</span>
-  env/bin/python -c <span class="s1">'import asan'</span>
+  env/bin/python -c <span class="s1">&#39;import asan&#39;</span>
 </code></pre></div>
 
 <p>You should be greeted with a bajillion leaks. Python (seems?) to leak a lot of objects. I’ve provided a sample LSan suppression file, which is crude, but enough for this demo. (As an aside, I wish there was a way to run LSan and capture all leaks as a suppression file to be used with future runs.)</p>
 <div class="codehilite"><pre><span></span><code><span class="nv">DYLD_INSERT_LIBRARIES</span><span class="o">=</span>/usr/local/Cellar/llvm/11.0.1/lib/clang/11.0.1/lib/darwin/libclang_rt.asan_osx_dynamic.dylib <span class="se">\</span>
   <span class="nv">ASAN_OPTIONS</span><span class="o">=</span><span class="nv">detect_leaks</span><span class="o">=</span><span class="m">1</span> <span class="se">\</span>
   <span class="nv">LSAN_OPTIONS</span><span class="o">=</span><span class="nv">suppressions</span><span class="o">=</span>lsan-suppr.txt <span class="se">\</span>
-  env/bin/python -c <span class="s1">'import asan'</span>
+  env/bin/python -c <span class="s1">&#39;import asan&#39;</span>
 </code></pre></div>
 
 <p>You should now get a clean run.  I’m going to omit the options going forward, to reduce clutter and because they are different on Linux.</p>
 <h3 id="testing-asan-and-lsan">Testing ASan and LSan</h3>
 <p>There’s a single module method, <code>asan.test</code> to play around with this. It takes two parameters, <code>index</code> and <code>leak</code>:</p>
-<div class="codehilite"><pre><span></span><code>... env/bin/python -c <span class="s1">'import asan; asan.test(index=0, leak=False)'</span>
+<div class="codehilite"><pre><span></span><code>... env/bin/python -c <span class="s1">&#39;import asan; asan.test(index=0, leak=False)&#39;</span>
 </code></pre></div>
 
 <p>First, <code>leak</code>. If it’s false, a stack-allocated array is used. If it’s true, a heap-allocated array is used (that is then leaked, if nothing else happens). Second, <code>index</code>. Both the stack and heap-allocated arrays have 100 elements. If you set <code>index</code> to anything between 0 and 99, for the stack one nothing happens, and the heap one will leak. If index is greater than 99, then either a <code>stack-buffer-overflow</code> or a <code>heap-buffer-overflow</code> is triggered. Fun times!</p>

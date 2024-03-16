@@ -46,16 +46,16 @@
 <p>Your production application <em>will</em> have a different configuration than the debug one. One (terrible) solution is “intelligent” configuration files that use environmental variables or hostnames, and it usually goes wrong. With an app factory, you can easily tell it which config to use:</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">example</span> <span class="kn">import</span> <span class="n">app</span>
 <span class="c1"># app is already initialised</span>
-<span class="c1"># can't change the config or database connection</span>
+<span class="c1"># can&#39;t change the config or database connection</span>
 
 <span class="kn">from</span> <span class="nn">example</span> <span class="kn">import</span> <span class="n">create_app</span>
-<span class="c1"># app isn't initialised, we just imported the factory</span>
-<span class="n">app</span> <span class="o">=</span> <span class="n">create_app</span><span class="p">(</span><span class="n">DB_CONN</span><span class="o">=</span><span class="s2">"production"</span><span class="p">)</span> <span class="c1"># now it's initialised</span>
+<span class="c1"># app isn&#39;t initialised, we just imported the factory</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">create_app</span><span class="p">(</span><span class="n">DB_CONN</span><span class="o">=</span><span class="s2">"production"</span><span class="p">)</span> <span class="c1"># now it&#39;s initialised</span>
 </code></pre></div>
 
 <p>Remember that the factory can provide default configuration values. So the development server script looks roughly like this:</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">example</span> <span class="kn">import</span> <span class="n">create_app</span>
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">app</span> <span class="o">=</span> <span class="n">create_app</span><span class="p">()</span>
     <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>  <span class="c1"># using the default, debug database connection</span>
 </code></pre></div>

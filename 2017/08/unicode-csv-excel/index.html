@@ -35,20 +35,20 @@
 <p>The UTF-8 BOM is <code>0xEF,0xBB,0xBF</code>, that’s too much hard work to remember. Python - with batteries included - has a handy constant for the BOM:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">codecs</span> <span class="kn">import</span> <span class="n">BOM_UTF8</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">BOM_UTF8</span>
-<span class="go">b'\xef\xbb\xbf'</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">BOM_UTF8</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'utf-8'</span><span class="p">)</span>
-<span class="go">'\ufeff'</span>
+<span class="go">b&#39;\xef\xbb\xbf&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">BOM_UTF8</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="go">&#39;\ufeff&#39;</span>
 </code></pre></div>
 
 <p>But wait! This is effort to add onto every file when saving, and strip out of every file when loading. There must be a better way? Python again delivers. There exists an encoding called <code>utf-8-sig</code>. It will add and strip out the BOM automatically. Additionally, it will read UTF-8 without the BOM just fine:</p>
-<div class="codehilite"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="s1">'Hello, world'</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">'utf-8-sig'</span><span class="p">)</span>
-<span class="go">b'\xef\xbb\xbfHello, world'</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'utf-8-sig'</span><span class="p">)</span>
-<span class="go">'Hello, world'</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="s1">'Hello, world'</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">'utf-8'</span><span class="p">)</span>
-<span class="go">b'Hello, world'</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'utf-8-sig'</span><span class="p">)</span>
-<span class="go">'Hello, world'</span>
+<div class="codehilite"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;Hello, world&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8-sig&#39;</span><span class="p">)</span>
+<span class="go">b&#39;\xef\xbb\xbfHello, world&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8-sig&#39;</span><span class="p">)</span>
+<span class="go">&#39;Hello, world&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;Hello, world&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="go">b&#39;Hello, world&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8-sig&#39;</span><span class="p">)</span>
+<span class="go">&#39;Hello, world&#39;</span>
 </code></pre></div>
 
 <p><a name="jackpot">Try it out</a> (legacy Python 2 version further down):</p>

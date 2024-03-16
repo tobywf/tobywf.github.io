@@ -41,7 +41,7 @@
 <p>I wrote a script that given some package names will determine the dependencies iteratively, download all packages, and create a tarball that can be transferred to <a href="https://www.schneier.com/blog/archives/2013/10/air_gaps.html">the air-gapped system securely</a>.</p>
 <div class="codehilite"><pre><span></span><code><span class="ch">#!/bin/bash</span>
 <span class="nb">set</span> -euo pipefail
-<span class="nv">IFS</span><span class="o">=</span><span class="s1">$'\n\t'</span>
+<span class="nv">IFS</span><span class="o">=</span><span class="s1">$&#39;\n\t&#39;</span>
 
 <span class="nv">tarfile</span><span class="o">=</span><span class="s2">"packages.tar"</span>
 <span class="nv">deps</span><span class="o">=</span><span class="s2">"</span><span class="nv">$*</span><span class="s2">"</span>
@@ -52,9 +52,9 @@
 <span class="k">do</span>
   <span class="k">for</span> pkg <span class="k">in</span> <span class="s2">"</span><span class="nv">$deps</span><span class="s2">"</span>
   <span class="k">do</span>
-    <span class="nv">deps</span><span class="o">+=</span><span class="s1">$'\n'</span>
+    <span class="nv">deps</span><span class="o">+=</span><span class="s1">$&#39;\n&#39;</span>
     <span class="nv">deps</span><span class="o">+=</span><span class="k">$(</span>apt-cache depends -i <span class="nv">$pkg</span> <span class="p">|</span> <span class="se">\</span>
-            awk <span class="s1">'/Depends:/ &amp;&amp; !/&lt;/ {print $2}'</span><span class="k">)</span>
+            awk <span class="s1">&#39;/Depends:/ &amp;&amp; !/&lt;/ {print $2}&#39;</span><span class="k">)</span>
   <span class="k">done</span>
   <span class="nv">deps</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$deps</span><span class="s2">"</span> <span class="p">|</span> sort <span class="p">|</span> uniq<span class="k">)</span>
   <span class="nv">new_count</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$deps</span><span class="s2">"</span> <span class="p">|</span> wc -l<span class="k">)</span>

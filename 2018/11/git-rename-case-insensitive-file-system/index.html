@@ -81,8 +81,8 @@
 <li><code>-l[octnum]</code>: “enables automatic line-ending processing. […]”, basically strips newlines on input and adds them on output</li>
 </ul>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>git ls-tree -dr HEAD <span class="p">|</span> <span class="se">\</span>
-<span class="gp">&gt; </span>  perl -lF<span class="s1">'\t'</span> <span class="se">\</span>
-<span class="gp">&gt; </span>  -e <span class="s1">'print "$F[1]";'</span>
+<span class="gp">&gt; </span>  perl -lF<span class="s1">&#39;\t&#39;</span> <span class="se">\</span>
+<span class="gp">&gt; </span>  -e <span class="s1">&#39;print "$F[1]";&#39;</span>
 <span class="go">A Space</span>
 <span class="go">Upper</span>
 <span class="go">lower</span>
@@ -90,8 +90,8 @@
 <span class="go">nested/Upper</span>
 <span class="go">nested/lower</span>
 <span class="gp">$ </span>git ls-tree -dr HEAD <span class="p">|</span> <span class="se">\</span>
-<span class="gp">&gt; </span>  perl -lF<span class="s1">'\t'</span> <span class="se">\</span>
-<span class="gp">&gt; </span>  -e <span class="s1">'$a = $F[1]; $b = lc $a; print "$a\n$b" if $a ne $b'</span>
+<span class="gp">&gt; </span>  perl -lF<span class="s1">&#39;\t&#39;</span> <span class="se">\</span>
+<span class="gp">&gt; </span>  -e <span class="s1">&#39;$a = $F[1]; $b = lc $a; print "$a\n$b" if $a ne $b&#39;</span>
 <span class="go">A Space</span>
 <span class="go">a space</span>
 <span class="go">Upper</span>
@@ -106,9 +106,9 @@
 <li><code>-L max-lines</code>: “Use at most max-lines nonblank input lines per command line. […]”</li>
 </ul>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>git ls-tree -dr HEAD <span class="p">|</span> <span class="se">\</span>
-<span class="gp">&gt; </span>  perl -lF<span class="s1">'\t'</span> <span class="se">\</span>
-<span class="gp">&gt; </span>  -e <span class="s1">'$a = $F[1]; $b = lc $a; print "$a\n$b" if $a ne $b'</span> <span class="p">|</span> <span class="se">\</span>
-<span class="gp">&gt; </span>  xargs -d<span class="s1">'\n'</span> -L2 <span class="nb">printf</span> <span class="s1">'"%s" "%s"\n'</span>
+<span class="gp">&gt; </span>  perl -lF<span class="s1">&#39;\t&#39;</span> <span class="se">\</span>
+<span class="gp">&gt; </span>  -e <span class="s1">&#39;$a = $F[1]; $b = lc $a; print "$a\n$b" if $a ne $b&#39;</span> <span class="p">|</span> <span class="se">\</span>
+<span class="gp">&gt; </span>  xargs -d<span class="s1">&#39;\n&#39;</span> -L2 <span class="nb">printf</span> <span class="s1">&#39;"%s" "%s"\n&#39;</span>
 <span class="go">"A Space" "a space"</span>
 <span class="go">"Upper" "upper"</span>
 <span class="go">"nested/Upper" "nested/upper"</span>
@@ -124,10 +124,10 @@
 <span class="go">nested/Upper</span>
 <span class="go">nested/lower</span>
 <span class="gp">$ </span>git ls-tree -dr HEAD <span class="p">|</span> <span class="se">\</span>
-<span class="gp">&gt; </span>  perl -lF<span class="s1">'\t'</span> <span class="se">\</span>
-<span class="gp">&gt; </span>  -e <span class="s1">'$a = $F[1]; $b = lc $a; print "$a\n$b" if $a ne $b'</span> <span class="p">|</span> <span class="se">\</span>
-<span class="gp">&gt; </span>  xargs -d<span class="s1">'\n'</span> -L2 <span class="se">\</span>
-<span class="gp">&gt; </span>  bash -c <span class="s1">'git mv "$0" "temp" &amp;&amp; git mv "temp" "$1"'</span>
+<span class="gp">&gt; </span>  perl -lF<span class="s1">&#39;\t&#39;</span> <span class="se">\</span>
+<span class="gp">&gt; </span>  -e <span class="s1">&#39;$a = $F[1]; $b = lc $a; print "$a\n$b" if $a ne $b&#39;</span> <span class="p">|</span> <span class="se">\</span>
+<span class="gp">&gt; </span>  xargs -d<span class="s1">&#39;\n&#39;</span> -L2 <span class="se">\</span>
+<span class="gp">&gt; </span>  bash -c <span class="s1">&#39;git mv "$0" "temp" &amp;&amp; git mv "temp" "$1"&#39;</span>
 <span class="gp">$ </span>git commit -m <span class="s2">"rename"</span>
 <span class="go">[master 1b96fba] rename</span>
 <span class="go"> 3 files changed, 0 insertions(+), 0 deletions(-)</span>
@@ -146,10 +146,10 @@
 <p>Boom, done.</p>
 <h2 id="tldr">TL;DR</h2>
 <div class="codehilite"><pre><span></span><code><span class="go">git ls-tree -dr HEAD | \</span>
-<span class="go">  perl -lF'\t' \</span>
-<span class="go">  -e '$a = $F[1]; $b = lc $a; print "$a\n$b" if $a ne $b' | \</span>
-<span class="go">  xargs -d'\n' -L2 \</span>
-<span class="go">  bash -c 'git mv "$0" "temp" &amp;&amp; git mv "temp" "$1"'</span>
+<span class="go">  perl -lF&#39;\t&#39; \</span>
+<span class="go">  -e &#39;$a = $F[1]; $b = lc $a; print "$a\n$b" if $a ne $b&#39; | \</span>
+<span class="go">  xargs -d&#39;\n&#39; -L2 \</span>
+<span class="go">  bash -c &#39;git mv "$0" "temp" &amp;&amp; git mv "temp" "$1"&#39;</span>
 </code></pre></div>
 </article>
 <section>

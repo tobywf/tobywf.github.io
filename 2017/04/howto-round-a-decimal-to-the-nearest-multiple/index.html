@@ -31,15 +31,15 @@
 <p><a href="https://gist.github.com/tobywf/b0f67e9e414e41813c1590ed1ea39e2c">Take me to the code, dammit</a>. (I strongly recommend you look at the explanation. But then I would say that.)</p>
 <p>Say you live in a country without 1, 5, or 10 cent coins (or the monetary equivalent), and you need to round a <a href="https://docs.python.org/3/library/decimal.html"><code>Decimal</code></a> number to 20 or 25 cents. Unfortunately, the <a href="https://docs.python.org/3/library/decimal.html#decimal.Decimal.quantize"><code>quantize</code></a> method will only round your number to the argument’s exponent:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Decimal</span><span class="p">(</span><span class="s1">'0.3'</span><span class="p">)</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">'0.2'</span><span class="p">))</span>
-<span class="go">Decimal('0.3')</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.3&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.2&#39;</span><span class="p">))</span>
+<span class="go">Decimal(&#39;0.3&#39;)</span>
 </code></pre></div>
 
 <p>What we really want is the number rounded to the nearest multiple:</p>
-<div class="codehilite"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">round_up</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">'0.3'</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">'0.2'</span><span class="p">))</span>
-<span class="go">Decimal('0.4')</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">round_down</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">'0.3'</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">'0.2'</span><span class="p">))</span>
-<span class="go">Decimal('0.2')</span>
+<div class="codehilite"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">round_up</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.3&#39;</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.2&#39;</span><span class="p">))</span>
+<span class="go">Decimal(&#39;0.4&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">round_down</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.3&#39;</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.2&#39;</span><span class="p">))</span>
+<span class="go">Decimal(&#39;0.2&#39;)</span>
 </code></pre></div>
 
 <p>Luckily, this isn’t too difficult. But before I show the code, I want to walk through the operations we’ll perform. And don’t worry if maths isn’t your strong suit. In these examples, we’ll round 30 cents (0.3) to the nearest 20 cents (0.2), as indicated by the dotted line. First up, rounding down:</p>

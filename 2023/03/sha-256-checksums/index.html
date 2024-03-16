@@ -85,11 +85,11 @@ ee0a07210ad...  Foo/important_document2.txt
 <p>Nope, sorry. Maybe you could massage the data into a catalog file (.cat) and use <a href="https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/test-filecatalog"><code>Test-FileCatalog</code></a>.</p>
 <h2 id="generating-sha256-file-hashes">Generating SHA256 file hashes</h2>
 <h3 id="linux_1">Linux</h3>
-<div class="codehilite"><pre><span></span><code>find <span class="s2">"&lt;dir&gt;/"</span> -type f -exec sha256sum <span class="s1">'{}'</span> <span class="se">\;</span> &gt; sha256.txt
+<div class="codehilite"><pre><span></span><code>find <span class="s2">"&lt;dir&gt;/"</span> -type f -exec sha256sum <span class="s1">&#39;{}&#39;</span> <span class="se">\;</span> &gt; sha256.txt
 </code></pre></div>
 
 <h3 id="truenasfreebsd_1">TrueNAS/FreeBSD</h3>
-<div class="codehilite"><pre><span></span><code>find <span class="s2">"&lt;dir&gt;/"</span> -type f -exec shasum -a <span class="m">256</span> <span class="s1">'{}'</span> <span class="se">\;</span> &gt; sha256.txt
+<div class="codehilite"><pre><span></span><code>find <span class="s2">"&lt;dir&gt;/"</span> -type f -exec shasum -a <span class="m">256</span> <span class="s1">&#39;{}&#39;</span> <span class="se">\;</span> &gt; sha256.txt
 </code></pre></div>
 
 <h3 id="macos_1">macOS</h3>
@@ -102,11 +102,11 @@ ee0a07210ad...  Foo/important_document2.txt
 
 <p>This is rather annoying, as auto-completing a directory name will include the trailing slash. However, I don’t think this actually makes a difference. It’s purely for aesthetic purposes, or might be useful when comparing generated hash files manually.</p>
 <p>macOS has <code>shasum</code> (<code>/usr/bin/shasum</code>), and so is the same as FreeBSD:</p>
-<div class="codehilite"><pre><span></span><code>find <span class="s2">"&lt;dir&gt;"</span> -type f -exec sha256sum <span class="s1">'{}'</span> <span class="se">\;</span> &gt; sha256.txt
+<div class="codehilite"><pre><span></span><code>find <span class="s2">"&lt;dir&gt;"</span> -type f -exec sha256sum <span class="s1">&#39;{}&#39;</span> <span class="se">\;</span> &gt; sha256.txt
 </code></pre></div>
 
 <p>Or, if GNU coreutils are installed, <code>sha256sum</code> or the prefixed version <code>gsha256sum</code> can be used, as with Linux:</p>
-<div class="codehilite"><pre><span></span><code>find <span class="s2">"&lt;dir&gt;"</span> -type f -exec gsha256sum <span class="s1">'{}'</span> <span class="se">\;</span> &gt; sha256.txt
+<div class="codehilite"><pre><span></span><code>find <span class="s2">"&lt;dir&gt;"</span> -type f -exec gsha256sum <span class="s1">&#39;{}&#39;</span> <span class="se">\;</span> &gt; sha256.txt
 </code></pre></div>
 
 <h3 id="windows_1">Windows</h3>
@@ -133,16 +133,16 @@ ee0a07210ad...  Foo/important_document2.txt
 </ul>
 <p>Depending on the combination of where the SHA256 file hashes were generated, and where they are checked, and if you had any non-ASCII file names, it may be required to convert between forms. You can convert between these forms using either Python, or a command-line utility.</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">unicodedata</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">unicodedata</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="s1">'NFC'</span><span class="p">,</span> <span class="s1">'ä'</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">'utf-8'</span><span class="p">)</span>
-<span class="go">b'\xc3\xa4'</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">unicodedata</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="s1">'NFD'</span><span class="p">,</span> <span class="s1">'ä'</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">'utf-8'</span><span class="p">)</span>
-<span class="go">b'a\xcc\x88'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unicodedata</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="s1">&#39;NFC&#39;</span><span class="p">,</span> <span class="s1">&#39;ä&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="go">b&#39;\xc3\xa4&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unicodedata</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="s1">&#39;NFD&#39;</span><span class="p">,</span> <span class="s1">&#39;ä&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="go">b&#39;a\xcc\x88&#39;</span>
 </code></pre></div>
 
 <p>For the command-line utility, I recommend <code>uconv</code> from ICU:</p>
-<div class="codehilite"><pre><span></span><code><span class="gp">$ </span><span class="nb">echo</span> -n <span class="s1">'ä'</span> <span class="p">|</span> uconv -x any-nfc <span class="p">|</span> hexdump -e <span class="s1">'16/1 "%02x " "\n"'</span>
+<div class="codehilite"><pre><span></span><code><span class="gp">$ </span><span class="nb">echo</span> -n <span class="s1">&#39;ä&#39;</span> <span class="p">|</span> uconv -x any-nfc <span class="p">|</span> hexdump -e <span class="s1">&#39;16/1 "%02x " "\n"&#39;</span>
 <span class="go">c3 a4</span>
-<span class="gp">$ </span><span class="nb">echo</span> -n <span class="s1">'ä'</span> <span class="p">|</span> uconv -x any-nfd <span class="p">|</span> hexdump -e <span class="s1">'16/1 "%02x " "\n"'</span>
+<span class="gp">$ </span><span class="nb">echo</span> -n <span class="s1">&#39;ä&#39;</span> <span class="p">|</span> uconv -x any-nfd <span class="p">|</span> hexdump -e <span class="s1">&#39;16/1 "%02x " "\n"&#39;</span>
 <span class="go">61 cc 88</span>
 </code></pre></div>
 
@@ -176,21 +176,21 @@ ee0a07210ad...  Foo/important_document2.txt
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span><span class="p">,</span> <span class="n">PureWindowsPath</span><span class="p">,</span> <span class="n">PurePosixPath</span>
 
 <span class="c1"># change this to your base path</span>
-<span class="n">BASE_PATH</span> <span class="o">=</span> <span class="n">PureWindowsPath</span><span class="p">(</span><span class="s1">'D:/'</span><span class="p">)</span>
+<span class="n">BASE_PATH</span> <span class="o">=</span> <span class="n">PureWindowsPath</span><span class="p">(</span><span class="s1">&#39;D:/&#39;</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">convert_row</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
     <span class="n">hash_algo</span><span class="p">,</span> <span class="nb">hash</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="n">row</span>
     <span class="c1"># check the algorithm is as expected</span>
-    <span class="k">assert</span> <span class="n">hash_algo</span> <span class="o">==</span> <span class="s1">'SHA256'</span><span class="p">,</span> <span class="n">row</span>
+    <span class="k">assert</span> <span class="n">hash_algo</span> <span class="o">==</span> <span class="s1">&#39;SHA256&#39;</span><span class="p">,</span> <span class="n">row</span>
     <span class="c1"># hash outputted by `shasum`/`sha256sum` is lowercase</span>
     <span class="nb">hash</span> <span class="o">=</span> <span class="nb">hash</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
     <span class="c1"># strip BASE_PATH and convert to POSIX</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">PureWindowsPath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">BASE_PATH</span><span class="p">)</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
     <span class="c1"># if needed, perform Unicode normalization here</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="nb">hash</span><span class="si">}</span><span class="s1">  </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="se">\n</span><span class="s1">'</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">hash</span><span class="si">}</span><span class="s1">  </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
 
-<span class="c1"># use `encoding='utf_8_sig'` if needed</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">'hashes.csv'</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">''</span><span class="p">)</span> <span class="k">as</span> <span class="n">csvfile</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="s1">'sha256.txt'</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="c1"># use `encoding=&#39;utf_8_sig&#39;` if needed</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;hashes.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">csvfile</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;sha256.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">csvfile</span><span class="p">)</span>
     <span class="c1"># skip header</span>
     <span class="n">_header</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
@@ -215,14 +215,14 @@ ee0a07210ad...  Foo/important_document2.txt
 <span class="go">  -U, --UNIVERSAL   read in Universal Newlines mode</span>
 <span class="go">                        produces same digest on Windows/Unix/Mac</span>
 <span class="go">  -0, --01          read in BITS mode</span>
-<span class="go">                        ASCII '0' interpreted as 0-bit,</span>
-<span class="go">                        ASCII '1' interpreted as 1-bit,</span>
+<span class="go">                        ASCII &#39;0&#39; interpreted as 0-bit,</span>
+<span class="go">                        ASCII &#39;1&#39; interpreted as 1-bit,</span>
 <span class="go">                        all other characters ignored</span>
 
 <span class="go">The following five options are useful only when verifying checksums:</span>
-<span class="go">      --ignore-missing  don't fail or report status for missing files</span>
-<span class="go">  -q, --quiet           don't print OK for each successfully verified file</span>
-<span class="go">  -s, --status          don't output anything, status code shows success</span>
+<span class="go">      --ignore-missing  don&#39;t fail or report status for missing files</span>
+<span class="go">  -q, --quiet           don&#39;t print OK for each successfully verified file</span>
+<span class="go">  -s, --status          don&#39;t output anything, status code shows success</span>
 <span class="go">      --strict          exit non-zero for improperly formatted checksum lines</span>
 <span class="go">  -w, --warn            warn about improperly formatted checksum lines</span>
 
@@ -250,9 +250,9 @@ ee0a07210ad...  Foo/important_document2.txt
 <span class="go">                       and disable file name escaping</span>
 
 <span class="go">The following five options are useful only when verifying checksums:</span>
-<span class="go">      --ignore-missing  don't fail or report status for missing files</span>
-<span class="go">      --quiet          don't print OK for each successfully verified file</span>
-<span class="go">      --status         don't output anything, status code shows success</span>
+<span class="go">      --ignore-missing  don&#39;t fail or report status for missing files</span>
+<span class="go">      --quiet          don&#39;t print OK for each successfully verified file</span>
+<span class="go">      --status         don&#39;t output anything, status code shows success</span>
 <span class="go">      --strict         exit non-zero for improperly formatted checksum lines</span>
 <span class="go">  -w, --warn           warn about improperly formatted checksum lines</span>
 

@@ -58,16 +58,16 @@ when you import TensorFlow (<a href="https://github.com/tensorflow/tensorflow/is
 <span class="gt">Traceback (most recent call last):</span>
   File <span class="nb">"/Users/tobywf/Documents/tensorflow/tensorflow/python/pywrap_tensorflow.py"</span>, line <span class="m">41</span>, in <span class="n">&lt;module&gt;</span>
     <span class="kn">from</span> <span class="nn">tensorflow.python.pywrap_tensorflow_internal</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="gr">ModuleNotFoundError</span>: <span class="n">No module named 'tensorflow.python.pywrap_tensorflow_internal'</span>
+<span class="gr">ModuleNotFoundError</span>: <span class="n">No module named &#39;tensorflow.python.pywrap_tensorflow_internal&#39;</span>
 <span class="go">[...]</span>
 </code></pre></div>
 
 <p>From any other directory, it’ll work fine:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">hello</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">'Hello, TensorFlow!'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hello</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;Hello, TensorFlow!&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">hello</span><span class="p">))</span>
-<span class="go">b'Hello, TensorFlow!'</span>
+<span class="go">b&#39;Hello, TensorFlow!&#39;</span>
 </code></pre></div>
 </article>
 <section>

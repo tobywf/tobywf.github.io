@@ -39,7 +39,7 @@
 <span class="go"> state: DEGRADED</span>
 <span class="go">status: One or more devices could not be opened.  Sufficient replicas exist for</span>
 <span class="go">    the pool to continue functioning in a degraded state.</span>
-<span class="go">action: Attach the missing device and online it using 'zpool online'.</span>
+<span class="go">action: Attach the missing device and online it using &#39;zpool online&#39;.</span>
 <span class="go">   see: http://illumos.org/msg/ZFS-8000-2Q</span>
 <span class="go">  scan: scrub repaired 0 in 0 days 02:49:09 with 0 errors on Sun May 13 02:49:10 2018</span>
 <span class="go">config:</span>
@@ -187,7 +187,7 @@
 <span class="go"> state: DEGRADED</span>
 <span class="go">status: One or more devices could not be opened.  Sufficient replicas exist for</span>
 <span class="go">    the pool to continue functioning in a degraded state.</span>
-<span class="go">action: Attach the missing device and online it using 'zpool online'.</span>
+<span class="go">action: Attach the missing device and online it using &#39;zpool online&#39;.</span>
 <span class="go">   see: http://illumos.org/msg/ZFS-8000-2Q</span>
 <span class="go">  scan: scrub repaired 0 in 0 days 02:49:09 with 0 errors on Sun May 13 02:49:10 2018</span>
 <span class="go">config:</span>
@@ -255,7 +255,7 @@
 <span class="go"> state: DEGRADED</span>
 <span class="go">status: One or more devices could not be opened.  Sufficient replicas exist for</span>
 <span class="go">    the pool to continue functioning in a degraded state.</span>
-<span class="go">action: Attach the missing device and online it using 'zpool online'.</span>
+<span class="go">action: Attach the missing device and online it using &#39;zpool online&#39;.</span>
 <span class="go">   see: http://illumos.org/msg/ZFS-8000-2Q</span>
 <span class="go">  scan: resilvered 1.70T in 0 days 02:58:23 with 0 errors on Sun Jun 17 21:08:56 2018</span>
 <span class="go">config:</span>
@@ -273,7 +273,7 @@
 
 <h2 id="step-6-detach-old-disks-and-watch-the-mirror-grow">Step 6: Detach old disks and watch the mirror grow</h2>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>sudo zpool detach pool <span class="m">11300205822825511459</span>
-<span class="gp">$ </span>zpool status pool <span class="p">|</span> grep <span class="s1">'state:'</span>
+<span class="gp">$ </span>zpool status pool <span class="p">|</span> grep <span class="s1">&#39;state:&#39;</span>
 <span class="go"> state: DEGRADED</span>
 <span class="gp">$ </span>sudo zpool detach pool <span class="m">6780713986779558112</span>
 <span class="gp">$ </span>zpool status pool
