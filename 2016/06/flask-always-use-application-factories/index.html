@@ -50,7 +50,7 @@
 
 <span class="kn">from</span> <span class="nn">example</span> <span class="kn">import</span> <span class="n">create_app</span>
 <span class="c1"># app isn&#39;t initialised, we just imported the factory</span>
-<span class="n">app</span> <span class="o">=</span> <span class="n">create_app</span><span class="p">(</span><span class="n">DB_CONN</span><span class="o">=</span><span class="s2">"production"</span><span class="p">)</span> <span class="c1"># now it&#39;s initialised</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">create_app</span><span class="p">(</span><span class="n">DB_CONN</span><span class="o">=</span><span class="s2">&quot;production&quot;</span><span class="p">)</span> <span class="c1"># now it&#39;s initialised</span>
 </code></pre></div>
 
 <p>Remember that the factory can provide default configuration values. So the development server script looks roughly like this:</p>
@@ -62,7 +62,7 @@
 
 <p>But the WSGI script looks like this:</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">example</span> <span class="kn">import</span> <span class="n">create_app</span>
-<span class="n">application</span> <span class="o">=</span> <span class="n">create_app</span><span class="p">(</span><span class="n">DB_CONN</span><span class="o">=</span><span class="s2">"production"</span><span class="p">)</span>
+<span class="n">application</span> <span class="o">=</span> <span class="n">create_app</span><span class="p">(</span><span class="n">DB_CONN</span><span class="o">=</span><span class="s2">&quot;production&quot;</span><span class="p">)</span>
 </code></pre></div>
 
 <p>Much less chance of nuking the production database.</p>

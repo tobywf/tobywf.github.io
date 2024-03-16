@@ -80,7 +80,7 @@
 <p>(This should work for most cases, because the build image isn’t quite as locked own as the Lambda environment, but if it fails, try the CodeBuild image.)</p>
 <h2 id="building-inside-a-docker-container">Building inside a Docker container</h2>
 <p>First, let’s install the dependencies locally, to have a baseline on how it should look. I’m building on macOS, and you can see I get the macOS specific package:</p>
-<div class="codehilite"><pre><span></span><code><span class="gp">$ </span><span class="nb">echo</span> <span class="s2">"lxml"</span> &gt; requirements.txt
+<div class="codehilite"><pre><span></span><code><span class="gp">$ </span><span class="nb">echo</span> <span class="s2">&quot;lxml&quot;</span> &gt; requirements.txt
 <span class="gp">$ </span>mkdir build
 <span class="gp">$ </span>pip3 install -r requirements.txt -t build/
 <span class="go">Collecting lxml (from -r requirements.txt (line 1))</span>
@@ -98,7 +98,7 @@
 
 <p>Now, inside the container. For simplicity, I’m going to mount a directory inside the container. This doesn’t work for remote docker hosts (there are workarounds, using S3, NFS shares, etc). Quickly check the mount works:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>docker run <span class="se">\</span>
-    -v <span class="s2">"</span><span class="nv">$PWD</span><span class="s2">"</span>:/var/task <span class="se">\</span>
+    -v <span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/var/task <span class="se">\</span>
     --rm <span class="se">\</span>
     lambci/lambda:build-python3.6 <span class="se">\</span>
     cat requirements.txt
@@ -106,10 +106,10 @@
 </code></pre></div>
 
 <p>Good, let’s go. The only difference is running <code>pip</code> inside the container:</p>
-<div class="codehilite"><pre><span></span><code><span class="gp">$ </span><span class="nb">echo</span> <span class="s2">"lxml"</span> &gt; requirements.txt
+<div class="codehilite"><pre><span></span><code><span class="gp">$ </span><span class="nb">echo</span> <span class="s2">&quot;lxml&quot;</span> &gt; requirements.txt
 <span class="gp">$ </span>mkdir build
 <span class="gp">$ </span>docker run <span class="se">\</span>
-    -v <span class="s2">"</span><span class="nv">$PWD</span><span class="s2">"</span>:/var/task <span class="se">\</span>
+    -v <span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/var/task <span class="se">\</span>
     --rm <span class="se">\</span>
     lambci/lambda:build-python3.6 <span class="se">\</span>
     pip install -r requirements.txt -t build/
@@ -124,7 +124,7 @@
 <p>Excellent. This time, we get the <code>manylinux</code> flavoured package, which is exactly right.</p>
 <p>Using the CodeBuild image is similar, except by default the container runs in the root folder:</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>docker run <span class="se">\</span>
-    -v <span class="s2">"</span><span class="nv">$PWD</span><span class="s2">"</span>:/var/task <span class="se">\</span>
+    -v <span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/var/task <span class="se">\</span>
     --rm <span class="se">\</span>
     aws/codebuild/python:3.6.5 <span class="se">\</span>
     pip install -r /var/task/requirements.txt -t /var/task/build/
@@ -140,10 +140,10 @@
 <p>Docker contains provide a simple way to download OS-specific dependencies correctly for Python Lambda functions. You can then use these to package Python Lambda functions correctly on your local machine, or integrate it in your continuous integration/continuous delivery pipeline to ensure you get the right dependencies.</p>
 <p>Do let me know if you found this helpful.</p>
 <h2 id="tldr">TL;DR</h2>
-<div class="codehilite"><pre><span></span><code><span class="gp">$ </span><span class="nb">echo</span> <span class="s2">"lxml"</span> &gt; requirements.txt
+<div class="codehilite"><pre><span></span><code><span class="gp">$ </span><span class="nb">echo</span> <span class="s2">&quot;lxml&quot;</span> &gt; requirements.txt
 <span class="gp">$ </span>mkdir build
 <span class="gp">$ </span>docker run <span class="se">\</span>
-    -v <span class="s2">"</span><span class="nv">$PWD</span><span class="s2">"</span>:/var/task <span class="se">\</span>
+    -v <span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/var/task <span class="se">\</span>
     --rm <span class="se">\</span>
     lambci/lambda:build-python3.6 <span class="se">\</span>
     pip install -r requirements.txt -t build/

@@ -82,7 +82,7 @@
 </ul>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>git ls-tree -dr HEAD <span class="p">|</span> <span class="se">\</span>
 <span class="gp">&gt; </span>  perl -lF<span class="s1">&#39;\t&#39;</span> <span class="se">\</span>
-<span class="gp">&gt; </span>  -e <span class="s1">&#39;print "$F[1]";&#39;</span>
+<span class="gp">&gt; </span>  -e <span class="s1">&#39;print &quot;$F[1]&quot;;&#39;</span>
 <span class="go">A Space</span>
 <span class="go">Upper</span>
 <span class="go">lower</span>
@@ -91,7 +91,7 @@
 <span class="go">nested/lower</span>
 <span class="gp">$ </span>git ls-tree -dr HEAD <span class="p">|</span> <span class="se">\</span>
 <span class="gp">&gt; </span>  perl -lF<span class="s1">&#39;\t&#39;</span> <span class="se">\</span>
-<span class="gp">&gt; </span>  -e <span class="s1">&#39;$a = $F[1]; $b = lc $a; print "$a\n$b" if $a ne $b&#39;</span>
+<span class="gp">&gt; </span>  -e <span class="s1">&#39;$a = $F[1]; $b = lc $a; print &quot;$a\n$b&quot; if $a ne $b&#39;</span>
 <span class="go">A Space</span>
 <span class="go">a space</span>
 <span class="go">Upper</span>
@@ -107,11 +107,11 @@
 </ul>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>git ls-tree -dr HEAD <span class="p">|</span> <span class="se">\</span>
 <span class="gp">&gt; </span>  perl -lF<span class="s1">&#39;\t&#39;</span> <span class="se">\</span>
-<span class="gp">&gt; </span>  -e <span class="s1">&#39;$a = $F[1]; $b = lc $a; print "$a\n$b" if $a ne $b&#39;</span> <span class="p">|</span> <span class="se">\</span>
-<span class="gp">&gt; </span>  xargs -d<span class="s1">&#39;\n&#39;</span> -L2 <span class="nb">printf</span> <span class="s1">&#39;"%s" "%s"\n&#39;</span>
-<span class="go">"A Space" "a space"</span>
-<span class="go">"Upper" "upper"</span>
-<span class="go">"nested/Upper" "nested/upper"</span>
+<span class="gp">&gt; </span>  -e <span class="s1">&#39;$a = $F[1]; $b = lc $a; print &quot;$a\n$b&quot; if $a ne $b&#39;</span> <span class="p">|</span> <span class="se">\</span>
+<span class="gp">&gt; </span>  xargs -d<span class="s1">&#39;\n&#39;</span> -L2 <span class="nb">printf</span> <span class="s1">&#39;&quot;%s&quot; &quot;%s&quot;\n&#39;</span>
+<span class="go">&quot;A Space&quot; &quot;a space&quot;</span>
+<span class="go">&quot;Upper&quot; &quot;upper&quot;</span>
+<span class="go">&quot;nested/Upper&quot; &quot;nested/upper&quot;</span>
 </code></pre></div>
 
 <p>Good to see spaces aren’t an issue.</p>
@@ -125,10 +125,10 @@
 <span class="go">nested/lower</span>
 <span class="gp">$ </span>git ls-tree -dr HEAD <span class="p">|</span> <span class="se">\</span>
 <span class="gp">&gt; </span>  perl -lF<span class="s1">&#39;\t&#39;</span> <span class="se">\</span>
-<span class="gp">&gt; </span>  -e <span class="s1">&#39;$a = $F[1]; $b = lc $a; print "$a\n$b" if $a ne $b&#39;</span> <span class="p">|</span> <span class="se">\</span>
+<span class="gp">&gt; </span>  -e <span class="s1">&#39;$a = $F[1]; $b = lc $a; print &quot;$a\n$b&quot; if $a ne $b&#39;</span> <span class="p">|</span> <span class="se">\</span>
 <span class="gp">&gt; </span>  xargs -d<span class="s1">&#39;\n&#39;</span> -L2 <span class="se">\</span>
-<span class="gp">&gt; </span>  bash -c <span class="s1">&#39;git mv "$0" "temp" &amp;&amp; git mv "temp" "$1"&#39;</span>
-<span class="gp">$ </span>git commit -m <span class="s2">"rename"</span>
+<span class="gp">&gt; </span>  bash -c <span class="s1">&#39;git mv &quot;$0&quot; &quot;temp&quot; &amp;&amp; git mv &quot;temp&quot; &quot;$1&quot;&#39;</span>
+<span class="gp">$ </span>git commit -m <span class="s2">&quot;rename&quot;</span>
 <span class="go">[master 1b96fba] rename</span>
 <span class="go"> 3 files changed, 0 insertions(+), 0 deletions(-)</span>
 <span class="go"> rename {A Space =&gt; a space}/.gitkeep (100%)</span>
@@ -147,9 +147,9 @@
 <h2 id="tldr">TL;DR</h2>
 <div class="codehilite"><pre><span></span><code><span class="go">git ls-tree -dr HEAD | \</span>
 <span class="go">  perl -lF&#39;\t&#39; \</span>
-<span class="go">  -e &#39;$a = $F[1]; $b = lc $a; print "$a\n$b" if $a ne $b&#39; | \</span>
+<span class="go">  -e &#39;$a = $F[1]; $b = lc $a; print &quot;$a\n$b&quot; if $a ne $b&#39; | \</span>
 <span class="go">  xargs -d&#39;\n&#39; -L2 \</span>
-<span class="go">  bash -c &#39;git mv "$0" "temp" &amp;&amp; git mv "temp" "$1"&#39;</span>
+<span class="go">  bash -c &#39;git mv &quot;$0&quot; &quot;temp&quot; &amp;&amp; git mv &quot;temp&quot; &quot;$1&quot;&#39;</span>
 </code></pre></div>
 </article>
 <section>

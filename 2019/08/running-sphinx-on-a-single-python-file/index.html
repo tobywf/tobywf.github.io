@@ -35,20 +35,20 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 
 <span class="c1"># enable autodoc to load local modules</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s2">"."</span><span class="p">))</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">))</span>
 
-<span class="n">project</span> <span class="o">=</span> <span class="s2">"&lt;project&gt;"</span>
-<span class="n">copyright</span> <span class="o">=</span> <span class="s2">"2019, Toby Fleming"</span>
-<span class="n">author</span> <span class="o">=</span> <span class="s2">"Toby Fleming"</span>
-<span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"sphinx.ext.autodoc"</span><span class="p">,</span> <span class="s2">"sphinx.ext.intersphinx"</span><span class="p">]</span>
-<span class="n">exclude_patterns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"_build"</span><span class="p">,</span> <span class="s2">"Thumbs.db"</span><span class="p">,</span> <span class="s2">".DS_Store"</span><span class="p">]</span>
-<span class="n">templates_path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"_templates"</span><span class="p">]</span>
-<span class="n">html_theme</span> <span class="o">=</span> <span class="s2">"alabaster"</span>
-<span class="n">html_static_path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"_static"</span><span class="p">]</span>
+<span class="n">project</span> <span class="o">=</span> <span class="s2">&quot;&lt;project&gt;&quot;</span>
+<span class="n">copyright</span> <span class="o">=</span> <span class="s2">&quot;2019, Toby Fleming&quot;</span>
+<span class="n">author</span> <span class="o">=</span> <span class="s2">&quot;Toby Fleming&quot;</span>
+<span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;sphinx.ext.autodoc&quot;</span><span class="p">,</span> <span class="s2">&quot;sphinx.ext.intersphinx&quot;</span><span class="p">]</span>
+<span class="n">exclude_patterns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;_build&quot;</span><span class="p">,</span> <span class="s2">&quot;Thumbs.db&quot;</span><span class="p">,</span> <span class="s2">&quot;.DS_Store&quot;</span><span class="p">]</span>
+<span class="n">templates_path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;_templates&quot;</span><span class="p">]</span>
+<span class="n">html_theme</span> <span class="o">=</span> <span class="s2">&quot;alabaster&quot;</span>
+<span class="n">html_static_path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;_static&quot;</span><span class="p">]</span>
 <span class="n">intersphinx_mapping</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"python"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"https://docs.python.org/3"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="s2">&quot;python&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;https://docs.python.org/3&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="p">}</span>
-<span class="n">html_theme_options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"nosidebar"</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+<span class="n">html_theme_options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;nosidebar&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
 </code></pre></div>
 
 <p><code>index.rst</code> can also be stripped down completely (it’s the only file you need with autodoc). Assuming the Python file is <code>&lt;project&gt;.py</code>, this works:</p>

@@ -43,42 +43,42 @@
 <span class="nb">set</span> -euo pipefail
 <span class="nv">IFS</span><span class="o">=</span><span class="s1">$&#39;\n\t&#39;</span>
 
-<span class="nv">tarfile</span><span class="o">=</span><span class="s2">"packages.tar"</span>
-<span class="nv">deps</span><span class="o">=</span><span class="s2">"</span><span class="nv">$*</span><span class="s2">"</span>
+<span class="nv">tarfile</span><span class="o">=</span><span class="s2">&quot;packages.tar&quot;</span>
+<span class="nv">deps</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$*</span><span class="s2">&quot;</span>
 <span class="nv">count</span><span class="o">=</span><span class="m">0</span>
 
-<span class="nb">echo</span> <span class="s2">"-&gt; Gathering dependencies"</span>
+<span class="nb">echo</span> <span class="s2">&quot;-&gt; Gathering dependencies&quot;</span>
 <span class="k">for</span> i <span class="k">in</span> <span class="sb">`</span>seq <span class="m">1</span> <span class="m">10</span><span class="sb">`</span>
 <span class="k">do</span>
-  <span class="k">for</span> pkg <span class="k">in</span> <span class="s2">"</span><span class="nv">$deps</span><span class="s2">"</span>
+  <span class="k">for</span> pkg <span class="k">in</span> <span class="s2">&quot;</span><span class="nv">$deps</span><span class="s2">&quot;</span>
   <span class="k">do</span>
     <span class="nv">deps</span><span class="o">+=</span><span class="s1">$&#39;\n&#39;</span>
     <span class="nv">deps</span><span class="o">+=</span><span class="k">$(</span>apt-cache depends -i <span class="nv">$pkg</span> <span class="p">|</span> <span class="se">\</span>
             awk <span class="s1">&#39;/Depends:/ &amp;&amp; !/&lt;/ {print $2}&#39;</span><span class="k">)</span>
   <span class="k">done</span>
-  <span class="nv">deps</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$deps</span><span class="s2">"</span> <span class="p">|</span> sort <span class="p">|</span> uniq<span class="k">)</span>
-  <span class="nv">new_count</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$deps</span><span class="s2">"</span> <span class="p">|</span> wc -l<span class="k">)</span>
+  <span class="nv">deps</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$deps</span><span class="s2">&quot;</span> <span class="p">|</span> sort <span class="p">|</span> uniq<span class="k">)</span>
+  <span class="nv">new_count</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$deps</span><span class="s2">&quot;</span> <span class="p">|</span> wc -l<span class="k">)</span>
   <span class="c1"># have we found any more dependencies since last time?</span>
-  <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$new_count</span><span class="s2">"</span> -le <span class="s2">"</span><span class="nv">$count</span><span class="s2">"</span> <span class="o">]</span>
+  <span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$new_count</span><span class="s2">&quot;</span> -le <span class="s2">&quot;</span><span class="nv">$count</span><span class="s2">&quot;</span> <span class="o">]</span>
   <span class="k">then</span>
     <span class="nb">break</span>
   <span class="k">fi</span>
-  <span class="nv">count</span><span class="o">=</span><span class="s2">"</span><span class="nv">$new_count</span><span class="s2">"</span>
+  <span class="nv">count</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$new_count</span><span class="s2">&quot;</span>
 <span class="k">done</span>
 
-<span class="nb">echo</span> <span class="s2">"-&gt; Downloading packages"</span>
+<span class="nb">echo</span> <span class="s2">&quot;-&gt; Downloading packages&quot;</span>
 mkdir packages
 <span class="nb">pushd</span> packages &gt;/dev/null
-<span class="k">for</span> pkg <span class="k">in</span> <span class="s2">"</span><span class="nv">$deps</span><span class="s2">"</span>
+<span class="k">for</span> pkg <span class="k">in</span> <span class="s2">&quot;</span><span class="nv">$deps</span><span class="s2">&quot;</span>
 <span class="k">do</span>
   apt-get download <span class="nv">$pkg</span>
 <span class="k">done</span>
 
-<span class="nb">echo</span> <span class="s2">"-&gt; Creating archive"</span>
-tar -cf <span class="s2">"../</span><span class="nv">$tarfile</span><span class="s2">"</span> *.deb
+<span class="nb">echo</span> <span class="s2">&quot;-&gt; Creating archive&quot;</span>
+tar -cf <span class="s2">&quot;../</span><span class="nv">$tarfile</span><span class="s2">&quot;</span> *.deb
 <span class="nb">popd</span> &gt;/dev/null
 rm -r packages/
-<span class="nb">echo</span> <span class="s2">"-&gt; Done"</span>
+<span class="nb">echo</span> <span class="s2">&quot;-&gt; Done&quot;</span>
 </code></pre></div>
 
 <p>In my case, I used Python to serve the tarball and <code>wget</code> to download it (<code>curl</code> wasn’t installed). Then, un<code>tar</code> and use <code>dpkg</code> to install. Simple.</p>

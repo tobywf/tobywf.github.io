@@ -66,7 +66,7 @@ env/bin/python setup.py develop
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>env/bin/python -c <span class="s1">&#39;import asan&#39;</span>
 <span class="go">==91213==ERROR: Interceptors are not working. This may be because AddressSanitizer is loaded too late (e.g. via dlopen). Please launch the executable with:</span>
 <span class="go">DYLD_INSERT_LIBRARIES=/Library/Developer/CommandLineTools/usr/lib/clang/11.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib</span>
-<span class="go">"interceptors not installed" &amp;&amp; 0Abort trap: 6</span>
+<span class="go">&quot;interceptors not installed&quot; &amp;&amp; 0Abort trap: 6</span>
 </code></pre></div>
 
 <p>You can also see that this is using the default/Apple clang. Let’s do what the rather helpful error message says:</p>
@@ -74,7 +74,7 @@ env/bin/python setup.py develop
 <span class="gp">&gt; </span>  env/bin/python -c <span class="s1">&#39;import asan&#39;</span>
 <span class="go">==92278==ERROR: Interceptors are not working. This may be because AddressSanitizer is loaded too late (e.g. via dlopen). Please launch the executable with:</span>
 <span class="go">DYLD_INSERT_LIBRARIES=/Library/Developer/CommandLineTools/usr/lib/clang/11.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib</span>
-<span class="go">"interceptors not installed" &amp;&amp; 0Abort trap: 6</span>
+<span class="go">&quot;interceptors not installed&quot; &amp;&amp; 0Abort trap: 6</span>
 </code></pre></div>
 
 <p>Oops! This is a bug on macOS. I’ve found at least two other people who also hit this: <a href="https://stackoverflow.com/a/47853433">akim on StackOverflow</a> and <a href="https://jonasdevlieghere.com/sanitizing-python-modules/">Jonas Devlieghere</a>. Basically, <code>DYLD_INSERT_LIBRARIES</code> won’t work properly due to the way Python is wrapped/shimmed. I’ve provided a Python script (<code>fix-macos.py</code>) that:</p>
@@ -99,27 +99,27 @@ env/bin/python setup.py develop
 
 <p>This isn’t supported for me with Apple’s LLVM/clang, but may be fixed in macOS newer than Catalina (10.15). Alternatively, you may install clang via Homebrew (<code>brew install llvm</code>). It’s then somewhat involved switching to use that LLVM/clang version, but possible. Note that Homebrew will tell you what paths to use. For me, this was the following (warning: the output is for Fish, not Bash):</p>
 <div class="codehilite"><pre><span></span><code>To use the bundled libc++ please add the following LDFLAGS:
-  LDFLAGS="-L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib"
+  LDFLAGS=&quot;-L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib&quot;
 
 llvm is keg-only, which means it was not symlinked into /usr/local,
 because macOS already provides this software and installing another version in
 parallel can cause all kinds of trouble.
 
 If you need to have llvm first in your PATH, run:
-  echo &#39;set -g fish_user_paths "/usr/local/opt/llvm/bin" $fish_user_paths&#39; &gt;&gt; ~/.config/fish/config.fish
+  echo &#39;set -g fish_user_paths &quot;/usr/local/opt/llvm/bin&quot; $fish_user_paths&#39; &gt;&gt; ~/.config/fish/config.fish
 
 For compilers to find llvm you may need to set:
-  set -gx LDFLAGS "-L/usr/local/opt/llvm/lib"
-  set -gx CPPFLAGS "-I/usr/local/opt/llvm/include"
+  set -gx LDFLAGS &quot;-L/usr/local/opt/llvm/lib&quot;
+  set -gx CPPFLAGS &quot;-I/usr/local/opt/llvm/include&quot;
 </code></pre></div>
 
 <p>Therefore, the command becomes:</p>
 <div class="codehilite"><pre><span></span><code>make clean
-<span class="nv">PATH</span><span class="o">=</span><span class="s2">"/usr/local/opt/llvm/bin:</span><span class="nv">$PATH</span><span class="s2">"</span> <span class="se">\</span>
+<span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/usr/local/opt/llvm/bin:</span><span class="nv">$PATH</span><span class="s2">&quot;</span> <span class="se">\</span>
   <span class="nv">CC</span><span class="o">=</span>/usr/local/opt/llvm/bin/clang <span class="se">\</span>
   <span class="nv">CXX</span><span class="o">=</span>/usr/local/opt/llvm/bin/clang++ <span class="se">\</span>
-  <span class="nv">LDFLAGS</span><span class="o">=</span><span class="s2">"-L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib"</span> <span class="se">\</span>
-  <span class="nv">CPPFLAGS</span><span class="o">=</span><span class="s2">"-I/usr/local/opt/llvm/include"</span> <span class="se">\</span>
+  <span class="nv">LDFLAGS</span><span class="o">=</span><span class="s2">&quot;-L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib&quot;</span> <span class="se">\</span>
+  <span class="nv">CPPFLAGS</span><span class="o">=</span><span class="s2">&quot;-I/usr/local/opt/llvm/include&quot;</span> <span class="se">\</span>
   make install
 </code></pre></div>
 

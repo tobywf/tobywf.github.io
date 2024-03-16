@@ -85,35 +85,35 @@ ee0a07210ad...  Foo/important_document2.txt
 <p>Nope, sorry. Maybe you could massage the data into a catalog file (.cat) and use <a href="https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/test-filecatalog"><code>Test-FileCatalog</code></a>.</p>
 <h2 id="generating-sha256-file-hashes">Generating SHA256 file hashes</h2>
 <h3 id="linux_1">Linux</h3>
-<div class="codehilite"><pre><span></span><code>find <span class="s2">"&lt;dir&gt;/"</span> -type f -exec sha256sum <span class="s1">&#39;{}&#39;</span> <span class="se">\;</span> &gt; sha256.txt
+<div class="codehilite"><pre><span></span><code>find <span class="s2">&quot;&lt;dir&gt;/&quot;</span> -type f -exec sha256sum <span class="s1">&#39;{}&#39;</span> <span class="se">\;</span> &gt; sha256.txt
 </code></pre></div>
 
 <h3 id="truenasfreebsd_1">TrueNAS/FreeBSD</h3>
-<div class="codehilite"><pre><span></span><code>find <span class="s2">"&lt;dir&gt;/"</span> -type f -exec shasum -a <span class="m">256</span> <span class="s1">&#39;{}&#39;</span> <span class="se">\;</span> &gt; sha256.txt
+<div class="codehilite"><pre><span></span><code>find <span class="s2">&quot;&lt;dir&gt;/&quot;</span> -type f -exec shasum -a <span class="m">256</span> <span class="s1">&#39;{}&#39;</span> <span class="se">\;</span> &gt; sha256.txt
 </code></pre></div>
 
 <h3 id="macos_1">macOS</h3>
 <p>Note: On macOS, and unlike Linux or FreeBSD, when using <code>find</code> it is useful to ensure the directory name <em>doesn’t</em> include a trailing slash. Otherwise, the path names result in a double slash:</p>
-<div class="codehilite"><pre><span></span><code><span class="gp">$ </span>find <span class="s2">"&lt;dir&gt;/"</span> -type f
+<div class="codehilite"><pre><span></span><code><span class="gp">$ </span>find <span class="s2">&quot;&lt;dir&gt;/&quot;</span> -type f
 <span class="go">&lt;dir&gt;//&lt;file&gt;</span>
-<span class="gp">$ </span>find <span class="s2">"&lt;dir&gt;"</span> -type f
+<span class="gp">$ </span>find <span class="s2">&quot;&lt;dir&gt;&quot;</span> -type f
 <span class="go">&lt;dir&gt;/&lt;file&gt;</span>
 </code></pre></div>
 
 <p>This is rather annoying, as auto-completing a directory name will include the trailing slash. However, I don’t think this actually makes a difference. It’s purely for aesthetic purposes, or might be useful when comparing generated hash files manually.</p>
 <p>macOS has <code>shasum</code> (<code>/usr/bin/shasum</code>), and so is the same as FreeBSD:</p>
-<div class="codehilite"><pre><span></span><code>find <span class="s2">"&lt;dir&gt;"</span> -type f -exec sha256sum <span class="s1">&#39;{}&#39;</span> <span class="se">\;</span> &gt; sha256.txt
+<div class="codehilite"><pre><span></span><code>find <span class="s2">&quot;&lt;dir&gt;&quot;</span> -type f -exec sha256sum <span class="s1">&#39;{}&#39;</span> <span class="se">\;</span> &gt; sha256.txt
 </code></pre></div>
 
 <p>Or, if GNU coreutils are installed, <code>sha256sum</code> or the prefixed version <code>gsha256sum</code> can be used, as with Linux:</p>
-<div class="codehilite"><pre><span></span><code>find <span class="s2">"&lt;dir&gt;"</span> -type f -exec gsha256sum <span class="s1">&#39;{}&#39;</span> <span class="se">\;</span> &gt; sha256.txt
+<div class="codehilite"><pre><span></span><code>find <span class="s2">&quot;&lt;dir&gt;&quot;</span> -type f -exec gsha256sum <span class="s1">&#39;{}&#39;</span> <span class="se">\;</span> &gt; sha256.txt
 </code></pre></div>
 
 <h3 id="windows_1">Windows</h3>
 <p>With Powershell, this isn’t <em>too</em> painful. One option is <a href="https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-childitem"><code>Get-ChildItem</code></a> + <a href="https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/get-filehash"><code>Get-FileHash</code></a> + <a href="https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/export-csv"><code>Export-Csv</code></a>. <code>Export-Csv</code> is probably the easiest option to avoid truncating the filepath (!), as e.g. <a href="https://superuser.com/questions/1049531/how-to-fix-truncated-powershell-output-even-when-ive-specified-width-300">redirection or piping to <code>Out-File</code> would</a>.</p>
-<div class="codehilite"><pre><span></span><code><span class="nb">Get-ChildItem</span> <span class="o">-File</span> <span class="n">-Recurse</span> <span class="n">-Path</span> <span class="s2">"D:\Foo"</span> <span class="p">|</span>
+<div class="codehilite"><pre><span></span><code><span class="nb">Get-ChildItem</span> <span class="o">-File</span> <span class="n">-Recurse</span> <span class="n">-Path</span> <span class="s2">&quot;D:\Foo&quot;</span> <span class="p">|</span>
 <span class="nb">Get-FileHash</span> <span class="p">|</span>
-<span class="nb">Export-Csv</span> <span class="n">-Path</span> <span class="s2">"hashes.csv"</span> <span class="n">-Encoding</span> <span class="s2">"UTF8NoBOM"</span> <span class="n">-NoTypeInformation</span>
+<span class="nb">Export-Csv</span> <span class="n">-Path</span> <span class="s2">&quot;hashes.csv&quot;</span> <span class="n">-Encoding</span> <span class="s2">&quot;UTF8NoBOM&quot;</span> <span class="n">-NoTypeInformation</span>
 </code></pre></div>
 
 <blockquote>
@@ -140,19 +140,19 @@ ee0a07210ad...  Foo/important_document2.txt
 </code></pre></div>
 
 <p>For the command-line utility, I recommend <code>uconv</code> from ICU:</p>
-<div class="codehilite"><pre><span></span><code><span class="gp">$ </span><span class="nb">echo</span> -n <span class="s1">&#39;ä&#39;</span> <span class="p">|</span> uconv -x any-nfc <span class="p">|</span> hexdump -e <span class="s1">&#39;16/1 "%02x " "\n"&#39;</span>
+<div class="codehilite"><pre><span></span><code><span class="gp">$ </span><span class="nb">echo</span> -n <span class="s1">&#39;ä&#39;</span> <span class="p">|</span> uconv -x any-nfc <span class="p">|</span> hexdump -e <span class="s1">&#39;16/1 &quot;%02x &quot; &quot;\n&quot;&#39;</span>
 <span class="go">c3 a4</span>
-<span class="gp">$ </span><span class="nb">echo</span> -n <span class="s1">&#39;ä&#39;</span> <span class="p">|</span> uconv -x any-nfd <span class="p">|</span> hexdump -e <span class="s1">&#39;16/1 "%02x " "\n"&#39;</span>
+<span class="gp">$ </span><span class="nb">echo</span> -n <span class="s1">&#39;ä&#39;</span> <span class="p">|</span> uconv -x any-nfd <span class="p">|</span> hexdump -e <span class="s1">&#39;16/1 &quot;%02x &quot; &quot;\n&quot;&#39;</span>
 <span class="go">61 cc 88</span>
 </code></pre></div>
 
 <p>It can be applied to an entire file:</p>
-<div class="codehilite"><pre><span></span><code>uconv -x any-nfc --output <span class="s2">"sha256-conv.txt"</span> <span class="s2">"sha256.txt"</span>
+<div class="codehilite"><pre><span></span><code>uconv -x any-nfc --output <span class="s2">&quot;sha256-conv.txt&quot;</span> <span class="s2">&quot;sha256.txt&quot;</span>
 </code></pre></div>
 
 <h2 id="converting-sha256-file-hashes-from-windows-to-everything-else">Converting SHA256 file hashes from Windows to everything else</h2>
 <p>We want to go from</p>
-<div class="codehilite"><pre><span></span><code>"SHA256","7CB19E6368...","D:\Foo\important_document.txt"
+<div class="codehilite"><pre><span></span><code>&quot;SHA256&quot;,&quot;7CB19E6368...&quot;,&quot;D:\Foo\important_document.txt&quot;
 </code></pre></div>
 
 <p>to</p>
@@ -168,7 +168,7 @@ ee0a07210ad...  Foo/important_document2.txt
 <li>Normalise Unicode if needed</li>
 </ol>
 <p>Also note that because Windows is a great product and operating system, if you did not use the encoding “UTF8NoBOM”, it <em>might</em> prepends a byte sequence to the CSV file called a Byte Order Marker (BOM). This is useless for UTF-8. In this case, you should pass the <code>encoding=&#39;utf_8_sig&#39;</code> option to <code>open()</code> so that Python can read the file, like so:</p>
-<div class="codehilite"><pre><span></span><code><span class="nb">open</span><span class="p">(</span><span class="s2">"hashes.csv"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf_8_sig"</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;hashes.csv&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf_8_sig&quot;</span><span class="p">)</span>
 </code></pre></div>
 
 <p>So finally, the full script:</p>

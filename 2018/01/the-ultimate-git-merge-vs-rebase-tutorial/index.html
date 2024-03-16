@@ -88,8 +88,8 @@
 <span class="go">Auto-merging src.txt</span>
 <span class="go">CONFLICT (content): Merge conflict in src.txt</span>
 <span class="go">Automatic merge failed; fix conflicts and then commit the result.</span>
-<span class="gp">$ </span><span class="c1"># fake fixing the conflict, we know it should end up as "E"</span>
-<span class="gp">$ </span><span class="nb">echo</span> <span class="s2">"E"</span> &gt; src.txt <span class="o">&amp;&amp;</span> git add -- src.txt <span class="o">&amp;&amp;</span> git commit --no-edit
+<span class="gp">$ </span><span class="c1"># fake fixing the conflict, we know it should end up as &quot;E&quot;</span>
+<span class="gp">$ </span><span class="nb">echo</span> <span class="s2">&quot;E&quot;</span> &gt; src.txt <span class="o">&amp;&amp;</span> git add -- src.txt <span class="o">&amp;&amp;</span> git commit --no-edit
 <span class="go">[master xxxxxx] Merge branch &#39;feature2&#39;</span>
 </code></pre></div>
 
@@ -132,8 +132,8 @@
 <span class="go">Auto-merging src.txt</span>
 <span class="go">CONFLICT (content): Merge conflict in src.txt</span>
 <span class="go">Automatic merge failed; fix conflicts and then commit the result.</span>
-<span class="gp">$ </span><span class="c1"># fake fixing the conflict, we know it should end up as "E"</span>
-<span class="gp">$ </span><span class="nb">echo</span> <span class="s2">"E"</span> &gt; src.txt <span class="o">&amp;&amp;</span> git add -- src.txt <span class="o">&amp;&amp;</span> git commit --no-edit
+<span class="gp">$ </span><span class="c1"># fake fixing the conflict, we know it should end up as &quot;E&quot;</span>
+<span class="gp">$ </span><span class="nb">echo</span> <span class="s2">&quot;E&quot;</span> &gt; src.txt <span class="o">&amp;&amp;</span> git add -- src.txt <span class="o">&amp;&amp;</span> git commit --no-edit
 <span class="go">[master xxxxxx] Merge branch &#39;feature2&#39;</span>
 </code></pre></div>
 
@@ -205,8 +205,8 @@
 <span class="gp">$ </span><span class="c1"># make sure feature2 is up to date with master</span>
 <span class="gp">$ </span>git rebase master
 <span class="go">[...]</span>
-<span class="gp">$ </span><span class="c1"># fake fixing the conflict, we know the first commit of feature2 changed it to "D"</span>
-<span class="gp">$ </span><span class="nb">echo</span> <span class="s2">"D"</span> &gt; src.txt <span class="o">&amp;&amp;</span> git add -- src.txt <span class="o">&amp;&amp;</span> git rebase --continue
+<span class="gp">$ </span><span class="c1"># fake fixing the conflict, we know the first commit of feature2 changed it to &quot;D&quot;</span>
+<span class="gp">$ </span><span class="nb">echo</span> <span class="s2">&quot;D&quot;</span> &gt; src.txt <span class="o">&amp;&amp;</span> git add -- src.txt <span class="o">&amp;&amp;</span> git rebase --continue
 <span class="go">Applying: D</span>
 <span class="go">Applying: E</span>
 <span class="gp">$ </span>git log --pretty<span class="o">=</span>format:<span class="s1">&#39;%s (%h)&#39;</span>
@@ -260,8 +260,8 @@
 <span class="go">CONFLICT (content): Merge conflict in src.txt</span>
 <span class="go">Squash commit -- not updating HEAD</span>
 <span class="go">Automatic merge failed; fix conflicts and then commit the result.</span>
-<span class="gp">$ </span><span class="c1"># fake fixing the conflict, we know it should end up as "E"</span>
-<span class="gp">$ </span><span class="nb">echo</span> <span class="s2">"E"</span> &gt; src.txt <span class="o">&amp;&amp;</span> git add -- src.txt <span class="o">&amp;&amp;</span> git commit
+<span class="gp">$ </span><span class="c1"># fake fixing the conflict, we know it should end up as &quot;E&quot;</span>
+<span class="gp">$ </span><span class="nb">echo</span> <span class="s2">&quot;E&quot;</span> &gt; src.txt <span class="o">&amp;&amp;</span> git add -- src.txt <span class="o">&amp;&amp;</span> git commit
 <span class="go">[master xxxxxx] Squashed commit of the following:</span>
 <span class="go"> 1 file changed, 1 insertion(+), 1 deletion(-)</span>
 </code></pre></div>
@@ -277,7 +277,7 @@
 <p>Note that squashing a branch with only one commit will still produce a new squash commit (as opposed to simply fast-forwarding the commit, so <code>--no-ff</code> is not needed with <code>--squash</code>):</p>
 <div class="codehilite"><pre><span></span><code><span class="gp">$ </span>git checkout -b feature3
 <span class="go">Switched to a new branch &#39;feature3&#39;</span>
-<span class="gp">$ </span><span class="nb">echo</span> <span class="s2">"F"</span> &gt; src.txt <span class="o">&amp;&amp;</span> git add -- src.txt <span class="o">&amp;&amp;</span> git commit -m <span class="s2">"F"</span>
+<span class="gp">$ </span><span class="nb">echo</span> <span class="s2">&quot;F&quot;</span> &gt; src.txt <span class="o">&amp;&amp;</span> git add -- src.txt <span class="o">&amp;&amp;</span> git commit -m <span class="s2">&quot;F&quot;</span>
 <span class="go">[feature3 xxxxxx] F</span>
 <span class="go"> 1 file changed, 1 insertion(+), 1 deletion(-)</span>
 <span class="gp">$ </span>git checkout master
