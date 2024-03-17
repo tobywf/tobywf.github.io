@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Modded Minecraft on SteamDeck - tobywf</title>
+  <meta charset="utf-8">
+  <meta name="author" content="Toby Fleming">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css">
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png">
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <ul>
+<!-- breadcrumbs start -->
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon"></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2024/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>'24</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2024/03/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>Mar</a></li>
+<li class="last"><a href="https://tobywf.com/cv/" class="cap">CV</a></li>
+<!-- breadcrumbs end -->
+      </ul>
+    </nav>
+<!-- content start -->
+<header class="post-head">
+  <h1>Modded Minecraft on SteamDeck</h1>
+  <h2>A tale of Java incompatibility with the Direwolf20 1.16 modpack</h2>
+  <div class="infoline">
+    <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">16 Mar '24</span>
+  </div>
+</header>
+<article>
+<p>It’s been a while since I played Minecraft. And oh man, there have been some changes. Of course, <a href="https://www.minecraft.net/en-us/article/java-edition-moving-house">Microsoft has forced everybody to migrate their accounts</a>. Then there’s drama around Minecraft launchers, with MultiMC being forked as PolyMC, and then PolyMC being forked as Prism Launcher. Anyway, <a href="https://prismlauncher.org/download/steam-deck/">Prism Launcher has a Steam Deck build</a>, so Prism it is.</p>
+<p>Instantly, I hit the first issue: The account authentication failed in Prism Launcher. It turns out this is actually a Microsoft issue, because of course it is. It probably uses the same rubbish all Microsoft products use. Their login workflow is legit broken, as we’ll see.</p>
+<p>The solution is <a href="https://www.reddit.com/r/PrismLauncher/comments/17rj1n0/microsoft_user_authentication_failed/">to enable password-based logins</a>, thank you <code>u/anonymous_3125</code>:</p>
+<blockquote>
+<p>found the problem. That microsoft account was indeed faulty because it somehow didn’t have a password. I didn’t notice this at first, but every timed I tried to sign into the faulty ms account, it sent a code to an email and gave me no other sign in option. With the other ms account, it gave an option to send a code to an email or enter the password.</p>
+<p>u/anonymous_3125</p>
+</blockquote>
+<p>Ironically, while trying to do this, I hit the same issue as another Reddit user:</p>
+<blockquote>
+<p>I had to brute force it through the microsoft security page where it keeps reloading and made a password that way.</p>
+<p>u/Kqllanxus</p>
+</blockquote>
+<p>When I tried to view the account security page, I got stuck in a redirect/refresh loop. It’s quite unbelievable.</p>
+<p>Even when writing this, it’s crap. I have a password manager, so my password is 32 random characters. I have two-factor authentication enabled. But Microsoft still prompts me to “Help keep your account safe and secure”, because “Passwords can be forgotten or stolen.”.</p>
+<hr>
+<p>Although I did fire up a Vanilla world, I was quickly craving some mods again - even if it is just for fast leaf decay. For nostalgia reasons, I wanted to play an old Direwolf20 modpack. Somehow, this turned into a bit of a saga.</p>
+<p>First, Feed The Beast (FTB) sold out in some capacity to Overwolf, and now requires an ad-infested launcher on Windows. On Linux, it’s some shell-script. No thanks. All of this would be ok, except that FTB “requested” that <a href="https://prismlauncher.org/news/ftb-removal/">other launchers like Prism remove FTB modpack downloads</a> (<a href="https://github.com/PrismLauncher/PrismLauncher/pull/1040">GitHub issue</a>). One solution might be to look for patched Prism Launchers which do enable FTB modpack downloads.</p>
+<p>Now, I wanted to play the <a href="https://www.feed-the-beast.com/modpacks/79-ftb-presents-direwolf20-116">Direwolf20 1.16 pack</a>, mainly because of Tinkers’ Construct. The 1.20 and 1.19 packs don’t have it. 1.18 would be an option, but for some reason I went with 1.16.</p>
+<p>1.16 seems to need Java 8, and <a href="https://prismlauncher.org/wiki/getting-started/installing-java/#forge-1.16.5-and-java-8u321+">somehow Forge breaks with newer Java 8 versions</a>: “Old versions of Forge crash with Java 8u321+. For this reason, using Java 8u312 or lower is recommended”. The symptom for me was some Antlr issue:</p>
+<div class="codehilite"><pre><span></span><code>[org.antlr.v4.runtime.ConsoleErrorListener:syntaxError:38]: line 13:0 token recognition error at: &#39;`&#39;
+</code></pre></div>
+
+<p>Ok, but how to get Java 8u212 on the Steam Deck, into the Prism Launcher flatpak? Github user <a href="https://github.com/PrismLauncher/PrismLauncher/issues/446"><code>barraIhsan</code> comes in with the save</a>:</p>
+<blockquote>
+<p>Flatpak Prism stores java in <code>/var/lib/flatpak/app/org.prismlauncher.PrismLauncher/current/active/files/jdk</code> and in prism it will be replaced as <code>/app/jdk/</code>.</p>
+<p><code>barraIhsan</code></p>
+</blockquote>
+<p>So, browse the <a href="https://adoptium.net/temurin/archive/?version=8">Adoptium archives for Java 8</a>, find the closest Java 8u312 build which was <code>jdk8u312-b07</code>/<code>8.0.312+7</code>, and download the <a href="https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u312-b07/OpenJDK8U-jdk_x64_linux_hotspot_8u312b07.tar.gz">Linux x64 Binary JDK</a> (103 MB).</p>
+<p>Next, open up Konsole on the Steam Deck in desktop mode. To be able to use <code>sudo</code> on the Steam Deck, it’s necessary to set a password using <code>passwd</code>. Then, simply extract the JDK into the flatpak:</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">cd</span> /var/lib/flatpak/app/org.prismlauncher.PrismLauncher/current/active/files/jdk
+sudo tar xvzf ~/Downloads/OpenJDK8U-jdk_x64_linux_hotspot_8u312b07.tar.gz
+</code></pre></div>
+
+<p>This creates a directory named <code>jdk8u312-b07</code>, which has the JDK in. That can be then used in the Prism Launcher as <code>/app/jdk/jdk8u312-b07/bin/java</code>, and finally, everything works!</p>
+</article>
+<section>
+  <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid"></use></svg> <a href="https://tobywf.com/tag/linux/">Linux</a>, <a href="https://tobywf.com/tag/minecraft/">Minecraft</a>, <a href="https://tobywf.com/tag/steam-deck/">Steam Deck</a></p>
+  <a href="https://tobywf.com/2023/04/debouncing-switches/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid"></use></svg> Older</a>
+</section>
+<!-- content end -->
+    <footer>
+      <hr>
+      <p class="center">
+        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=correction&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2024%2F03%2Fsteam-deck-minecraft%2F">Corrections?</a>
+        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=feedback&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2024%2F03%2Fsteam-deck-minecraft%2F">Feedback?</a>
+      </p>
+      <p class="inline-block">
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#copyright"></use></svg> <span class="date cap">MMXII–MMXXIV</span>
+      </p>
+      <p class="inline-block">
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+          <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons"></use></svg> <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-by"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nc-eu"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nd"></use></svg> 4.0
+        </a>
+      </p>
+      <p>
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#child-solid"></use></svg> Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a tinkerer, scuba diver, and musician. He posts his personal ramblings here.
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
