@@ -131,14 +131,14 @@ general? But well worth it for consistency.</p>
 
 <span class="c1"># default gerrit ulimits set by the init.d script... your choice</span><span class="w"></span>
 <span class="na">LimitCORE</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">LimitDATA</span><span class="o">=</span><span class="s">unlimited</span><span class="w"></span>
-<span class="na">LimitFSIZE</span><span class="o">=</span><span class="s">unlimited</span><span class="w"></span>
-<span class="na">LimitRSS</span><span class="o">=</span><span class="s">unlimited</span><span class="w"></span>
+<span class="na">LimitDATA</span><span class="o">=</span><span class="s">infinity</span><span class="w"></span>
+<span class="na">LimitFSIZE</span><span class="o">=</span><span class="s">infinity</span><span class="w"></span>
+<span class="na">LimitRSS</span><span class="o">=</span><span class="s">infinity</span><span class="w"></span>
 <span class="c1"># NOFILE :  GERRIT_FDS, determined by &quot;core.packedGitOpenFiles&quot; in the script</span><span class="w"></span>
 <span class="na">LimitNOFILE</span><span class="o">=</span><span class="s">1024</span><span class="w"></span>
-<span class="na">LimitCPU</span><span class="o">=</span><span class="s">unlimited</span><span class="w"></span>
-<span class="na">LimitAS</span><span class="o">=</span><span class="s">unlimited</span><span class="w"></span>
-<span class="na">LimitLOCKS</span><span class="o">=</span><span class="s">unlimited</span><span class="w"></span>
+<span class="na">LimitCPU</span><span class="o">=</span><span class="s">infinity</span><span class="w"></span>
+<span class="na">LimitAS</span><span class="o">=</span><span class="s">infinity</span><span class="w"></span>
+<span class="na">LimitLOCKS</span><span class="o">=</span><span class="s">infinity</span><span class="w"></span>
 
 <span class="k">[Install]</span><span class="w"></span>
 <span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span><span class="w"></span>
