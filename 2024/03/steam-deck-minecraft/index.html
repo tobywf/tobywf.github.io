@@ -54,7 +54,7 @@
 <p>Ok, but how to get Java 8u212 on the Steam Deck, into the Prism Launcher flatpak? Github user <a href="https://github.com/PrismLauncher/PrismLauncher/issues/446"><code>barraIhsan</code> comes in with the save</a>:</p>
 <blockquote>
 <p>Flatpak Prism stores java in <code>/var/lib/flatpak/app/org.prismlauncher.PrismLauncher/current/active/files/jdk</code> and in prism it will be replaced as <code>/app/jdk/</code>.</p>
-<p><code>barraIhsan</code></p>
+<p>barraIhsan</p>
 </blockquote>
 <p>So, browse the <a href="https://adoptium.net/temurin/archive/?version=8">Adoptium archives for Java 8</a>, find the closest Java 8u312 build which was <code>jdk8u312-b07</code>/<code>8.0.312+7</code>, and download the <a href="https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u312-b07/OpenJDK8U-jdk_x64_linux_hotspot_8u312b07.tar.gz">Linux x64 Binary JDK</a> (103 MB).</p>
 <p>Next, open up Konsole on the Steam Deck in desktop mode. To be able to use <code>sudo</code> on the Steam Deck, it’s necessary to set a password using <code>passwd</code>. Then, simply extract the JDK into the flatpak:</p>
@@ -66,6 +66,7 @@ sudo tar xvzf ~/Downloads/OpenJDK8U-jdk_x64_linux_hotspot_8u312b07.tar.gz
 </article>
 <section>
   <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid"></use></svg> <a href="https://tobywf.com/tag/linux/">Linux</a>, <a href="https://tobywf.com/tag/minecraft/">Minecraft</a>, <a href="https://tobywf.com/tag/steam-deck/">Steam Deck</a></p>
+  <a href="https://tobywf.com/2024/08/raspberry-pi-rp2040-debug-probe-swd/" class="newer">Newer <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-right-solid"></use></svg></a>
   <a href="https://tobywf.com/2023/04/debouncing-switches/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid"></use></svg> Older</a>
 </section>
 <!-- content end -->

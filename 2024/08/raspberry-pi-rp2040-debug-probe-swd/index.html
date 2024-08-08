@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Supercharging RP2040 development with the Raspberry Pi Debug Probe - tobywf</title>
+  <meta charset="utf-8">
+  <meta name="author" content="Toby Fleming">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css">
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png">
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <ul>
+<!-- breadcrumbs start -->
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon"></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2024/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>'24</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2024/08/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>Aug</a></li>
+<li class="last"><a href="https://tobywf.com/cv/" class="cap">CV</a></li>
+<!-- breadcrumbs end -->
+      </ul>
+    </nav>
+<!-- content start -->
+<header class="post-head">
+  <h1>Supercharging RP2040 development with the Raspberry Pi Debug Probe</h1>
+  <h2>RP2040 board vendors hate this one weird trick!</h2>
+  <div class="infoline">
+    <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">7 Aug '24</span>
+  </div>
+</header>
+<article>
+<p>I love the <a href="https://www.raspberrypi.com/documentation/microcontrollers/rp2040.html">RP2040</a> microcontroller. Mainly for the simplicity it brings compared to e.g. STM32 microcontrollers. But I already digress.</p>
+<p>Being an Arm chip, the RP2040 supports Serial Wire Debug (SWD) and CMSIS-DAP. This is a standard on Arm chips. The benefit of using SWD is twofold. First, programming becomes much, much easier. Instead of holding the “BOOTSEL” button while cycling the power, it’s possible to simply upload the code. Second, instead of having to debug code via serial/UART messages (which also uses more pins), Segger’s Real Time Transfer (RTT) can be used to send messages from the target to the host over the same three wires. (It’s also possible to inspect the CPU and memory using e.g. OpenOCD, but that’s more advanced.)</p>
+<p>RTT is also well supported by Rust tooling, e.g. via <a href="https://defmt.ferrous-systems.com/"><code>defmt</code></a> and <a href="https://probe.rs/"><code>probe-rs</code></a>.</p>
+<p>Raspberry Pi has even released the <a href="https://www.raspberrypi.com/documentation/microcontrollers/debug-probe.html">Raspberry Pi Debug Probe</a>. It’s $12 USD, and comes in a lovely case. (I should mention it’s also possible to <a href="https://www.raspberrypi.com/documentation/microcontrollers/raspberry-pi-pico.html#debugging-using-another-raspberry-pi-pico">use another RP2040 board as a debug probe</a>, but I’d recommend just buying the debug probe.) I highly, highly recommend just buying a debug probe and switching to SWD + RTT. However…</p>
+<p>Many hobbyist RP2040 boards do not break out the SWD pins. This could be because of Arduino’s legacy (where uploading code via USB is standard), or because these boards are aimed at higher-level coding via <a href="https://circuitpython.org/">CircuitPython</a> or <a href="https://micropython.org/">MicroPython</a>.</p>
+<p>So, here’s a list of boards based on SWD support. Choose wisely.</p>
+<h2 id="boards-with-full-swd-pins">Boards with full SWD pins</h2>
+<ul>
+<li><a href="https://www.raspberrypi.com/documentation/microcontrollers/rp2040.html#rp2040-based-boards">Raspberry Pi Pico series</a>, 2 MiB of flash. This includes the Pico, Pico H, Pico W, and Pico WH. Note the Pico H and WH use a JST SH 3 pin connector, but that cable is provided with the debug probe. The only downsides to the Pico are the limited flash and size of the board, so this is a solid default (especially at $4 USD).</li>
+<li><a href="https://shop.pimoroni.com/products/tiny-2040">Pimoroni Tiny 2040</a>, 2 MiB (PIM593) or 8 MiB (PIM558) of flash. This is an awesome, awesome board that solves the downsides of the Raspberry Pi Pico (limited flash and size). Unfortunately, it’s a bit hard to get outside the UK.</li>
+<li><a href="https://shop.pimoroni.com/products/pga2040?variant=39359629656147">Pimoroni PGA2040</a>, 8 MiB of flash. The order of the SWCLK/SWDIO and GND pins is not the same as the Pimoroni Tiny 2040 or Raspberry Pi Picos. But as the debug probe’s header cable supports this (the female connectors are separated), it’s fine.</li>
+</ul>
+<h2 id="boards-without-swd-pins">Boards without SWD pins</h2>
+<p>To be clear, these boards can still be awesome and can be a good fit. However, I would avoid them during development, as the SWD pins aren’t broken out (as far as I can tell).</p>
+<ul>
+<li><a href="https://www.adafruit.com/product/4900">Adafruit QT Py RP2040</a>, 8 MiB of flash. I really wish this one had SWD pins.</li>
+<li><a href="https://www.adafruit.com/product/5302">Adafruit KB2040</a>, 8 MiB of flash.</li>
+<li><a href="https://www.adafruit.com/product/5768">Adafruit RP2040 Prop-Maker Feather</a>, 8 MiB of flash. The Adafruit Feather RP2040 does have accessible SWD pins (see below).</li>
+<li><a href="https://www.waveshare.com/product/raspberry-pi/boards-kits/raspberry-pi-pico-cat/rp2040-touch-lcd-1.28.htm">Waveshare RP2040-Touch-LCD-1.28</a>, 8 MiB of flash. Note that the Waveshare RP2040-LCD-1.28 does have accessible SWD pins, but only 2 MiB of flash (see below).</li>
+<li><a href="https://www.waveshare.com/product/raspberry-pi/boards-kits/raspberry-pi-pico-cat/rp2040-zero.htm">Waveshare RP2040-Zero</a>, 2 MiB of flash.</li>
+<li><a href="https://www.waveshare.com/product/raspberry-pi/boards-kits/raspberry-pi-pico-cat/rp2040-tiny.htm">WaveShare RP2040-Tiny</a>, 2 MiB of flash. This one is especially heartbreaking as the FPC cable has at least 2 free pins that are simply tied to ground. This could’ve been an awesome board.</li>
+</ul>
+<h2 id="boards-with-limited-swd-pins">Boards with limited SWD pins</h2>
+<p>These boards do break out the SWD pins in various ways, but may be tricky to work with just using the debug probe.</p>
+<ul>
+<li><a href="https://www.adafruit.com/product/4884">Adafruit Feather RP2040</a>, 8 MiB of flash. Does have SWCLK/SWDIO pads on the bottom (and only one ground pin), and SWD via an optional, unpopulated <a href="https://www.adafruit.com/product/752">1.27mm SMT 10 pin header</a> on the top. This looks hard to solder without surface-mount technology (SMT) gear. A hot-plate likely won’t work due to the proximity of other components.</li>
+<li><a href="https://www.adafruit.com/product/4888">Adafruit ItsyBitsy RP2040</a>, 8 MiB of flash. Has SWCLK/SWDIO through-holes on the edge opposite to the USB connector, but only one ground pin. It’s pretty easy to make a custom SWD cable for this if needed.</li>
+<li><a href="https://shop.pimoroni.com/products/pimoroni-pico-lipo">Pimoroni Pico LiPo</a>, 4 MiB (PIM578) or 16 MiB (PIM560) of flash. This chip is on this list as, while it does have a debug SWD JST SH 3 pin connector, the SWCLK/SWDIO pins are reversed to what the debug probe expects.</li>
+<li><a href="https://www.sparkfun.com/products/18288">SparkFun Pro Micro RP2040</a>, 16 MiB of flash. Has SWCLK/SWDIO pads on the bottom, no ground pad.</li>
+<li><a href="https://www.sparkfun.com/products/17745">SparkFun Thing Plus RP2040</a>, 16 MiB of flash. Has through-holes for a 1.27mm 10 pin debug header.</li>
+<li><a href="https://www.sparkfun.com/products/17720">SparkFun MicroMod RP2040</a>, 16 MiB of flash. I’m not sure on this one, seems like SWCLK/SWDIO is broken out, but their carrier board uses through-holes for a 1.27mm 10 pin debug header.</li>
+<li><a href="https://www.seeedstudio.com/XIAO-RP2040-v1-0-p-5026.html">Seeed Studio XIAO RP2040</a>, 2 MiB of flash. Has SWCLK/SWDIO, GND, and RESET pads on the bottom in 2.54mm spacing, so a <a href="https://academany.fabcloud.io/fabacademy/2024/labs/kannai/site/Instruction/tips/debag_swd/">jig with pogo pins can be used</a>.</li>
+<li><a href="https://www.waveshare.com/product/raspberry-pi/boards-kits/raspberry-pi-pico-cat/rp2040-lcd-1.28.htm">Waveshare RP2040-LCD-1.28</a>, 2 MiB of flash. Unlike the Waveshare RP2040-Touch-LCD-1.28 (with 8 MiB of flash), SWCLK/SWDIO and GND are broken out. However, the header is 2-row 1.27mm pitch. Most people won’t have this header, and it’s tricky to solder wires to such a narrow pitch. Also, break-out boards for 20 pin 1.27mm headers are rare to non-existant, although 10 pin DIP adapters are available.</li>
+</ul>
+</article>
+<section>
+  <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid"></use></svg> <a href="https://tobywf.com/tag/rust/">Rust</a></p>
+  <a href="https://tobywf.com/2024/03/steam-deck-minecraft/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid"></use></svg> Older</a>
+</section>
+<!-- content end -->
+    <footer>
+      <hr>
+      <p class="center">
+        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=correction&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2024%2F08%2Fraspberry-pi-rp2040-debug-probe-swd%2F">Corrections?</a>
+        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=feedback&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2024%2F08%2Fraspberry-pi-rp2040-debug-probe-swd%2F">Feedback?</a>
+      </p>
+      <p class="inline-block">
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#copyright"></use></svg> <span class="date cap">MMXII–MMXXIV</span>
+      </p>
+      <p class="inline-block">
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+          <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons"></use></svg> <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-by"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nc-eu"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nd"></use></svg> 4.0
+        </a>
+      </p>
+      <p>
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#child-solid"></use></svg> Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a tinkerer, scuba diver, and musician. He posts his personal ramblings here.
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
