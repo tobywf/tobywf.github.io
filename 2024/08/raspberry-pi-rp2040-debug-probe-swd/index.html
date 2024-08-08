@@ -29,6 +29,8 @@
   </div>
 </header>
 <article>
+<p>Edit: Given the recent announcement of the <a href="https://www.raspberrypi.com/products/rp2350/">Raspberry Pi RP2350</a> and <a href="https://www.raspberrypi.com/products/raspberry-pi-pico-2/">Raspberry Pi Pico 2</a>, this post is surprisingly relevant!</p>
+<hr>
 <p>I love the <a href="https://www.raspberrypi.com/documentation/microcontrollers/rp2040.html">RP2040</a> microcontroller. Mainly for the simplicity it brings compared to e.g. STM32 microcontrollers. But I already digress.</p>
 <p>Being an Arm chip, the RP2040 supports Serial Wire Debug (SWD) and CMSIS-DAP. This is a standard on Arm chips. The benefit of using SWD is twofold. First, programming becomes much, much easier. Instead of holding the “BOOTSEL” button while cycling the power, it’s possible to simply upload the code. Second, instead of having to debug code via serial/UART messages (which also uses more pins), Segger’s Real Time Transfer (RTT) can be used to send messages from the target to the host over the same three wires. (It’s also possible to inspect the CPU and memory using e.g. OpenOCD, but that’s more advanced.)</p>
 <p>RTT is also well supported by Rust tooling, e.g. via <a href="https://defmt.ferrous-systems.com/"><code>defmt</code></a> and <a href="https://probe.rs/"><code>probe-rs</code></a>.</p>
