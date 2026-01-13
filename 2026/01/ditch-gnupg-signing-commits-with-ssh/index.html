@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Ditching GPG/GnuPG by signing commits with SSH keys - tobywf</title>
+  <meta charset="utf-8">
+  <meta name="author" content="Toby Fleming">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="https://tobywf.com/theme/main.css">
+  <link rel="icon" href="https://tobywf.com/theme/favicon.png">
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <ul>
+<!-- breadcrumbs start -->
+<li><a href="https://tobywf.com/" id="siteicon"><img src="https://tobywf.com/theme/favicon.svg" alt="Site Icon"></a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2026/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>'26</a></li>
+<li class="breadcrumb"><a href="https://tobywf.com/2026/01/"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-right-solid"></use></svg>Jan</a></li>
+<li class="last"><a href="https://tobywf.com/cv/" class="cap">CV</a></li>
+<!-- breadcrumbs end -->
+      </ul>
+    </nav>
+<!-- content start -->
+<header class="post-head">
+  <h1>Ditching GPG/GnuPG by signing commits with SSH keys</h1>
+  <div class="infoline">
+    <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#calendar-alt-solid"></use></svg> <span class="date">6 Jan '26</span>
+  </div>
+</header>
+<article>
+<p>GPG/GnuPG and PGP has <a href="https://www.latacora.com/blog/2019/07/16/the-pgp-problem/">always sucked</a>. But recently, it turns out it’s <a href="https://gpg.fail/">basically completely broken</a> and many issues won’t be fixed.</p>
+<p>But signing commits is good. So now what?</p>
+<p>I approached this problem the wrong way initially. I wanted to replace GnuPG, and found <a href="https://github.com/withoutboats/bpb">withoutboats’ bpb project</a>, which emulates <code>gpg</code> for signing commits with ed25519 keys. This seemed like a great approach, but hasn’t been updated in 8 years.</p>
+<p>Don’t use it! The reason it hasn’t been updated - I think - is that in 2026, Git, GitHub, and GitLab support signing commits with SSH keys:</p>
+<ul>
+<li>Git since 2.34, but because Git is modern, the announcement was on a mailing list.</li>
+<li><a href="https://docs.gitlab.com/user/project/repository/signed_commits/ssh/">GitLab: Sign commits with SSH keys</a> (good enough doco)</li>
+<li>GitHub: Terrible doco. The page <a href="https://docs.github.com/en/authentication/managing-commit-signature-verification/signing-commits">Signing commits</a> says “You can sign commits locally using GPG, SSH, or S/MIME.”, however recommends GPG. You have to find the page <a href="https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification#ssh-commit-signature-verification">About commit signature verification</a>, and scroll down a lot to find the SSH key signing instructions, and the same is true for the page <a href="https://docs.github.com/en/authentication/managing-commit-signature-verification/telling-git-about-your-signing-key#telling-git-about-your-ssh-key">Telling Git about your signing key</a>. It’s 2026, can we default to SSH now?</li>
+</ul>
+<p>But there are some caveats I want to mention, hence this post. Should you follow it, please read the entire post first before following along.</p>
+<p>I assume you already have an SSH ed25519 key pair. (There is no reason to use RSA unless you need to, which you don’t with GitHub or GitLab.) I recommend a new key just for signing, as you’ll see shortly. (See GitLab’s <a href="https://docs.gitlab.com/user/ssh/#generate-an-ssh-key-pair">generate an SSH key pair</a> for instructions if a key pair is needed. I’ll be using the key name of <code>signing_ed25519</code> instead of the default <code>id_ed25519</code>, to make it obvious the key is only for signing.)</p>
+<p>The key must also be added to the service:</p>
+<ul>
+<li>In <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account">GitHub, a key can either be an authentication or signing key</a>. I think you could add the same key as both an authentication or signing key, but don’t!</li>
+<li>In <a href="https://docs.gitlab.com/user/ssh/#add-an-ssh-key-to-your-gitlab-account">GitLab, a key can be authentication, signing, or both</a>. Again, I don’t recommend using the same key for both.</li>
+</ul>
+<p><strong>Warning</strong>: Before proceeding, back up your git config if you have GPG signing enabled! You cannot use both GPG and SSH signing, the <code>user.signingkey</code> setting will be overwritten. Also, for the same reason, you cannot (easily) use multiple keys - it is possible though, see later, but requires quite a work-around. So if you use both GitHub and GitLab, you’d want to use the same signing key. This is why it’s good to have separate keys for authenticating and signing. Then they can be rotated separately.</p>
+<p>Next, tell Git to use SSH key signing, assumed to be <code>~/.ssh/signing_ed25519.pub</code>:</p>
+<div class="codehilite"><pre><span></span><code>git config --global gpg.format <span class="s2">&quot;ssh&quot;</span>
+git config --global user.signingkey <span class="s2">&quot;~/.ssh/signing_ed25519.pub&quot;</span>
+git config --global commit.gpgsign <span class="nb">true</span>
+git config --global tag.gpgsign <span class="nb">true</span>
+</code></pre></div>
+
+<p>The last two commands enable signing commits and tags by default, otherwise <code>git commit -S</code>, <code>git merge -S</code> (!), and <code>git tag -s</code> must be specified. Of course the flags are different.</p>
+<p>The eagle-eyed reader may have spotted that the signing key is specified as the public key. I believe under the hood, Git will ask OpenSSH for the private/secret key. In any case, it seems to just work, assuming your <code>ssh-agent</code> is set up properly. (You can also put the key directly into the config instead of a path; but it should begin with the <code>key::</code> prefix, e.g. <code>key::ssh-ed25519 ...</code>. Many old tutorials just specify it as <code>ssh-ed25519 ...</code>, which is incorrect.)</p>
+<p>However, I found these steps to be not enough. It seems you also must tell Git about “allowed signers” to see and verify signatures. <a href="https://docs.gitlab.com/user/project/repository/signed_commits/ssh/#verify-commits-locally">GitLab’s instructions do mention this</a>, but it sounded optional.</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">echo</span> <span class="s2">&quot;</span><span class="k">$(</span>git config --get user.email<span class="k">)</span><span class="s2"> namespaces=\&quot;git\&quot; </span><span class="k">$(</span>cat ~/.ssh/signing_ed25519.pub<span class="k">)</span><span class="s2">&quot;</span> &gt;&gt; ~/.ssh/allowed_signers
+git config --global gpg.ssh.allowedSignersFile <span class="s2">&quot;~/.ssh/allowed_signers&quot;</span>
+</code></pre></div>
+
+<p>With this step, <code>git log --show-signature</code> works. In fact, I think I had to do this step to get commit signing to work at all. But I could be wrong; it was late.</p>
+<p>(I must admit that I currently don’t have a good workflow for sharing an <code>allowed_signers</code> file in a team.)</p>
+<p>By the way, as mentioned, there is a way to use different signing keys. Instead of specifying <code>user.signingkey</code>, it’s possible to use <code>gpg.ssh.defaultKeyCommand</code>. If the signing key is not specified, then this runs the program/command, which then returns the signing key to use. So a small utility could map e.g. the git repo origin to a key.</p>
+</article>
+<section>
+  <p><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#tags-solid"></use></svg> <a href="https://tobywf.com/tag/infosec/">infosec</a>, <a href="https://tobywf.com/tag/cryptography/">cryptography</a>, <a href="https://tobywf.com/tag/madness/">madness</a>, <a href="https://tobywf.com/tag/rant/">rant</a></p>
+  <a href="https://tobywf.com/2024/08/raspberry-pi-rp2040-debug-probe-swd/" class="older"><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#chevron-circle-left-solid"></use></svg> Older</a>
+</section>
+<!-- content end -->
+    <footer>
+      <hr>
+      <p class="center">
+        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=correction&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2026%2F01%2Fditch-gnupg-signing-commits-with-ssh%2F">Corrections?</a>
+        <a href="https://github.com/tobywf/tobywf.github.io/issues/new?labels=feedback&amp;body=Page%3A+https%3A%2F%2Ftobywf.com%2F2026%2F01%2Fditch-gnupg-signing-commits-with-ssh%2F">Feedback?</a>
+      </p>
+      <p class="inline-block">
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#copyright"></use></svg> <span class="date cap">MMXII–MMXXVI</span>
+      </p>
+      <p class="inline-block">
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+          <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons"></use></svg> <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-by"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nc-eu"></use></svg><svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#creative-commons-nd"></use></svg> 4.0
+        </a>
+      </p>
+      <p>
+        <svg aria-hidden="true" role="img"><use xlink:href="https://tobywf.com/theme/symbols.svg#child-solid"></use></svg> Born naked, helpless, and unable to fend for himself, Toby eventually overcame these handicaps to become a tinkerer, scuba diver, and musician. He posts his personal ramblings here.
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
